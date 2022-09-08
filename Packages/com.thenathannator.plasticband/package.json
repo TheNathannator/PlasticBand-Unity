@@ -1,0 +1,24 @@
+{
+    "name": "com.thenathannator.plasticband",
+    "version": "0.1.0",
+    "displayName": "PlasticBand",
+    "description": "An add-on for the Unity InputSystem package that adds special bindings for Rock Band and Guitar Hero peripherals, such as guitars and drums.",
+    "unity": "2019.4",
+    "license": "MIT",
+    "licensesUrl": "https://github.com/TheNathannator/PlasticBand-Unity/blob/main/LICENSE.md",
+    "dependencies": {
+        "com.unity.inputsystem": "1.4.2"
+    },
+    "keywords": [
+        "InputSystem",
+        "Guitar Hero",
+        "Rock Band",
+        "GH",
+        "RB"
+    ],
+    "author": {
+        "name": "TheNathannator",
+        "url": "https://github.com/TheNathannator"
+    },
+    "hideInEditor": false
+}
