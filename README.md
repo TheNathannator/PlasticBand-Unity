@@ -2,6 +2,8 @@
 
 A package for the [Unity InputSystem](https://github.com/Unity-Technologies/InputSystem) package that provides mappings and classes for Rock Band and Guitar Hero peripherals.
 
+This project is a companion to my [PlasticBand](https://github.com/TheNathannator/PlasticBand) repository. Documentation on how to interface with the peripherals in a non-Unity context can be found there.
+
 ## WIP
 
 This package is a work-in-progress. Contributions are welcome!
