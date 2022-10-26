@@ -8,7 +8,7 @@ This project is a companion to my [PlasticBand](https://github.com/TheNathannato
 
 This package is a work-in-progress. Contributions are welcome!
 
-Initial support for non-HID devices will likely be Windows only. Mac support will require contribution, and Xbox 360 and Xbox One support on Mac most likely cannot happen until a new driver for those is created, and assuming it supports getting capabilities or otherwise distinguishing between device types.
+For the initial stage of this project, only Windows support can be confirmed. HID devices such as the PS3 guitars/drums will likely work on all platforms once implemented, but non-HID devices such as Xbox 360 guitars will require separate implementations for each platforms, and Mac support for Xbox 360/One guitars most likely isn't possible at all unless a new driver gets made for those.
 
 ## TODO
 
