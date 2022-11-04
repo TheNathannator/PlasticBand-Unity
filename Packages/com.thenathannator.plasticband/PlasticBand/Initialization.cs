@@ -1,3 +1,4 @@
+using PlasticBand.Devices;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,6 +22,8 @@ namespace PlasticBand
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         internal static void Initialize()
         {
+            // Devices
+            FiveFretGuitar.Initialize();
         }
     }
 }
