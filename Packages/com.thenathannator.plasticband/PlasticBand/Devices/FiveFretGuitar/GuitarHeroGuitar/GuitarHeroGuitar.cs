@@ -39,11 +39,13 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "whammy", layout = "Axis")]
         public short whammy;
 
-        [InputControl(name = "touchGreen", layout = "Button", bit = 0, displayName = "Touch/Slider Bar Green")]
-        [InputControl(name = "touchRed", layout = "Button", bit = 1, displayName = "Touch/Slider Bar Red")]
-        [InputControl(name = "touchYellow", layout = "Button", bit = 2, displayName = "Touch/Slider Bar Yellow")]
-        [InputControl(name = "touchBlue", layout = "Button", bit = 3, displayName = "Touch/Slider Bar Blue")]
-        [InputControl(name = "touchOrange", layout = "Button", bit = 4, displayName = "Touch/Slider Bar Orange")]
+        // TODO: This will require either a custom control or custom state parsing
+        // [InputControl(name = "touchGreen", layout = "Button", bit = 0, displayName = "Touch/Slider Bar Green")]
+        // [InputControl(name = "touchRed", layout = "Button", bit = 1, displayName = "Touch/Slider Bar Red")]
+        // [InputControl(name = "touchYellow", layout = "Button", bit = 2, displayName = "Touch/Slider Bar Yellow")]
+        // [InputControl(name = "touchBlue", layout = "Button", bit = 3, displayName = "Touch/Slider Bar Blue")]
+        // [InputControl(name = "touchOrange", layout = "Button", bit = 4, displayName = "Touch/Slider Bar Orange")]
+        [InputControl(name = "sliderBar", layout = "Integer", displayName = "Touch/Slider Bar")]
         public byte slider;
 
         [InputControl(name = "accel1", layout = "Axis", noisy = true, displayName = "Accelerometer 1")]
@@ -73,30 +75,35 @@ namespace PlasticBand.Devices
         /// </summary>
         public ButtonControl spPedal { get; private set; }
 
-        /// <summary>
-        /// The green segment of the guitar's touch/slider bar.
-        /// </summary>
-        public ButtonControl touchGreen { get; private set; }
+        // /// <summary>
+        // /// The green segment of the guitar's touch/slider bar.
+        // /// </summary>
+        // public ButtonControl touchGreen { get; private set; }
+
+        // /// <summary>
+        // /// The red segment of the guitar's touch/slider bar.
+        // /// </summary>
+        // public ButtonControl touchRed { get; private set; }
+
+        // /// <summary>
+        // /// The yellow segment of the guitar's touch/slider bar.
+        // /// </summary>
+        // public ButtonControl touchYellow { get; private set; }
+
+        // /// <summary>
+        // /// The blue segment of the guitar's touch/slider bar.
+        // /// </summary>
+        // public ButtonControl touchBlue { get; private set; }
+
+        // /// <summary>
+        // /// The orange segment of the guitar's touch/slider bar.
+        // /// </summary>
+        // public ButtonControl touchOrange { get; private set; }
 
         /// <summary>
-        /// The red segment of the guitar's touch/slider bar.
+        /// The guitar's touch/slider bar.
         /// </summary>
-        public ButtonControl touchRed { get; private set; }
-
-        /// <summary>
-        /// The yellow segment of the guitar's touch/slider bar.
-        /// </summary>
-        public ButtonControl touchYellow { get; private set; }
-
-        /// <summary>
-        /// The blue segment of the guitar's touch/slider bar.
-        /// </summary>
-        public ButtonControl touchBlue { get; private set; }
-
-        /// <summary>
-        /// The orange segment of the guitar's touch/slider bar.
-        /// </summary>
-        public ButtonControl touchOrange { get; private set; }
+        public IntegerControl sliderBar { get; private set; }
 
         /// <summary>
         /// The first of two additional accelerometer axes.
@@ -114,11 +121,13 @@ namespace PlasticBand.Devices
 
             spPedal = GetChildControl<ButtonControl>("spPedal");
 
-            touchGreen = GetChildControl<ButtonControl>("touchGreen");
-            touchRed = GetChildControl<ButtonControl>("touchRed");
-            touchYellow = GetChildControl<ButtonControl>("touchYellow");
-            touchBlue = GetChildControl<ButtonControl>("touchBlue");
-            touchOrange = GetChildControl<ButtonControl>("touchOrange");
+            // touchGreen = GetChildControl<ButtonControl>("touchGreen");
+            // touchRed = GetChildControl<ButtonControl>("touchRed");
+            // touchYellow = GetChildControl<ButtonControl>("touchYellow");
+            // touchBlue = GetChildControl<ButtonControl>("touchBlue");
+            // touchOrange = GetChildControl<ButtonControl>("touchOrange");
+
+            sliderBar = GetChildControl<IntegerControl>("sliderBar");
 
             accel1 = GetChildControl<AxisControl>("accel1");
             accel2 = GetChildControl<AxisControl>("accel2");
