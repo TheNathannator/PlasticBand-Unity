@@ -43,7 +43,7 @@ namespace PlasticBand.Devices.LowLevel
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// Represents a 5-fret guitar controller.
+    /// A 5-fret guitar controller.
     /// </summary>
     [InputControlLayout(stateType = typeof(FiveFretGuitarState), displayName = "5-Fret Guitar")]
     public class FiveFretGuitar : BaseDevice<FiveFretGuitar>

@@ -59,7 +59,7 @@ namespace PlasticBand.Devices.LowLevel
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// Represents a Guitar Hero 5-fret guitar.
+    /// A Guitar Hero 5-fret guitar.
     /// Has some additional features that aren't available on all 5-fret guitars.
     /// </summary>
     [InputControlLayout(stateType = typeof(GuitarHeroGuitarState), displayName = "Guitar Hero 5-Fret Guitar")]
