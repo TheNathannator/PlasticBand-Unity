@@ -25,6 +25,7 @@ namespace PlasticBand
             // Devices
             FiveFretGuitar.Initialize();
             GuitarHeroGuitar.Initialize();
+            XInputGuitarAlternate.Initialize();
         }
     }
 }
