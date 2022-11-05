@@ -15,10 +15,12 @@ namespace PlasticBand.Devices.LowLevel
         public FourCC format => new FourCC('5', 'F', 'G', 'T');
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", bit = 0, sizeInBits = 4, displayName = "D-Pad", usage = "Hatswitch")]
-        [InputControl(name = "dpad/up", bit = 0, displayName = "Up/Strum Up", alias = "strumUp")]
-        [InputControl(name = "dpad/down", bit = 1, displayName = "Down/Strum Down", alias = "strumDown")]
+        [InputControl(name = "dpad/up", bit = 0, displayName = "Up/Strum Up")]
+        [InputControl(name = "dpad/down", bit = 1, displayName = "Down/Strum Down")]
         [InputControl(name = "dpad/left", bit = 2, displayName = "Left")]
         [InputControl(name = "dpad/right", bit = 3, displayName = "Right")]
+        [InputControl(name = "strumUp", bit = 0, displayName = "Strum Up")]
+        [InputControl(name = "strumDown", bit = 1, displayName = "Strum Down")]
 
         [InputControl(name = "greenFret", layout = "Button", bit = 4, displayName = "Green Fret", usages = new[] { "PrimaryAction", "Submit" })]
         [InputControl(name = "redFret", layout = "Button", bit = 5, displayName = "Red Fret", usages = new[] { "Back", "Cancel" })]
