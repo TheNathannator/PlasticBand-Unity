@@ -22,7 +22,7 @@ namespace PlasticBand
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         internal static void Initialize()
         {
-            // Devices
+            // Guitars
             FiveFretGuitar.Initialize();
             GuitarHeroGuitar.Initialize();
             XInputGuitarAlternate.Initialize();
