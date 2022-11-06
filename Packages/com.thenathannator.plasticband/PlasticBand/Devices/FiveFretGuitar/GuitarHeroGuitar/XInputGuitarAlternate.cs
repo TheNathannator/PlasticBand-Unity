@@ -26,7 +26,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "strumDown", layout = "Button", bit = 1)]
 
         [InputControl(name = "startButton", layout = "Button", bit = 4)]
-        [InputControl(name = "selectButton", layout = "Button", bit = 5)]
+        [InputControl(name = "selectButton", layout = "Button", bit = 5, displayName = "Back")]
 
         [InputControl(name = "orangeFret", layout = "Button", bit = 8)]
         [InputControl(name = "spPedal", layout = "Button", bit = 9)]
