@@ -17,14 +17,14 @@ Things that need to be done.
 Devices to support:
 
 - [ ] 5-Fret Guitars
-  - [ ] Xbox 360
+  - [x] Xbox 360
   - [ ] Xbox One
   - [ ] PS2 (Likely won't be possible to support directly, PS2 adapters are all over the place and usually show up as PS3 controllers)
   - [ ] PS3
   - [ ] PS4
   - [ ] Wii
 - [ ] 6-Fret Guitars
-  - [ ] Xbox 360
+  - [x] Xbox 360
   - [ ] Xbox One
   - [ ] PS3
   - [ ] PS4
@@ -39,6 +39,10 @@ Devices to support:
 - [ ] Guitar Hero Kits
   - [ ] Xbox 360
   - [ ] PS2/PS3
+  - [ ] Wii
+- [ ] Turntables
+  - [x] Xbox 360
+  - [ ] PS3
   - [ ] Wii
 - [ ] Rock Band Keyboards
   - [ ] Xbox 360
