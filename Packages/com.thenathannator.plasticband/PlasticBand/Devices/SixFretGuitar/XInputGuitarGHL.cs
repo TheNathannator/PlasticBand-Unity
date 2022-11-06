@@ -1,6 +1,5 @@
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
-using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -10,7 +9,7 @@ using UnityEngine.InputSystem.XInput;
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
-    /// The state format for XInput GuitarGHL devices.
+    /// The state format for XInput GHL devices.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputGuitarGHLState : IInputStateTypeInfo
@@ -53,7 +52,7 @@ namespace PlasticBand.Devices
     using XInputFlags = XInputController.DeviceFlags;
 
     /// <summary>
-    /// An XInput GuitarGHL guitar.
+    /// An XInput GHL guitar.
     /// </summary>
     [InputControlLayout(stateType = typeof(XInputGuitarGHLState), displayName = "XInput 6-Fret Guitar")]
     public class XInputGuitarGHL : SixFretGuitar
