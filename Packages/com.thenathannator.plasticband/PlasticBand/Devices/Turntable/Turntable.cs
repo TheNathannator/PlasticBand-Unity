@@ -19,10 +19,12 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "dpad/down", bit = 1, displayName = "D-Pad Down")]
         [InputControl(name = "dpad/left", bit = 2, displayName = "D-Pad Left")]
         [InputControl(name = "dpad/right", bit = 3, displayName = "D-Pad Right")]
+
         [InputControl(name = "buttonSouth", layout = "Button", bit = 4, displayName = "Button South", usages = new[] { "PrimaryAction", "Submit" })]
         [InputControl(name = "buttonEast", layout = "Button", bit = 5, displayName = "Button East", usages = new[] { "Back", "Cancel" })]
         [InputControl(name = "buttonWest", layout = "Button", bit = 6, displayName = "Button West")]
         [InputControl(name = "buttonNorth", layout = "Button", bit = 7, displayName = "Button North")]
+
         [InputControl(name = "euphoria", layout = "Button", bit = 8, displayName = "Euphoria")]
         [InputControl(name = "startButton", layout = "Button", bit = 12, displayName = "Start", usage = "Menu")]
         [InputControl(name = "selectButton", layout = "Button", bit = 13, displayName = "Back")]

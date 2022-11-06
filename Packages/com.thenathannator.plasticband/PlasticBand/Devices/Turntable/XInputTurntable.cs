@@ -1,8 +1,6 @@
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
-using UnityEditor;
-using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -20,12 +18,14 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "dpad/down", bit = 1)]
         [InputControl(name = "dpad/left", bit = 2)]
         [InputControl(name = "dpad/right", bit = 3)]
+
         [InputControl(name = "startButton", layout = "Button", bit = 4)]
-        [InputControl(name = "selectButton", layout = "Button", bit = 5)]
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 12)]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 13)]
-        [InputControl(name = "buttonWest", layout = "Button", bit = 14)]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 15, alias = "euphoria")]
+        [InputControl(name = "selectButton", layout = "Button", bit = 5, displayName = "Back")]
+
+        [InputControl(name = "buttonSouth", layout = "Button", bit = 12, displayName = "A")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = 13, displayName = "B")]
+        [InputControl(name = "buttonWest", layout = "Button", bit = 14, displayName = "X")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = 15, displayName = "Y / Euphoria", alias = "euphoria")]
         public ushort buttons;
 
         [InputControl(name = "leftTableGreen", layout = "Button", bit = 0)]
