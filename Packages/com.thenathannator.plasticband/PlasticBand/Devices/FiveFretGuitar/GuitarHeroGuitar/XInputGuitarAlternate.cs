@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -37,10 +38,10 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "yellowFret", layout = "Button", bit = 15)]
         public ushort buttons;
 
-        [InputControl(name = "accel1", layout = "Axis", noisy = true)]
+        [InputControl(name = "accel1", layout = "Axis", noisy = true, displayName = "Accelerometer 1")]
         public byte accel1;
 
-        [InputControl(name = "accel2", layout = "Axis", noisy = true)]
+        [InputControl(name = "accel2", layout = "Axis", noisy = true, displayName = "Accelerometer 2")]
         public byte accel2;
 
         // TODO
@@ -70,9 +71,27 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(XInputGuitarAlternateState), displayName = "XInput Guitar Alternate")]
     public class XInputGuitarAlternate : GuitarHeroGuitar
     {
+        /// <summary>
+        /// The first of two additional accelerometer axes.
+        /// </summary>
+        public AxisControl accel1 { get; private set; }
+
+        /// <summary>
+        /// The second of two additional accelerometer axes.
+        /// </summary>
+        public AxisControl accel2 { get; private set; }
+
         internal new static void Initialize()
         {
             XInputDeviceUtils.Register<XInputGuitarAlternate>(XInputController.DeviceSubType.GuitarAlternate);
+        }
+
+        protected override void FinishSetup()
+        {
+            base.FinishSetup();
+
+            accel1 = GetChildControl<AxisControl>("accel1");
+            accel2 = GetChildControl<AxisControl>("accel2");
         }
     }
 }

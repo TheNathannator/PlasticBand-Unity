@@ -45,12 +45,6 @@ namespace PlasticBand.Devices.LowLevel
         // [InputControl(name = "touchOrange", layout = "Button", bit = 4, displayName = "Touch/Slider Bar Orange")]
         [InputControl(name = "sliderBar", layout = "Integer", displayName = "Touch/Slider Bar")]
         public byte slider;
-
-        [InputControl(name = "accel1", layout = "Axis", noisy = true, displayName = "Accelerometer 1")]
-        public byte accel1;
-
-        [InputControl(name = "accel2", layout = "Axis", noisy = true, displayName = "Accelerometer 2")]
-        public byte accel2;
     }
 }
 
@@ -103,16 +97,6 @@ namespace PlasticBand.Devices
         /// </summary>
         public IntegerControl sliderBar { get; private set; }
 
-        /// <summary>
-        /// The first of two additional accelerometer axes.
-        /// </summary>
-        public AxisControl accel1 { get; private set; }
-
-        /// <summary>
-        /// The second of two additional accelerometer axes.
-        /// </summary>
-        public AxisControl accel2 { get; private set; }
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -126,9 +110,6 @@ namespace PlasticBand.Devices
             // touchOrange = GetChildControl<ButtonControl>("touchOrange");
 
             sliderBar = GetChildControl<IntegerControl>("sliderBar");
-
-            accel1 = GetChildControl<AxisControl>("accel1");
-            accel2 = GetChildControl<AxisControl>("accel2");
         }
     }
 }
