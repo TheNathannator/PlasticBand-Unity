@@ -29,7 +29,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "orangeFret", layout = "Button", bit = 8, displayName = "Orange Fret")]
 
         [InputControl(name = "startButton", layout = "Button", bit = 9, displayName = "Start", usage = "Menu")]
-        [InputControl(name = "selectButton", layout = "Button", bit = 10, displayName = "Back")]
+        [InputControl(name = "selectButton", layout = "Button", bit = 10, displayName = "Select")]
         public ushort buttons;
 
         [InputControl(name = "tilt", layout = "Axis", noisy = true, displayName = "Tilt")]
