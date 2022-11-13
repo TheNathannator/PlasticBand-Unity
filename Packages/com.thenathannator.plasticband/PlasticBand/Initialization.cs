@@ -38,6 +38,8 @@ namespace PlasticBand
             // 6-fret Guitars
             SixFretGuitar.Initialize();
             XInputGuitarGHL.Initialize();
+            PS3WiiUSixFretGuitar.Initialize();
+            PS4SixFretGuitar.Initialize();
 
             // Turntables
             Turntable.Initialize();
