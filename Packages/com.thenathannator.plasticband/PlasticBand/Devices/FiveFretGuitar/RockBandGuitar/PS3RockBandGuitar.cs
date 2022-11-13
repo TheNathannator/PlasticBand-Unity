@@ -11,6 +11,7 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for PS3 Guitar Hero guitars.
     /// </summary>
     // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-rockband.html
+    // https://sites.google.com/site/infnorm/rbguitartechnicaldetails
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3RockBandGuitarState : IInputStateTypeInfo
     {
@@ -29,8 +30,6 @@ namespace PlasticBand.Devices.LowLevel
 
         [InputControl(name = "psButton", layout = "Button", bit = 12, displayName = "PlayStation")]
 
-        // TODO: These are almost certainly not correct, they're required for RockBandGuitar so they're set here for now
-        // Currently the solo flag is set to L1 (bit 6)
         [InputControl(name = "soloGreen", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0044")]
         [InputControl(name = "soloRed", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0042")]
         [InputControl(name = "soloYellow", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0041")]
