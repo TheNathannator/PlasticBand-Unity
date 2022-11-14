@@ -1,3 +1,4 @@
+using PlasticBand.Controls;
 using PlasticBand.Devices.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -39,13 +40,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "whammy", layout = "Axis")]
         public short whammy;
 
-        // TODO: This will require either a custom control or custom state parsing
-        // [InputControl(name = "touchGreen", layout = "Button", bit = 0, displayName = "Touch/Slider Bar Green")]
-        // [InputControl(name = "touchRed", layout = "Button", bit = 1, displayName = "Touch/Slider Bar Red")]
-        // [InputControl(name = "touchYellow", layout = "Button", bit = 2, displayName = "Touch/Slider Bar Yellow")]
-        // [InputControl(name = "touchBlue", layout = "Button", bit = 3, displayName = "Touch/Slider Bar Blue")]
-        // [InputControl(name = "touchOrange", layout = "Button", bit = 4, displayName = "Touch/Slider Bar Orange")]
-        [InputControl(name = "sliderBar", layout = "Integer", displayName = "Touch/Slider Bar")]
+        [InputControl(name = "sliderBar", layout = "GuitarHeroSlider", displayName = "Touch/Slider Bar")]
         public byte slider;
     }
 }
@@ -69,49 +64,17 @@ namespace PlasticBand.Devices
         /// </summary>
         public ButtonControl spPedal { get; private set; }
 
-        // /// <summary>
-        // /// The green segment of the guitar's touch/slider bar.
-        // /// </summary>
-        // public ButtonControl touchGreen { get; private set; }
-
-        // /// <summary>
-        // /// The red segment of the guitar's touch/slider bar.
-        // /// </summary>
-        // public ButtonControl touchRed { get; private set; }
-
-        // /// <summary>
-        // /// The yellow segment of the guitar's touch/slider bar.
-        // /// </summary>
-        // public ButtonControl touchYellow { get; private set; }
-
-        // /// <summary>
-        // /// The blue segment of the guitar's touch/slider bar.
-        // /// </summary>
-        // public ButtonControl touchBlue { get; private set; }
-
-        // /// <summary>
-        // /// The orange segment of the guitar's touch/slider bar.
-        // /// </summary>
-        // public ButtonControl touchOrange { get; private set; }
-
         /// <summary>
         /// The guitar's touch/slider bar.
         /// </summary>
-        public IntegerControl sliderBar { get; private set; }
+        public GuitarHeroSliderControl sliderBar { get; private set; }
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
 
             spPedal = GetChildControl<ButtonControl>("spPedal");
-
-            // touchGreen = GetChildControl<ButtonControl>("touchGreen");
-            // touchRed = GetChildControl<ButtonControl>("touchRed");
-            // touchYellow = GetChildControl<ButtonControl>("touchYellow");
-            // touchBlue = GetChildControl<ButtonControl>("touchBlue");
-            // touchOrange = GetChildControl<ButtonControl>("touchOrange");
-
-            sliderBar = GetChildControl<IntegerControl>("sliderBar");
+            sliderBar = GetChildControl<GuitarHeroSliderControl>("sliderBar");
         }
     }
 }

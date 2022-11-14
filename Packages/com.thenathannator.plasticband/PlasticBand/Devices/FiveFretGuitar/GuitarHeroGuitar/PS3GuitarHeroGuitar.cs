@@ -43,13 +43,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "whammy", layout = "Axis")]
         public byte whammy;
 
-        // TODO
-        // [InputControl(name = "touchGreen", layout = "Button")]
-        // [InputControl(name = "touchRed", layout = "Button")]
-        // [InputControl(name = "touchYellow", layout = "Button")]
-        // [InputControl(name = "touchBlue", layout = "Button")]
-        // [InputControl(name = "touchOrange", layout = "Button")]
-        [InputControl(name = "sliderBar", layout = "Integer")]
+        [InputControl(name = "sliderBar", layout = "GuitarHeroSlider", format = "BYTE")]
         public byte slider;
 
         private fixed byte unused2[12];

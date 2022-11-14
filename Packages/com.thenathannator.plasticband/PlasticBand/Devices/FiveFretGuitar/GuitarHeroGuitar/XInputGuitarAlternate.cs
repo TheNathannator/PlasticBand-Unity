@@ -42,13 +42,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "accel2", layout = "Axis", noisy = true, displayName = "Accelerometer 2")]
         public byte accel2;
 
-        // TODO
-        // [InputControl(name = "touchGreen", layout = "Button")]
-        // [InputControl(name = "touchRed", layout = "Button")]
-        // [InputControl(name = "touchYellow", layout = "Button")]
-        // [InputControl(name = "touchBlue", layout = "Button")]
-        // [InputControl(name = "touchOrange", layout = "Button")]
-        [InputControl(name = "sliderBar", layout = "Integer", format = "BYTE")] // The top and bottom bytes are the same, only one is needed
+        [InputControl(name = "sliderBar", layout = "GuitarHeroSlider", format = "SHRT")]
         public short slider;
 
         private short unused;
