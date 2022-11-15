@@ -137,6 +137,12 @@ namespace PlasticBand.Controls
         {
             base.FinishSetup();
 
+            green = GetChildControl<GuitarHeroSliderSegmentControl>("green");
+            red = GetChildControl<GuitarHeroSliderSegmentControl>("red");
+            yellow = GetChildControl<GuitarHeroSliderSegmentControl>("yellow");
+            blue = GetChildControl<GuitarHeroSliderSegmentControl>("blue");
+            orange = GetChildControl<GuitarHeroSliderSegmentControl>("orange");
+
             if (!stateBlock.format.IsIntegerFormat())
                 throw new NotSupportedException($"Non-integer format '{stateBlock.format}' is not supported for GuitarHeroSlider '{this}'");
 
