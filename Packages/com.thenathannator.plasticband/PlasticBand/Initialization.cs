@@ -25,6 +25,7 @@ namespace PlasticBand
         {
             // Controls
             MaskButtonControl.Initialize();
+            GuitarHeroSliderControl.Initialize();
 
             // 5-fret Guitars
             FiveFretGuitar.Initialize();
