@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
+using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -61,7 +62,7 @@ namespace PlasticBand.Devices
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             InputSystem.RegisterLayout<XInputGuitarGHL>(matches: new InputDeviceMatcher()
-                .WithInterface("XInput")
+                .WithInterface(XInputOther.InterfaceName)
                 // Annoyingly, GHL guitars do not have a unique subtype. So, we have to use some other information to identify them.
                 .WithCapability("subType", (int)XInputController.DeviceSubType.GuitarAlternate)
                 // Strangely, they report having No Navigation. Most likely, none of the other guitars report this information,

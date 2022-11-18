@@ -31,7 +31,7 @@ namespace PlasticBand.LowLevel
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             InputSystem.RegisterLayout<TDevice>(matches: new InputDeviceMatcher()
-                .WithInterface("XInput")
+                .WithInterface(XInputOther.InterfaceName)
                 .WithCapability("subType", subType)
             );
 #endif

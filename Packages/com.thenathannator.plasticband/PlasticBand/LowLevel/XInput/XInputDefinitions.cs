@@ -133,4 +133,9 @@ namespace PlasticBand.LowLevel
         Keytar = 15,
         Turntable = 23
     }
+
+    internal static class XInputOther
+    {
+        internal const string InterfaceName = "XInput";
+    }
 }
