@@ -1,53 +1,13 @@
-using PlasticBand.Devices.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Utilities;
-
-namespace PlasticBand.Devices.LowLevel
-{
-    /// <summary>
-    /// Dummy struct used to give SixFretGuitars some controls in their layout.
-    /// </summary>
-    internal unsafe struct SixFretGuitarState : IInputStateTypeInfo
-    {
-        public FourCC format => new FourCC('6', 'F', 'G', 'T');
-
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", bit = 0, sizeInBits = 4, displayName = "D-Pad", usage = "Hatswitch")]
-        [InputControl(name = "dpad/up", bit = 0, displayName = "Up/Strum Up")]
-        [InputControl(name = "dpad/down", bit = 1, displayName = "Down/Strum Down")]
-        [InputControl(name = "dpad/left", bit = 2, displayName = "Left")]
-        [InputControl(name = "dpad/right", bit = 3, displayName = "Right")]
-        [InputControl(name = "strumUp", layout = "Button", bit = 0, displayName = "Strum Up")]
-        [InputControl(name = "strumDown", layout = "Button", bit = 1, displayName = "Strum Down")]
-
-        [InputControl(name = "black1", layout = "Button", bit = 4, displayName = "Black 1", usages = new[] { "PrimaryAction", "Submit" })]
-        [InputControl(name = "black2", layout = "Button", bit = 5, displayName = "Black 2", usages = new[] { "Back", "Cancel" })]
-        [InputControl(name = "black3", layout = "Button", bit = 6, displayName = "Black 3")]
-        [InputControl(name = "white1", layout = "Button", bit = 7, displayName = "White 1")]
-        [InputControl(name = "white2", layout = "Button", bit = 8, displayName = "White 2")]
-        [InputControl(name = "white3", layout = "Button", bit = 9, displayName = "White 3")]
-
-        [InputControl(name = "startButton", layout = "Button", bit = 10, displayName = "Start", usage = "Menu")]
-        [InputControl(name = "selectButton", layout = "Button", bit = 11, displayName = "Hero Power")]
-        [InputControl(name = "ghtvButton", layout = "Button", bit = 12, displayName = "GHTV Button")]
-        public ushort buttons;
-
-        [InputControl(name = "whammy", layout = "Axis", displayName = "Whammy")]
-        public byte whammy;
-
-        [InputControl(name = "tilt", layout = "Axis", noisy = true, displayName = "Tilt")]
-        public byte tilt;
-    }
-}
 
 namespace PlasticBand.Devices
 {
     /// <summary>
     /// A 6-fret guitar controller.
     /// </summary>
-    [InputControlLayout(stateType = typeof(SixFretGuitarState), displayName = "6-Fret Guitar")]
+    [InputControlLayout(displayName = "6-Fret Guitar")]
     public class SixFretGuitar : BaseDevice<SixFretGuitar>
     {
         internal static void Initialize()
@@ -58,73 +18,91 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The first black fret on the guitar.
         /// </summary>
+        [InputControl(name = "black1", displayName = "Black 1", usages = new[] { "PrimaryAction", "Submit" })]
         public ButtonControl black1 { get; private set; }
 
         /// <summary>
         /// The second black fret on the guitar.
         /// </summary>
+        [InputControl(name = "black2", displayName = "Black 2", usages = new[] { "Back", "Cancel" })]
         public ButtonControl black2 { get; private set; }
 
         /// <summary>
         /// The third black fret on the guitar.
         /// </summary>
+        [InputControl(name = "black3", displayName = "Black 3")]
         public ButtonControl black3 { get; private set; }
 
         /// <summary>
         /// The first black fret on the guitar.
         /// </summary>
+        [InputControl(name = "white1", displayName = "White 1")]
         public ButtonControl white1 { get; private set; }
 
         /// <summary>
         /// The second black fret on the guitar.
         /// </summary>
+        [InputControl(name = "white2", displayName = "White 2")]
         public ButtonControl white2 { get; private set; }
 
         /// <summary>
         /// The third black fret on the guitar.
         /// </summary>
+        [InputControl(name = "white3", displayName = "White 3")]
         public ButtonControl white3 { get; private set; }
 
         /// <summary>
         /// The guitar's strum up input.
         /// On most models this is equivalent to the d-pad up input, but on some it may not be.
         /// </summary>
+        [InputControl(name = "strumUp", displayName = "Strum Up")]
         public ButtonControl strumUp { get; private set; }
 
         /// <summary>
         /// The guitar's strum down input.
         /// On most models this is equivalent to the d-pad down input, but on some it may not be.
         /// </summary>
+        [InputControl(name = "strumDown", displayName = "Strum Down")]
         public ButtonControl strumDown { get; private set; }
 
         /// <summary>
         /// The guitar's d-pad.
         /// </summary>
+        [InputControl(name = "dpad", displayName = "D-Pad", usage = "Hatswitch")]
+        [InputControl(name = "dpad/up", displayName = "Up/Strum Up")]
+        [InputControl(name = "dpad/down", displayName = "Down/Strum Down")]
+        [InputControl(name = "dpad/left", displayName = "Left")]
+        [InputControl(name = "dpad/right", displayName = "Right")]
         public DpadControl dpad { get; private set; }
 
         /// <summary>
         /// The guitar's tilt orientation.
         /// </summary>
+        [InputControl(name = "tilt", noisy = true, displayName = "Tilt")]
         public AxisControl tilt { get; private set; }
 
         /// <summary>
         /// The guitar's whammy bar.
         /// </summary>
+        [InputControl(name = "whammy", displayName = "Whammy")]
         public AxisControl whammy { get; private set; }
 
         /// <summary>
         /// The Start button on the guitar.
         /// </summary>
+        [InputControl(name = "startButton", displayName = "Start", usage = "Menu")]
         public ButtonControl startButton { get; private set; }
 
         /// <summary>
         /// The Select button on the guitar.
         /// </summary>
+        [InputControl(name = "selectButton", displayName = "Hero Power")]
         public ButtonControl selectButton { get; private set; }
 
         /// <summary>
         /// The GHTV button on the guitar.
         /// </summary>
+        [InputControl(name = "ghtvButton", displayName = "GHTV Button")]
         public ButtonControl ghtvButton { get; private set; }
 
         protected override void FinishSetup()
