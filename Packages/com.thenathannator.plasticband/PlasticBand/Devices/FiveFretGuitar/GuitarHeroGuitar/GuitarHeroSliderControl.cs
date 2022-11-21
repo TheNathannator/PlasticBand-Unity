@@ -107,31 +107,31 @@ namespace PlasticBand.Controls
         /// The green segment of the touch/slider bar.
         /// </summary>
         [InputControl(name = "green", format = "BYTE", offset = 0, displayName = "Green")]
-        public GuitarHeroSliderSegmentControl green { get; set; }
+        public GuitarHeroSliderSegmentControl green { get; private set; }
 
         /// <summary>
         /// The red segment of the touch/slider bar.
         /// </summary>
         [InputControl(name = "red", format = "BYTE", offset = 0, displayName = "Red")]
-        public GuitarHeroSliderSegmentControl red { get; set; }
+        public GuitarHeroSliderSegmentControl red { get; private set; }
 
         /// <summary>
         /// The yellow segment of the touch/slider bar.
         /// </summary>
         [InputControl(name = "yellow", format = "BYTE", offset = 0, displayName = "Yellow")]
-        public GuitarHeroSliderSegmentControl yellow { get; set; }
+        public GuitarHeroSliderSegmentControl yellow { get; private set; }
 
         /// <summary>
         /// The blue segment of the touch/slider bar.
         /// </summary>
         [InputControl(name = "blue", format = "BYTE", offset = 0, displayName = "Blue")]
-        public GuitarHeroSliderSegmentControl blue { get; set; }
+        public GuitarHeroSliderSegmentControl blue { get; private set; }
 
         /// <summary>
         /// The orange segment of the touch/slider bar.
         /// </summary>
         [InputControl(name = "orange", format = "BYTE", offset = 0, displayName = "Orange")]
-        public GuitarHeroSliderSegmentControl orange { get; set; }
+        public GuitarHeroSliderSegmentControl orange { get; private set; }
 
         protected override void FinishSetup()
         {
