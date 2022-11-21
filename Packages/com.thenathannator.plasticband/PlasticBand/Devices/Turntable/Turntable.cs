@@ -20,10 +20,6 @@ namespace PlasticBand.Devices
         /// The D-pad in the navigation button compartment.
         /// </summary>
         [InputControl(name = "dpad", displayName = "D-Pad", usage = "Hatswitch")]
-        [InputControl(name = "dpad/up", displayName = "D-Pad Up")]
-        [InputControl(name = "dpad/down", displayName = "D-Pad Down")]
-        [InputControl(name = "dpad/left", displayName = "D-Pad Left")]
-        [InputControl(name = "dpad/right", displayName = "D-Pad Right")]
         public DpadControl dpad { get; private set; }
 
         /// <summary>

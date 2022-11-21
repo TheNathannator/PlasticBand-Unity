@@ -71,8 +71,6 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad", displayName = "D-Pad", usage = "Hatswitch")]
         [InputControl(name = "dpad/up", displayName = "Up/Strum Up")]
         [InputControl(name = "dpad/down", displayName = "Down/Strum Down")]
-        [InputControl(name = "dpad/left", displayName = "Left")]
-        [InputControl(name = "dpad/right", displayName = "Right")]
         public DpadControl dpad { get; private set; }
 
         /// <summary>
