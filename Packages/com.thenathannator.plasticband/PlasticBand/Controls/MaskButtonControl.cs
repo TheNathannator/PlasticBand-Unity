@@ -35,6 +35,11 @@ namespace PlasticBand.Controls
         /// </summary>
         public bool excludeMatchAll = true;
 
+        public MaskButtonControl() : base()
+        {
+            m_StateBlock.format = InputStateBlock.FormatByte;
+        }
+
         protected override void FinishSetup()
         {
             base.FinishSetup();
