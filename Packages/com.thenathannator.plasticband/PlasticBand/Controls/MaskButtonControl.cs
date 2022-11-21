@@ -20,21 +20,6 @@ namespace PlasticBand.Controls
         /// </summary>
         public int mask;
 
-        /// <summary>
-        /// A mask of bits that should cause this button to not be set.
-        /// </summary>
-        public int excludeMask;
-
-        /// <summary>
-        /// Whether or not all bits must be set for this button to be set. Defaults to true.
-        /// </summary>
-        public bool matchAll = true;
-
-        /// <summary>
-        /// Whether or not all exclusion bits must be set for this button to not be set.
-        /// </summary>
-        public bool excludeMatchAll = true;
-
         public MaskButtonControl() : base()
         {
             m_StateBlock.format = InputStateBlock.FormatByte;
@@ -45,7 +30,7 @@ namespace PlasticBand.Controls
             base.FinishSetup();
 
             if (mask == 0)
-                throw new NotSupportedException($"MaskButtonControl '{this}' must have a mask set.");
+                throw new NotSupportedException($"MaskButtonControl '{this}' must have its 'mask' parameter set.");
 
             if (!stateBlock.format.IsIntegerFormat())
                 throw new NotSupportedException($"Non-integer format '{stateBlock.format}' is not supported for MaskButtonControl '{this}'");
@@ -56,33 +41,10 @@ namespace PlasticBand.Controls
             int rawValue = stateBlock.ReadInt(statePtr);
 
             float value = 0f;
-            if (CheckMask(rawValue, mask, matchAll))
-            {
-                if (!CheckMask(rawValue, excludeMask, excludeMatchAll))
-                {
-                    value = 1f;
-                }
-            }
+            if ((rawValue & mask) == mask)
+                value = 1f;
 
             return Preprocess(value);
-        }
-
-        private bool CheckMask(int rawValue, int mask, bool matchAll)
-        {
-            if (mask == 0)
-                return false;
-
-            if (matchAll)
-            {
-                if ((rawValue & mask) == mask)
-                    return true;
-            }
-            else if ((rawValue & mask) != 0)
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }
