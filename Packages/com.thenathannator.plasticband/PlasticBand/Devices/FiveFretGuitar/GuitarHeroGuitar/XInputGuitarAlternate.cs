@@ -42,7 +42,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "accel2", layout = "Axis", noisy = true, displayName = "Accelerometer 2")]
         public byte accel2;
 
-        [InputControl(name = "sliderBar", layout = "GuitarHeroSlider", format = "SHRT")]
+        [InputControl(name = "sliderBar", layout = "GuitarHeroSlider", format = "SHRT", displayName = "Touch/Slider Bar")]
         public short slider;
 
         private short unused;

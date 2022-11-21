@@ -24,17 +24,46 @@ namespace PlasticBand.Devices
         public ButtonControl spPedal { get; private set; }
 
         /// <summary>
-        /// The guitar's touch/slider bar.
+        /// The green segment of the guitar's touch/slider bar.
         /// </summary>
-        [InputControl(name = "sliderBar", displayName = "Touch/Slider Bar")]
-        public GuitarHeroSliderControl sliderBar { get; private set; }
+        [InputControl(name = "touchGreen", displayName = "Touch/Slider Bar Green")]
+        public ButtonControl touchGreen { get; private set; }
+
+        /// <summary>
+        /// The red segment of the guitar's touch/slider bar.
+        /// </summary>
+        [InputControl(name = "touchRed", displayName = "Touch/Slider Bar Red")]
+        public ButtonControl touchRed { get; private set; }
+
+        /// <summary>
+        /// The yellow segment of the guitar's touch/slider bar.
+        /// </summary>
+        [InputControl(name = "touchYellow", displayName = "Touch/Slider Bar Yellow")]
+        public ButtonControl touchYellow { get; private set; }
+
+        /// <summary>
+        /// The blue segment of the guitar's touch/slider bar.
+        /// </summary>
+        [InputControl(name = "touchBlue", displayName = "Touch/Slider Bar Blue")]
+        public ButtonControl touchBlue { get; private set; }
+
+        /// <summary>
+        /// The orange segment of the guitar's touch/slider bar.
+        /// </summary>
+        [InputControl(name = "touchOrange", displayName = "Touch/Slider Bar Orange")]
+        public ButtonControl touchOrange { get; private set; }
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
 
             spPedal = GetChildControl<ButtonControl>("spPedal");
-            sliderBar = GetChildControl<GuitarHeroSliderControl>("sliderBar");
+
+            touchGreen = GetChildControl<ButtonControl>("touchGreen");
+            touchRed = GetChildControl<ButtonControl>("touchRed");
+            touchYellow = GetChildControl<ButtonControl>("touchYellow");
+            touchBlue = GetChildControl<ButtonControl>("touchBlue");
+            touchOrange = GetChildControl<ButtonControl>("touchOrange");
         }
     }
 }

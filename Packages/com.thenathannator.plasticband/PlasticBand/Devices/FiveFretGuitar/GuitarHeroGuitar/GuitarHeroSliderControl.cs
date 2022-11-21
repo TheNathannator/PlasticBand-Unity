@@ -25,11 +25,11 @@ namespace PlasticBand.Controls
                 base.FinishSetup();
                 fretToTest = name switch
                 {
-                    "green" => SliderFret.Green,
-                    "red" => SliderFret.Red,
-                    "yellow" => SliderFret.Yellow,
-                    "blue" => SliderFret.Blue,
-                    "orange" => SliderFret.Orange,
+                    "touchGreen" => SliderFret.Green,
+                    "touchRed" => SliderFret.Red,
+                    "touchYellow" => SliderFret.Yellow,
+                    "touchBlue" => SliderFret.Blue,
+                    "touchOrange" => SliderFret.Orange,
                     _ => throw new NotSupportedException($"Could not determine fret to test from name: {name}")
                 };
 
@@ -106,42 +106,42 @@ namespace PlasticBand.Controls
         /// <summary>
         /// The green segment of the touch/slider bar.
         /// </summary>
-        [InputControl(name = "green", format = "BYTE", offset = 0, displayName = "Green")]
+        [InputControl(name = "touchGreen", format = "BYTE", offset = 0, displayName = "Green")]
         public GuitarHeroSliderSegmentControl green { get; private set; }
 
         /// <summary>
         /// The red segment of the touch/slider bar.
         /// </summary>
-        [InputControl(name = "red", format = "BYTE", offset = 0, displayName = "Red")]
+        [InputControl(name = "touchRed", format = "BYTE", offset = 0, displayName = "Red")]
         public GuitarHeroSliderSegmentControl red { get; private set; }
 
         /// <summary>
         /// The yellow segment of the touch/slider bar.
         /// </summary>
-        [InputControl(name = "yellow", format = "BYTE", offset = 0, displayName = "Yellow")]
+        [InputControl(name = "touchYellow", format = "BYTE", offset = 0, displayName = "Yellow")]
         public GuitarHeroSliderSegmentControl yellow { get; private set; }
 
         /// <summary>
         /// The blue segment of the touch/slider bar.
         /// </summary>
-        [InputControl(name = "blue", format = "BYTE", offset = 0, displayName = "Blue")]
+        [InputControl(name = "touchBlue", format = "BYTE", offset = 0, displayName = "Blue")]
         public GuitarHeroSliderSegmentControl blue { get; private set; }
 
         /// <summary>
         /// The orange segment of the touch/slider bar.
         /// </summary>
-        [InputControl(name = "orange", format = "BYTE", offset = 0, displayName = "Orange")]
+        [InputControl(name = "touchOrange", format = "BYTE", offset = 0, displayName = "Orange")]
         public GuitarHeroSliderSegmentControl orange { get; private set; }
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
 
-            green = GetChildControl<GuitarHeroSliderSegmentControl>("green");
-            red = GetChildControl<GuitarHeroSliderSegmentControl>("red");
-            yellow = GetChildControl<GuitarHeroSliderSegmentControl>("yellow");
-            blue = GetChildControl<GuitarHeroSliderSegmentControl>("blue");
-            orange = GetChildControl<GuitarHeroSliderSegmentControl>("orange");
+            green = GetChildControl<GuitarHeroSliderSegmentControl>("touchGreen");
+            red = GetChildControl<GuitarHeroSliderSegmentControl>("touchRed");
+            yellow = GetChildControl<GuitarHeroSliderSegmentControl>("touchYellow");
+            blue = GetChildControl<GuitarHeroSliderSegmentControl>("touchBlue");
+            orange = GetChildControl<GuitarHeroSliderSegmentControl>("touchOrange");
 
             if (!stateBlock.format.IsIntegerFormat())
                 throw new NotSupportedException($"Non-integer format '{stateBlock.format}' is not supported for GuitarHeroSlider '{this}'");
