@@ -137,47 +137,5 @@ namespace PlasticBand.Devices
             kick1 = GetChildControl<ButtonControl>("kick1");
             kick2 = GetChildControl<ButtonControl>("kick2");
         }
-
-        ushort previousButtonMask;
-        protected void ProcessButtons(ushort buttons)
-        {
-            const ushort redBit = 0x2000;
-            const ushort yellowBit = 0x8000;
-            const ushort blueBit = 0x4000;
-            const ushort greenBit = 0x1000;
-
-            const ushort padBit = 0x0080;
-            const ushort cymbalBit = 0x0200;
-
-            const ushort dpadUpBit = 0x0001;
-            const ushort dpadDownBit = 0x0002;
-
-            const ushort kick1Bit = 0x0040;
-            const ushort kick2Bit = 0x0100;
-
-            buttons &= (ushort)~previousButtonMask;
-
-            bool yellowCymbal = (buttons & (yellowBit | cymbalBit | dpadUpBit)) != 0;
-            bool blueCymbal   = (buttons & (blueBit   | cymbalBit | dpadDownBit)) != 0;
-            bool greenCymbal  = (buttons & (greenBit  | cymbalBit)) != 0;
-
-            bool redPad       = (buttons & (redBit    | padBit)) != 0;
-            bool yellowPad    = (buttons & (yellowBit | padBit)) != 0 && !yellowCymbal;
-            bool bluePad      = (buttons & (blueBit   | padBit)) != 0 && !blueCymbal;
-            bool greenPad     = (buttons & (greenBit  | padBit)) != 0 && !greenCymbal;
-
-            bool kick1        = (buttons & kick1Bit) != 0;
-            bool kick2        = (buttons & kick2Bit) != 0;
-
-            // bool red    = (buttons & redBit) != 0;
-            // bool yellow = (buttons & yellowBit) != 0;
-            // bool blue   = (buttons & blueBit) != 0;
-            // bool green  = (buttons & greenBit) != 0;
-            // bool pad    = (buttons & padBit) != 0;
-            // bool cymbal = (buttons & cymbalBit) != 0;
-
-            if ((buttons & previousButtonMask) != previousButtonMask)
-                previousButtonMask = buttons;
-        }
     }
 }
