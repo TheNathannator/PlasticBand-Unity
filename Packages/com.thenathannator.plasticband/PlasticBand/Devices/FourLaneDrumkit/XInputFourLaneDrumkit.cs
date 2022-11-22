@@ -18,8 +18,10 @@ namespace PlasticBand.Devices.LowLevel
         public FourCC format => new FourCC('X', 'I', 'N', 'P');
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", bit = 0, sizeInBits = 4)]
-        [InputControl(name = "dpad/up", bit = 0)] // layout = "ExclusiveButton", format = "USHT", offset = 0, bit = 0, parameters = "bit=0, excludeMask=0x8200")]
-        [InputControl(name = "dpad/down", bit = 1)] // layout = "ExclusiveButton", format = "USHT", offset = 0, bit = 0, parameters = "bit=1, excludeMask=0x4200")]
+        // TODO: D-pad up/down should be ignored when hitting yellow or blue cymbal, but
+        // it needs to be ignored without interfering with pad detection
+        [InputControl(name = "dpad/up", bit = 0)]
+        [InputControl(name = "dpad/down", bit = 1)]
         [InputControl(name = "dpad/left", bit = 2)]
         [InputControl(name = "dpad/right", bit = 3)]
 
