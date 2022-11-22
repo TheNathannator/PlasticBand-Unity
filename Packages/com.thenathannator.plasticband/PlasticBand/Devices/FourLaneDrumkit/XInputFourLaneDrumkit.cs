@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.XInput;
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
-    /// The state format for XInput drumkits.
+    /// The state format for XInput 4-lane drumkits.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputFourLaneDrumkitState : IInputStateTypeInfo
@@ -58,7 +58,7 @@ namespace PlasticBand.Devices.LowLevel
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// An XInput drumkit.
+    /// An XInput 4-lane drumkit.
     /// </summary>
     [InputControlLayout(stateType = typeof(XInputFourLaneDrumkitState), displayName = "XInput 4-Lane Drumkit")]
     public class XInputFourLaneDrumkit : FourLaneDrumkit
