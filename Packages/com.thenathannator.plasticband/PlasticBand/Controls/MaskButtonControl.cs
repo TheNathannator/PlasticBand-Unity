@@ -46,5 +46,11 @@ namespace PlasticBand.Controls
 
             return Preprocess(value);
         }
+
+        public override unsafe void WriteValueIntoState(float value, void* statePtr)
+        {
+            // TODO
+            throw new NotSupportedException($"Control '{this}' does not support writing");
+        }
     }
 }
