@@ -56,11 +56,11 @@ namespace PlasticBand.LowLevel
         public fixed byte keys[3];
 
         [InputControl(name = "key25", layout = "Button", offset = 5, bit = 7)]
-        [InputControl(name = "velocity1", layout = "Axis", format = "BIT", sizeInBits = 7, offset = 5)]
-        [InputControl(name = "velocity2", layout = "Axis", format = "BIT", sizeInBits = 7, offset = 6)]
-        [InputControl(name = "velocity3", layout = "Axis", format = "BIT", sizeInBits = 7, offset = 7)]
-        [InputControl(name = "velocity4", layout = "Axis", format = "BIT", sizeInBits = 7, offset = 8)]
-        [InputControl(name = "velocity5", layout = "Axis", format = "BIT", sizeInBits = 7, offset = 9)]
+        [InputControl(name = "velocity1", layout = "Axis", format = "BIT", offset = 5, sizeInBits = 7)]
+        [InputControl(name = "velocity2", layout = "Axis", format = "BIT", offset = 6, sizeInBits = 7)]
+        [InputControl(name = "velocity3", layout = "Axis", format = "BIT", offset = 7, sizeInBits = 7)]
+        [InputControl(name = "velocity4", layout = "Axis", format = "BIT", offset = 8, sizeInBits = 7)]
+        [InputControl(name = "velocity5", layout = "Axis", format = "BIT", offset = 9, sizeInBits = 7)]
         public fixed byte velocities[5];
 
         [InputControl(name = "overdrive", layout = "Button", bit = 7)]

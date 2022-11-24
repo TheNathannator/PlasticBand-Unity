@@ -222,7 +222,7 @@ namespace PlasticBand.Controls
                 if (colorCount > 1)
                 {
                     // The d-pad inputs let us resolve the ambiguity of a pad+cymbal hit
-                    // Only d-pad is checked here due to hardware issues
+                    // Only d-pad is checked here since it is the only unique identifier
 
                     // Yellow
                     if (dpadUp)
