@@ -7,6 +7,9 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 
 // TODO: Velocity
+// REVIEW/TODO: would using a stateful approach that tracks the previous buttons and
+// only acts on what's different work better with the hardware issues?
+// Issue with that is if someone wants to read from the previous state pointer...
 
 namespace PlasticBand.Controls
 {
