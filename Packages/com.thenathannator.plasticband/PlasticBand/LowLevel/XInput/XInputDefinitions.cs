@@ -131,7 +131,8 @@ namespace PlasticBand.LowLevel
     internal enum XInputNonStandardSubType
     {
         Keytar = 15,
-        Turntable = 23
+        Turntable = 23,
+        ProGuitar = 25,
     }
 
     internal static class XInputOther

@@ -44,6 +44,10 @@ namespace PlasticBand
             PS3WiiUSixFretGuitar.Initialize();
             PS4SixFretGuitar.Initialize();
 
+            // Pro Guitars
+            ProGuitar.Initialize();
+            XInputProGuitar.Initialize();
+
             // 4-lane drumkits
             FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
