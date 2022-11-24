@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -70,6 +71,7 @@ namespace PlasticBand.Controls
             // are the same as on Xbox 360 and PS3, there'll need to be additional logic to determine which guitars are World Tour and which are GH5.
 
             // GH5 guitars
+            { 0x00, SliderFret.None },
             { 0x95, SliderFret.Green },
             { 0xB0, SliderFret.Green | SliderFret.Red },
             { 0xCD,                    SliderFret.Red },
@@ -150,6 +152,10 @@ namespace PlasticBand.Controls
                 throw new NotSupportedException($"GuitarHeroSlider '{this}' must be at least 8 bits in size.");
         }
 
+#if PLASTICBAND_DEBUG_CONTROLS
+        byte previousValue;
+#endif
+
         public override unsafe SliderFret ReadUnprocessedValueFromState(void* statePtr)
         {
             // Read only the bottom byte
@@ -159,8 +165,24 @@ namespace PlasticBand.Controls
             byte rawValue = unchecked((byte)stateBlock.ReadInt(statePtr));
             if (!sliderLookup.TryGetValue(rawValue, out var flags))
             {
+#if PLASTICBAND_DEBUG_CONTROLS
+                if (rawValue != previousValue)
+                {
+                    Debug.LogWarning($"[GuitarHeroSlider] rawValue {rawValue:X} is not defined in lookup!");
+                    previousValue = rawValue;
+                }
+#endif
+
                 return SliderFret.None;
             }
+
+#if PLASTICBAND_DEBUG_CONTROLS
+            if (rawValue != previousValue)
+            {
+                Debug.Log($"[GuitarHeroSlider] rawValue: {rawValue:X}  flags: {flags}");
+                previousValue = rawValue;
+            }
+#endif
 
             return flags;
         }

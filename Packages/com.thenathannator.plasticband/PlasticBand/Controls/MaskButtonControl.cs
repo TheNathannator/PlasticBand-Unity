@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
@@ -25,6 +26,10 @@ namespace PlasticBand.Controls
             m_StateBlock.format = InputStateBlock.FormatByte;
         }
 
+#if PLASTICBAND_DEBUG_CONTROLS
+        int previousValue;
+#endif
+
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -43,6 +48,14 @@ namespace PlasticBand.Controls
             float value = 0f;
             if ((rawValue & mask) == mask)
                 value = 1f;
+
+#if PLASTICBAND_DEBUG_CONTROLS
+            if (rawValue != previousValue)
+            {
+                Debug.Log($"[MaskButton] rawValue: {rawValue:X}  mask: {mask:X}  value: {value}");
+                previousValue = rawValue;
+            }
+#endif
 
             return Preprocess(value);
         }

@@ -1,4 +1,6 @@
 using System;
+using System.Text;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -158,6 +160,11 @@ namespace PlasticBand.Controls
             cymbalBit = 1 << cymbalBit;
         }
 
+#if PLASTICBAND_DEBUG_CONTROLS
+        int previousButtons;
+        StringBuilder sb = new StringBuilder();
+#endif
+
         public override unsafe FourLanePad ReadUnprocessedValueFromState(void* statePtr)
         {
             // A version of this with more detailed comments may be found here:
@@ -166,7 +173,12 @@ namespace PlasticBand.Controls
             // Read button bits
             int buttons = stateBlock.ReadInt(statePtr);
             if (buttons == 0)
+            {
+#if PLASTICBAND_DEBUG_CONTROLS
+                previousButtons = buttons;
+#endif
                 return FourLanePad.None;
+            }
 
             // Bitmask of individual pads/cymbals
             FourLanePad pads = FourLanePad.None;
@@ -180,6 +192,22 @@ namespace PlasticBand.Controls
             bool cymbal = (buttons & cymbalBit) != 0;
             bool dpadUp = dpad.up.ReadUnprocessedValueFromState(statePtr) >= dpad.up.pressPointOrDefault;
             bool dpadDown = dpad.down.ReadUnprocessedValueFromState(statePtr) >= dpad.down.pressPointOrDefault;
+
+#if PLASTICBAND_DEBUG_CONTROLS
+            if (buttons != previousButtons)
+            {
+                sb.Clear();
+                sb.Append("[FourLanePads] Before: ");
+                if (red) sb.Append("R ");
+                if (yellow) sb.Append("Y ");
+                if (blue) sb.Append("B ");
+                if (green) sb.Append("G ");
+                if (pad) sb.Append("P ");
+                if (cymbal) sb.Append("C ");
+                if (dpadUp) sb.Append("U ");
+                if (dpadDown) sb.Append("D ");
+            }
+#endif
 
             // Pad + cymbal hits can be ambiguous, we need to resolve this
             if (pad && cymbal)
@@ -241,6 +269,27 @@ namespace PlasticBand.Controls
                 if (blue) pads |= FourLanePad.BlueCymbal;
                 if (green) pads |= FourLanePad.GreenCymbal;
             }
+
+#if PLASTICBAND_DEBUG_CONTROLS
+            if (buttons != previousButtons)
+            {
+                sb.Append(" After: ");
+                if (red) sb.Append("R ");
+                if (yellow) sb.Append("Y ");
+                if (blue) sb.Append("B ");
+                if (green) sb.Append("G ");
+                if (pad) sb.Append("P ");
+                if (cymbal) sb.Append("C ");
+                if (dpadUp) sb.Append("U ");
+                if (dpadDown) sb.Append("D ");
+
+                sb.AppendLine();
+                sb.Append(pads);
+                Debug.Log(sb);
+            }
+
+            previousButtons = buttons;
+#endif
 
             return pads;
         }
