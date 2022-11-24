@@ -12,32 +12,42 @@ For the initial stage of this project, only Windows support can be confirmed. HI
 
 ## TODO
 
-Things that need to be done.
-
 Devices to support:
 
-- [ ] 5-Fret Guitars
+- [ ] Guitar Hero 5-Fret Guitars
   - [x] Xbox 360
+  - [ ] PS2
+    - Likely won't be possible to support directly, PS2 adapters are all over the place and usually show up as PS3 controllers.
+  - [x] PS3
+  - [ ] Wii
+- [ ] Rock Band 5-Fret Guitars
+  - [x] Xbox 360
+    - [x] Controls
+    - [ ] Auto-calibration sensors
   - [ ] Xbox One
-  - [ ] PS2 (Likely won't be possible to support directly, PS2 adapters are all over the place and usually show up as PS3 controllers)
-  - [ ] PS3
+  - [x] PS3
+    - [x] Controls
+    - [ ] Auto-calibration sensors
   - [ ] PS4
   - [ ] Wii
 - [ ] 6-Fret Guitars
   - [x] Xbox 360
   - [ ] Xbox One
-  - [ ] PS3
-  - [ ] PS4
-  - [ ] Wii U
+  - [x] PS3/Wii U
+  - [x] PS4
   - [ ] iOS
 - [ ] Rock Band Kits
-  - [ ] Xbox 360
+  - [x] Xbox 360
+    - [x] Controls
+    - [ ] Pair velocities to hits
   - [ ] Xbox One
   - [ ] PS2/PS3
   - [ ] PS4
   - [ ] Wii
 - [ ] Guitar Hero Kits
-  - [ ] Xbox 360
+  - [x] Xbox 360
+    - [x] Basic controls
+    - [ ] Velocity
   - [ ] PS2/PS3
   - [ ] Wii
 - [ ] Turntables
@@ -45,11 +55,14 @@ Devices to support:
   - [ ] PS3
   - [ ] Wii
 - [ ] Rock Band Keyboards
-  - [ ] Xbox 360
+  - [x] Xbox 360
+    - [x] Basic controls
+    - [ ] Pair velocities to keypresses
   - [ ] PS3
   - [ ] Wii
 - [ ] Rock Band Pro Guitars
-  - [ ] Xbox 360
+  - [x] Xbox 360
+    - Some things are missing but either that's outside of our control, or it doesn't matter very much and just needs a bit more research.
   - [ ] PS3
   - [ ] Wii
 
