@@ -165,6 +165,7 @@ namespace PlasticBand.Controls
 
 #if PLASTICBAND_DEBUG_CONTROLS
         int previousButtons;
+        FourLanePad previousPads;
         StringBuilder sb = new StringBuilder();
 #endif
 
@@ -175,13 +176,13 @@ namespace PlasticBand.Controls
 
             // Read button bits
             int buttons = stateBlock.ReadInt(statePtr);
+#if !PLASTICBAND_DEBUG_CONTROLS // Don't skip processing when debugging, keeps the logic in one place
+                                // This is just a fast-path anyways
             if (buttons == 0)
             {
-#if PLASTICBAND_DEBUG_CONTROLS
-                previousButtons = buttons;
-#endif
                 return FourLanePad.None;
             }
+#endif
 
             // Bitmask of individual pads/cymbals
             FourLanePad pads = FourLanePad.None;
@@ -288,10 +289,15 @@ namespace PlasticBand.Controls
 
                 sb.AppendLine();
                 sb.Append(pads);
+                var changedPads = pads ^ previousPads;
+                var newPads = changedPads & pads;
+                var removedPads = changedPads & ~pads;
+                sb.Append($"  New: {newPads}  Removed: {removedPads}  Changed: {changedPads}");
                 Debug.Log(sb);
             }
 
             previousButtons = buttons;
+            previousPads = pads;
 #endif
 
             return pads;
