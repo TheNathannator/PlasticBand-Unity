@@ -3,6 +3,7 @@ using PlasticBand.Devices;
 using PlasticBand.LowLevel;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace PlasticBand
 {
@@ -67,6 +68,10 @@ namespace PlasticBand
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             // XInput layout fix-ups for devices that require state information to determine the true type
             XInputLayoutFixup.Initialize();
+#endif
+
+#if PLASTICBAND_DEBUG_HIGH_POLL
+            InputSystem.pollingFrequency = 1000;
 #endif
         }
     }
