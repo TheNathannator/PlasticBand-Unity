@@ -1,5 +1,6 @@
 {
     "name": "PlasticBand",
+    "rootNamespace": "PlasticBand",
     "references": [
         "Unity.InputSystem"
     ],
