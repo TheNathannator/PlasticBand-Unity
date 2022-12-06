@@ -47,10 +47,16 @@ namespace PlasticBand.Devices.LowLevel
 
         private fixed byte unused2[12];
 
-        [InputControl(name = "tilt", layout = "DiscreteButton", noisy = true, parameters = "minValue=0x0185,maxValue=0x01F7,nullValue=0x0184")]
+        [InputControl(name = "tilt", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5", alias = "accelX")]
         public short tilt;
 
-        private fixed short unused3[3];
+        [InputControl(name = "accelZ", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        private short accelZ;
+
+        [InputControl(name = "accelY", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        private short accelY;
+
+        private short unused3;
     }
 }
 
