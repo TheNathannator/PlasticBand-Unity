@@ -53,6 +53,24 @@ namespace PlasticBand.Devices
         [InputControl(name = "touchOrange", displayName = "Touch/Slider Bar Orange")]
         public ButtonControl touchOrange { get; private set; }
 
+        /// <summary>
+        /// The X-axis of the guitar's accelerometer.
+        /// </summary>
+        [InputControl(name = "accelX", noisy = true, displayName = "Accelerometer X")]
+        public AxisControl accelX { get; private set; }
+
+        /// <summary>
+        /// The Y-axis of the guitar's accelerometer.
+        /// </summary>
+        [InputControl(name = "accelY", noisy = true, displayName = "Accelerometer Y")]
+        public AxisControl accelY { get; private set; }
+
+        /// <summary>
+        /// The Z-axis of the guitar's accelerometer.
+        /// </summary>
+        [InputControl(name = "accelZ", noisy = true, displayName = "Accelerometer Z")]
+        public AxisControl accelZ { get; private set; }
+
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -64,6 +82,10 @@ namespace PlasticBand.Devices
             touchYellow = GetChildControl<ButtonControl>("touchYellow");
             touchBlue = GetChildControl<ButtonControl>("touchBlue");
             touchOrange = GetChildControl<ButtonControl>("touchOrange");
+
+            accelX = GetChildControl<AxisControl>("accelX");
+            accelY = GetChildControl<AxisControl>("accelY");
+            accelZ = GetChildControl<AxisControl>("accelZ");
         }
     }
 }
