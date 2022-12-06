@@ -22,7 +22,6 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "blueFret", layout = "Button", bit = 3)]
 
         [InputControl(name = "orangeFret", layout = "Button", bit = 4)]
-        // TODO: This is almost certainly not correct, it's required for GuitarHeroGuitar so it's placed here for now
         [InputControl(name = "spPedal", layout = "Button", bit = 5)]
 
         [InputControl(name = "selectButton", layout = "Button", bit = 8)]
