@@ -31,11 +31,6 @@ namespace PlasticBand.Devices.LowLevel
 
         [InputControl(name = "kick1", layout = "Button", bit = 8)]
 
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 12, displayName = "A")]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 13, displayName = "B")]
-        [InputControl(name = "buttonWest", layout = "Button", bit = 14, displayName = "X")]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 15, displayName = "Y")]
-
         [InputControl(name = "pads", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0,
             parameters = "redBit=13,yellowBit=15,blueBit=14,greenBit=12,padBit=7,cymbalBit=9", displayName = "Kit")]
         public ushort buttons;

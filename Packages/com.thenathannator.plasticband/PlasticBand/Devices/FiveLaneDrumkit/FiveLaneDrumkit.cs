@@ -22,30 +22,6 @@ namespace PlasticBand.Devices
         public DpadControl dpad { get; private set; }
 
         /// <summary>
-        /// The bottom face button on the drumkit.
-        /// </summary>
-        [InputControl(name = "buttonSouth", displayName = "Button South", usages = new[] { "PrimaryAction", "Submit" })]
-        public ButtonControl buttonSouth { get; private set; }
-
-        /// <summary>
-        /// The right face button on the drumkit.
-        /// </summary>
-        [InputControl(name = "buttonEast", displayName = "Button East", usages = new[] { "Back", "Cancel" })]
-        public ButtonControl buttonEast { get; private set; }
-
-        /// <summary>
-        /// The left face button on the drumkit.
-        /// </summary>
-        [InputControl(name = "buttonWest", displayName = "Button West")]
-        public ButtonControl buttonWest { get; private set; }
-
-        /// <summary>
-        /// The top face button on the drumkit.
-        /// </summary>
-        [InputControl(name = "buttonNorth", displayName = "Button North")]
-        public ButtonControl buttonNorth { get; private set; }
-
-        /// <summary>
         /// The Start button on the drumkit.
         /// </summary>
         [InputControl(name = "startButton", displayName = "Start", usage = "Menu")]
@@ -60,7 +36,7 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The red pad on the drumkit.
         /// </summary>
-        [InputControl(name = "redPad", displayName = "Red Pad")]
+        [InputControl(name = "redPad", displayName = "Red Pad", usages = new[] { "Back", "Cancel" })]
         public ButtonControl redPad { get; private set; }
 
         /// <summary>
@@ -84,7 +60,7 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The yellow cymbal on the drumkit.
         /// </summary>
-        [InputControl(name = "greenPad", displayName = "Green Pad")]
+        [InputControl(name = "greenPad", displayName = "Green Pad", usages = new[] { "PrimaryAction", "Submit" })]
         public ButtonControl greenPad { get; private set; }
 
         /// <summary>
@@ -98,11 +74,6 @@ namespace PlasticBand.Devices
             base.FinishSetup();
 
             dpad = GetChildControl<DpadControl>("dpad");
-
-            buttonSouth = GetChildControl<ButtonControl>("buttonSouth");
-            buttonEast = GetChildControl<ButtonControl>("buttonEast");
-            buttonWest = GetChildControl<ButtonControl>("buttonWest");
-            buttonNorth = GetChildControl<ButtonControl>("buttonNorth");
 
             startButton = GetChildControl<ButtonControl>("startButton");
             selectButton = GetChildControl<ButtonControl>("selectButton");

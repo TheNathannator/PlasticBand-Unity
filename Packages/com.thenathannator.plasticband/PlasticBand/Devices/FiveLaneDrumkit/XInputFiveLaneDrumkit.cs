@@ -31,13 +31,6 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "redPad", layout = "Button", bit = 13)]
         [InputControl(name = "bluePad", layout = "Button", bit = 14)]
         [InputControl(name = "yellowCymbal", layout = "Button", bit = 15)]
-
-        // These are the same as some of the pads and cymbals, these are provided for proper display names
-        // TODO: May cause issues with interactive rebinding since these will conflict with the corresponding pads/cymbals
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 12, displayName = "A")]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 13, displayName = "B")]
-        [InputControl(name = "buttonWest", layout = "Button", bit = 14, displayName = "X")]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 15, displayName = "Y")]
         public ushort buttons;
 
         // TODO: Velocity mappings
