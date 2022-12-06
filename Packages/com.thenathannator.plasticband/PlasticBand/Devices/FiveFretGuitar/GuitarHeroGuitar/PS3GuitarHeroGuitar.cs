@@ -16,10 +16,10 @@ namespace PlasticBand.Devices.LowLevel
     {
         public FourCC format => new FourCC('H', 'I', 'D');
     
-        [InputControl(name = "blueFret", layout = "Button", bit = 0)]
-        [InputControl(name = "redFret", layout = "Button", bit = 1)]
-        [InputControl(name = "greenFret", layout = "Button", bit = 2)]
-        [InputControl(name = "yellowFret", layout = "Button", bit = 3)]
+        [InputControl(name = "yellowFret", layout = "Button", bit = 0)]
+        [InputControl(name = "greenFret", layout = "Button", bit = 1)]
+        [InputControl(name = "redFret", layout = "Button", bit = 2)]
+        [InputControl(name = "blueFret", layout = "Button", bit = 3)]
 
         [InputControl(name = "orangeFret", layout = "Button", bit = 4)]
         // TODO: This is almost certainly not correct, it's required for GuitarHeroGuitar so it's placed here for now

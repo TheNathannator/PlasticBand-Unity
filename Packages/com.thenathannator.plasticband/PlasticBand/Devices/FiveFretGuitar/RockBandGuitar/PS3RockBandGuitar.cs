@@ -17,10 +17,10 @@ namespace PlasticBand.Devices.LowLevel
     {
         public FourCC format => new FourCC('H', 'I', 'D');
     
-        [InputControl(name = "yellowFret", layout = "Button", bit = 0)]
-        [InputControl(name = "redFret", layout = "Button", bit = 1)]
-        [InputControl(name = "greenFret", layout = "Button", bit = 2)]
-        [InputControl(name = "blueFret", layout = "Button", bit = 3)]
+        [InputControl(name = "blueFret", layout = "Button", bit = 0)]
+        [InputControl(name = "greenFret", layout = "Button", bit = 1)]
+        [InputControl(name = "redFret", layout = "Button", bit = 2)]
+        [InputControl(name = "yellowFret", layout = "Button", bit = 3)]
 
         [InputControl(name = "orangeFret", layout = "Button", bit = 4)]
         [InputControl(name = "tilt", layout = "Button", bit = 5)]
@@ -30,10 +30,10 @@ namespace PlasticBand.Devices.LowLevel
 
         [InputControl(name = "psButton", layout = "Button", bit = 12, displayName = "PlayStation")]
 
-        [InputControl(name = "soloGreen", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0044")]
-        [InputControl(name = "soloRed", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0042")]
-        [InputControl(name = "soloYellow", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0041")]
-        [InputControl(name = "soloBlue", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0048")]
+        [InputControl(name = "soloGreen", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0042")]
+        [InputControl(name = "soloRed", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0044")]
+        [InputControl(name = "soloYellow", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0048")]
+        [InputControl(name = "soloBlue", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0041")]
         [InputControl(name = "soloOrange", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0050")]
         public ushort buttons;
 
