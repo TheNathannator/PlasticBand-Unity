@@ -10,7 +10,7 @@ namespace PlasticBand.Devices.LowLevel
     /// <summary>
     /// The state format for PS3 Guitar Hero guitars.
     /// </summary>
-    // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-gh.html
+    // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-gh-guitar.html
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3GuitarHeroGuitarState : IInputStateTypeInfo
     {
