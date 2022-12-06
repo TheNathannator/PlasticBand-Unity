@@ -16,10 +16,10 @@ namespace PlasticBand.LowLevel
     {
         public FourCC format => new FourCC('H', 'I', 'D');
 
-        [InputControl(name = "buttonTriangle", layout = "Button", format = "BIT", bit = 0, displayName = "Triangle")]
-        [InputControl(name = "buttonCircle", layout = "Button", format = "BIT", bit = 1, displayName = "Circle", usages = new[] { "Back", "Cancel" })]
-        [InputControl(name = "buttonCross", layout = "Button", format = "BIT", bit = 2, displayName = "Cross", usages = new[] { "PrimaryAction", "Submit" })]
-        [InputControl(name = "buttonSquare", layout = "Button", format = "BIT", bit = 3, displayName = "Square")]
+        [InputControl(name = "buttonSquare", layout = "Button", format = "BIT", bit = 0, displayName = "Square")]
+        [InputControl(name = "buttonCross", layout = "Button", format = "BIT", bit = 1, displayName = "Cross", usages = new[] { "PrimaryAction", "Submit" })]
+        [InputControl(name = "buttonCircle", layout = "Button", format = "BIT", bit = 2, displayName = "Circle", usages = new[] { "Back", "Cancel" })]
+        [InputControl(name = "buttonTriangle", layout = "Button", format = "BIT", bit = 3, displayName = "Triangle")]
 
         [InputControl(name = "l2Press", layout = "Button", format = "BIT", bit = 4, displayName = "L2 Press")]
         [InputControl(name = "r2Press", layout = "Button", format = "BIT", bit = 5, displayName = "R2 Press")]
@@ -42,23 +42,25 @@ namespace PlasticBand.LowLevel
         public byte dpad;
 
         [InputControl(name = "leftStick", layout = "Stick", format = "VC2B")]
-        [InputControl(name = "leftStick/x", offset = 0, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        [InputControl(name = "leftStick/left", offset = 0, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
-        [InputControl(name = "leftStick/right", offset = 0, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
-        [InputControl(name = "leftStick/y", offset = 1, format = "BYTE", parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        [InputControl(name = "leftStick/up", offset = 1, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
-        [InputControl(name = "leftStick/down", offset = 1, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
+        [InputControl(name = "leftStick/x", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [InputControl(name = "leftStick/left", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        [InputControl(name = "leftStick/right", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
         public byte leftStickX;
+
+        [InputControl(name = "leftStick/y", format = "BYTE", parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [InputControl(name = "leftStick/up", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        [InputControl(name = "leftStick/down", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
         public byte leftStickY;
 
         [InputControl(name = "rightStick", layout = "Stick", format = "VC2B")]
-        [InputControl(name = "rightStick/x", offset = 0, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        [InputControl(name = "rightStick/left", offset = 0, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
-        [InputControl(name = "rightStick/right", offset = 0, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
-        [InputControl(name = "rightStick/y", offset = 1, format = "BYTE", parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        [InputControl(name = "rightStick/up", offset = 1, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
-        [InputControl(name = "rightStick/down", offset = 1, format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
+        [InputControl(name = "rightStick/x", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [InputControl(name = "rightStick/left", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        [InputControl(name = "rightStick/right", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
         public byte rightStickX;
+
+        [InputControl(name = "rightStick/y", format = "BYTE", parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [InputControl(name = "rightStick/up", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        [InputControl(name = "rightStick/down", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
         public byte rightStickY;
 
         [InputControl(name = "pressure_dpadUp", layout = "Axis")]
@@ -97,16 +99,16 @@ namespace PlasticBand.LowLevel
         [InputControl(name = "pressure_square", layout = "Axis")]
         public byte pressure_square;
 
-        [InputControl(name = "accelX", layout = "Axis")]
-        public short accelX;
+        [InputControl(name = "accelX", layout = "Axis", format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        public ushort accelX;
 
-        [InputControl(name = "accelY", layout = "Axis")]
-        public short accelY;
+        [InputControl(name = "accelZ", layout = "Axis", format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        public ushort accelZ;
 
-        [InputControl(name = "accelZ", layout = "Axis")]
-        public short accelZ;
+        [InputControl(name = "accelY", layout = "Axis", format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        public ushort accelY;
 
-        [InputControl(name = "gyro", layout = "Axis")]
-        public short gyro;
+        [InputControl(name = "gyro", layout = "Axis", format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        public ushort gyro;
     }
 }
