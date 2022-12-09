@@ -51,10 +51,10 @@ namespace PlasticBand.Devices.LowLevel
         public short tilt;
 
         [InputControl(name = "accelZ", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        private short accelZ;
+        public short accelZ;
 
         [InputControl(name = "accelY", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        private short accelY;
+        public short accelY;
 
         private short unused3;
     }

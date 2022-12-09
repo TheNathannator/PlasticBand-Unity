@@ -2,7 +2,6 @@ using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -36,10 +35,10 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "yellowFret", layout = "Button", bit = 15)]
         public ushort buttons;
 
-        [InputControl(name = "accelY", layout = "Axis", noisy = true, displayName = "Accelerometer Y")]
+        [InputControl(name = "accelY", layout = "Axis", noisy = true)]
         public byte accelY;
 
-        [InputControl(name = "accelZ", layout = "Axis", noisy = true, displayName = "Accelerometer Z")]
+        [InputControl(name = "accelZ", layout = "Axis", noisy = true)]
         public byte accelZ;
 
         [InputControl(name = "sliderBar", layout = "GuitarHeroSlider", format = "SHRT", displayName = "Touch/Slider Bar")]
