@@ -12,7 +12,8 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for PS3/PS4/Wii U GHL devices.
     /// </summary>
     // https://github.com/ghlre/GHLtarUtility/blob/master/PS3Guitar.cs
-    // Also https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-controllers.html for more general format
+    // https://github.com/RPCS3/rpcs3/blob/master/rpcs3/Emu/Io/GHLtar.cpp
+    // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-controllers.html for general format
     // guidance and some additional inputs, as this does follow the same layout as other PS3 controllers
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PSWiiUSixFretGuitarState : IInputStateTypeInfo
@@ -34,17 +35,17 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "syncButton", layout = "Button", bit = 12, displayName = "D-pad Center")]
         public ushort buttons;
 
-        [InputControl(name = "dpad", format = "BIT", layout = "Dpad", sizeInBits = 4, defaultState = 8)]
-        [InputControl(name = "dpad/up", format = "BIT", layout = "DiscreteButton", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7")]
-        [InputControl(name = "dpad/right", format = "BIT", layout = "DiscreteButton", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
-        [InputControl(name = "dpad/down", format = "BIT", layout = "DiscreteButton", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
-        [InputControl(name = "dpad/left", format = "BIT", layout = "DiscreteButton", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
+        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 15)]
+        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=15,wrapAtValue=7")]
+        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
+        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
+        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
         public byte dpad;
 
         private byte unused1;
 
-        [InputControl(name = "strumUp", layout = "Button", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=2,clampMin=0,clampMax=0.5,invert")]
-        [InputControl(name = "strumDown", layout = "Button", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=2,clampMin=0.5,clampMax=1,invert=false")]
+        [InputControl(name = "strumUp", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x81,maxValue=0xFF,nullValue=0x80")]
+        [InputControl(name = "strumDown", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x7F,maxValue=0,nullValue=0x80")]
         public byte strumBar;
 
         private byte unused2;
@@ -54,8 +55,7 @@ namespace PlasticBand.Devices.LowLevel
 
         private fixed byte unused3[12];
 
-        // TODO: Verify whether or not additional processing needs to happen
-        [InputControl(name = "tilt", layout = "Axis", noisy = true)]
+        [InputControl(name = "tilt", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public short tilt;
 
         private fixed short unused4[3];
