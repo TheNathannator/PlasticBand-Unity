@@ -16,7 +16,9 @@ namespace PlasticBand.Devices.LowLevel
     internal unsafe struct PS3GuitarHeroGuitarState : IInputStateTypeInfo
     {
         public FourCC format => new FourCC('H', 'I', 'D');
-    
+
+        private byte reportId;
+
         [InputControl(name = "yellowFret", layout = "Button", bit = 0)]
         [InputControl(name = "greenFret", layout = "Button", bit = 1)]
         [InputControl(name = "redFret", layout = "Button", bit = 2)]

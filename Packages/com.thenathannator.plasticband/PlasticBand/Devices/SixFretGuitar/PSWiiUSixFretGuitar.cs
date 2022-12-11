@@ -20,6 +20,8 @@ namespace PlasticBand.Devices.LowLevel
     {
         public FourCC format => new FourCC('H', 'I', 'D');
 
+        private byte reportId;
+
         [InputControl(name = "white1", layout = "Button", bit = 0)]
         [InputControl(name = "black1", layout = "Button", bit = 1)]
         [InputControl(name = "black2", layout = "Button", bit = 2)]
