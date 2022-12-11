@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using UnityEngine.InputSystem;
@@ -68,6 +69,17 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState), displayName = "RedOctane Guitar for PlayStation(R)3")]
     public class PS3GuitarHeroGuitar : GuitarHeroGuitar
     {
+        /// <summary>
+        /// The current <see cref="PS3GuitarHeroGuitar"/>.
+        /// </summary>
+        public static new PS3GuitarHeroGuitar current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="PS3GuitarHeroGuitar"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<PS3GuitarHeroGuitar> all => s_AllDevices;
+        private static readonly List<PS3GuitarHeroGuitar> s_AllDevices = new List<PS3GuitarHeroGuitar>();
+
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<PS3GuitarHeroGuitar>(matches: new InputDeviceMatcher()
@@ -76,6 +88,29 @@ namespace PlasticBand.Devices
                 .WithCapability("vendorId", 0x12BA) // "Licensed by Sony Computer Entertainment America"
                 .WithCapability("productId", 0x0100) // "RedOctane Guitar for PlayStation(R)3"
             );
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="PS3GuitarHeroGuitar"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
     }
 }

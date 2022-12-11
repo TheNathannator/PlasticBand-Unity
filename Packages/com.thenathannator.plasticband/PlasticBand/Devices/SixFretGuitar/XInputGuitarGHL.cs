@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
@@ -58,6 +59,17 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(XInputGuitarGHLState), displayName = "XInput 6-Fret Guitar")]
     public class XInputGuitarGHL : SixFretGuitar
     {
+        /// <summary>
+        /// The current <see cref="XInputGuitarGHL"/>.
+        /// </summary>
+        public static new XInputGuitarGHL current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="XInputGuitarGHL"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<XInputGuitarGHL> all => s_AllDevices;
+        private static List<XInputGuitarGHL> s_AllDevices = new List<XInputGuitarGHL>();
+
         internal new static void Initialize()
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
@@ -70,6 +82,29 @@ namespace PlasticBand.Devices
                 .WithCapability("flags", (int)(XInputFlags.VoiceSupported | XInputFlags.PluginModulesSupported | XInputFlags.NoNavigation)) // 28
             );
 #endif
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="XInputGuitarGHL"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
     }
 }

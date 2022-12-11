@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PlasticBand.Haptics;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -9,8 +10,19 @@ namespace PlasticBand.Devices
     /// A DJ Hero turntable.
     /// </summary>
     [InputControlLayout(displayName = "DJ Hero Turntable")]
-    public class Turntable : BaseDevice<Turntable>, ITurntableHaptics
+    public class Turntable : InputDevice, ITurntableHaptics
     {
+        /// <summary>
+        /// The current <see cref="Turntable"/>.
+        /// </summary>
+        public static Turntable current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="Turntable"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<Turntable> all => s_AllDevices;
+        private static List<Turntable> s_AllDevices = new List<Turntable>();
+
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<Turntable>();
@@ -153,6 +165,29 @@ namespace PlasticBand.Devices
 
             effectsDial = GetChildControl<AxisControl>("effectsDial");
             crossFader = GetChildControl<AxisControl>("crossFader");
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="Turntable"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
 
         /// <summary>

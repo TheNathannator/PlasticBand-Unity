@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using UnityEngine.InputSystem;
@@ -56,12 +57,46 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(XInputFiveLaneDrumkitState), displayName = "XInput 5-Lane Drumkit")]
     public class XInputFiveLaneDrumkit : FiveLaneDrumkit
     {
+        /// <summary>
+        /// The current <see cref="XInputFiveLaneDrumkit"/>.
+        /// </summary>
+        public static new XInputFiveLaneDrumkit current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="XInputFiveLaneDrumkit"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<XInputFiveLaneDrumkit> all => s_AllDevices;
+        private static List<XInputFiveLaneDrumkit> s_AllDevices = new List<XInputFiveLaneDrumkit>();
+
         internal new static void Initialize()
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             InputSystem.RegisterLayout<XInputFiveLaneDrumkit>();
             // Sub-type disambiguation is registered by XInputFourLaneDrumkit
 #endif
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="XInputFiveLaneDrumkit"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
     }
 }

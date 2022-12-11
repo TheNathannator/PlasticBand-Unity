@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
@@ -57,9 +58,43 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(XInputTurntableState), displayName = "XInput Turntable")]
     internal class XInputTurntable : Turntable
     {
+        /// <summary>
+        /// The current <see cref="XInputTurntable"/>.
+        /// </summary>
+        public static new XInputTurntable current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="XInputTurntable"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<XInputTurntable> all => s_AllDevices;
+        private static List<XInputTurntable> s_AllDevices = new List<XInputTurntable>();
+
         internal new static void Initialize()
         {
             XInputDeviceUtils.Register<XInputTurntable>((int)XInputNonStandardSubType.Turntable);
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="XInputTurntable"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
 
         protected override void SendEuphoriaCommand(float brightness)

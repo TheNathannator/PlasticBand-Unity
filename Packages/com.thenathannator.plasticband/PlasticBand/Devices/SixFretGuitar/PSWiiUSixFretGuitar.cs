@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using UnityEngine.InputSystem;
@@ -69,6 +70,17 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(PSWiiUSixFretGuitarState), displayName = "PS3/Wii U 6-Fret Guitar")]
     public class PS3WiiUSixFretGuitar : PokedSixFretGuitar
     {
+        /// <summary>
+        /// The current <see cref="PS3WiiUSixFretGuitar"/>.
+        /// </summary>
+        public static new PS3WiiUSixFretGuitar current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="PS3WiiUSixFretGuitar"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<PS3WiiUSixFretGuitar> all => s_AllDevices;
+        private static List<PS3WiiUSixFretGuitar> s_AllDevices = new List<PS3WiiUSixFretGuitar>();
+
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<PS3WiiUSixFretGuitar>(matches: new InputDeviceMatcher()
@@ -79,6 +91,29 @@ namespace PlasticBand.Devices
                 .WithCapability("vendorId", 0x12BA) // "Licensed by Sony Computer Entertainment America"
                 .WithCapability("productId", 0x074B) // (Not registered)
             );
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="PS3WiiUSixFretGuitar"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
 
         // Magic data to be sent periodically to unlock full input data.
@@ -99,6 +134,17 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(PSWiiUSixFretGuitarState), displayName = "PS4 6-Fret Guitar")]
     public class PS4SixFretGuitar : PokedSixFretGuitar
     {
+        /// <summary>
+        /// The current <see cref="PS4SixFretGuitar"/>.
+        /// </summary>
+        public static new PS4SixFretGuitar current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="PS4SixFretGuitar"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<PS4SixFretGuitar> all => s_AllDevices;
+        private static List<PS4SixFretGuitar> s_AllDevices = new List<PS4SixFretGuitar>();
+
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<PS4SixFretGuitar>(matches: new InputDeviceMatcher()
@@ -109,6 +155,29 @@ namespace PlasticBand.Devices
                 .WithCapability("vendorId", 0x1430) // RedOctane
                 .WithCapability("productId", 0x07BB) // (Not registered)
             );
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="PS4SixFretGuitar"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
 
         // Magic data to be sent periodically to unlock full input data.

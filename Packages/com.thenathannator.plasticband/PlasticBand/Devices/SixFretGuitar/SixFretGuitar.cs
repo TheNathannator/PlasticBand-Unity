@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -8,8 +9,19 @@ namespace PlasticBand.Devices
     /// A 6-fret guitar controller.
     /// </summary>
     [InputControlLayout(displayName = "6-Fret Guitar")]
-    public class SixFretGuitar : BaseDevice<SixFretGuitar>
+    public class SixFretGuitar : InputDevice
     {
+        /// <summary>
+        /// The current <see cref="SixFretGuitar"/>.
+        /// </summary>
+        public static SixFretGuitar current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="SixFretGuitar"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<SixFretGuitar> all => s_AllDevices;
+        private static List<SixFretGuitar> s_AllDevices = new List<SixFretGuitar>();
+
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<SixFretGuitar>();
@@ -125,6 +137,29 @@ namespace PlasticBand.Devices
             startButton = GetChildControl<ButtonControl>("startButton");
             selectButton = GetChildControl<ButtonControl>("selectButton");
             ghtvButton = GetChildControl<ButtonControl>("ghtvButton");
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="SixFretGuitar"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
@@ -60,6 +61,17 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(XInputFourLaneDrumkitState), displayName = "XInput 4-Lane Drumkit")]
     public class XInputFourLaneDrumkit : FourLaneDrumkit
     {
+        /// <summary>
+        /// The current <see cref="XInputFourLaneDrumkit"/>.
+        /// </summary>
+        public static new XInputFourLaneDrumkit current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="XInputFourLaneDrumkit"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<XInputFourLaneDrumkit> all => s_AllDevices;
+        private static List<XInputFourLaneDrumkit> s_AllDevices = new List<XInputFourLaneDrumkit>();
+
         internal new static void Initialize()
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
@@ -75,6 +87,29 @@ namespace PlasticBand.Devices
                 return typeof(XInputFourLaneDrumkit).Name;
             });
 #endif
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="XInputFourLaneDrumkit"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
     }
 }

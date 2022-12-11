@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -8,8 +9,19 @@ namespace PlasticBand.Devices
     /// A 4-lane (Rock Band) drumkit controller.
     /// </summary>
     [InputControlLayout(displayName = "4-Lane Drumkit")]
-    public class FourLaneDrumkit : BaseDevice<FourLaneDrumkit>
+    public class FourLaneDrumkit : InputDevice
     {
+        /// <summary>
+        /// The current <see cref="FourLaneDrumkit"/>.
+        /// </summary>
+        public static FourLaneDrumkit current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="FourLaneDrumkit"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<FourLaneDrumkit> all => s_AllDevices;
+        private static List<FourLaneDrumkit> s_AllDevices = new List<FourLaneDrumkit>();
+
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<FourLaneDrumkit>();
@@ -107,6 +119,29 @@ namespace PlasticBand.Devices
 
             kick1 = GetChildControl<ButtonControl>("kick1");
             kick2 = GetChildControl<ButtonControl>("kick2");
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="FourLaneDrumkit"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
     }
 }

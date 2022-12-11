@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -8,8 +9,19 @@ namespace PlasticBand.Devices
     /// A Rock Band 3 keytar controller.
     /// </summary>
     [InputControlLayout(displayName = "Keytar")]
-    public class Keytar : BaseDevice<Keytar>
+    public class Keytar : InputDevice
     {
+        /// <summary>
+        /// The current <see cref="Keytar"/>.
+        /// </summary>
+        public static Keytar current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="Keytar"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<Keytar> all => s_AllDevices;
+        private static List<Keytar> s_AllDevices = new List<Keytar>();
+
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<Keytar>();
@@ -276,6 +288,29 @@ namespace PlasticBand.Devices
 
             analogPedal = GetChildControl<AxisControl>("analogPedal");
             touchStrip = GetChildControl<AxisControl>("touchStrip");
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="Keytar"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
     }
 }

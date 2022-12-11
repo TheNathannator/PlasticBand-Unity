@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -13,8 +14,19 @@ namespace PlasticBand.Devices
     /// A Rock Band 3 Pro Guitar controller.
     /// </summary>
     [InputControlLayout(displayName = "Pro Guitar")]
-    public class ProGuitar : BaseDevice<ProGuitar>
+    public class ProGuitar : InputDevice
     {
+        /// <summary>
+        /// The current <see cref="ProGuitar"/>.
+        /// </summary>
+        public static ProGuitar current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="ProGuitar"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<ProGuitar> all => s_AllDevices;
+        private static List<ProGuitar> s_AllDevices = new List<ProGuitar>();
+
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<ProGuitar>();
@@ -212,6 +224,29 @@ namespace PlasticBand.Devices
 
             tilt = GetChildControl<AxisControl>("tilt");
             whammy = GetChildControl<AxisControl>("whammy");
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="ProGuitar"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
     }
 }

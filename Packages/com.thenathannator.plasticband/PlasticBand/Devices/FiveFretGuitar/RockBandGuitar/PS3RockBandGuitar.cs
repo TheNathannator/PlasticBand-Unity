@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using UnityEngine.InputSystem;
@@ -64,6 +65,17 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(PS3RockBandGuitarState), displayName = "Harmonix Guitar for PlayStation(R)3")]
     public class PS3RockBandGuitar : RockBandGuitar
     {
+        /// <summary>
+        /// The current <see cref="PS3RockBandGuitar"/>.
+        /// </summary>
+        public static new PS3RockBandGuitar current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="PS3RockBandGuitar"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<PS3RockBandGuitar> all => s_AllDevices;
+        private static List<PS3RockBandGuitar> s_AllDevices = new List<PS3RockBandGuitar>();
+
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<PS3RockBandGuitar>(matches: new InputDeviceMatcher()
@@ -72,6 +84,29 @@ namespace PlasticBand.Devices
                 .WithCapability("vendorId", 0x12BA) // "Licensed by Sony Computer Entertainment America"
                 .WithCapability("productId", 0x0200) // "Harmonix Guitar for PlayStation(R)3"
             );
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="PS3RockBandGuitar"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
     }
 }

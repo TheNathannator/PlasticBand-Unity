@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -11,6 +12,17 @@ namespace PlasticBand.Devices
     [InputControlLayout(displayName = "Guitar Hero 5-Fret Guitar")]
     public class GuitarHeroGuitar : FiveFretGuitar
     {
+        /// <summary>
+        /// The current <see cref="GuitarHeroGuitar"/>.
+        /// </summary>
+        public static new GuitarHeroGuitar current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="GuitarHeroGuitar"/>s currently connected to the system.
+        /// </summary>l
+        public new static IReadOnlyList<GuitarHeroGuitar> all => s_AllDevices;
+        private static List<GuitarHeroGuitar> s_AllDevices = new List<GuitarHeroGuitar>();
+
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<GuitarHeroGuitar>();
@@ -85,6 +97,29 @@ namespace PlasticBand.Devices
             accelX = GetChildControl<AxisControl>("accelX");
             accelY = GetChildControl<AxisControl>("accelY");
             accelZ = GetChildControl<AxisControl>("accelZ");
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="GuitarHeroGuitar"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
     }
 }

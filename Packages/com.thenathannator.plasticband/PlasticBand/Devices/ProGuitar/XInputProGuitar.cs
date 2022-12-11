@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
@@ -68,9 +69,43 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(XInputProGuitarState), displayName = "XInput Pro Guitar")]
     public class XInputProGuitar : RockBandGuitar
     {
+        /// <summary>
+        /// The current <see cref="XInputProGuitar"/>.
+        /// </summary>
+        public static new XInputProGuitar current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="XInputProGuitar"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<XInputProGuitar> all => s_AllDevices;
+        private static List<XInputProGuitar> s_AllDevices = new List<XInputProGuitar>();
+
         internal new static void Initialize()
         {
             XInputDeviceUtils.Register<XInputProGuitar>(XInputNonStandardSubType.ProGuitar);
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="XInputProGuitar"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
         }
     }
 }
