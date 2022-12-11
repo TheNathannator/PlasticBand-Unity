@@ -9,14 +9,14 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
-    /// The state format for PS3/PS4/Wii U GHL devices.
+    /// The state format for PS3/Wii U GHL devices.
     /// </summary>
     // https://github.com/ghlre/GHLtarUtility/blob/master/PS3Guitar.cs
     // https://github.com/RPCS3/rpcs3/blob/master/rpcs3/Emu/Io/GHLtar.cpp
     // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-controllers.html for general format
     // guidance and some additional inputs, as this does follow the same layout as other PS3 controllers
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PSWiiUSixFretGuitarState : IInputStateTypeInfo
+    internal unsafe struct PS3WiiUSixFretGuitarState : IInputStateTypeInfo
     {
         public FourCC format => new FourCC('H', 'I', 'D');
 
@@ -69,7 +69,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS3/Wii U GHL guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PSWiiUSixFretGuitarState), displayName = "PS3/Wii U 6-Fret Guitar")]
+    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState), displayName = "PS3/Wii U 6-Fret Guitar")]
     public class PS3WiiUSixFretGuitar : PokedSixFretGuitar
     {
         /// <summary>
@@ -124,67 +124,6 @@ namespace PlasticBand.Devices
         // [0x02, 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00] (https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L32)
         // [0x02, 0x02, 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00] (https://github.com/Octave13/GHLPokeMachine/blob/master/GHL_Library/GHLPoke.h#L25)
         private static byte[] pokeData = new byte[SixFretHidPokeCommand.DataSize] { 0x02, 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-        private static SixFretHidPokeCommand pokeCommand = SixFretHidPokeCommand.Create(pokeData);
-
-        protected override void OnPoke() => device.ExecuteCommand(ref pokeCommand);
-    }
-
-    /// <summary>
-    /// A PS4 GHL guitar.
-    /// </summary>
-    // TODO: The control layout could differ, it's assumed it's the same as the PS3/Wii U guitar
-    [InputControlLayout(stateType = typeof(PSWiiUSixFretGuitarState), displayName = "PS4 6-Fret Guitar")]
-    public class PS4SixFretGuitar : PokedSixFretGuitar
-    {
-        /// <summary>
-        /// The current <see cref="PS4SixFretGuitar"/>.
-        /// </summary>
-        public static new PS4SixFretGuitar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS4SixFretGuitar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS4SixFretGuitar> all => s_AllDevices;
-        private static List<PS4SixFretGuitar> s_AllDevices = new List<PS4SixFretGuitar>();
-
-        internal new static void Initialize()
-        {
-            InputSystem.RegisterLayout<PS4SixFretGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
-                // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ids.h
-                // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L196
-                // Names retrieved from https://www.pcilookup.com
-                .WithCapability("vendorId", 0x1430) // RedOctane
-                .WithCapability("productId", 0x07BB) // (Not registered)
-            );
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS4SixFretGuitar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
-        }
-
-        // Magic data to be sent periodically to unlock full input data.
-        // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L37
-        private static byte[] pokeData = new byte[SixFretHidPokeCommand.DataSize] { 0x30, 0x02, 0x08, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00 };
         private static SixFretHidPokeCommand pokeCommand = SixFretHidPokeCommand.Create(pokeData);
 
         protected override void OnPoke() => device.ExecuteCommand(ref pokeCommand);
