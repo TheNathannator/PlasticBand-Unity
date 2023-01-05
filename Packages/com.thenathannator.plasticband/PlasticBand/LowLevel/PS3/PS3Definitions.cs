@@ -18,10 +18,10 @@ namespace PlasticBand.LowLevel
 
         private byte reportId;
 
-        [InputControl(name = "buttonSquare", layout = "Button", format = "BIT", bit = 0, displayName = "Square")]
-        [InputControl(name = "buttonCross", layout = "Button", format = "BIT", bit = 1, displayName = "Cross", usages = new[] { "PrimaryAction", "Submit" })]
-        [InputControl(name = "buttonCircle", layout = "Button", format = "BIT", bit = 2, displayName = "Circle", usages = new[] { "Back", "Cancel" })]
-        [InputControl(name = "buttonTriangle", layout = "Button", format = "BIT", bit = 3, displayName = "Triangle")]
+        [InputControl(name = "buttonWest", layout = "Button", format = "BIT", bit = 0, displayName = "Square")]
+        [InputControl(name = "buttonSouth", layout = "Button", format = "BIT", bit = 1, displayName = "Cross", usages = new[] { "PrimaryAction", "Submit" })]
+        [InputControl(name = "buttonEast", layout = "Button", format = "BIT", bit = 2, displayName = "Circle", usages = new[] { "Back", "Cancel" })]
+        [InputControl(name = "buttonNorth", layout = "Button", format = "BIT", bit = 3, displayName = "Triangle")]
 
         [InputControl(name = "l2Press", layout = "Button", format = "BIT", bit = 4, displayName = "L2 Press")]
         [InputControl(name = "r2Press", layout = "Button", format = "BIT", bit = 5, displayName = "R2 Press")]
@@ -37,7 +37,7 @@ namespace PlasticBand.LowLevel
         public ushort buttons;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
-        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=0x1F,wrapAtValue=7")]
+        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7")]
         [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
         [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
