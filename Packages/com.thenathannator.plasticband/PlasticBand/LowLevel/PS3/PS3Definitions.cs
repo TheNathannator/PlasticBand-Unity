@@ -3,7 +3,7 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
-namespace PlasticBand.LowLevel
+namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
     /// The state format for standard PS3 controllers.

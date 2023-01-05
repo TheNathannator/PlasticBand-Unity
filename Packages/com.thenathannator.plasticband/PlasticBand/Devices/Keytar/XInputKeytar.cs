@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
-namespace PlasticBand.LowLevel
+namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
     /// The state format for XInput keytars.

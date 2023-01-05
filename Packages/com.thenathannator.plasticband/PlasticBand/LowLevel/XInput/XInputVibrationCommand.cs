@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
-namespace PlasticBand.LowLevel
+namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
     /// Command to set the vibration state of an XInput device.
