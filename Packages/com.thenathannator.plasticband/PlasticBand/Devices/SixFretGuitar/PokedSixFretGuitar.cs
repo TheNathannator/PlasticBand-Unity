@@ -38,12 +38,9 @@ namespace PlasticBand.Devices.LowLevel
             };
 
             // Copy data
-            fixed (byte* ptr = data)
+            for (int i = 0; i < data.Length && i < DataSize; i++)
             {
-                for (int i = 0; i < data.Length && i < DataSize; i++)
-                {
-                    command.data[i] = ptr[i];
-                }
+                command.data[i] = data[i];
             }
 
             return command;
