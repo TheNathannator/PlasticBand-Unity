@@ -120,7 +120,7 @@ namespace PlasticBand.Devices
         // Magic data to be sent periodically to unlock full input data.
         // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L37
         private static readonly byte[] pokeData = new byte[SixFretHidPokeCommand.DataSize] { 0x30, 0x02, 0x08, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00 };
-        private static SixFretHidPokeCommand pokeCommand = SixFretHidPokeCommand.Create(pokeData);
+        private static SixFretHidPokeCommand pokeCommand = new SixFretHidPokeCommand(pokeData);
 
         protected override void OnPoke() => device.ExecuteCommand(ref pokeCommand);
     }

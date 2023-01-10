@@ -24,7 +24,7 @@ namespace PlasticBand.Devices.LowLevel
         /// <summary>
         /// Creates a SixFretHidPokeCommand.
         /// </summary>
-        public static SixFretHidPokeCommand Create(ReadOnlySpan<byte> data)
+        public SixFretHidPokeCommand(ReadOnlySpan<byte> data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -32,18 +32,13 @@ namespace PlasticBand.Devices.LowLevel
             if (data.Length != DataSize)
                 throw new ArgumentException($"Data size is wrong! Expected {DataSize}, got {data.Length}", nameof(data));
 
-            var command = new SixFretHidPokeCommand()
-            {
-                baseCommand = new InputDeviceCommand(Type, Size)
-            };
+            baseCommand = new InputDeviceCommand(Type, Size);
 
             // Copy data
             for (int i = 0; i < data.Length && i < DataSize; i++)
             {
-                command.data[i] = data[i];
+                this.data[i] = data[i];
             }
-
-            return command;
         }
     }
 }
