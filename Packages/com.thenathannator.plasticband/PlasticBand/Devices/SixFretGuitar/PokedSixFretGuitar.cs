@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -8,6 +9,7 @@ namespace PlasticBand.Devices.LowLevel
     /// <summary>
     /// A 6-fret guitar "poke"/"keep-alive" message.
     /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = Size)]
     internal unsafe struct SixFretHidPokeCommand : IInputDeviceCommandInfo
     {
         internal const int Size = InputDeviceCommand.BaseCommandSize + DataSize;
