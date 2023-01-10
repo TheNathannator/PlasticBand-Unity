@@ -113,10 +113,5 @@ namespace PlasticBand.Devices
             if (current == this)
                 current = null;
         }
-
-        protected override void SendEuphoriaCommand(float brightness)
-        {
-            // TODO
-        }
     }
 }

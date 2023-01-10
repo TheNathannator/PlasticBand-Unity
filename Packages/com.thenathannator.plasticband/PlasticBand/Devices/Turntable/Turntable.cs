@@ -10,7 +10,7 @@ namespace PlasticBand.Devices
     /// A DJ Hero turntable.
     /// </summary>
     [InputControlLayout(displayName = "DJ Hero Turntable")]
-    public class Turntable : InputDevice, ITurntableHaptics
+    public class Turntable : InputDevice
     {
         /// <summary>
         /// The current <see cref="Turntable"/>.
@@ -188,60 +188,6 @@ namespace PlasticBand.Devices
             s_AllDevices.Remove(this);
             if (current == this)
                 current = null;
-        }
-
-        /// <summary>
-        /// The current (or saved, if paused) brightness of the Euphoria button's light.
-        /// </summary>
-        public float EuphoriaBrightness { get; protected set; }
-        protected bool isPaused;
-
-        /// <inheritdoc cref="ITurntableHaptics.SetEuphoriaBrightness(float)"/>
-        public virtual void SetEuphoriaBrightness(float brightness)
-        {
-            if (!isPaused)
-            {
-                EuphoriaBrightness = brightness;
-                SendEuphoriaCommand(brightness);
-            }
-        }
-
-        /// <summary>
-        /// Sends a Euphoria light command to the turntable.
-        /// </summary>
-        protected virtual void SendEuphoriaCommand(float brightness) { }
-
-        /// <summary>
-        /// Turns off the euphoria button light while keeping its current state.
-        /// </summary>
-        public virtual void PauseHaptics()
-        {
-            if (!isPaused)
-            {
-                isPaused = true;
-                SendEuphoriaCommand(0);
-            }
-        }
-
-        /// <summary>
-        /// Restores the euphoria button light's state.
-        /// </summary>
-        public virtual void ResumeHaptics()
-        {
-            if (isPaused)
-            {
-                isPaused = false;
-                SetEuphoriaBrightness(EuphoriaBrightness);
-            }
-        }
-
-        /// <summary>
-        /// Resets the euphoria button light.
-        /// </summary>
-        public virtual void ResetHaptics()
-        {
-            isPaused = false;
-            SetEuphoriaBrightness(0);
         }
     }
 }

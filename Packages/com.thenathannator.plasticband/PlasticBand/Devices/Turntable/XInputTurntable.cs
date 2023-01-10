@@ -96,11 +96,5 @@ namespace PlasticBand.Devices
             if (current == this)
                 current = null;
         }
-
-        protected override void SendEuphoriaCommand(float brightness)
-        {
-            var command = new XInputVibrationCommand(0, brightness);
-            this.ExecuteCommand(ref command);
-        }
     }
 }
