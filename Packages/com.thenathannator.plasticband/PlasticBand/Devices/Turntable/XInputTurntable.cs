@@ -96,5 +96,15 @@ namespace PlasticBand.Devices
             if (current == this)
                 current = null;
         }
+
+        protected override void OnEuphoriaTick(float brightness)
+        {
+            // Handle force-disable value
+            if (brightness < 0)
+                brightness = 0;
+
+            var command = new XInputVibrationCommand(0, brightness);
+            this.ExecuteCommand(ref command);
+        }
     }
 }

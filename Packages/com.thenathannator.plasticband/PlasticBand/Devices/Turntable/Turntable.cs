@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using PlasticBand.Haptics;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
@@ -10,7 +12,7 @@ namespace PlasticBand.Devices
     /// A DJ Hero turntable.
     /// </summary>
     [InputControlLayout(displayName = "DJ Hero Turntable")]
-    public class Turntable : InputDevice
+    public class Turntable : InputDevice, ITurntableHaptics, IInputUpdateCallbackReceiver
     {
         /// <summary>
         /// The current <see cref="Turntable"/>.
@@ -188,6 +190,107 @@ namespace PlasticBand.Devices
             s_AllDevices.Remove(this);
             if (current == this)
                 current = null;
+        }
+
+        // Timer used for the euphoria effect
+        private readonly Stopwatch m_euphoriaTimer = new Stopwatch();
+
+        // Period length of the euphoria timer
+        internal const int EuphoriaPeriod = 3000;
+        // Provided for convenience
+        internal const int EuphoriaPeriodHalf = EuphoriaPeriod / 2;
+
+        // Value to force the euphoria light to be disabled
+        internal const float EuphoriaForceDisable = -1;
+
+        // States for pausing/resuming haptics
+        protected bool m_euphoriaEnabled;
+        protected bool m_euphoriaPaused;
+
+        // Handles euphoria effect processing
+        void IInputUpdateCallbackReceiver.OnUpdate()
+        {
+            // Handle state changes
+            if (!m_euphoriaTimer.IsRunning)
+            {
+                if (!m_euphoriaPaused && m_euphoriaEnabled)
+                {
+                    m_euphoriaTimer.Start();
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else if (m_euphoriaPaused || !m_euphoriaEnabled)
+            {
+                m_euphoriaTimer.Reset();
+                OnEuphoriaTick(EuphoriaForceDisable);
+                return;
+            }
+
+            long elapsed = m_euphoriaTimer.ElapsedMilliseconds;
+            // End of euphoria period
+            if (elapsed >= EuphoriaPeriod)
+            {
+                OnEuphoriaTick(0);
+                m_euphoriaTimer.Restart();
+            }
+            // First half of euphoria period
+            // Brightness increases gradually
+            else if (elapsed < EuphoriaPeriodHalf)
+            {
+                float brightness = (float)elapsed / EuphoriaPeriodHalf;
+                OnEuphoriaTick(brightness);
+            }
+            // Second half of euphoria period
+            // Brightness decreases gradually
+            else
+            {
+                elapsed -= EuphoriaPeriodHalf;
+                float brightness = 1f - ((float)elapsed / EuphoriaPeriodHalf);
+                OnEuphoriaTick(brightness);
+            }
+        }
+
+        /// <summary>
+        /// Handles euphoria effect processing.
+        /// </summary>
+        protected virtual void OnEuphoriaTick(float brightness) { }
+
+        /// <inheritdoc cref="ITurntableHaptics.SetEuphoriaBlink(bool)"/>
+        public void SetEuphoriaBlink(bool enable)
+        {
+            m_euphoriaEnabled = enable;
+        }
+
+        /// <summary>
+        /// Temporarily disables the euphoria effect if it is enabled.
+        /// </summary>
+        /// <remarks>
+        /// Note that this only preserves whether or not it was enabled,
+        /// as not all turntables support specifying an exact brightness.
+        /// </remarks>
+        public void PauseHaptics()
+        {
+            m_euphoriaPaused = true;
+        }
+
+        /// <summary>
+        /// Restores the euphoria effect's state.
+        /// </summary>
+        public void ResumeHaptics()
+        {
+            m_euphoriaPaused = false;
+        }
+
+        /// <summary>
+        /// Resets the euphoria effect.
+        /// </summary>
+        public void ResetHaptics()
+        {
+            m_euphoriaEnabled = false;
+            m_euphoriaPaused = false;
         }
     }
 }

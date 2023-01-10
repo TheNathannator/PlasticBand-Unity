@@ -113,5 +113,50 @@ namespace PlasticBand.Devices
             if (current == this)
                 current = null;
         }
+
+        private static readonly PS3OutputCommand euphoriaOnCommand = new PS3OutputCommand(
+            0x91,
+            new byte[PS3OutputCommand.DataSize] { 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00 }
+        );
+
+        private static readonly PS3OutputCommand euphoriaOffCommand = new PS3OutputCommand(
+            0x91,
+            new byte[PS3OutputCommand.DataSize] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+        );
+
+        private float previousBrightness = -1;
+        private bool direction; // true == up, false == down
+        protected override void OnEuphoriaTick(float brightness)
+        {
+            PS3OutputCommand command;
+            // Force-disable
+            if (brightness < 0)
+            {
+                direction = false;
+                command = euphoriaOffCommand;
+            }
+            // Enable during an increase
+            else if ((brightness > previousBrightness) && !direction)
+            {
+                direction = true;
+                command = euphoriaOnCommand;
+            }
+            // Disable during a decrease
+            else if ((brightness < previousBrightness) && direction)
+            {
+                direction = false;
+                command = euphoriaOffCommand;
+            }
+            // Direction hasn't changed, don't send the same one multiple times
+            else
+            {
+                return;
+            }
+
+            previousBrightness = brightness;
+
+            // Send command
+            this.ExecuteCommand(ref command);
+        }
     }
 }
