@@ -123,7 +123,7 @@ namespace PlasticBand.Devices
         // These also seem to work, given their use in other projects:
         // [0x02, 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00] (https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L32)
         // [0x02, 0x02, 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00] (https://github.com/Octave13/GHLPokeMachine/blob/master/GHL_Library/GHLPoke.h#L25)
-        private static byte[] pokeData = new byte[SixFretHidPokeCommand.DataSize] { 0x02, 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+        private static readonly byte[] pokeData = new byte[SixFretHidPokeCommand.DataSize] { 0x02, 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
         private static SixFretHidPokeCommand pokeCommand = SixFretHidPokeCommand.Create(pokeData);
 
         protected override void OnPoke() => device.ExecuteCommand(ref pokeCommand);
