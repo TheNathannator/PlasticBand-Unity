@@ -23,8 +23,6 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "dpad/down", bit = 1)]
         [InputControl(name = "dpad/left", bit = 2)]
         [InputControl(name = "dpad/right", bit = 3)]
-        [InputControl(name = "strumUp", layout = "Button", bit = 0)]
-        [InputControl(name = "strumDown", layout = "Button", bit = 1)]
 
         [InputControl(name = "startButton", layout = "Button", bit = 4)]
         [InputControl(name = "selectButton", layout = "Button", bit = 5)]
@@ -39,7 +37,11 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "black3", layout = "Button", bit = 15)]
         public ushort buttons;
 
-        public fixed byte unused[6];
+        private fixed byte unused[4];
+
+        [InputControl(name = "strumUp", layout = "DiscreteButton", format = "SHRT", parameters = "minValue=1,maxValue=32767,nullValue=0")]
+        [InputControl(name = "strumDown", layout = "DiscreteButton", format = "SHRT", parameters = "minValue=-1,maxValue=-32768,nullValue=0")]
+        public short strumBar;
 
         [InputControl(name = "tilt", layout = "Axis", noisy = true)]
         public short tilt;
