@@ -1,6 +1,6 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Threading;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
@@ -53,7 +53,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A 6-fret guitar controller that requires a "poke" or "keep-alive" message to be sent on occasion to receive full input data.
     /// </summary>
-    public abstract class PokedSixFretGuitar : SixFretGuitar
+    public abstract class PokedSixFretGuitar : SixFretGuitar, IInputUpdateCallbackReceiver
     {
         /// <summary>
         /// The poke interval time, in milliseconds.
@@ -62,37 +62,37 @@ namespace PlasticBand.Devices
         /// For PS3/Wii U, the poke data must be sent every 10 seconds at minimum, but for PS4,
         /// the poke data must be sent every 8 seconds, so we use that for simplicity.
         /// </remarks>
-        private const int kPokeInterval = 8000;
+        private const long kPokeInterval = 8000;
 
         /// <summary>
         /// A timer used for sending the poke data.
         /// </summary>
-        private Timer pokeTimer;
-
-        /// <summary>
-        /// Handles when this device should be poked.
-        /// </summary>
-        private static void PokeTimerProc(object obj)
-        {
-            var device = (PokedSixFretGuitar)obj;
-            device.OnPoke();
-        }
+        private Stopwatch pokeTimer = new Stopwatch();
 
         /// <summary>
         /// Handles when this device should be poked.
         /// </summary>
         protected abstract void OnPoke();
 
+        void IInputUpdateCallbackReceiver.OnUpdate()
+        {
+            if (pokeTimer.ElapsedMilliseconds >= kPokeInterval)
+            {
+                pokeTimer.Restart();
+                OnPoke();
+            }
+        }
+
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            pokeTimer = new Timer(PokeTimerProc, this, 0, kPokeInterval);
+            pokeTimer.Start();
         }
 
         protected override void OnRemoved()
         {
             base.OnRemoved();
-            pokeTimer.Dispose();
+            pokeTimer.Stop();
         }
     }
 }
