@@ -5,11 +5,8 @@ namespace PlasticBand.Haptics
     public interface ITurntableHaptics : IHaptics
     {
         /// <summary>
-        /// Sets the brightness of the Euphoria button's light.
+        /// Enables or disables blinking of the Euphoria light on the turntable.
         /// </summary>
-        /// <param name="brightness">
-        /// The brightness to set the light to.
-        /// </param>
-        void SetEuphoriaBrightness(float brightness);
+        void SetEuphoriaBlink(bool enable);
     }
 }
