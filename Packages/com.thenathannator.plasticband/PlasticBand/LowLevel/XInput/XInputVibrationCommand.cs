@@ -26,5 +26,12 @@ namespace PlasticBand.Devices.LowLevel
             leftMotorSpeed = Mathf.Clamp(leftMotor, 0.0f, 1.0f);
             rightMotorSpeed = Mathf.Clamp(rightMotor, 0.0f, 1.0f);
         }
+
+        public XInputVibrationCommand(ushort leftMotor, ushort rightMotor)
+        {
+            baseCommand = new InputDeviceCommand(Type, kSize);
+            leftMotorSpeed = (float)leftMotor / ushort.MaxValue;
+            rightMotorSpeed = (float)rightMotor / ushort.MaxValue;
+        }
     }
 }
