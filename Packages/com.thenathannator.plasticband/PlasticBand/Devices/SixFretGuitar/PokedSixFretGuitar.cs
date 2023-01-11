@@ -1,47 +1,5 @@
-using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Utilities;
-
-namespace PlasticBand.Devices.LowLevel
-{
-    /// <summary>
-    /// A 6-fret guitar "poke"/"keep-alive" message.
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = Size)]
-    internal unsafe struct SixFretHidPokeCommand : IInputDeviceCommandInfo
-    {
-        internal const int Size = InputDeviceCommand.BaseCommandSize + DataSize;
-        internal const int DataSize = sizeof(byte) * 9;
-
-        public static FourCC Type => new FourCC('H', 'I', 'D', 'O');
-        public FourCC typeStatic => Type;
-
-        public InputDeviceCommand baseCommand;
-        private fixed byte data[DataSize];
-
-        /// <summary>
-        /// Creates a SixFretHidPokeCommand.
-        /// </summary>
-        public SixFretHidPokeCommand(ReadOnlySpan<byte> data)
-        {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
-            if (data.Length != DataSize)
-                throw new ArgumentException($"Data size is wrong! Expected {DataSize}, got {data.Length}", nameof(data));
-
-            baseCommand = new InputDeviceCommand(Type, Size);
-
-            // Copy data
-            for (int i = 0; i < data.Length && i < DataSize; i++)
-            {
-                this.data[i] = data[i];
-            }
-        }
-    }
-}
 
 namespace PlasticBand.Devices
 {

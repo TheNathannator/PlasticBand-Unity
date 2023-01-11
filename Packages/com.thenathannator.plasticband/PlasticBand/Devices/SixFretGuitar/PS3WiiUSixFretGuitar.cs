@@ -120,11 +120,13 @@ namespace PlasticBand.Devices
 
         // Magic data to be sent periodically to unlock full input data.
         // https://github.com/ghlre/GHLtarUtility/blob/master/PS3Guitar.cs#L104
-        // These also seem to work, given their use in other projects:
-        // [0x02, 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00] (https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L32)
-        // [0x02, 0x02, 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00] (https://github.com/Octave13/GHLPokeMachine/blob/master/GHL_Library/GHLPoke.h#L25)
-        private static readonly byte[] pokeData = new byte[SixFretHidPokeCommand.DataSize] { 0x02, 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-        private static SixFretHidPokeCommand pokeCommand = new SixFretHidPokeCommand(pokeData);
+        // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L32
+        // https://github.com/Octave13/GHLPokeMachine/blob/master/GHL_Library/GHLPoke.h#L25
+        private static PS3OutputCommand pokeCommand = new PS3OutputCommand(
+            0x02, // TODO: Determine if this report ID is correct/necessary
+            0x02,
+            new byte[PS3OutputCommand.DataSize] { 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00 }
+        );
 
         protected override void OnPoke() => device.ExecuteCommand(ref pokeCommand);
     }
