@@ -29,8 +29,8 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "whammy", layout = "Axis")]
         public byte whammy;
 
-        // TODO: See if any normalization is needed
-        [InputControl(name = "tilt", layout = "Axis")]
+        // TODO: See if any additional normalization is needed
+        [InputControl(name = "tilt", layout = "Axis", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public byte tilt;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", bit = 0, sizeInBits = 4, defaultState = 8)]
