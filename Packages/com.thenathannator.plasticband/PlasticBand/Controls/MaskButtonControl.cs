@@ -1,8 +1,11 @@
 using System;
-using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
+
+#if PLASTICBAND_DEBUG_CONTROLS
+using UnityEngine;
+#endif
 
 namespace PlasticBand.Controls
 {
