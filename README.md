@@ -1,6 +1,6 @@
 # PlasticBand-Unity
 
-A package for the [Unity InputSystem](https://github.com/Unity-Technologies/InputSystem) package that provides mappings and classes for Rock Band and Guitar Hero peripherals.
+An add-on for the [Unity InputSystem](https://github.com/Unity-Technologies/InputSystem) package that provides mappings and classes for Rock Band and Guitar Hero peripherals.
 
 This project is a companion to the [PlasticBand](https://github.com/TheNathannator/PlasticBand) repository. Documentation on how to interface with the peripherals in a general, non-Unity context can be found there.
 
@@ -47,12 +47,13 @@ Devices to support:
 - [ ] Guitar Hero Kits
   - [x] Xbox 360
     - [x] Basic controls
-    - [ ] Velocity
+    - [x] Velocity
+    - [ ] Pair velocities to hits
   - [ ] PS2/PS3
   - [ ] Wii
 - [ ] Turntables
   - [x] Xbox 360
-  - [ ] PS3
+  - [x] PS3
   - [ ] Wii
 - [ ] Rock Band Keyboards
   - [x] Xbox 360
