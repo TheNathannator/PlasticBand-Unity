@@ -1,10 +1,13 @@
 using System;
-using System.Text;
-using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
+
+#if PLASTICBAND_DEBUG_CONTROLS
+using System.Text;
+using UnityEngine;
+#endif
 
 // TODO: Velocity
 // REVIEW/TODO: would using a stateful approach that tracks the previous buttons and

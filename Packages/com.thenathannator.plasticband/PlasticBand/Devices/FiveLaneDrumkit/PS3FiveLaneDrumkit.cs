@@ -34,15 +34,18 @@ namespace PlasticBand.Devices.LowLevel
         public ushort buttons;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
-        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7", alias = "strumUp", displayName = "Up")]
+        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7", displayName = "Up")]
         [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
-        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5", alias = "strumDown", displayName = "Down")]
+        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5", displayName = "Down")]
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
         public byte dpad;
 
         private fixed byte unused2[8];
 
-        // TODO: Try and pair velocity with pads directly
+        // TODO:
+        // - Hardware verification
+        // - Input ranges have yet to be determined
+        // - Try and pair velocity with pads directly
         [InputControl(name = "yellowVelocity", layout = "Axis", displayName = "Yellow Velocity")]
         private byte yellowVelocity;
 

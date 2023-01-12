@@ -94,14 +94,14 @@ namespace PlasticBand.LowLevel
 
     // This struct doesn't match the actual XINPUT_CAPABILITIES,
     // rather it's the format reported by Unity for the device capabilities JSON.
-    public struct XInputCapabilities
+    internal struct XInputCapabilities
     {
         public int userIndex;
         public int type;
         public DeviceSubType subType;
         public DeviceFlags flags;
-        internal XInputGamepad gamepad;
-        internal XInputVibration vibration;
+        public XInputGamepad gamepad;
+        public XInputVibration vibration;
     }
 
     /* Example JSON of reported capabilities info:

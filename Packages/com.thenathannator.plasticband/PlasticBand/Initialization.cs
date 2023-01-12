@@ -3,7 +3,10 @@ using PlasticBand.Devices;
 using PlasticBand.LowLevel;
 using UnityEditor;
 using UnityEngine;
+
+#if PLASTICBAND_DEBUG_HIGH_POLL
 using UnityEngine.InputSystem;
+#endif
 
 namespace PlasticBand
 {

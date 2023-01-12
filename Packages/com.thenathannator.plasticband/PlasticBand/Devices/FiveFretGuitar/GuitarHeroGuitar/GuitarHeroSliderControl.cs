@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
+
+#if PLASTICBAND_DEBUG_CONTROLS
+using UnityEngine;
+#endif
 
 namespace PlasticBand.Controls
 {
