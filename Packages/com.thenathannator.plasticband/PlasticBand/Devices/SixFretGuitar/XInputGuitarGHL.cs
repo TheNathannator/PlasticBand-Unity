@@ -37,7 +37,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "black3", layout = "Button", bit = 15)]
         public ushort buttons;
 
-        private fixed byte unused[4];
+        public fixed byte unused[4];
 
         [InputControl(name = "strumUp", layout = "DiscreteButton", format = "SHRT", parameters = "minValue=1,maxValue=32767,nullValue=0")]
         [InputControl(name = "strumDown", layout = "DiscreteButton", format = "SHRT", parameters = "minValue=-1,maxValue=-32768,nullValue=0")]
@@ -76,7 +76,7 @@ namespace PlasticBand.Devices
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             InputSystem.RegisterLayout<XInputGuitarGHL>(matches: new InputDeviceMatcher()
-                .WithInterface(XInputOther.InterfaceName)
+                .WithInterface(XInputOther.kInterfaceName)
                 // Annoyingly, GHL guitars do not have a unique subtype. So, we have to use some other information to identify them.
                 .WithCapability("subType", (int)XInputController.DeviceSubType.GuitarAlternate)
                 // Strangely, they report having No Navigation. Most likely, none of the other guitars report this information,

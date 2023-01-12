@@ -17,7 +17,7 @@ namespace PlasticBand.Devices.LowLevel
     {
         public FourCC format => new FourCC('H', 'I', 'D');
 
-        private byte reportId;
+        public byte reportId;
 
         [InputControl(name = "kick1", layout = "Button", bit = 4)]
         [InputControl(name = "kick2", layout = "Button", bit = 5)]
@@ -40,25 +40,25 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
         public byte dpad;
 
-        private fixed byte unused2[8];
+        public fixed byte unused2[8];
 
         // TODO:
         // - Hardware verification
         // - Input ranges have yet to be determined
         // - Try and pair velocity with pads directly
         [InputControl(name = "yellowVelocity", layout = "Axis", displayName = "Yellow Velocity")]
-        private byte yellowVelocity;
+        public byte yellowVelocity;
 
         [InputControl(name = "redVelocity", layout = "Axis", displayName = "Red Velocity")]
-        private byte redVelocity;
+        public byte redVelocity;
 
         [InputControl(name = "greenVelocity", layout = "Axis", displayName = "Green Velocity")]
-        private byte greenVelocity;
+        public byte greenVelocity;
 
         [InputControl(name = "blueVelocity", layout = "Axis", displayName = "Blue Velocity")]
-        private byte blueVelocity;
+        public byte blueVelocity;
 
-        private fixed byte unused3[12];
+        public fixed byte unused3[12];
     }
 }
 

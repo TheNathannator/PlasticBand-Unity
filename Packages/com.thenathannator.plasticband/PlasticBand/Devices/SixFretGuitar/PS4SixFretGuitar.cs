@@ -18,8 +18,8 @@ namespace PlasticBand.Devices.LowLevel
     {
         public FourCC format => new FourCC('H', 'I', 'D');
 
-        private byte reportId;
-        private byte unused1;
+        public byte reportId;
+        public byte unused1;
 
         [InputControl(name = "strumUp", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x81,maxValue=0xFF,nullValue=0x80")]
         [InputControl(name = "strumDown", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x7F,maxValue=0,nullValue=0x80")]
@@ -59,7 +59,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "playstation", layout = "Button", bit = 0, displayName = "PlayStation")]
         public byte buttons2;
 
-        private fixed byte unused2[56];
+        public fixed byte unused2[56];
     }
 }
 
@@ -119,12 +119,12 @@ namespace PlasticBand.Devices
 
         // Magic data to be sent periodically to unlock full input data.
         // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L37
-        private static PS3OutputCommand pokeCommand = new PS3OutputCommand(
+        private static PS3OutputCommand s_PokeCommand = new PS3OutputCommand(
             0x30, // TODO: Determine if this report ID is correct/necessary
             0x02,
-            new byte[PS3OutputCommand.DataSize] { 0x08, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00 }
+            new byte[PS3OutputCommand.kDataSize] { 0x08, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00 }
         );
 
-        protected override void OnPoke() => device.ExecuteCommand(ref pokeCommand);
+        protected override void OnPoke() => device.ExecuteCommand(ref s_PokeCommand);
     }
 }

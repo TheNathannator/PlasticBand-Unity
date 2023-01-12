@@ -193,15 +193,15 @@ namespace PlasticBand.Devices
         }
 
         // Timer used for the euphoria effect
-        private readonly Stopwatch m_euphoriaTimer = new Stopwatch();
+        private readonly Stopwatch m_EuphoriaTimer = new Stopwatch();
 
         // Period length of the euphoria timer
-        internal const int EuphoriaPeriod = 3000;
+        internal const int kEuphoriaPeriod = 3000;
         // Provided for convenience
-        internal const int EuphoriaPeriodHalf = EuphoriaPeriod / 2;
+        internal const int kEuphoriaPeriodHalf = kEuphoriaPeriod / 2;
 
         // Value to force the euphoria light to be disabled
-        internal const float EuphoriaForceDisable = -1;
+        internal const float kEuphoriaForceDisable = -1;
 
         // States for pausing/resuming haptics
         protected bool m_euphoriaEnabled;
@@ -211,11 +211,11 @@ namespace PlasticBand.Devices
         void IInputUpdateCallbackReceiver.OnUpdate()
         {
             // Handle state changes
-            if (!m_euphoriaTimer.IsRunning)
+            if (!m_EuphoriaTimer.IsRunning)
             {
                 if (!m_euphoriaPaused && m_euphoriaEnabled)
                 {
-                    m_euphoriaTimer.Start();
+                    m_EuphoriaTimer.Start();
                 }
                 else
                 {
@@ -224,31 +224,31 @@ namespace PlasticBand.Devices
             }
             else if (m_euphoriaPaused || !m_euphoriaEnabled)
             {
-                m_euphoriaTimer.Reset();
-                OnEuphoriaTick(EuphoriaForceDisable);
+                m_EuphoriaTimer.Reset();
+                OnEuphoriaTick(kEuphoriaForceDisable);
                 return;
             }
 
-            long elapsed = m_euphoriaTimer.ElapsedMilliseconds;
+            long elapsed = m_EuphoriaTimer.ElapsedMilliseconds;
             // End of euphoria period
-            if (elapsed >= EuphoriaPeriod)
+            if (elapsed >= kEuphoriaPeriod)
             {
                 OnEuphoriaTick(0);
-                m_euphoriaTimer.Restart();
+                m_EuphoriaTimer.Restart();
             }
             // First half of euphoria period
             // Brightness increases gradually
-            else if (elapsed < EuphoriaPeriodHalf)
+            else if (elapsed < kEuphoriaPeriodHalf)
             {
-                float brightness = (float)elapsed / EuphoriaPeriodHalf;
+                float brightness = (float)elapsed / kEuphoriaPeriodHalf;
                 OnEuphoriaTick(brightness);
             }
             // Second half of euphoria period
             // Brightness decreases gradually
             else
             {
-                elapsed -= EuphoriaPeriodHalf;
-                float brightness = 1f - ((float)elapsed / EuphoriaPeriodHalf);
+                elapsed -= kEuphoriaPeriodHalf;
+                float brightness = 1f - ((float)elapsed / kEuphoriaPeriodHalf);
                 OnEuphoriaTick(brightness);
             }
         }

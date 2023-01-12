@@ -49,7 +49,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "sliderBar", layout = "GuitarHeroSlider", format = "SHRT", displayName = "Touch/Slider Bar")]
         public short slider;
 
-        private short unused;
+        public short unused;
 
         [InputControl(name = "whammy", layout = "Axis", parameters = "normalize=true,normalizeMin=-1,normalizeMax=1,normalizeZero=-1")]
         public short whammy;

@@ -36,7 +36,7 @@ namespace PlasticBand.Devices.LowLevel
             parameters = "redBit=13,yellowBit=15,blueBit=14,greenBit=12,padBit=7,cymbalBit=9", displayName = "Kit")]
         public ushort buttons;
 
-        private fixed byte unused[2];
+        public fixed byte unused[2];
 
         // TODO: More proper velocity mappings
         [InputControl(name = "redVelocity", layout = "Axis", displayName = "Red Velocity")]

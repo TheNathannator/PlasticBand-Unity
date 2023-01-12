@@ -18,7 +18,7 @@ namespace PlasticBand.Devices.LowLevel
     {
         public FourCC format => new FourCC('H', 'I', 'D');
 
-        private byte reportId;
+        public byte reportId;
 
         [InputControl(name = "blueFret", layout = "Button", bit = 0)]
         [InputControl(name = "greenFret", layout = "Button", bit = 1)]
@@ -47,7 +47,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
         public byte dpad;
 
-        private fixed byte unused1[2];
+        public fixed byte unused1[2];
 
         [InputControl(name = "whammy", layout = "Axis")]
         public byte whammy;
@@ -55,7 +55,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "pickupSwitch", layout = "Axis")]
         public byte pickupSwitch;
 
-        private fixed byte unused2[21];
+        public fixed byte unused2[21];
     }
 }
 

@@ -20,7 +20,7 @@ namespace PlasticBand.Devices
         /// <summary>
         /// A timer used for sending the poke data.
         /// </summary>
-        private Stopwatch pokeTimer = new Stopwatch();
+        private readonly Stopwatch m_PokeTimer = new Stopwatch();
 
         /// <summary>
         /// Handles when this device should be poked.
@@ -29,9 +29,9 @@ namespace PlasticBand.Devices
 
         void IInputUpdateCallbackReceiver.OnUpdate()
         {
-            if (pokeTimer.ElapsedMilliseconds >= kPokeInterval)
+            if (m_PokeTimer.ElapsedMilliseconds >= kPokeInterval)
             {
-                pokeTimer.Restart();
+                m_PokeTimer.Restart();
                 OnPoke();
             }
         }
@@ -39,13 +39,13 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            pokeTimer.Start();
+            m_PokeTimer.Start();
         }
 
         protected override void OnRemoved()
         {
             base.OnRemoved();
-            pokeTimer.Stop();
+            m_PokeTimer.Stop();
         }
     }
 }

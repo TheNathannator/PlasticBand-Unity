@@ -26,13 +26,13 @@ namespace PlasticBand.Controls
                 InputSystem.RegisterLayout<FourLanePadControl>();
             }
 
-            private FourLanePad padToTest;
-            private FourLanePadsControl pads;
+            private FourLanePad m_PadToTest;
+            private FourLanePadsControl m_Pads;
 
             protected override void FinishSetup()
             {
                 base.FinishSetup();
-                padToTest = name switch
+                m_PadToTest = name switch
                 {
                     "redPad" => FourLanePad.RedPad,
                     "yellowPad" => FourLanePad.YellowPad,
@@ -45,13 +45,13 @@ namespace PlasticBand.Controls
                 };
 
                 m_StateBlock = parent.stateBlock;
-                pads = (FourLanePadsControl)parent;
+                m_Pads = (FourLanePadsControl)parent;
             }
 
             public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
             {
-                var value = pads.ReadUnprocessedValueFromState(statePtr);
-                return (value & padToTest) != 0 ? 1f : 0f;
+                var value = m_Pads.ReadUnprocessedValueFromState(statePtr);
+                return (value & m_PadToTest) != 0 ? 1f : 0f;
             }
         }
 
@@ -126,7 +126,7 @@ namespace PlasticBand.Controls
         public int cymbalBit;
 
         // D-pad control retrieved from the parent device
-        private DpadControl dpad;
+        private DpadControl m_Dpad;
 
         protected override void FinishSetup()
         {
@@ -142,7 +142,7 @@ namespace PlasticBand.Controls
 
             // Retrieve d-pad from parent device
             // No checks done; if this fails it's a misconfiguration
-            dpad = parent.GetChildControl<DpadControl>("dpad");
+            m_Dpad = parent.GetChildControl<DpadControl>("dpad");
 
             if (!stateBlock.format.IsIntegerFormat())
                 throw new NotSupportedException($"Non-integer format '{stateBlock.format}' is not supported for FourLanePads '{this}'");
@@ -197,8 +197,8 @@ namespace PlasticBand.Controls
             bool green = (buttons & greenBit) != 0;
             bool pad = (buttons & padBit) != 0;
             bool cymbal = (buttons & cymbalBit) != 0;
-            bool dpadUp = dpad.up.ReadUnprocessedValueFromState(statePtr) >= dpad.up.pressPointOrDefault;
-            bool dpadDown = dpad.down.ReadUnprocessedValueFromState(statePtr) >= dpad.down.pressPointOrDefault;
+            bool dpadUp = m_Dpad.up.ReadUnprocessedValueFromState(statePtr) >= m_Dpad.up.pressPointOrDefault;
+            bool dpadDown = m_Dpad.down.ReadUnprocessedValueFromState(statePtr) >= m_Dpad.down.pressPointOrDefault;
 
 #if PLASTICBAND_DEBUG_CONTROLS
             if (buttons != previousButtons)

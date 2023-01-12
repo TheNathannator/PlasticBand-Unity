@@ -17,7 +17,7 @@ namespace PlasticBand.Devices.LowLevel
     {
         public FourCC format => new FourCC('H', 'I', 'D');
 
-        private byte reportId;
+        public byte reportId;
 
         [InputControl(name = "yellowFret", layout = "Button", bit = 0)]
         [InputControl(name = "greenFret", layout = "Button", bit = 1)]
@@ -40,7 +40,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
         public byte dpad;
 
-        private fixed byte unused1[2];
+        public fixed byte unused1[2];
 
         [InputControl(name = "whammy", layout = "Axis")]
         public byte whammy;
@@ -48,7 +48,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "sliderBar", layout = "GuitarHeroSlider", format = "BYTE")]
         public byte slider;
 
-        private fixed byte unused2[12];
+        public fixed byte unused2[12];
 
         // This was the previous version of the control, left this here in case it's still needed
         // [InputControl(name = "tilt", layout = "DiscreteButton", noisy = true, parameters = "minValue=0x0185,maxValue=0x01F7,nullValue=0x0184")]
@@ -61,7 +61,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "accelY", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public short accelY;
 
-        private short unused3;
+        public short unused3;
     }
 }
 

@@ -21,13 +21,13 @@ namespace PlasticBand.Controls
                 InputSystem.RegisterLayout<GuitarHeroSliderSegmentControl>();
             }
 
-            private SliderFret fretToTest;
-            private GuitarHeroSliderControl slider;
+            private SliderFret m_FretToTest;
+            private GuitarHeroSliderControl m_Slider;
 
             protected override void FinishSetup()
             {
                 base.FinishSetup();
-                fretToTest = name switch
+                m_FretToTest = name switch
                 {
                     "touchGreen" => SliderFret.Green,
                     "touchRed" => SliderFret.Red,
@@ -38,13 +38,13 @@ namespace PlasticBand.Controls
                 };
 
                 m_StateBlock = parent.stateBlock;
-                slider = (GuitarHeroSliderControl)parent;
+                m_Slider = (GuitarHeroSliderControl)parent;
             }
 
             public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
             {
-                var value = slider.ReadUnprocessedValueFromState(statePtr);
-                return (value & fretToTest) != 0 ? 1f : 0f;
+                var value = m_Slider.ReadUnprocessedValueFromState(statePtr);
+                return (value & m_FretToTest) != 0 ? 1f : 0f;
             }
         }
 
@@ -67,7 +67,7 @@ namespace PlasticBand.Controls
 
         // Lookup for possible values for the slider bar, ordered by frets
         // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/gh5_neck.html
-        private static readonly Dictionary<byte, SliderFret> sliderLookup = new Dictionary<byte, SliderFret>()
+        private static readonly Dictionary<byte, SliderFret> s_SliderLookup = new Dictionary<byte, SliderFret>()
         {
             // TODO: This might not support World Tour guitars yet.
             // If the values the Wii World Tour guitar reports (https://wiibrew.org/wiki/Wiimote/Extension_Controllers/Guitar_Hero_(Wii)_Guitars)
@@ -166,7 +166,7 @@ namespace PlasticBand.Controls
             // (with some states this only applies when viewed as negative in hexadecimal,
             // but the lookup uses the non-signed version since that works fine)
             byte rawValue = unchecked((byte)stateBlock.ReadInt(statePtr));
-            if (!sliderLookup.TryGetValue(rawValue, out var flags))
+            if (!s_SliderLookup.TryGetValue(rawValue, out var flags))
             {
 #if PLASTICBAND_DEBUG_CONTROLS
                 if (rawValue != previousValue)

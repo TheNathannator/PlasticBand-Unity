@@ -13,8 +13,8 @@ namespace PlasticBand.LowLevel
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct XInputGamepad : IInputStateTypeInfo
     {
-        public static FourCC Format => new FourCC('X', 'I', 'N', 'P');
-        public FourCC format => Format;
+        public static FourCC formatStatic => new FourCC('X', 'I', 'N', 'P');
+        public FourCC format => formatStatic;
 
         [Flags]
         public enum Button : ushort
@@ -137,6 +137,6 @@ namespace PlasticBand.LowLevel
 
     internal static class XInputOther
     {
-        internal const string InterfaceName = "XInput";
+        internal const string kInterfaceName = "XInput";
     }
 }

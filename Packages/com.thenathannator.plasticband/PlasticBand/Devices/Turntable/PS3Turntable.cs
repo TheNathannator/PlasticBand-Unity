@@ -15,7 +15,7 @@ namespace PlasticBand.Devices.LowLevel
     {
         FourCC IInputStateTypeInfo.format => new FourCC('H', 'I', 'D');
 
-        private byte reportId;
+        public byte reportId;
 
         [InputControl(name = "buttonWest", layout = "Button", bit = 0, displayName = "Square")]
         [InputControl(name = "buttonSouth", layout = "Button", bit = 1, displayName = "Cross")]
@@ -35,7 +35,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
         public byte dpad;
 
-        private fixed byte unused1[2];
+        public fixed byte unused1[2];
 
         [InputControl(name = "leftTableVelocity", layout = "Axis", noisy = true, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public byte leftTableVelocity;
@@ -43,7 +43,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "rightTableVelocity", layout = "Axis", noisy = true, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public byte rightTableVelocity;
 
-        private fixed byte unused2[12];
+        public fixed byte unused2[12];
 
         [InputControl(name = "effectsDial", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public short effectsDial;
@@ -59,7 +59,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "leftTableBlue", layout = "Button", bit = 5)]
         public short tableButtons;
 
-        private short unused3;
+        public short unused3;
     }
 }
 
@@ -113,38 +113,38 @@ namespace PlasticBand.Devices
                 current = null;
         }
 
-        private static readonly PS3OutputCommand euphoriaOnCommand = new PS3OutputCommand(
+        private static readonly PS3OutputCommand s_EuphoriaOnCommand = new PS3OutputCommand(
             0x91,
-            new byte[PS3OutputCommand.DataSize] { 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00 }
+            new byte[PS3OutputCommand.kDataSize] { 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00 }
         );
 
-        private static readonly PS3OutputCommand euphoriaOffCommand = new PS3OutputCommand(
+        private static readonly PS3OutputCommand s_EuphoriaOffCommand = new PS3OutputCommand(
             0x91,
-            new byte[PS3OutputCommand.DataSize] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+            new byte[PS3OutputCommand.kDataSize] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
         );
 
-        private float previousBrightness = -1;
-        private bool direction; // true == up, false == down
+        private float m_PreviousBrightness = -1;
+        private bool m_Direction; // true == up, false == down
         protected override void OnEuphoriaTick(float brightness)
         {
             PS3OutputCommand command;
             // Force-disable
             if (brightness < 0)
             {
-                direction = false;
-                command = euphoriaOffCommand;
+                m_Direction = false;
+                command = s_EuphoriaOffCommand;
             }
             // Enable during an increase
-            else if ((brightness > previousBrightness) && !direction)
+            else if ((brightness > m_PreviousBrightness) && !m_Direction)
             {
-                direction = true;
-                command = euphoriaOnCommand;
+                m_Direction = true;
+                command = s_EuphoriaOnCommand;
             }
             // Disable during a decrease
-            else if ((brightness < previousBrightness) && direction)
+            else if ((brightness < m_PreviousBrightness) && m_Direction)
             {
-                direction = false;
-                command = euphoriaOffCommand;
+                m_Direction = false;
+                command = s_EuphoriaOffCommand;
             }
             // Direction hasn't changed, don't send the same one multiple times
             else
@@ -152,7 +152,7 @@ namespace PlasticBand.Devices
                 return;
             }
 
-            previousBrightness = brightness;
+            m_PreviousBrightness = brightness;
 
             // Send command
             this.ExecuteCommand(ref command);

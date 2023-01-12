@@ -37,14 +37,14 @@ namespace PlasticBand.LowLevel
         );
 
         internal delegate string XInputLayoutResolver(XInputCapabilities capabilities, XInputGamepad state);
-        private static readonly Dictionary<DeviceSubType, XInputLayoutResolver> subTypeLayoutOverrideMap = new Dictionary<DeviceSubType, XInputLayoutResolver>();
+        private static readonly Dictionary<DeviceSubType, XInputLayoutResolver> s_SubTypeLayoutOverrideMap = new Dictionary<DeviceSubType, XInputLayoutResolver>();
 
         internal static void Initialize()
         {
             // Replace XInputControllerWindows layout matcher with one that only matches gamepads
             InputSystem.RemoveLayout(typeof(XInputControllerWindows).Name);
             InputSystem.RegisterLayout<XInputControllerWindows>(matches: new InputDeviceMatcher()
-                .WithInterface(XInputOther.InterfaceName)
+                .WithInterface(XInputOther.kInterfaceName)
                 .WithCapability("subType", (int)DeviceSubType.Gamepad)
             );
             InputSystem.onFindLayoutForDevice += FindXInputDeviceLayout;
@@ -56,10 +56,10 @@ namespace PlasticBand.LowLevel
         internal static void RegisterLayoutResolver(DeviceSubType subType, XInputLayoutResolver resolveLayout)
         {
             // TODO: May be something better to do than just do nothing in this case
-            if (subTypeLayoutOverrideMap.ContainsKey(subType))
+            if (s_SubTypeLayoutOverrideMap.ContainsKey(subType))
                 return;
 
-            subTypeLayoutOverrideMap.Add(subType, resolveLayout);
+            s_SubTypeLayoutOverrideMap.Add(subType, resolveLayout);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace PlasticBand.LowLevel
         internal static string FindXInputDeviceLayout(ref InputDeviceDescription description, string matchedLayout, InputDeviceExecuteCommandDelegate executeDeviceCommand)
         {
             // Ignore non-XInput devices
-            if (description.interfaceName != XInputOther.InterfaceName)
+            if (description.interfaceName != XInputOther.kInterfaceName)
                 return null;
 
             // Parse capabilities
@@ -82,7 +82,7 @@ namespace PlasticBand.LowLevel
             }
 
             // Check if the subtype has an override registered
-            if (subTypeLayoutOverrideMap.TryGetValue(capabilities.subType, out var resolveLayout))
+            if (s_SubTypeLayoutOverrideMap.TryGetValue(capabilities.subType, out var resolveLayout))
             {
                 int result = XInputGetState(capabilities.userIndex, out var state);
                 if (result != 0)

@@ -20,7 +20,7 @@ namespace PlasticBand.Devices.LowLevel
     {
         public FourCC format => new FourCC('H', 'I', 'D');
 
-        private byte reportId;
+        public byte reportId;
 
         [InputControl(name = "white1", layout = "Button", bit = 0)]
         [InputControl(name = "black1", layout = "Button", bit = 1)]
@@ -44,23 +44,23 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
         public byte dpad;
 
-        private byte unused1;
+        public byte unused1;
 
         [InputControl(name = "strumUp", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x81,maxValue=0xFF,nullValue=0x80")]
         [InputControl(name = "strumDown", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x7F,maxValue=0,nullValue=0x80")]
         public byte strumBar;
 
-        private byte unused2;
+        public byte unused2;
 
         [InputControl(name = "whammy", layout = "Axis")]
         public byte whammy;
 
-        private fixed byte unused3[12];
+        public fixed byte unused3[12];
 
         [InputControl(name = "tilt", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public short tilt;
 
-        private fixed short unused4[3];
+        public fixed short unused4[3];
     }
 }
 
@@ -122,12 +122,12 @@ namespace PlasticBand.Devices
         // https://github.com/ghlre/GHLtarUtility/blob/master/PS3Guitar.cs#L104
         // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L32
         // https://github.com/Octave13/GHLPokeMachine/blob/master/GHL_Library/GHLPoke.h#L25
-        private static PS3OutputCommand pokeCommand = new PS3OutputCommand(
+        private static PS3OutputCommand s_PokeCommand = new PS3OutputCommand(
             0x02, // TODO: Determine if this report ID is correct/necessary
             0x02,
-            new byte[PS3OutputCommand.DataSize] { 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00 }
+            new byte[PS3OutputCommand.kDataSize] { 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00 }
         );
 
-        protected override void OnPoke() => device.ExecuteCommand(ref pokeCommand);
+        protected override void OnPoke() => device.ExecuteCommand(ref s_PokeCommand);
     }
 }
