@@ -80,7 +80,7 @@ namespace PlasticBand.Devices
             // 5-lane kits always hold the left-stick click input, 4-lane kits use that for the second kick but
             // realistically that isn't likely to be held when powering on
             // May be some more specific capability data that also distinguishes them, but that probably isn't reliable
-            XInputLayoutFixup.RegisterLayoutResolver(XInputController.DeviceSubType.DrumKit, (state) => {
+            XInputLayoutFixup.RegisterLayoutResolver(XInputController.DeviceSubType.DrumKit, (capabilities, state) => {
                 if ((state.buttons & (ushort)XInputGamepad.Button.LeftThumb) != 0)
                     return typeof(XInputFiveLaneDrumkit).Name;
 

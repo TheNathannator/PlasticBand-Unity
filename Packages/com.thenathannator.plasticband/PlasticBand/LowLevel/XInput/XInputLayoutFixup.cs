@@ -36,7 +36,8 @@ namespace PlasticBand.LowLevel
             out XInputState State // XINPUT_STATE*
         );
 
-        private static readonly Dictionary<DeviceSubType, Func<XInputGamepad, string>> subTypeLayoutOverrideMap = new Dictionary<DeviceSubType, Func<XInputGamepad, string>>();
+        internal delegate string XInputLayoutResolver(XInputCapabilities capabilities, XInputGamepad state);
+        private static readonly Dictionary<DeviceSubType, XInputLayoutResolver> subTypeLayoutOverrideMap = new Dictionary<DeviceSubType, XInputLayoutResolver>();
 
         internal static void Initialize()
         {
@@ -52,7 +53,7 @@ namespace PlasticBand.LowLevel
         /// <summary>
         /// Registers a layout resolver for a subtype.
         /// </summary>
-        internal static void RegisterLayoutResolver(DeviceSubType subType, Func<XInputGamepad, string> resolveLayout)
+        internal static void RegisterLayoutResolver(DeviceSubType subType, XInputLayoutResolver resolveLayout)
         {
             // TODO: May be something better to do than just do nothing in this case
             if (subTypeLayoutOverrideMap.ContainsKey(subType))
@@ -85,7 +86,7 @@ namespace PlasticBand.LowLevel
                 if (result != 0)
                     return null;
 
-                string layoutName = resolveLayout(state.gamepad);
+                string layoutName = resolveLayout(capabilities, state.gamepad);
                 if (layoutName != null)
                     return layoutName;
             }
