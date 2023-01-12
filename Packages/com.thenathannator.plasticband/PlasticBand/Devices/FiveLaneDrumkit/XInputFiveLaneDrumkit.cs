@@ -34,18 +34,29 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "yellowCymbal", layout = "Button", bit = 15)]
         public ushort buttons;
 
-        // TODO: Velocity mappings
-        public byte leftTrigger;
+        public fixed byte unused[4];
 
-        public byte rightTrigger;
+        // TODO:
+        // - Hardware verification
+        // - Input ranges have yet to be determined
+        // - Try and pair velocity with pads directly
+        [InputControl(name = "greenVelocity", layout = "Axis", displayName = "Green Velocity")]
+        public byte greenVelocity;
 
-        public short leftStickX;
+        [InputControl(name = "redVelocity", layout = "Axis", displayName = "Red Velocity")]
+        public byte redVelocity;
 
-        public short leftStickY;
+        [InputControl(name = "yellowVelocity", layout = "Axis", displayName = "Yellow Velocity")]
+        public byte yellowVelocity;
 
-        public short rightStickX;
+        [InputControl(name = "blueVelocity", layout = "Axis", displayName = "Blue Velocity")]
+        public byte blueVelocity;
 
-        public short rightStickY;
+        [InputControl(name = "orangeVelocity", layout = "Axis", displayName = "Orange Velocity")]
+        public byte orangeVelocity;
+
+        [InputControl(name = "kickVelocity", layout = "Axis", displayName = "Kick Velocity")]
+        public byte kickVelocity;
     }
 }
 
