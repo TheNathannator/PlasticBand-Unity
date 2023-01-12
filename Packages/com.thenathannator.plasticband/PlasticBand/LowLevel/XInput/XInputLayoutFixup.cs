@@ -71,10 +71,6 @@ namespace PlasticBand.LowLevel
             if (description.interfaceName != XInputOther.InterfaceName)
                 return null;
 
-            // Ignore devices that already have a non-Gamepad layout
-            if (!string.IsNullOrEmpty(matchedLayout) && matchedLayout != typeof(XInputControllerWindows).Name)
-                return null;
-
             // Parse capabilities
             if (!Utilities.TryParseJson<XInputCapabilities>(description.capabilities, out var capabilities))
                 return null;
@@ -90,6 +86,10 @@ namespace PlasticBand.LowLevel
                 if (layoutName != null)
                     return layoutName;
             }
+
+            // Don't change the existing layout if no override was specified but it's not already set to a standard controller
+            if (!string.IsNullOrEmpty(matchedLayout) && matchedLayout != typeof(XInputControllerWindows).Name)
+                return null;
 
             // Set all other subtypes to be regular controllers, per XInput specs
             return typeof(XInputControllerWindows).Name;
