@@ -23,7 +23,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="Turntable"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<Turntable> all => s_AllDevices;
-        private static List<Turntable> s_AllDevices = new List<Turntable>();
+        private static readonly List<Turntable> s_AllDevices = new List<Turntable>();
 
         internal static void Initialize()
         {

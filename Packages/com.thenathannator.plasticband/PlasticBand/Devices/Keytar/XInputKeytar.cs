@@ -94,7 +94,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="XInputKeytar"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<XInputKeytar> all => s_AllDevices;
-        private static List<XInputKeytar> s_AllDevices = new List<XInputKeytar>();
+        private static readonly List<XInputKeytar> s_AllDevices = new List<XInputKeytar>();
 
         internal new static void Initialize()
         {

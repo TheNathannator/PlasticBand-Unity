@@ -25,7 +25,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="ProGuitar"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<ProGuitar> all => s_AllDevices;
-        private static List<ProGuitar> s_AllDevices = new List<ProGuitar>();
+        private static readonly List<ProGuitar> s_AllDevices = new List<ProGuitar>();
 
         internal static void Initialize()
         {

@@ -78,7 +78,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="XInputGuitarAlternate"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<XInputGuitarAlternate> all => s_AllDevices;
-        private static List<XInputGuitarAlternate> s_AllDevices = new List<XInputGuitarAlternate>();
+        private static readonly List<XInputGuitarAlternate> s_AllDevices = new List<XInputGuitarAlternate>();
 
         internal new static void Initialize()
         {

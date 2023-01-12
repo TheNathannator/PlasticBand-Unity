@@ -81,7 +81,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="PS3WiiUSixFretGuitar"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<PS3WiiUSixFretGuitar> all => s_AllDevices;
-        private static List<PS3WiiUSixFretGuitar> s_AllDevices = new List<PS3WiiUSixFretGuitar>();
+        private static readonly List<PS3WiiUSixFretGuitar> s_AllDevices = new List<PS3WiiUSixFretGuitar>();
 
         internal new static void Initialize()
         {

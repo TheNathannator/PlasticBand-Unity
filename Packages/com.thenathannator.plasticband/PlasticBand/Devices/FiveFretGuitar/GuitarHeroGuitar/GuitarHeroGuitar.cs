@@ -21,7 +21,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="GuitarHeroGuitar"/>s currently connected to the system.
         /// </summary>l
         public new static IReadOnlyList<GuitarHeroGuitar> all => s_AllDevices;
-        private static List<GuitarHeroGuitar> s_AllDevices = new List<GuitarHeroGuitar>();
+        private static readonly List<GuitarHeroGuitar> s_AllDevices = new List<GuitarHeroGuitar>();
 
         internal new static void Initialize()
         {

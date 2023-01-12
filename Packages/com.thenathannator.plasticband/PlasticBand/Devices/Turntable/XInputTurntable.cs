@@ -67,7 +67,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="XInputTurntable"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<XInputTurntable> all => s_AllDevices;
-        private static List<XInputTurntable> s_AllDevices = new List<XInputTurntable>();
+        private static readonly List<XInputTurntable> s_AllDevices = new List<XInputTurntable>();
 
         internal new static void Initialize()
         {

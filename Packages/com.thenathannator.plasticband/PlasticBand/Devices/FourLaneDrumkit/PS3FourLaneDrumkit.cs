@@ -79,7 +79,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="PS3FourLaneDrumkit"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<PS3FourLaneDrumkit> all => s_AllDevices;
-        private static List<PS3FourLaneDrumkit> s_AllDevices = new List<PS3FourLaneDrumkit>();
+        private static readonly List<PS3FourLaneDrumkit> s_AllDevices = new List<PS3FourLaneDrumkit>();
 
         internal new static void Initialize()
         {

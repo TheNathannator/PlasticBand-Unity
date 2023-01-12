@@ -70,7 +70,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="XInputGuitarGHL"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<XInputGuitarGHL> all => s_AllDevices;
-        private static List<XInputGuitarGHL> s_AllDevices = new List<XInputGuitarGHL>();
+        private static readonly List<XInputGuitarGHL> s_AllDevices = new List<XInputGuitarGHL>();
 
         internal new static void Initialize()
         {

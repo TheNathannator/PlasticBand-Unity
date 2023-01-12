@@ -77,7 +77,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="PS3Turntable"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<PS3Turntable> all => s_AllDevices;
-        private static List<PS3Turntable> s_AllDevices = new List<PS3Turntable>();
+        private static readonly List<PS3Turntable> s_AllDevices = new List<PS3Turntable>();
 
         internal new static void Initialize()
         {

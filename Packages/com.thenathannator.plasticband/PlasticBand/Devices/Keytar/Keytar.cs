@@ -20,7 +20,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="Keytar"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<Keytar> all => s_AllDevices;
-        private static List<Keytar> s_AllDevices = new List<Keytar>();
+        private static readonly List<Keytar> s_AllDevices = new List<Keytar>();
 
         internal static void Initialize()
         {

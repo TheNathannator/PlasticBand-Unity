@@ -20,7 +20,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="SixFretGuitar"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<SixFretGuitar> all => s_AllDevices;
-        private static List<SixFretGuitar> s_AllDevices = new List<SixFretGuitar>();
+        private static readonly List<SixFretGuitar> s_AllDevices = new List<SixFretGuitar>();
 
         internal static void Initialize()
         {

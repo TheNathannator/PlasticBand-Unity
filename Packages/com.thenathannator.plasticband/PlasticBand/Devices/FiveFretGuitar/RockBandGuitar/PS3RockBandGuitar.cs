@@ -76,7 +76,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="PS3RockBandGuitar"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<PS3RockBandGuitar> all => s_AllDevices;
-        private static List<PS3RockBandGuitar> s_AllDevices = new List<PS3RockBandGuitar>();
+        private static readonly List<PS3RockBandGuitar> s_AllDevices = new List<PS3RockBandGuitar>();
 
         internal new static void Initialize()
         {

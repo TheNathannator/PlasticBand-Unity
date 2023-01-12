@@ -20,7 +20,7 @@ namespace PlasticBand.Devices
         /// A collection of all <see cref="FourLaneDrumkit"/>s currently connected to the system.
         /// </summary>
         public new static IReadOnlyList<FourLaneDrumkit> all => s_AllDevices;
-        private static List<FourLaneDrumkit> s_AllDevices = new List<FourLaneDrumkit>();
+        private static readonly List<FourLaneDrumkit> s_AllDevices = new List<FourLaneDrumkit>();
 
         internal static void Initialize()
         {
