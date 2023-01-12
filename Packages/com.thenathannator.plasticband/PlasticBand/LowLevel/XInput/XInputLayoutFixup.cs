@@ -73,7 +73,13 @@ namespace PlasticBand.LowLevel
 
             // Parse capabilities
             if (!Utilities.TryParseJson<XInputCapabilities>(description.capabilities, out var capabilities))
+            {
+                // Default to regular controller if no layout was matched already
+                if (string.IsNullOrEmpty(matchedLayout))
+                    return typeof(XInputControllerWindows).Name;
+
                 return null;
+            }
 
             // Check if the subtype has an override registered
             if (subTypeLayoutOverrideMap.TryGetValue(capabilities.subType, out var resolveLayout))
