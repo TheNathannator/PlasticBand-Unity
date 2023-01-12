@@ -14,7 +14,7 @@ namespace PlasticBand.Devices.LowLevel
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputKeytarState : IInputStateTypeInfo
     {
-        public FourCC format => new FourCC('X', 'I', 'N', 'P');
+        public FourCC format => XInputGamepad.Format;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", bit = 0, sizeInBits = 4)]
         [InputControl(name = "dpad/up", bit = 0)]

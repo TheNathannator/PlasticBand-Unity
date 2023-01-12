@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
+using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -15,7 +16,7 @@ namespace PlasticBand.Devices.LowLevel
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3FourLaneDrumkitState : IInputStateTypeInfo
     {
-        public FourCC format => new FourCC('H', 'I', 'D');
+        public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
 

@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
@@ -14,8 +15,7 @@ namespace PlasticBand.Devices.LowLevel
         internal const int kSize = InputDeviceCommand.BaseCommandSize + sizeof(byte) * 2 +  kDataSize;
         internal const int kDataSize = sizeof(byte) * 7;
 
-        public static FourCC type => new FourCC('H', 'I', 'D', 'O');
-        public FourCC typeStatic => type;
+        public FourCC typeStatic => HidDefinitions.OutputFormat;
 
         public InputDeviceCommand baseCommand;
         public byte reportId;
@@ -30,7 +30,7 @@ namespace PlasticBand.Devices.LowLevel
             if (data.Length != kDataSize)
                 throw new ArgumentException($"Data size is wrong! Expected {kDataSize}, got {data.Length}", nameof(data));
 
-            baseCommand = new InputDeviceCommand(PS3OutputCommand.type, kSize);
+            baseCommand = new InputDeviceCommand(HidDefinitions.OutputFormat, kSize);
 
             reportId = 0x01;
             outputType = type;

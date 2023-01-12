@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -14,7 +15,7 @@ namespace PlasticBand.Devices.LowLevel
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct PS3Gamepad : IInputStateTypeInfo
     {
-        public FourCC format => new FourCC('H', 'I', 'D');
+        public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
 
