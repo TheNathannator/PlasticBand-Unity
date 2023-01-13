@@ -53,6 +53,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "whammy", layout = "Axis")]
         public byte whammy;
 
+        // TODO: Define specific ranges for each of the notches
         [InputControl(name = "pickupSwitch", layout = "Axis")]
         public byte pickupSwitch;
 

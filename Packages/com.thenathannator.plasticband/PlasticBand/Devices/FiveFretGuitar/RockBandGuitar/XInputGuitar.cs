@@ -41,6 +41,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "soloOrange", layout = "MaskButton", format = "USHT", offset = 0, bit = 0, parameters = "mask=0x0140")]
         public ushort buttons;
 
+        // TODO: Define specific ranges for each of the notches
         [InputControl(name = "pickupSwitch", layout = "Axis", parameters = "scale=true,scaleFactor=4")]
         public byte pickupSwitch;
 

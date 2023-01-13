@@ -53,11 +53,13 @@ namespace PlasticBand.Devices.LowLevel
 
         public byte unused2;
 
+        // TODO: See if any normalization is needed
         [InputControl(name = "whammy", layout = "Axis")]
         public byte whammy;
 
         public fixed byte unused3[12];
 
+        // TODO: See if any additional normalization is needed
         [InputControl(name = "tilt", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public short tilt;
 
