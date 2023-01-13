@@ -70,18 +70,27 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The X-axis of the guitar's accelerometer.
         /// </summary>
+        /// <remarks>
+        /// Positive is when the guitar is pointed up, negative is when the guitar is pointed down.
+        /// </remarks>
         [InputControl(name = "accelX", noisy = true, displayName = "Accelerometer X")]
         public AxisControl accelX { get; private set; }
 
         /// <summary>
         /// The Y-axis of the guitar's accelerometer.
         /// </summary>
+        /// <remarks>
+        /// Positive is when the guitar is face down, negative is when the guitar is face up.
+        /// </remarks>
         [InputControl(name = "accelY", noisy = true, displayName = "Accelerometer Y")]
         public AxisControl accelY { get; private set; }
 
         /// <summary>
         /// The Z-axis of the guitar's accelerometer.
         /// </summary>
+        /// <remarks>
+        /// Positive is when the guitar is pointed right, negative is when the guitar is pointed left.
+        /// </remarks>
         [InputControl(name = "accelZ", noisy = true, displayName = "Accelerometer Z")]
         public AxisControl accelZ { get; private set; }
 
