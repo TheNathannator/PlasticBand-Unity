@@ -39,12 +39,12 @@ namespace PlasticBand.Devices.LowLevel
         // Was gonna use these parameters based on my Les Paul, but maybe it would be best to
         // leave that up to calibration systems rather than assuming all guitars will be the same
         // parameters = "normalize=true,normalizeMin=0.1,normalizeMax=0.6,normalizeZero=0.36,clamp=2,clampMin=-1,clampMax=1"
-        [InputControl(name = "accelZ", layout = "Axis", noisy = true, parameters = "normalize=true,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public byte accelZ;
+        [InputControl(name = "accelY", layout = "Axis", noisy = true, parameters = "normalize=true,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        public byte accelY;
 
         // parameters = "normalize=true,normalizeMin=0.2,normalizeMax=0.75,normalizeZero=0.45,clamp=2,clampMin=-1,clampMax=1"
-        [InputControl(name = "accelX", layout = "Axis", noisy = true, parameters = "normalize=true,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public byte accelX;
+        [InputControl(name = "accelZ", layout = "Axis", noisy = true, parameters = "normalize=true,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        public byte accelZ;
 
         [InputControl(name = "sliderBar", layout = "GuitarHeroSlider", format = "SHRT", displayName = "Touch/Slider Bar")]
         public short slider;
@@ -56,7 +56,7 @@ namespace PlasticBand.Devices.LowLevel
 
         [InputControl(name = "tilt", layout = "Axis", noisy = true)]
         // parameters = "normalize=true,normalizeMin=-0.85,normalizeMax=1,normalizeZero=0,clamp=2,clampMin=-1,clampMax=1"
-        [InputControl(name = "accelY", layout = "Axis", noisy = true)]
+        [InputControl(name = "accelX", layout = "Axis", noisy = true)]
         public short tilt;
     }
 }
