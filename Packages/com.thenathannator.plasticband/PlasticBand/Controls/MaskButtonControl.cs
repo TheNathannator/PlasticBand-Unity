@@ -14,6 +14,9 @@ namespace PlasticBand.Controls
     /// </summary>
     public class MaskButtonControl : ButtonControl
     {
+        /// <summary>
+        /// Registers <see cref="MaskButtonControl"/> to the input system.
+        /// </summary>
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<MaskButtonControl>("MaskButton");
@@ -24,6 +27,9 @@ namespace PlasticBand.Controls
         /// </summary>
         public int mask;
 
+        /// <summary>
+        /// Creates a new <see cref="MaskButtonControl"/>.
+        /// </summary>
         public MaskButtonControl() : base()
         {
             m_StateBlock.format = InputStateBlock.FormatByte;
@@ -33,6 +39,9 @@ namespace PlasticBand.Controls
         int previousValue;
 #endif
 
+        /// <summary>
+        /// Finishes setup of the control.
+        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -44,6 +53,9 @@ namespace PlasticBand.Controls
                 throw new NotSupportedException($"Non-integer format '{stateBlock.format}' is not supported for MaskButtonControl '{this}'");
         }
 
+        /// <summary>
+        /// Reads the value of this control from a given state pointer.
+        /// </summary>
         public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
         {
             int rawValue = stateBlock.ReadInt(statePtr);

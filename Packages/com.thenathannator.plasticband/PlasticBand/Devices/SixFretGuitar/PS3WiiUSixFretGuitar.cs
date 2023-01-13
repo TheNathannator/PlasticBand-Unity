@@ -84,6 +84,9 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<PS3WiiUSixFretGuitar> all => s_AllDevices;
         private static readonly List<PS3WiiUSixFretGuitar> s_AllDevices = new List<PS3WiiUSixFretGuitar>();
 
+        /// <summary>
+        /// Registers <see cref="PS3WiiUSixFretGuitar"/> to the input system.
+        /// </summary>
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<PS3WiiUSixFretGuitar>(matches: new InputDeviceMatcher()
@@ -105,12 +108,18 @@ namespace PlasticBand.Devices
             current = this;
         }
 
+        /// <summary>
+        /// Processes when this device is added to the system.
+        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
+        /// <summary>
+        /// Processes when this device is removed from the system.
+        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();
@@ -119,7 +128,9 @@ namespace PlasticBand.Devices
                 current = null;
         }
 
-        // Magic data to be sent periodically to unlock full input data.
+        /// <summary>
+        /// Magic data to be sent periodically to unlock full input data.
+        /// </summary>
         // https://github.com/ghlre/GHLtarUtility/blob/master/PS3Guitar.cs#L104
         // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L32
         // https://github.com/Octave13/GHLPokeMachine/blob/master/GHL_Library/GHLPoke.h#L25

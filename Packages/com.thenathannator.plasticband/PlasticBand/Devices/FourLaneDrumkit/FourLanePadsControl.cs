@@ -1,4 +1,5 @@
 using System;
+using PlasticBand.Devices;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -16,11 +17,20 @@ using UnityEngine;
 
 namespace PlasticBand.Controls
 {
+    /// <summary>
+    /// The pads and cymbals on a <see cref="FourLaneDrumkit"/>.
+    /// </summary>
     public class FourLanePadsControl : InputControl<FourLanePadsControl.FourLanePad>
     {
+        /// <summary>
+        /// One of the pads or cymbals on a <see cref="FourLaneDrumkit"/>.
+        /// </summary>
         [InputControlLayout(hideInUI = true)]
         public class FourLanePadControl : ButtonControl
         {
+            /// <summary>
+            /// Registers <see cref="FourLanePadControl"/> to the input system.
+            /// </summary>
             internal static void Initialize()
             {
                 InputSystem.RegisterLayout<FourLanePadControl>();
@@ -29,6 +39,9 @@ namespace PlasticBand.Controls
             private FourLanePad m_PadToTest;
             private FourLanePadsControl m_Pads;
 
+            /// <summary>
+            /// Finishes setup of the control.
+            /// </summary>
             protected override void FinishSetup()
             {
                 base.FinishSetup();
@@ -48,6 +61,9 @@ namespace PlasticBand.Controls
                 m_Pads = (FourLanePadsControl)parent;
             }
 
+            /// <summary>
+            /// Reads the value of this control from a given state pointer.
+            /// </summary>
             public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
             {
                 var value = m_Pads.ReadUnprocessedValueFromState(statePtr);
@@ -55,12 +71,18 @@ namespace PlasticBand.Controls
             }
         }
 
+        /// <summary>
+        /// Registers <see cref="FourLanePadsControl"/> to the input system.
+        /// </summary>
         internal static void Initialize()
         {
             FourLanePadControl.Initialize();
             InputSystem.RegisterLayout<FourLanePadsControl>("FourLanePads");
         }
 
+        /// <summary>
+        /// Flags of active pads/cymbals.
+        /// </summary>
         [Flags]
         public enum FourLanePad
         {
@@ -118,16 +140,68 @@ namespace PlasticBand.Controls
         [InputControl(name = "greenCymbal", format = "USHT", offset = 0, displayName = "Green Cymbal")]
         public FourLanePadControl greenCymbal { get; private set; }
 
+        /// <summary>
+        /// The button bit to use as the red flag.
+        /// </summary>
+        /// <remarks>
+        /// Before finishing setup and in control attributes, this is an index.
+        /// After finishing setup, this is a mask of the bit.
+        /// </remarks>
         public int redBit;
+
+        /// <summary>
+        /// The button bit to use as the yellow flag.
+        /// </summary>
+        /// <remarks>
+        /// Before finishing setup and in control attributes, this is an index.
+        /// After finishing setup, this is a mask of the bit.
+        /// </remarks>
         public int yellowBit;
+
+        /// <summary>
+        /// The button bit to use as the blue flag.
+        /// </summary>
+        /// <remarks>
+        /// Before finishing setup and in control attributes, this is an index.
+        /// After finishing setup, this is a mask of the bit.
+        /// </remarks>
         public int blueBit;
+
+        /// <summary>
+        /// The button bit to use as the green flag.
+        /// </summary>
+        /// <remarks>
+        /// Before finishing setup and in control attributes, this is an index.
+        /// After finishing setup, this is a mask of the bit.
+        /// </remarks>
         public int greenBit;
+
+        /// <summary>
+        /// The button bit to use as the pad flag.
+        /// </summary>
+        /// <remarks>
+        /// Before finishing setup and in control attributes, this is an index.
+        /// After finishing setup, this is a mask of the bit.
+        /// </remarks>
         public int padBit;
+
+        /// <summary>
+        /// The button bit to use as the cymbal flag.
+        /// </summary>
+        /// <remarks>
+        /// Before finishing setup and in control attributes, this is an index.
+        /// After finishing setup, this is a mask of the bit.
+        /// </remarks>
         public int cymbalBit;
 
-        // D-pad control retrieved from the parent device
+        /// <summary>
+        /// The d-pad control of the parent device.
+        /// </summary>
         private DpadControl m_Dpad;
 
+        /// <summary>
+        /// Finishes setup of the control.
+        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -172,6 +246,9 @@ namespace PlasticBand.Controls
         StringBuilder sb = new StringBuilder();
 #endif
 
+        /// <summary>
+        /// Reads the value of this control from a given state pointer.
+        /// </summary>
         public override unsafe FourLanePad ReadUnprocessedValueFromState(void* statePtr)
         {
             // A version of this with more detailed comments may be found here:

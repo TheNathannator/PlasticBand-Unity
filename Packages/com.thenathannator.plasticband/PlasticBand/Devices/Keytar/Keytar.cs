@@ -22,6 +22,9 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<Keytar> all => s_AllDevices;
         private static readonly List<Keytar> s_AllDevices = new List<Keytar>();
 
+        /// <summary>
+        /// Registers <see cref="Keytar"/> to the input system.
+        /// </summary>
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<Keytar>();
@@ -243,6 +246,9 @@ namespace PlasticBand.Devices
         [InputControl(name = "touchStrip", displayName = "Touch Strip")]
         public AxisControl touchStrip { get; private set; }
 
+        /// <summary>
+        /// Finishes setup of the device.
+        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -299,12 +305,18 @@ namespace PlasticBand.Devices
             current = this;
         }
 
+        /// <summary>
+        /// Processes when this device is added to the system.
+        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
+        /// <summary>
+        /// Processes when this device is removed from the system.
+        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();

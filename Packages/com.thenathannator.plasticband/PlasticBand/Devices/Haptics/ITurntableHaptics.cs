@@ -1,7 +1,11 @@
+using PlasticBand.Devices;
 using UnityEngine.InputSystem.Haptics;
 
 namespace PlasticBand.Haptics
 {
+    /// <summary>
+    /// Interface for <see cref="Turntable"/> haptics.
+    /// </summary>
     public interface ITurntableHaptics : IHaptics
     {
         /// <summary>

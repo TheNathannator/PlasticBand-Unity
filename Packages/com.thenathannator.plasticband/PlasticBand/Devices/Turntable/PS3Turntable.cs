@@ -9,6 +9,9 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices.LowLevel
 {
+    /// <summary>
+    /// The state format for PS3 DJ Hero turntables.
+    /// </summary>
     // https://github.com/RPCS3/rpcs3/blob/master/rpcs3/Emu/Io/Turntable.cpp
     // https://github.com/shockdude/DJHtableUtility
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -66,6 +69,9 @@ namespace PlasticBand.Devices.LowLevel
 
 namespace PlasticBand.Devices
 {
+    /// <summary>
+    /// A PS3 DJ Hero turntable.
+    /// </summary>
     [InputControlLayout(stateType = typeof(PS3TurntableState), displayName = "PS3 Turntable")]
     internal class PS3Turntable : Turntable
     {
@@ -80,6 +86,9 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<PS3Turntable> all => s_AllDevices;
         private static readonly List<PS3Turntable> s_AllDevices = new List<PS3Turntable>();
 
+        /// <summary>
+        /// Registers <see cref="PS3Turntable"/> to the input system.
+        /// </summary>
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<PS3Turntable>(matches: new InputDeviceMatcher()
@@ -100,12 +109,18 @@ namespace PlasticBand.Devices
             current = this;
         }
 
+        /// <summary>
+        /// Processes when this device is added to the system.
+        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
+        /// <summary>
+        /// Processes when this device is removed from the system.
+        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();
@@ -114,18 +129,37 @@ namespace PlasticBand.Devices
                 current = null;
         }
 
+        /// <summary>
+        /// Enables the euphoria light on the turntable.
+        /// </summary>
         private static readonly PS3OutputCommand s_EuphoriaOnCommand = new PS3OutputCommand(
             0x91,
             new byte[PS3OutputCommand.kDataSize] { 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00 }
         );
 
+        /// <summary>
+        /// Disables the euphoria light on the turntable.
+        /// </summary>
         private static readonly PS3OutputCommand s_EuphoriaOffCommand = new PS3OutputCommand(
             0x91,
             new byte[PS3OutputCommand.kDataSize] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
         );
 
+        /// <summary>
+        /// The previous brightness of the euphoria effect.
+        /// Used for determining direction.
+        /// </summary>
         private float m_PreviousBrightness = -1;
-        private bool m_Direction; // true == up, false == down
+
+        /// <summary>
+        /// The current direction of the euphoria effect.
+        /// </summary>
+        /// <remarks>
+        /// true == up, false == down.
+        /// </remarks>
+        private bool m_Direction;
+
+        /// <inheritdoc/>
         protected override void OnEuphoriaTick(float brightness)
         {
             PS3OutputCommand command;
@@ -135,13 +169,13 @@ namespace PlasticBand.Devices
                 m_Direction = false;
                 command = s_EuphoriaOffCommand;
             }
-            // Enable during an increase
+            // Enable at the start of an increase
             else if ((brightness > m_PreviousBrightness) && !m_Direction)
             {
                 m_Direction = true;
                 command = s_EuphoriaOnCommand;
             }
-            // Disable during a decrease
+            // Disable at the start of a decrease
             else if ((brightness < m_PreviousBrightness) && m_Direction)
             {
                 m_Direction = false;

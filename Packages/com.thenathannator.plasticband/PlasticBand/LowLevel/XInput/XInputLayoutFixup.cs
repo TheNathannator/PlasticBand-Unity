@@ -35,9 +35,19 @@ namespace PlasticBand.LowLevel
             out XInputState State // XINPUT_STATE*
         );
 
+        /// <summary>
+        /// Resolves the layout of an XInput device.
+        /// </summary>
         internal delegate string XInputLayoutResolver(XInputCapabilities capabilities, XInputGamepad state);
+
+        /// <summary>
+        /// Registered layout resolvers for a given subtype.
+        /// </summary>
         private static readonly Dictionary<DeviceSubType, XInputLayoutResolver> s_SubTypeLayoutOverrideMap = new Dictionary<DeviceSubType, XInputLayoutResolver>();
 
+        /// <summary>
+        /// Initializes the layout resolver.
+        /// </summary>
         internal static void Initialize()
         {
             // Replace XInputControllerWindows layout matcher with one that only matches gamepads

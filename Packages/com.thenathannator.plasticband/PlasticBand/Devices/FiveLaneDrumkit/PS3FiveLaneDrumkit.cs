@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
-    /// The state format for PS3 4-lane drumkits.
+    /// The state format for PS3 5-lane drumkits.
     /// </summary>
     // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-gh-drums.html
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -72,7 +72,7 @@ namespace PlasticBand.Devices.LowLevel
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// A PS3 4-lane drumkit.
+    /// A PS3 5-lane drumkit.
     /// </summary>
     [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState), displayName = "RedOctane Drum Kit for PlayStation(R)3")]
     public class PS3FiveLaneDrumkit : FiveLaneDrumkit
@@ -88,6 +88,9 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<PS3FiveLaneDrumkit> all => s_AllDevices;
         private static readonly List<PS3FiveLaneDrumkit> s_AllDevices = new List<PS3FiveLaneDrumkit>();
 
+        /// <summary>
+        /// Registers <see cref="PS3FiveLaneDrumkit"/> to the input system.
+        /// </summary>
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<PS3FiveLaneDrumkit>(matches: new InputDeviceMatcher()
@@ -108,12 +111,18 @@ namespace PlasticBand.Devices
             current = this;
         }
 
+        /// <summary>
+        /// Processes when this device is added to the system.
+        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
+        /// <summary>
+        /// Processes when this device is removed from the system.
+        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();

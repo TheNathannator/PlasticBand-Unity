@@ -25,6 +25,9 @@ namespace PlasticBand
         }
 #endif
 
+        /// <summary>
+        /// Initializes everything.
+        /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         internal static void Initialize()
         {

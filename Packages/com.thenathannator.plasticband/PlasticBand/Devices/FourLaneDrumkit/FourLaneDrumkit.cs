@@ -22,6 +22,9 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<FourLaneDrumkit> all => s_AllDevices;
         private static readonly List<FourLaneDrumkit> s_AllDevices = new List<FourLaneDrumkit>();
 
+        /// <summary>
+        /// Registers <see cref="FourLaneDrumkit"/> to the input system.
+        /// </summary>
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<FourLaneDrumkit>();
@@ -99,6 +102,9 @@ namespace PlasticBand.Devices
         [InputControl(name = "kick2", displayName = "Kick 2")]
         public ButtonControl kick2 { get; private set; }
 
+        /// <summary>
+        /// Finishes setup of the device.
+        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -130,12 +136,18 @@ namespace PlasticBand.Devices
             current = this;
         }
 
+        /// <summary>
+        /// Processes when this device is added to the system.
+        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
+        /// <summary>
+        /// Processes when this device is removed from the system.
+        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();

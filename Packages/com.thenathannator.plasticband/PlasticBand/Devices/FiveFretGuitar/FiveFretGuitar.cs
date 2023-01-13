@@ -22,6 +22,9 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<FiveFretGuitar> all => s_AllDevices;
         private static readonly List<FiveFretGuitar> s_AllDevices = new List<FiveFretGuitar>();
 
+        /// <summary>
+        /// Registers <see cref="FiveFretGuitar"/> to the input system.
+        /// </summary>
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<FiveFretGuitar>();
@@ -103,6 +106,9 @@ namespace PlasticBand.Devices
         [InputControl(name = "selectButton", displayName = "Select")]
         public ButtonControl selectButton { get; private set; }
 
+        /// <summary>
+        /// Finishes setup of the device.
+        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -134,12 +140,18 @@ namespace PlasticBand.Devices
             current = this;
         }
 
+        /// <summary>
+        /// Processes when this device is added to the system.
+        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
+        /// <summary>
+        /// Processes when this device is removed from the system.
+        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();

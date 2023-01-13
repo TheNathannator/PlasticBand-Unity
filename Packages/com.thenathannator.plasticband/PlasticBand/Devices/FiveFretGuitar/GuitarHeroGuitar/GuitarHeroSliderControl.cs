@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PlasticBand.Devices;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -11,11 +12,20 @@ using UnityEngine;
 
 namespace PlasticBand.Controls
 {
+    /// <summary>
+    /// A <see cref="GuitarHeroGuitar"/>'s slider bar.
+    /// </summary>
     public class GuitarHeroSliderControl : InputControl<GuitarHeroSliderControl.SliderFret>
     {
+        /// <summary>
+        /// A segment of a <see cref="GuitarHeroGuitar"/>'s slider bar.
+        /// </summary>
         [InputControlLayout(hideInUI = true)]
         public class GuitarHeroSliderSegmentControl : ButtonControl
         {
+            /// <summary>
+            /// Registers <see cref="GuitarHeroSliderSegmentControl"/> to the input system.
+            /// </summary>
             internal static void Initialize()
             {
                 InputSystem.RegisterLayout<GuitarHeroSliderSegmentControl>();
@@ -24,6 +34,9 @@ namespace PlasticBand.Controls
             private SliderFret m_FretToTest;
             private GuitarHeroSliderControl m_Slider;
 
+            /// <summary>
+            /// Finishes setup of the control.
+            /// </summary>
             protected override void FinishSetup()
             {
                 base.FinishSetup();
@@ -41,6 +54,9 @@ namespace PlasticBand.Controls
                 m_Slider = (GuitarHeroSliderControl)parent;
             }
 
+            /// <summary>
+            /// Reads the value of this control from a given state pointer.
+            /// </summary>
             public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
             {
                 var value = m_Slider.ReadUnprocessedValueFromState(statePtr);
@@ -48,12 +64,18 @@ namespace PlasticBand.Controls
             }
         }
 
+        /// <summary>
+        /// Registers <see cref="GuitarHeroSliderSegment"/> to the input system.
+        /// </summary>
         internal static void Initialize()
         {
             GuitarHeroSliderSegmentControl.Initialize();
             InputSystem.RegisterLayout<GuitarHeroSliderControl>("GuitarHeroSlider");
         }
 
+        /// <summary>
+        /// Flags of active slider segments.
+        /// </summary>
         [Flags]
         public enum SliderFret : byte
         {
@@ -138,6 +160,9 @@ namespace PlasticBand.Controls
         [InputControl(name = "touchOrange", format = "BYTE", offset = 0, displayName = "Orange")]
         public GuitarHeroSliderSegmentControl orange { get; private set; }
 
+        /// <summary>
+        /// Finishes setup of the control.
+        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -159,6 +184,9 @@ namespace PlasticBand.Controls
         byte previousValue;
 #endif
 
+        /// <summary>
+        /// Reads the value of this control from a given state pointer.
+        /// </summary>
         public override unsafe SliderFret ReadUnprocessedValueFromState(void* statePtr)
         {
             // Read only the bottom byte

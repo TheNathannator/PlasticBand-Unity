@@ -27,6 +27,9 @@ namespace PlasticBand.Devices
         /// </summary>
         protected abstract void OnPoke();
 
+        /// <summary>
+        /// Handles poke message sending.
+        /// </summary>
         void IInputUpdateCallbackReceiver.OnUpdate()
         {
             if (m_PokeTimer.ElapsedMilliseconds >= kPokeInterval)
@@ -36,12 +39,18 @@ namespace PlasticBand.Devices
             }
         }
 
+        /// <summary>
+        /// Finishes setup of the device.
+        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();
             m_PokeTimer.Start();
         }
 
+        /// <summary>
+        /// Processes when this device is removed from the system.
+        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();

@@ -23,6 +23,9 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<RockBandGuitar> all => s_AllDevices;
         private static readonly List<RockBandGuitar> s_AllDevices = new List<RockBandGuitar>();
 
+        /// <summary>
+        /// Registers <see cref="RockBandGuitar"/> to the input system.
+        /// </summary>
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<RockBandGuitar>();
@@ -64,6 +67,9 @@ namespace PlasticBand.Devices
         [InputControl(name = "pickupSwitch", displayName = "Pickup Switch")]
         public AxisControl pickupSwitch { get; private set; }
 
+        /// <summary>
+        /// Finishes setup of the device.
+        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -86,12 +92,18 @@ namespace PlasticBand.Devices
             current = this;
         }
 
+        /// <summary>
+        /// Processes when this device is added to the system.
+        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
+        /// <summary>
+        /// Processes when this device is removed from the system.
+        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();
