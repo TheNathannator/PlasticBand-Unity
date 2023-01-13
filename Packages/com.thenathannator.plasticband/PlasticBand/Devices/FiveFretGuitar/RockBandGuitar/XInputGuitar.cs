@@ -47,7 +47,7 @@ namespace PlasticBand.Devices.LowLevel
 
         public fixed byte unused[5];
 
-        [InputControl(name = "whammy", layout = "Axis", parameters = "normalize=true,normalizeMin=-1,normalizeMax=1,normalizeZero=-1")]
+        [InputControl(name = "whammy", layout = "Axis", defaultState = short.MinValue, parameters = "normalize=true,normalizeMin=-1,normalizeMax=1,normalizeZero=-1")]
         public short whammy;
 
         [InputControl(name = "tilt", layout = "Axis", noisy = true)]
