@@ -184,6 +184,7 @@ namespace PlasticBand.Devices
             // Direction hasn't changed, don't send the same one multiple times
             else
             {
+                m_PreviousBrightness = brightness;
                 return;
             }
 
