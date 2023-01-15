@@ -24,17 +24,17 @@ Preliminary support for the following devices:
 - Drumkits
   - Rock Band drumkits
     - Xbox 360 (Windows)
+    - PS3
   - Guitar Hero drumkits
     - Xbox 360 (Windows)
+    - PS3
 - DJ Hero turntables
   - Xbox 360 (Windows)
   - PS3
   - Includes euphoria light support
 - Rock Band 3 Pro Guitars
   - Xbox 360 (Windows)
-  - PS3
 - Rock Band 3 Pro Keyboards
   - Xbox 360 (Windows)
-  - PS3
 
 Note that Xbox 360 devices are currently only supported on Windows. Mac support for those is an impossibilty currently, Linux support just needs some research and implementation done.
