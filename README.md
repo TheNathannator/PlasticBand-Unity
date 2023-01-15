@@ -14,13 +14,13 @@ For the initial stage of this project, only Windows support can be confirmed. HI
 
 Devices to support:
 
-- [ ] Guitar Hero 5-Fret Guitars
+- Guitar Hero 5-Fret Guitars
   - [x] Xbox 360
   - [ ] PS2
     - Likely won't be possible to support directly, PS2 adapters are all over the place and usually show up as PS3 controllers.
   - [x] PS3
   - [ ] Wii
-- [ ] Rock Band 5-Fret Guitars
+- Rock Band 5-Fret Guitars
   - [x] Xbox 360
     - [x] Controls
     - [ ] Auto-calibration sensors
@@ -30,13 +30,13 @@ Devices to support:
     - [ ] Auto-calibration sensors
   - [ ] PS4
   - [ ] Wii
-- [ ] 6-Fret Guitars
+- 6-Fret Guitars
   - [x] Xbox 360
   - [ ] Xbox One
   - [x] PS3/Wii U
   - [x] PS4
   - [ ] iOS
-- [ ] Rock Band Kits
+- Rock Band Kits
   - [x] Xbox 360
     - [x] Controls
     - [ ] Pair velocities to hits
@@ -44,24 +44,24 @@ Devices to support:
   - [ ] PS2/PS3
   - [ ] PS4
   - [ ] Wii
-- [ ] Guitar Hero Kits
+- Guitar Hero Kits
   - [x] Xbox 360
     - [x] Basic controls
     - [x] Velocity
     - [ ] Pair velocities to hits
   - [ ] PS2/PS3
   - [ ] Wii
-- [ ] Turntables
+- Turntables
   - [x] Xbox 360
   - [x] PS3
   - [ ] Wii
-- [ ] Rock Band Keyboards
+- Rock Band Keyboards
   - [x] Xbox 360
     - [x] Basic controls
     - [ ] Pair velocities to keypresses
   - [ ] PS3
   - [ ] Wii
-- [ ] Rock Band Pro Guitars
+- Rock Band Pro Guitars
   - [x] Xbox 360
     - Some things are missing but either that's outside of our control, or it doesn't matter very much and just needs a bit more research.
   - [ ] PS3
