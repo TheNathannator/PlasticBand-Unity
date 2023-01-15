@@ -4,11 +4,15 @@ An add-on for the [Unity InputSystem](https://github.com/Unity-Technologies/Inpu
 
 This project is a companion to the [PlasticBand](https://github.com/TheNathannator/PlasticBand) repository. Documentation on how to interface with the peripherals in a general, non-Unity context can be found there.
 
+Some notes:
+
+- For now, only Windows support can be confirmed. Other platforms may require special attention for devices.
+- HID devices such as the PS3 guitars and drums will most likely work on macOS, but Linux will probably need special implementation, as the native input backend uses SDL instead of HID on Linux.
+- Xbox 360/One guitars on macOS will never be usable unless a new driver is made for them, or if there's some way to interact with them on a lower level without any special drivers.
+
 ## WIP
 
 This package is a work-in-progress. Contributions are welcome!
-
-For the initial stage of this project, only Windows support can be confirmed. HID devices such as the PS3 guitars/drums will likely work on all platforms once implemented, but non-HID devices such as Xbox 360 guitars will require separate implementations for each platforms, and Mac support for Xbox 360/One guitars most likely isn't possible at all unless a new driver gets made for those.
 
 ## TODO
 
