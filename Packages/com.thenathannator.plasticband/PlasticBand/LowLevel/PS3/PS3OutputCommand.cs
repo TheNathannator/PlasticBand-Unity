@@ -51,7 +51,7 @@ namespace PlasticBand.Devices.LowLevel
         /// <summary>
         /// Creates a new <see cref="PS3OutputCommand"/> with the specified output type and data.
         /// </summary>
-        public PS3OutputCommand(byte type, ReadOnlySpan<byte> data)
+        public PS3OutputCommand(byte type, byte[] data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
@@ -73,7 +73,7 @@ namespace PlasticBand.Devices.LowLevel
         /// <summary>
         /// Creates a new <see cref="PS3OutputCommand"/> with the specified report ID, output type, and data.
         /// </summary>
-        public PS3OutputCommand(byte reportId, byte type, ReadOnlySpan<byte> data) : this(type, data)
+        public PS3OutputCommand(byte reportId, byte type, byte[] data) : this(type, data)
         {
             this.reportId = reportId;
         }
