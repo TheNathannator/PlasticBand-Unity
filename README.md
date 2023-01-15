@@ -38,18 +38,21 @@ Devices to support:
   - [ ] iOS
 - Rock Band Kits
   - [x] Xbox 360
-    - [x] Controls
+    - [x] Controls and velocity
     - [ ] Pair velocities to hits
   - [ ] Xbox One
-  - [ ] PS2/PS3
+  - [x] PS2/PS3
+    - [x] Controls and velocity
+    - [ ] Pair velocities to hits
   - [ ] PS4
   - [ ] Wii
 - Guitar Hero Kits
   - [x] Xbox 360
-    - [x] Basic controls
-    - [x] Velocity
+    - [x] Controls and velocity
     - [ ] Pair velocities to hits
-  - [ ] PS2/PS3
+  - [x] PS2/PS3
+    - [x] Controls and velocity
+    - [ ] Pair velocities to hits
   - [ ] Wii
 - Turntables
   - [x] Xbox 360
@@ -57,7 +60,7 @@ Devices to support:
   - [ ] Wii
 - Rock Band Keyboards
   - [x] Xbox 360
-    - [x] Basic controls
+    - [x] Controls and velocity
     - [ ] Pair velocities to keypresses
   - [ ] PS3
   - [ ] Wii
