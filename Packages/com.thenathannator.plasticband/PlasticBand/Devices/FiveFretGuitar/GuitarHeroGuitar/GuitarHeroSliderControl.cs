@@ -40,14 +40,14 @@ namespace PlasticBand.Controls
             protected override void FinishSetup()
             {
                 base.FinishSetup();
-                m_FretToTest = name switch
+                switch (name)
                 {
-                    "touchGreen" => SliderFret.Green,
-                    "touchRed" => SliderFret.Red,
-                    "touchYellow" => SliderFret.Yellow,
-                    "touchBlue" => SliderFret.Blue,
-                    "touchOrange" => SliderFret.Orange,
-                    _ => throw new NotSupportedException($"Could not determine fret to test from name: {name}")
+                    case "touchGreen": m_FretToTest = SliderFret.Green; break;
+                    case "touchRed": m_FretToTest = SliderFret.Red; break;
+                    case "touchYellow": m_FretToTest = SliderFret.Yellow; break;
+                    case "touchBlue": m_FretToTest = SliderFret.Blue; break;
+                    case "touchOrange": m_FretToTest = SliderFret.Orange; break;
+                    default: throw new NotSupportedException($"Could not determine fret to test from name: {name}");
                 };
 
                 m_StateBlock = parent.stateBlock;

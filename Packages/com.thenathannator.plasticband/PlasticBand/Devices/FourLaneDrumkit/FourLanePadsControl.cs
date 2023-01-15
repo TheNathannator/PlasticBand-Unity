@@ -45,16 +45,16 @@ namespace PlasticBand.Controls
             protected override void FinishSetup()
             {
                 base.FinishSetup();
-                m_PadToTest = name switch
+                switch (name)
                 {
-                    "redPad" => FourLanePad.RedPad,
-                    "yellowPad" => FourLanePad.YellowPad,
-                    "bluePad" => FourLanePad.BluePad,
-                    "greenPad" => FourLanePad.GreenPad,
-                    "yellowCymbal" => FourLanePad.YellowCymbal,
-                    "blueCymbal" => FourLanePad.BlueCymbal,
-                    "greenCymbal" => FourLanePad.GreenCymbal,
-                    _ => throw new NotSupportedException($"Could not determine pad to test from name: {name}")
+                    case "redPad": m_PadToTest = FourLanePad.RedPad; break;
+                    case "yellowPad": m_PadToTest = FourLanePad.YellowPad; break;
+                    case "bluePad": m_PadToTest = FourLanePad.BluePad; break;
+                    case "greenPad": m_PadToTest = FourLanePad.GreenPad; break;
+                    case "yellowCymbal": m_PadToTest = FourLanePad.YellowCymbal; break;
+                    case "blueCymbal": m_PadToTest = FourLanePad.BlueCymbal; break;
+                    case "greenCymbal": m_PadToTest = FourLanePad.GreenCymbal; break;
+                    default: throw new NotSupportedException($"Could not determine pad to test from name: {name}");
                 };
 
                 m_StateBlock = parent.stateBlock;
