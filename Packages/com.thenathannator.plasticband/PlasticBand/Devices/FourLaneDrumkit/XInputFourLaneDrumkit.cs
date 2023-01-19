@@ -32,8 +32,14 @@ namespace PlasticBand.Devices.LowLevel
 
         [InputControl(name = "kick1", layout = "Button", bit = 8)]
 
-        [InputControl(name = "pads", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0,
-            parameters = "redBit=13,yellowBit=15,blueBit=14,greenBit=12,padBit=7,cymbalBit=9", displayName = "Kit")]
+        const string kPadParameters = "redBit=13,yellowBit=15,blueBit=14,greenBit=12,padBit=7,cymbalBit=9";
+        [InputControl(name = "redPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "yellowPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "bluePad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "greenPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "yellowCymbal", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "blueCymbal", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "greenCymbal", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
         public ushort buttons;
 
         public fixed byte unused[2];

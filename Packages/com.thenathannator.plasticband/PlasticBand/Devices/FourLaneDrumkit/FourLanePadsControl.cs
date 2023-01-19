@@ -2,7 +2,6 @@ using System;
 using PlasticBand.Devices;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
-using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 
 #if PLASTICBAND_DEBUG_CONTROLS
@@ -18,65 +17,15 @@ using UnityEngine;
 namespace PlasticBand.Controls
 {
     /// <summary>
-    /// The pads and cymbals on a <see cref="FourLaneDrumkit"/>.
+    /// One of the pads and cymbals on a <see cref="FourLaneDrumkit"/>.
     /// </summary>
-    public class FourLanePadsControl : InputControl<FourLanePadsControl.FourLanePad>
+    public class FourLanePadsControl : ButtonControl
     {
-        /// <summary>
-        /// One of the pads or cymbals on a <see cref="FourLaneDrumkit"/>.
-        /// </summary>
-        [InputControlLayout(hideInUI = true)]
-        public class FourLanePadControl : ButtonControl
-        {
-            /// <summary>
-            /// Registers <see cref="FourLanePadControl"/> to the input system.
-            /// </summary>
-            internal static void Initialize()
-            {
-                InputSystem.RegisterLayout<FourLanePadControl>();
-            }
-
-            private FourLanePad m_PadToTest;
-            private FourLanePadsControl m_Pads;
-
-            /// <summary>
-            /// Finishes setup of the control.
-            /// </summary>
-            protected override void FinishSetup()
-            {
-                base.FinishSetup();
-                switch (name)
-                {
-                    case "redPad": m_PadToTest = FourLanePad.RedPad; break;
-                    case "yellowPad": m_PadToTest = FourLanePad.YellowPad; break;
-                    case "bluePad": m_PadToTest = FourLanePad.BluePad; break;
-                    case "greenPad": m_PadToTest = FourLanePad.GreenPad; break;
-                    case "yellowCymbal": m_PadToTest = FourLanePad.YellowCymbal; break;
-                    case "blueCymbal": m_PadToTest = FourLanePad.BlueCymbal; break;
-                    case "greenCymbal": m_PadToTest = FourLanePad.GreenCymbal; break;
-                    default: throw new NotSupportedException($"Could not determine pad to test from name: {name}");
-                };
-
-                m_StateBlock = parent.stateBlock;
-                m_Pads = (FourLanePadsControl)parent;
-            }
-
-            /// <summary>
-            /// Reads the value of this control from a given state pointer.
-            /// </summary>
-            public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
-            {
-                var value = m_Pads.ReadUnprocessedValueFromState(statePtr);
-                return (value & m_PadToTest) != 0 ? 1f : 0f;
-            }
-        }
-
         /// <summary>
         /// Registers <see cref="FourLanePadsControl"/> to the input system.
         /// </summary>
         internal static void Initialize()
         {
-            FourLanePadControl.Initialize();
             InputSystem.RegisterLayout<FourLanePadsControl>("FourLanePads");
         }
 
@@ -84,7 +33,7 @@ namespace PlasticBand.Controls
         /// Flags of active pads/cymbals.
         /// </summary>
         [Flags]
-        public enum FourLanePad
+        private enum FourLanePad
         {
             None = 0,
 
@@ -97,48 +46,6 @@ namespace PlasticBand.Controls
             BlueCymbal = 0x40,
             GreenCymbal = 0x80
         }
-
-        /// <summary>
-        /// The red pad of the drumkit.
-        /// </summary>
-        [InputControl(name = "redPad", format = "USHT", offset = 0, displayName = "Red Pad")]
-        public FourLanePadControl redPad { get; private set; }
-
-        /// <summary>
-        /// The yellow pad of the drumkit.
-        /// </summary>
-        [InputControl(name = "yellowPad", format = "USHT", offset = 0, displayName = "Yellow Pad")]
-        public FourLanePadControl yellowPad { get; private set; }
-
-        /// <summary>
-        /// The blue pad of the drumkit.
-        /// </summary>
-        [InputControl(name = "bluePad", format = "USHT", offset = 0, displayName = "Blue Pad")]
-        public FourLanePadControl bluePad { get; private set; }
-
-        /// <summary>
-        /// The green pad of the drumkit.
-        /// </summary>
-        [InputControl(name = "greenPad", format = "USHT", offset = 0, displayName = "Green Pad")]
-        public FourLanePadControl greenPad { get; private set; }
-
-        /// <summary>
-        /// The yellow cymbal of the drumkit.
-        /// </summary>
-        [InputControl(name = "yellowCymbal", format = "USHT", offset = 0, displayName = "Yellow Cymbal")]
-        public FourLanePadControl yellowCymbal { get; private set; }
-
-        /// <summary>
-        /// The blue cymbal of the drumkit.
-        /// </summary>
-        [InputControl(name = "blueCymbal", format = "USHT", offset = 0, displayName = "Blue Cymbal")]
-        public FourLanePadControl blueCymbal { get; private set; }
-
-        /// <summary>
-        /// The green cymbal of the drumkit.
-        /// </summary>
-        [InputControl(name = "greenCymbal", format = "USHT", offset = 0, displayName = "Green Cymbal")]
-        public FourLanePadControl greenCymbal { get; private set; }
 
         /// <summary>
         /// The button bit to use as the red flag.
@@ -200,19 +107,16 @@ namespace PlasticBand.Controls
         private DpadControl m_Dpad;
 
         /// <summary>
+        /// The pad flag to test to determine state.
+        /// </summary>
+        private FourLanePad m_PadToTest;
+
+        /// <summary>
         /// Finishes setup of the control.
         /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();
-
-            redPad = GetChildControl<FourLanePadControl>("redPad");
-            yellowPad = GetChildControl<FourLanePadControl>("yellowPad");
-            bluePad = GetChildControl<FourLanePadControl>("bluePad");
-            greenPad = GetChildControl<FourLanePadControl>("greenPad");
-            yellowCymbal = GetChildControl<FourLanePadControl>("yellowCymbal");
-            blueCymbal = GetChildControl<FourLanePadControl>("blueCymbal");
-            greenCymbal = GetChildControl<FourLanePadControl>("greenCymbal");
 
             // Retrieve d-pad from parent device
             // No checks done; if this fails it's a misconfiguration
@@ -231,6 +135,18 @@ namespace PlasticBand.Controls
             if (padBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter 'padBit' ({padBit}) must be less than state block size ({stateBlock.sizeInBits}).");
             if (cymbalBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter 'cymbalBit' ({cymbalBit}) must be less than state block size ({stateBlock.sizeInBits}).");
 
+            switch (name)
+            {
+                case "redPad": m_PadToTest = FourLanePad.RedPad; break;
+                case "yellowPad": m_PadToTest = FourLanePad.YellowPad; break;
+                case "bluePad": m_PadToTest = FourLanePad.BluePad; break;
+                case "greenPad": m_PadToTest = FourLanePad.GreenPad; break;
+                case "yellowCymbal": m_PadToTest = FourLanePad.YellowCymbal; break;
+                case "blueCymbal": m_PadToTest = FourLanePad.BlueCymbal; break;
+                case "greenCymbal": m_PadToTest = FourLanePad.GreenCymbal; break;
+                default: throw new NotSupportedException($"Could not determine pad to test from name: {name}");
+            };
+
             // Turn bits into masks that can be used more efficiently
             redBit = 1 << redBit;
             yellowBit = 1 << yellowBit;
@@ -241,15 +157,15 @@ namespace PlasticBand.Controls
         }
 
 #if PLASTICBAND_DEBUG_CONTROLS
-        int previousButtons;
-        FourLanePad previousPads;
-        StringBuilder sb = new StringBuilder();
+        int m_PreviousButtons;
+        FourLanePad m_PreviousPads;
+        StringBuilder m_MessageBuilder = new StringBuilder();
 #endif
 
         /// <summary>
         /// Reads the value of this control from a given state pointer.
         /// </summary>
-        public override unsafe FourLanePad ReadUnprocessedValueFromState(void* statePtr)
+        public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
         {
             // A version of this with more detailed comments may be found here:
             // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/General%20Notes.md
@@ -260,7 +176,7 @@ namespace PlasticBand.Controls
                                 // This is just a fast-path anyways
             if (buttons == 0)
             {
-                return FourLanePad.None;
+                return 0f;
             }
 #endif
 
@@ -380,7 +296,7 @@ namespace PlasticBand.Controls
             previousPads = pads;
 #endif
 
-            return pads;
+            return (pads & m_PadToTest) != 0 ? 1f : 0f;
         }
     }
 }
