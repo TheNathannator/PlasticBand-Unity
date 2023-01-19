@@ -46,6 +46,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "tilt", layout = "Axis", noisy = true)]
         public short tilt;
 
+        // TODO: Verify normalization used here
         [InputControl(name = "whammy", layout = "Axis", defaultState = short.MinValue, parameters = "normalize=true,normalizeMin=-1,normalizeMax=1,normalizeZero=-1")]
         public short whammy;
     }

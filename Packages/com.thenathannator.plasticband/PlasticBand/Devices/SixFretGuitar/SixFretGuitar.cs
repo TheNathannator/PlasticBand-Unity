@@ -68,14 +68,14 @@ namespace PlasticBand.Devices
 
         /// <summary>
         /// The guitar's strum up input.
-        /// On most models this is equivalent to the d-pad up input, but on some it may not be.
+        /// On 6-fret guitars, this is *not* equivalent to d-pad up (though strumming may still trigger the d-pad).
         /// </summary>
         [InputControl(name = "strumUp", displayName = "Strum Up")]
         public ButtonControl strumUp { get; private set; }
 
         /// <summary>
         /// The guitar's strum down input.
-        /// On most models this is equivalent to the d-pad down input, but on some it may not be.
+        /// On 6-fret guitars, this is *not* equivalent to d-pad down (though strumming may still trigger the d-pad).
         /// </summary>
         [InputControl(name = "strumDown", displayName = "Strum Down")]
         public ButtonControl strumDown { get; private set; }
@@ -84,8 +84,6 @@ namespace PlasticBand.Devices
         /// The guitar's d-pad.
         /// </summary>
         [InputControl(name = "dpad", displayName = "D-Pad", usage = "Hatswitch")]
-        [InputControl(name = "dpad/up", displayName = "Up/Strum Up")]
-        [InputControl(name = "dpad/down", displayName = "Down/Strum Down")]
         public DpadControl dpad { get; private set; }
 
         /// <summary>

@@ -58,6 +58,7 @@ namespace PlasticBand.Devices.LowLevel
         public fixed byte keys[3];
 
         [InputControl(name = "key25", layout = "Button", offset = 5, bit = 7)]
+        // TODO: Try to pair velocities with keys
         [InputControl(name = "velocity1", layout = "Axis", format = "BIT", offset = 5, sizeInBits = 7)]
         [InputControl(name = "velocity2", layout = "Axis", format = "BIT", offset = 6, sizeInBits = 7)]
         [InputControl(name = "velocity3", layout = "Axis", format = "BIT", offset = 7, sizeInBits = 7)]
