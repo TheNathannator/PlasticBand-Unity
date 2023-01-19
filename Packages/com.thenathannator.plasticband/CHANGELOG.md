@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 XInputProGuitar was incorrectly inheriting from RockBandGuitar instead of ProGuitar.
 
+Various controls did not function correctly due to assumptions I made about how aliases and inheritance with controls work. A summary of what's been changed:
+
+- All 5-fret guitars:
+  - `strumUp` and `strumDown` aliases on `dpad/up` and `dpad/down` have been removed, and new `strumUp` and `strumDown` controls that replicate `dpad/up` and `dpad/down` have been added in their place.
+
 ## [0.1.0] - 2023/15/01
 
 ### Added

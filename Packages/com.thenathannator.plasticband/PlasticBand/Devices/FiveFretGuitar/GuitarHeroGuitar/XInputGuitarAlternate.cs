@@ -19,10 +19,13 @@ namespace PlasticBand.Devices.LowLevel
         public FourCC format => XInputGamepad.Format;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", bit = 0, sizeInBits = 4)]
-        [InputControl(name = "dpad/up", bit = 0, displayName = "Up/Strum Up", alias = "strumUp")]
-        [InputControl(name = "dpad/down", bit = 1, displayName = "Down/Strum Down", alias = "strumDown")]
+        [InputControl(name = "dpad/up", bit = 0)]
+        [InputControl(name = "dpad/down", bit = 1)]
         [InputControl(name = "dpad/left", bit = 2)]
         [InputControl(name = "dpad/right", bit = 3)]
+
+        [InputControl(name = "strumUp", bit = 0)]
+        [InputControl(name = "strumDown", bit = 1)]
 
         [InputControl(name = "startButton", layout = "Button", bit = 4)]
         [InputControl(name = "selectButton", layout = "Button", bit = 5, displayName = "Back")]
