@@ -16,6 +16,7 @@ namespace PlasticBand.Devices.LowLevel
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3FourLaneDrumkitState : IInputStateTypeInfo
     {
+        const string kPadParameters = "redBit=2,yellowBit=3,blueBit=0,greenBit=1,padBit=10,cymbalBit=11";
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
@@ -28,7 +29,6 @@ namespace PlasticBand.Devices.LowLevel
 
         [InputControl(name = "psButton", layout = "Button", bit = 12, displayName = "PlayStation")]
 
-        const string kPadParameters = "redBit=2,yellowBit=3,blueBit=0,greenBit=1,padBit=10,cymbalBit=11";
         [InputControl(name = "redPad", layout = "FourLanePads", format = "USHT", offset = 1, bit = 0, parameters = kPadParameters)]
         [InputControl(name = "yellowPad", layout = "FourLanePads", format = "USHT", offset = 1, bit = 0, parameters = kPadParameters)]
         [InputControl(name = "bluePad", layout = "FourLanePads", format = "USHT", offset = 1, bit = 0, parameters = kPadParameters)]

@@ -16,6 +16,7 @@ namespace PlasticBand.Devices.LowLevel
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputFourLaneDrumkitState : IInputStateTypeInfo
     {
+        const string kPadParameters = "redBit=13,yellowBit=15,blueBit=14,greenBit=12,padBit=7,cymbalBit=9";
         public FourCC format => XInputGamepad.Format;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", bit = 0, sizeInBits = 4)]
@@ -32,7 +33,6 @@ namespace PlasticBand.Devices.LowLevel
 
         [InputControl(name = "kick1", layout = "Button", bit = 8)]
 
-        const string kPadParameters = "redBit=13,yellowBit=15,blueBit=14,greenBit=12,padBit=7,cymbalBit=9";
         [InputControl(name = "redPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
         [InputControl(name = "yellowPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
         [InputControl(name = "bluePad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
