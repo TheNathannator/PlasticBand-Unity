@@ -29,13 +29,13 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "psButton", layout = "Button", bit = 12, displayName = "PlayStation")]
 
         const string kPadParameters = "redBit=2,yellowBit=3,blueBit=0,greenBit=1,padBit=10,cymbalBit=11";
-        [InputControl(name = "redPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "yellowPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "bluePad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "greenPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "yellowCymbal", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "blueCymbal", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "greenCymbal", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "redPad", layout = "FourLanePads", format = "USHT", offset = 1, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "yellowPad", layout = "FourLanePads", format = "USHT", offset = 1, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "bluePad", layout = "FourLanePads", format = "USHT", offset = 1, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "greenPad", layout = "FourLanePads", format = "USHT", offset = 1, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "yellowCymbal", layout = "FourLanePads", format = "USHT", offset = 1, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "blueCymbal", layout = "FourLanePads", format = "USHT", offset = 1, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "greenCymbal", layout = "FourLanePads", format = "USHT", offset = 1, bit = 0, parameters = kPadParameters)]
         public ushort buttons;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]

@@ -19,6 +19,8 @@ Various controls did not function correctly due to assumptions I made about how 
 - 4-lane drumkits:
   - `FourLanePadsControl` has also been reworked to remove its child controls. `FourLanePadControl` has been removed, `FourLanePadsControl` now inherits from `ButtonControl`, and the `FourLanePad` enum previously exposed by it is now private, as it no longer has any public use.
 
+The PS3 drumkit used the wrong byte offset for its `FourLanePadsControl`.
+
 ## [0.1.0] - 2023/15/01
 
 ### Added
