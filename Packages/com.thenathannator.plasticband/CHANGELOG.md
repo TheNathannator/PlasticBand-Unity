@@ -12,8 +12,9 @@ XInputProGuitar was incorrectly inheriting from RockBandGuitar instead of ProGui
 
 Various controls did not function correctly due to assumptions I made about how aliases and inheritance with controls work. A summary of what's been changed:
 
-- All 5-fret guitars:
-  - `strumUp` and `strumDown` aliases on `dpad/up` and `dpad/down` have been removed, and new `strumUp` and `strumDown` controls that replicate `dpad/up` and `dpad/down` have been added in their place.
+- Replaced all instances of aliasing with dedicated controls.
+  - On 5-fret guitars, `strumUp` and `strumDown` aliases on `dpad/up` and `dpad/down` have been removed, and new `strumUp` and `strumDown` controls that replicate `dpad/up` and `dpad/down` have been added in their place.
+  - On DJ Hero turntables, the `euphoria` alias on `buttonNorth` has been replaced with a dedicated `euphoria` control that duplicates `buttonNorth`.
 - Guitar Hero guitars:
   - The slider control has been reworked so that instead of being one control with 5 child controls, it's simply one control used 5 times in the main layout. `GuitarHeroSliderSegmentControl` has been removed, `GuitarHeroSliderControl` now inherits from `ButtonControl`, and the `SliderFret` enum previously exposed by it is now private, as it no longer has any public use.
 - 4-lane drumkits:

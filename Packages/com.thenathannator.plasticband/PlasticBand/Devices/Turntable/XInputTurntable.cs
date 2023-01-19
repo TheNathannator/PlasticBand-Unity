@@ -29,7 +29,9 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "buttonSouth", layout = "Button", bit = 12, displayName = "A")]
         [InputControl(name = "buttonEast", layout = "Button", bit = 13, displayName = "B")]
         [InputControl(name = "buttonWest", layout = "Button", bit = 14, displayName = "X")]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 15, displayName = "Y / Euphoria", alias = "euphoria")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = 15, displayName = "Y / Euphoria")]
+
+        [InputControl(name = "euphoria", layout = "Button", bit = 15, displayName = "Euphoria")]
         public ushort buttons;
 
         [InputControl(name = "leftTableGreen", layout = "Button", bit = 0)]
