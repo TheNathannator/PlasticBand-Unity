@@ -194,18 +194,18 @@ namespace PlasticBand.Controls
             bool dpadDown = m_Dpad.down.ReadUnprocessedValueFromState(statePtr) >= m_Dpad.down.pressPointOrDefault;
 
 #if PLASTICBAND_DEBUG_CONTROLS
-            if (buttons != previousButtons)
+            if (buttons != m_PreviousButtons)
             {
-                sb.Clear();
-                sb.Append("[FourLanePads] Before: ");
-                if (red) sb.Append("R ");
-                if (yellow) sb.Append("Y ");
-                if (blue) sb.Append("B ");
-                if (green) sb.Append("G ");
-                if (pad) sb.Append("P ");
-                if (cymbal) sb.Append("C ");
-                if (dpadUp) sb.Append("U ");
-                if (dpadDown) sb.Append("D ");
+                m_MessageBuilder.Clear();
+                m_MessageBuilder.Append("[FourLanePads] Before: ");
+                if (red) m_MessageBuilder.Append("R ");
+                if (yellow) m_MessageBuilder.Append("Y ");
+                if (blue) m_MessageBuilder.Append("B ");
+                if (green) m_MessageBuilder.Append("G ");
+                if (pad) m_MessageBuilder.Append("P ");
+                if (cymbal) m_MessageBuilder.Append("C ");
+                if (dpadUp) m_MessageBuilder.Append("U ");
+                if (dpadDown) m_MessageBuilder.Append("D ");
             }
 #endif
 
@@ -271,29 +271,29 @@ namespace PlasticBand.Controls
             }
 
 #if PLASTICBAND_DEBUG_CONTROLS
-            if (buttons != previousButtons)
+            if (buttons != m_PreviousButtons)
             {
-                sb.Append(" After: ");
-                if (red) sb.Append("R ");
-                if (yellow) sb.Append("Y ");
-                if (blue) sb.Append("B ");
-                if (green) sb.Append("G ");
-                if (pad) sb.Append("P ");
-                if (cymbal) sb.Append("C ");
-                if (dpadUp) sb.Append("U ");
-                if (dpadDown) sb.Append("D ");
+                m_MessageBuilder.Append(" After: ");
+                if (red) m_MessageBuilder.Append("R ");
+                if (yellow) m_MessageBuilder.Append("Y ");
+                if (blue) m_MessageBuilder.Append("B ");
+                if (green) m_MessageBuilder.Append("G ");
+                if (pad) m_MessageBuilder.Append("P ");
+                if (cymbal) m_MessageBuilder.Append("C ");
+                if (dpadUp) m_MessageBuilder.Append("U ");
+                if (dpadDown) m_MessageBuilder.Append("D ");
 
-                sb.AppendLine();
-                sb.Append(pads);
-                var changedPads = pads ^ previousPads;
+                m_MessageBuilder.AppendLine();
+                m_MessageBuilder.Append(pads);
+                var changedPads = pads ^ m_PreviousPads;
                 var newPads = changedPads & pads;
                 var removedPads = changedPads & ~pads;
-                sb.Append($"  New: {newPads}  Removed: {removedPads}  Changed: {changedPads}");
-                Debug.Log(sb);
+                m_MessageBuilder.Append($"  New: {newPads}  Removed: {removedPads}  Changed: {changedPads}");
+                Debug.Log(m_MessageBuilder);
             }
 
-            previousButtons = buttons;
-            previousPads = pads;
+            m_PreviousButtons = buttons;
+            m_PreviousPads = pads;
 #endif
 
             return (pads & m_PadToTest) != 0 ? 1f : 0f;

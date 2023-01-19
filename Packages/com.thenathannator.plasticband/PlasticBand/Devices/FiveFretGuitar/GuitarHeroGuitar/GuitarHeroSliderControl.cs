@@ -38,7 +38,9 @@ namespace PlasticBand.Controls
             Orange = 0x10
         }
 
-        // Lookup for possible values for the slider bar, ordered by frets
+        /// <summary>
+        /// Lookup for possible values for the slider bar.
+        /// </summary>
         // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/gh5_neck.html
         private static readonly Dictionary<byte, SliderFret> s_SliderLookup = new Dictionary<byte, SliderFret>()
         {
@@ -81,6 +83,9 @@ namespace PlasticBand.Controls
             { 0x7F,                                                                           SliderFret.Orange }
         };
 
+        /// <summary>
+        /// The pad flag to test to determine state.
+        /// </summary>
         private SliderFret m_FretToTest;
 
         /// <summary>
@@ -108,7 +113,7 @@ namespace PlasticBand.Controls
         }
 
 #if PLASTICBAND_DEBUG_CONTROLS
-        byte previousValue;
+        byte m_previousValue;
 #endif
 
         /// <summary>
@@ -124,10 +129,10 @@ namespace PlasticBand.Controls
             if (!s_SliderLookup.TryGetValue(rawValue, out var flags))
             {
 #if PLASTICBAND_DEBUG_CONTROLS
-                if (rawValue != previousValue)
+                if (rawValue != m_previousValue)
                 {
                     Debug.LogWarning($"[GuitarHeroSlider] rawValue {rawValue:X} is not defined in lookup!");
-                    previousValue = rawValue;
+                    m_previousValue = rawValue;
                 }
 #endif
 
@@ -135,10 +140,10 @@ namespace PlasticBand.Controls
             }
 
 #if PLASTICBAND_DEBUG_CONTROLS
-            if (rawValue != previousValue)
+            if (rawValue != m_previousValue)
             {
                 Debug.Log($"[GuitarHeroSlider] rawValue: {rawValue:X}  flags: {flags}");
-                previousValue = rawValue;
+                m_previousValue = rawValue;
             }
 #endif
 
