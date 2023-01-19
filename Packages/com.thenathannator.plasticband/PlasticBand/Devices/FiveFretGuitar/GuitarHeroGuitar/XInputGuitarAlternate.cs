@@ -49,7 +49,11 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "accelZ", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize=true,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public byte accelZ;
 
-        [InputControl(name = "sliderBar", layout = "GuitarHeroSlider", format = "SHRT", displayName = "Touch/Slider Bar")]
+        [InputControl(name = "touchGreen", layout = "GuitarHeroSlider", format = "SHRT")]
+        [InputControl(name = "touchRed", layout = "GuitarHeroSlider", format = "SHRT")]
+        [InputControl(name = "touchYellow", layout = "GuitarHeroSlider", format = "SHRT")]
+        [InputControl(name = "touchBlue", layout = "GuitarHeroSlider", format = "SHRT")]
+        [InputControl(name = "touchOrange", layout = "GuitarHeroSlider", format = "SHRT")]
         public short slider;
 
         public short unused;

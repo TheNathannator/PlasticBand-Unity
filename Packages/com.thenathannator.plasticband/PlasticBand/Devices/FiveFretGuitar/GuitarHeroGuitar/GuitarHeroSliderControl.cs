@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using PlasticBand.Devices;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
-using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 
 #if PLASTICBAND_DEBUG_CONTROLS
@@ -13,63 +12,15 @@ using UnityEngine;
 namespace PlasticBand.Controls
 {
     /// <summary>
-    /// A <see cref="GuitarHeroGuitar"/>'s slider bar.
+    /// One of the segments on a <see cref="GuitarHeroGuitar"/>'s slider bar.
     /// </summary>
-    public class GuitarHeroSliderControl : InputControl<GuitarHeroSliderControl.SliderFret>
+    public class GuitarHeroSliderControl : ButtonControl
     {
-        /// <summary>
-        /// A segment of a <see cref="GuitarHeroGuitar"/>'s slider bar.
-        /// </summary>
-        [InputControlLayout(hideInUI = true)]
-        public class GuitarHeroSliderSegmentControl : ButtonControl
-        {
-            /// <summary>
-            /// Registers <see cref="GuitarHeroSliderSegmentControl"/> to the input system.
-            /// </summary>
-            internal static void Initialize()
-            {
-                InputSystem.RegisterLayout<GuitarHeroSliderSegmentControl>();
-            }
-
-            private SliderFret m_FretToTest;
-            private GuitarHeroSliderControl m_Slider;
-
-            /// <summary>
-            /// Finishes setup of the control.
-            /// </summary>
-            protected override void FinishSetup()
-            {
-                base.FinishSetup();
-                switch (name)
-                {
-                    case "touchGreen": m_FretToTest = SliderFret.Green; break;
-                    case "touchRed": m_FretToTest = SliderFret.Red; break;
-                    case "touchYellow": m_FretToTest = SliderFret.Yellow; break;
-                    case "touchBlue": m_FretToTest = SliderFret.Blue; break;
-                    case "touchOrange": m_FretToTest = SliderFret.Orange; break;
-                    default: throw new NotSupportedException($"Could not determine fret to test from name: {name}");
-                };
-
-                m_StateBlock = parent.stateBlock;
-                m_Slider = (GuitarHeroSliderControl)parent;
-            }
-
-            /// <summary>
-            /// Reads the value of this control from a given state pointer.
-            /// </summary>
-            public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
-            {
-                var value = m_Slider.ReadUnprocessedValueFromState(statePtr);
-                return (value & m_FretToTest) != 0 ? 1f : 0f;
-            }
-        }
-
         /// <summary>
         /// Registers <see cref="GuitarHeroSliderSegment"/> to the input system.
         /// </summary>
         internal static void Initialize()
         {
-            GuitarHeroSliderSegmentControl.Initialize();
             InputSystem.RegisterLayout<GuitarHeroSliderControl>("GuitarHeroSlider");
         }
 
@@ -77,7 +28,7 @@ namespace PlasticBand.Controls
         /// Flags of active slider segments.
         /// </summary>
         [Flags]
-        public enum SliderFret : byte
+        private enum SliderFret : byte
         {
             None = 0x00,
             Green = 0x01,
@@ -130,35 +81,7 @@ namespace PlasticBand.Controls
             { 0x7F,                                                                           SliderFret.Orange }
         };
 
-        /// <summary>
-        /// The green segment of the touch/slider bar.
-        /// </summary>
-        [InputControl(name = "touchGreen", format = "BYTE", offset = 0, displayName = "Green")]
-        public GuitarHeroSliderSegmentControl green { get; private set; }
-
-        /// <summary>
-        /// The red segment of the touch/slider bar.
-        /// </summary>
-        [InputControl(name = "touchRed", format = "BYTE", offset = 0, displayName = "Red")]
-        public GuitarHeroSliderSegmentControl red { get; private set; }
-
-        /// <summary>
-        /// The yellow segment of the touch/slider bar.
-        /// </summary>
-        [InputControl(name = "touchYellow", format = "BYTE", offset = 0, displayName = "Yellow")]
-        public GuitarHeroSliderSegmentControl yellow { get; private set; }
-
-        /// <summary>
-        /// The blue segment of the touch/slider bar.
-        /// </summary>
-        [InputControl(name = "touchBlue", format = "BYTE", offset = 0, displayName = "Blue")]
-        public GuitarHeroSliderSegmentControl blue { get; private set; }
-
-        /// <summary>
-        /// The orange segment of the touch/slider bar.
-        /// </summary>
-        [InputControl(name = "touchOrange", format = "BYTE", offset = 0, displayName = "Orange")]
-        public GuitarHeroSliderSegmentControl orange { get; private set; }
+        private SliderFret m_FretToTest;
 
         /// <summary>
         /// Finishes setup of the control.
@@ -167,17 +90,21 @@ namespace PlasticBand.Controls
         {
             base.FinishSetup();
 
-            green = GetChildControl<GuitarHeroSliderSegmentControl>("touchGreen");
-            red = GetChildControl<GuitarHeroSliderSegmentControl>("touchRed");
-            yellow = GetChildControl<GuitarHeroSliderSegmentControl>("touchYellow");
-            blue = GetChildControl<GuitarHeroSliderSegmentControl>("touchBlue");
-            orange = GetChildControl<GuitarHeroSliderSegmentControl>("touchOrange");
-
             if (!stateBlock.format.IsIntegerFormat())
                 throw new NotSupportedException($"Non-integer format '{stateBlock.format}' is not supported for GuitarHeroSlider '{this}'");
 
             if (stateBlock.sizeInBits < 8)
                 throw new NotSupportedException($"GuitarHeroSlider '{this}' must be at least 8 bits in size.");
+
+            switch (name)
+            {
+                case "touchGreen": m_FretToTest = SliderFret.Green; break;
+                case "touchRed": m_FretToTest = SliderFret.Red; break;
+                case "touchYellow": m_FretToTest = SliderFret.Yellow; break;
+                case "touchBlue": m_FretToTest = SliderFret.Blue; break;
+                case "touchOrange": m_FretToTest = SliderFret.Orange; break;
+                default: throw new NotSupportedException($"Could not determine fret to test from name: {name}");
+            };
         }
 
 #if PLASTICBAND_DEBUG_CONTROLS
@@ -187,7 +114,7 @@ namespace PlasticBand.Controls
         /// <summary>
         /// Reads the value of this control from a given state pointer.
         /// </summary>
-        public override unsafe SliderFret ReadUnprocessedValueFromState(void* statePtr)
+        public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
         {
             // Read only the bottom byte
             // In the only case where the value is larger than a byte, the bottom byte is duplicated to the top
@@ -204,7 +131,7 @@ namespace PlasticBand.Controls
                 }
 #endif
 
-                return SliderFret.None;
+                return 0f;
             }
 
 #if PLASTICBAND_DEBUG_CONTROLS
@@ -215,7 +142,7 @@ namespace PlasticBand.Controls
             }
 #endif
 
-            return flags;
+            return (flags & m_FretToTest) != 0 ? 1f : 0f;
         }
     }
 }
