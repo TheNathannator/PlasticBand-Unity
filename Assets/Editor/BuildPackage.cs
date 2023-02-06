@@ -62,7 +62,7 @@ public class BuildPackageWindow : EditorWindow
         {
             if (deleteTask.IsCompleted)
             {
-                if (!deleteTask.IsCompletedSuccessfully)
+                if (deleteTask.IsFaulted)
                 {
                     Debug.LogError("Deleting temp directory failed!\n" + UnrollAggregateException(deleteTask.Exception));
                 }
@@ -96,7 +96,7 @@ public class BuildPackageWindow : EditorWindow
         {
             try
             {
-                if (copyTask.IsCompletedSuccessfully)
+                if (!copyTask.IsFaulted)
                 {
                     removeIgnoredTask = RemoveIgnored(tempDir);
                 }
@@ -121,7 +121,7 @@ public class BuildPackageWindow : EditorWindow
         {
             try
             {
-                if (removeIgnoredTask.IsCompletedSuccessfully)
+                if (!removeIgnoredTask.IsFaulted)
                 {
                     string packOutput = Path.Combine(outputPath, "Builds");
                     Debug.Log($"Creating package for {tempDir} at {packOutput}");
