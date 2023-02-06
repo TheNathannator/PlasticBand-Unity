@@ -15,6 +15,11 @@ namespace PlasticBand.Devices.LowLevel
         /// <summary>
         /// The size of this command.
         /// </summary>
+        internal const int kDefaultReportId = 0x00;
+
+        /// <summary>
+        /// The size of this command.
+        /// </summary>
         internal const int kSize = InputDeviceCommand.BaseCommandSize + sizeof(byte) * 2 +  kDataSize;
 
         /// <summary>
@@ -61,7 +66,7 @@ namespace PlasticBand.Devices.LowLevel
 
             baseCommand = new InputDeviceCommand(HidDefinitions.OutputFormat, kSize);
 
-            reportId = 0x01;
+            reportId = kDefaultReportId;
             outputType = type;
 
             for (int i = 0; i < data.Length; i++)
