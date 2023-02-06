@@ -51,16 +51,13 @@ namespace PlasticBand.Devices.LowLevel
         // (from the DS4 state in the InputSystem) are preserved as comments for future reference
         [InputControl(name = "ghtvButton", layout = "Button", bit = 10)] // leftTriggerButton
         // [InputControl(name = "rightTriggerButton", layout = "Button", bit = 11)]
-        [InputControl(name = "syncButton", layout = "Button", bit = 12)] // select
+        [InputControl(name = "dpadCenter", layout = "Button", bit = 12)] // select
         // [InputControl(name = "start", layout = "Button", bit = 13)]
         [InputControl(name = "start", layout = "Button", bit = 14)] // leftStickPress
         [InputControl(name = "select", layout = "Button", bit = 15)] // rightStickPress
         public ushort buttons1;
 
-        [InputControl(name = "playstation", layout = "Button", bit = 0, displayName = "PlayStation")]
-        public byte buttons2;
-
-        public fixed byte unused2[56];
+        public fixed byte unused2[57];
     }
 }
 
