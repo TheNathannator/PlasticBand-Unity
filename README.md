@@ -4,15 +4,16 @@ An add-on for the [Unity InputSystem](https://github.com/Unity-Technologies/Inpu
 
 This project is a companion to the [PlasticBand](https://github.com/TheNathannator/PlasticBand) repository. Documentation on how to interface with the peripherals in a general, non-Unity context can be found there.
 
-Some notes:
-
-- For now, only Windows support can be confirmed. Other platforms may require special attention for devices.
-- HID devices such as the PS3 guitars and drums will most likely work on macOS, but Linux will probably need special implementation, as the native input backend uses SDL instead of HID on Linux.
-- Xbox 360/One guitars on macOS will never be usable unless a new driver is made for them, or if there's some way to interact with them on a lower level without any special drivers.
-
 ## WIP
 
 This package is a work-in-progress. Contributions are welcome!
+
+Some notes:
+
+- **Unity 2022.2 currently has issues with Xbox 360 controllers on Windows, and only the standard gamepad controllers will be picked up.** The only workarounds currently are to downgrade Unity or write your own XInput backend for the input system.
+- For now, only Windows support can be confirmed. Other platforms may require special attention for devices.
+- HID devices such as the PS3 guitars and drums will most likely work on macOS, but Linux will need a proper HID backend written, as Unity's native input backend there uses SDL instead of HID.
+- Xbox 360/One guitars on macOS will never be usable unless a new driver is made for them, or if there's some way to interact with them on a lower level without any special drivers.
 
 ## TODO
 
