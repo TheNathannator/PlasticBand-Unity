@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.PackageManager;
@@ -8,254 +9,264 @@ using UnityEngine;
 
 public class BuildPackageWindow : EditorWindow
 {
-    [MenuItem("Window/Build/Build Package", false, 2100)]
+    [MenuItem("Window/PlasticBand/Build Package", isValidateFunction: false, priority: 2100)]
     public static void Init()
     {
-        GetWindow<BuildPackageWindow>();
+        GetWindow<BuildPackageWindow>("Build Package", focus: true);
+    }
+
+    enum BuildStatus
+    {
+        Idle = 0,
+        Starting,
+        Running,
+        CopyFiles,
+        RemoveIgnored,
+        Package,
+        DeleteTemp,
+        Complete,
+        Error
     }
 
     const string packagePath = "Packages/com.thenathannator.plasticband";
     string outputPath_GUI;
     string outputPath;
     string tempDir;
-    bool startBuild;
-    Task copyTask;
-    Task removeIgnoredTask;
-    Task deleteTask;
-    PackRequest packRequest;
+    Task buildTask;
+    PackRequest packTask;
+    EventWaitHandle packCompleted = new EventWaitHandle(false, EventResetMode.AutoReset);
+    BuildStatus status;
 
     void OnGUI()
     {
         outputPath_GUI = EditorGUILayout.TextField("Output Path", outputPath_GUI);
-        if (GUILayout.Button("Build") && !startBuild && copyTask == null && removeIgnoredTask == null && deleteTask == null && packRequest == null)
+        if (GUILayout.Button("Build") && status == BuildStatus.Idle)
         {
             outputPath = outputPath_GUI;
-            startBuild = true;
+            status = BuildStatus.Starting;
         }
 
-        if (deleteTask != null)
+        switch (status)
         {
-            GUILayout.Label("Waiting for temp folder to be deleted...");
-        }
-        else if (startBuild)
-        {
-            GUILayout.Label("Starting build...");
-        }
-        else if (copyTask != null)
-        {
-            GUILayout.Label("Copying package files to temp directory...");
-        }
-        else if (removeIgnoredTask != null)
-        {
-            GUILayout.Label("Removing \"Ignored\" folders...");
-        }
-        else if (packRequest != null)
-        {
-            GUILayout.Label("Creating package...");
+            case BuildStatus.Starting:
+                GUILayout.Label("Starting build...");
+                break;
+            case BuildStatus.Running:
+                GUILayout.Label("Building...");
+                break;
+            case BuildStatus.DeleteTemp:
+                GUILayout.Label("Deleting temp folder...");
+                break;
+            case BuildStatus.CopyFiles:
+                GUILayout.Label("Copying package files to temp directory...");
+                break;
+            case BuildStatus.RemoveIgnored:
+                GUILayout.Label("Removing \"Ignored\" folders...");
+                break;
+            case BuildStatus.Package:
+                GUILayout.Label("Creating package...");
+                break;
+            case BuildStatus.Complete:
+                GUILayout.Label("Success!");
+                break;
+            case BuildStatus.Error:
+                GUILayout.Label("Error!");
+                break;
+            default:
+                break;
         }
     }
 
     void Update()
     {
-        // Don't start while the delete task is running
-        if (deleteTask != null)
+        switch (status)
         {
-            if (deleteTask.IsCompleted)
-            {
-                if (deleteTask.IsFaulted)
-                {
-                    Debug.LogError("Deleting temp directory failed!\n" + UnrollAggregateException(deleteTask.Exception));
-                }
-                deleteTask = null;
-            }
-        }
-        // Start the build process
-        else if (startBuild)
-        {
-            try
-            {
-                if (!Directory.Exists(outputPath))
-                {
-                    throw new DirectoryNotFoundException("Output path must be a directory!");
-                }
-
+            case BuildStatus.Starting:
+                EditorApplication.LockReloadAssemblies();
+                status = BuildStatus.Running;
                 tempDir = Path.Combine(outputPath, "buildTemp");
-                copyTask = CopyDirectory(Path.GetFullPath(packagePath), tempDir);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError("Error while starting copy!\n" + ex);
-            }
-            finally
-            {
-                startBuild = false;
-            }
-        }
-        // Wait until copy task is done
-        else if (copyTask != null && copyTask.IsCompleted)
-        {
-            try
-            {
-                if (!copyTask.IsFaulted)
-                {
-                    removeIgnoredTask = RemoveIgnored(tempDir);
-                }
-                else
-                {
-                    Debug.LogError("Copying to temp directory failed!\n" + UnrollAggregateException(copyTask.Exception));
-                    deleteTask = DeleteDirectory(tempDir);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError("Error while starting \"Ignore\" removal task!\n" + ex);
-                deleteTask = DeleteDirectory(tempDir);
-            }
-            finally
-            {
-                copyTask = null;
-            }
-        }
-        // Wait until remove task is done
-        else if (removeIgnoredTask != null && removeIgnoredTask.IsCompleted)
-        {
-            try
-            {
-                if (!removeIgnoredTask.IsFaulted)
+                buildTask = BuildPackage();
+                break;
+
+            case BuildStatus.Package:
+                if (packTask == null)
                 {
                     string packOutput = Path.Combine(outputPath, "Builds");
-                    Debug.Log($"Creating package for {tempDir} at {packOutput}");
-                    packRequest = Client.Pack(tempDir, packOutput);
+                    Debug.Log($"Creating package in {packOutput}");
+                    packTask = Client.Pack(tempDir, packOutput);
                 }
-                else
+
+                if (packTask.IsCompleted)
+                    packCompleted.Set();
+                break;
+
+            case BuildStatus.Complete:
+                string message;
+                switch (packTask.Status)
                 {
-                    Debug.LogError("Removing \"Ignored\" folders failed!\n" + UnrollAggregateException(removeIgnoredTask.Exception));
-                    deleteTask = DeleteDirectory(tempDir);
+                    case StatusCode.Success:
+                        message = $"Successfully packed!\nTarball has been output to: {packTask.Result.tarballPath}";
+                        Debug.Log(message);
+                        break;
+
+                    case StatusCode.Failure:
+                        message = $"Failed to pack!\nMessage: {packTask.Error?.message ?? "(Not given)"}\nError code: {packTask.Error?.errorCode ?? ErrorCode.Unknown}";
+                        Debug.LogError(message);
+                        break;
+
+                    default:
+                        message = $"Unhandled status code: {packTask.Status}";
+                        Debug.LogError(message);
+                        break;
                 }
+                EditorUtility.DisplayDialog("Build Result", message, "OK");
+                ResetState();
+                break;
+
+            case BuildStatus.Error:
+                string errorMessage = null;
+                if (buildTask.IsFaulted)
+                {
+                    // The build task failed, get its exception message
+                    var exception = buildTask.Exception;
+                    // Only display inner exception if only one occured
+                    errorMessage = exception.InnerExceptions.Count < 2
+                        ? $"An error occured!\n{exception.InnerException}"
+                        : $"An error occured!\n{exception}";
+                }
+                if (string.IsNullOrWhiteSpace(errorMessage))
+                    errorMessage = "An unknown error occured!"; // Default message if none was provided
+
+                Debug.LogError(errorMessage);
+                EditorUtility.DisplayDialog("Build Error", errorMessage, "OK");
+                ResetState();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    void ResetState()
+    {
+        status = BuildStatus.Idle;
+        packTask = null;
+        buildTask = null;
+        outputPath = null;
+        tempDir = null;
+        EditorApplication.UnlockReloadAssemblies();
+    }
+
+    Task BuildPackage()
+    {
+        return Task.Run(() => {
+            BuildStatus finalStatus = BuildStatus.Error;
+            try
+            {
+                // Don't attempt if output path doesn't exist
+                if (!Directory.Exists(outputPath))
+                    throw new DirectoryNotFoundException("Output path must be a directory!");
+
+                // Ensure temporary directory is removed
+                if (Directory.Exists(tempDir))
+                {
+                    status = BuildStatus.DeleteTemp;
+                    DeleteDirectory(tempDir);
+                }
+
+                // Copy files to temporary directory
+                status = BuildStatus.CopyFiles;
+                CopyDirectory(Path.GetFullPath(packagePath), tempDir);
+
+                // Remove all folders named "Ignored", along with their contents
+                status = BuildStatus.RemoveIgnored;
+                RemoveIgnored(tempDir);
+
+                // Start packaging and wait for it to complete
+                status = BuildStatus.Package;
+                packCompleted.WaitOne();
+                finalStatus = BuildStatus.Complete;
             }
             catch (Exception ex)
             {
-                Debug.LogError("Error while starting pack request!\n" + ex);
-                deleteTask = DeleteDirectory(tempDir);
+                Debug.LogError($"Error while building: {ex}");
+                finalStatus = BuildStatus.Error;
+                throw;
             }
             finally
             {
-                removeIgnoredTask = null;
+                // Remove temporary directory
+                status = BuildStatus.DeleteTemp;
+                DeleteDirectory(tempDir);
+
+                // Set final status
+                status = finalStatus;
             }
-        }
-        // Wait until packaging is done
-        else if (packRequest != null && packRequest.IsCompleted)
+        });
+    }
+
+    void CopyDirectory(string sourceDir, string targetDir)
+    {
+        Debug.Log($"Copying files from {sourceDir} to temp directory {targetDir}");
+        // Don't attempt if source directory doesn't exist
+        if (!Directory.Exists(sourceDir))
+            throw new DirectoryNotFoundException("Could not find source folder!");
+
+        // Ensure target directory exists
+        if (!Directory.Exists(targetDir))
         {
-            string message;
-            if (packRequest.Status == StatusCode.Success)
+            Directory.CreateDirectory(targetDir);
+        }
+
+        // Copy everything from the source directory to the target directory
+        var dirInfo = new DirectoryInfo(sourceDir);
+        foreach (var fileInfo in dirInfo.EnumerateFiles("*.*", SearchOption.AllDirectories))
+        {
+            string path = fileInfo.FullName;
+            string dir = fileInfo.Directory.FullName;
+            string newDir;
+            if (dir.Length > sourceDir.Length)
             {
-                message = "Successfully packed!\nTarball has been output to " + packRequest.Result.tarballPath;
-            }
-            else if (packRequest.Status == StatusCode.Failure)
-            {
-                if (packRequest.Error == null) // Thanks Unity
+                string shortDir = dir.Substring(sourceDir.Length + 1);
+                newDir = Path.Combine(targetDir, shortDir);
+                if (!Directory.Exists(newDir))
                 {
-                    // A domain reload occured, ignore
-                    packRequest = null;
-                    return;
-                }
-                else
-                {
-                    message = "Failed to pack!\nMessage: " + packRequest.Error.message + "\nError code: " + packRequest.Error.errorCode;
+                    Debug.Log($"Creating directory {newDir}");
+                    Directory.CreateDirectory(newDir);
                 }
             }
             else
             {
-                message = "Unhandled status code! " + packRequest.Status;
+                newDir = targetDir;
             }
 
-            EditorUtility.DisplayDialog("Build Result", message, "OK");
-
-            packRequest = null;
-            deleteTask = DeleteDirectory(tempDir);
+            string newPath = Path.Combine(newDir, fileInfo.Name);
+            Debug.Log($"Copying from {path} to {newPath}");
+            File.Copy(path, newPath, true);
         }
     }
 
-    Task CopyDirectory(string copyFrom, string copyTo)
+    void DeleteDirectory(string directory)
     {
-        Debug.Log($"Copying package files from {copyFrom} to temp directory {copyTo}");
-        return Task.Run(() => {
-            if (!Directory.Exists(copyFrom))
-            {
-                throw new DirectoryNotFoundException("Could not find package folder!");
-            }
+        // Don't attempt to delete a non-existent directory
+        if (!Directory.Exists(directory))
+            return;
 
-            if (!Directory.Exists(copyTo))
-            {
-                Directory.CreateDirectory(copyTo);
-            }
-
-            var dirInfo = new DirectoryInfo(copyFrom);
-            foreach (var fileInfo in dirInfo.EnumerateFiles("*.*", SearchOption.AllDirectories))
-            {
-                string path = fileInfo.FullName;
-                string dir = fileInfo.Directory.FullName;
-                string newDir;
-                if (dir.Length > copyFrom.Length)
-                {
-                    string shortDir = dir.Substring(copyFrom.Length + 1);
-                    newDir = Path.Combine(copyTo, shortDir);
-                    if (!Directory.Exists(newDir))
-                    {
-                        Debug.Log($"Creating directory {newDir}");
-                        Directory.CreateDirectory(newDir);
-                    }
-                }
-                else
-                {
-                    newDir = copyTo;
-                }
-
-                string newPath = Path.Combine(newDir, fileInfo.Name);
-                Debug.Log($"Copying from {path} to {newPath}");
-                File.Copy(path, newPath, true);
-            }
-        });
+        Debug.Log($"Removing folder {directory}");
+        Directory.Delete(directory, true);
     }
 
-    Task DeleteDirectory(string directory)
-    {
-        Debug.Log($"Removing temp folder {directory}");
-        return Task.Run(() => {
-            if (!Directory.Exists(directory))
-            {
-                return;
-            }
-
-            Directory.Delete(directory, true);
-        });
-    }
-
-    Task RemoveIgnored(string directory)
+    void RemoveIgnored(string directory)
     {
         Debug.Log($"Removing \"Ignored\" folders from {directory}");
-        // Ensure all active file handles are disposed
-        GC.Collect();
-        return Task.Run(() => {
-            foreach (string path in Directory.EnumerateDirectories(directory, "Ignored", SearchOption.AllDirectories))
-            {
-                Debug.Log($"Deleting directory {path}");
-                Directory.Delete(path, true);
-                string noEndSeparator = path.TrimEnd(Path.DirectorySeparatorChar);
-                string metaPath = noEndSeparator + ".meta";
-                Debug.Log($"Deleting file {metaPath}");
-                File.Delete(metaPath);
-            }
-        });
-    }
-
-    Exception UnrollAggregateException(AggregateException ex)
-    {
-        if (ex.InnerExceptions.Count < 2)
+        foreach (string path in Directory.EnumerateDirectories(directory, "Ignored", SearchOption.AllDirectories))
         {
-            return ex.InnerException;
+            Debug.Log($"Deleting directory {path}");
+            Directory.Delete(path, true);
+            string noEndSeparator = path.TrimEnd(Path.DirectorySeparatorChar);
+            string metaPath = noEndSeparator + ".meta";
+            Debug.Log($"Deleting file {metaPath}");
+            File.Delete(metaPath);
         }
-
-        return ex;
     }
 }
