@@ -26,11 +26,9 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "strumDown", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x81,maxValue=0xFF,nullValue=0x80")]
         public byte strumBar;
 
-        // TODO: See if any normalization is needed
-        [InputControl(name = "whammy", layout = "Axis")]
+        [InputControl(name = "whammy", layout = "Axis", parameters = "normalize,normalizeMin=0.5,normalizeMax=1,normalizeZero=0.5")]
         public byte whammy;
 
-        // TODO: See if any additional normalization is needed
         [InputControl(name = "tilt", layout = "Axis", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public byte tilt;
 
@@ -47,15 +45,13 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "white2", layout = "Button", bit = 8)]
         [InputControl(name = "white3", layout = "Button", bit = 9)]
 
-        // TODO: This section of the buttons may be incorrect, unused buttons and the original names
-        // (from the DS4 state in the InputSystem) are preserved as comments for future reference
-        [InputControl(name = "ghtvButton", layout = "Button", bit = 10)] // leftTriggerButton
-        // [InputControl(name = "rightTriggerButton", layout = "Button", bit = 11)]
-        [InputControl(name = "dpadCenter", layout = "Button", bit = 12)] // select
-        // [InputControl(name = "start", layout = "Button", bit = 13)]
-        [InputControl(name = "start", layout = "Button", bit = 14)] // leftStickPress
-        [InputControl(name = "select", layout = "Button", bit = 15)] // rightStickPress
+        [InputControl(name = "startButton", layout = "Button", bit = 13)]
+        [InputControl(name = "ghtvButton", layout = "Button", bit = 14)]
+        [InputControl(name = "selectButton", layout = "Button", bit = 15)]
         public ushort buttons1;
+
+        [InputControl(name = "dpadCenter", layout = "Button", bit = 0)]
+        public byte button2;
 
         public fixed byte unused2[57];
     }
