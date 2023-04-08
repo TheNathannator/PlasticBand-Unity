@@ -17,7 +17,7 @@ namespace PlasticBand.Controls
     public class GuitarHeroSliderControl : ButtonControl
     {
         /// <summary>
-        /// Registers <see cref="GuitarHeroSliderSegment"/> to the input system.
+        /// Registers <see cref="GuitarHeroSliderControl"/> to the input system.
         /// </summary>
         internal static void Initialize()
         {
