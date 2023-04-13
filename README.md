@@ -114,7 +114,9 @@ Devices to support:
     - [x] Controls and velocity
     - [ ] Pair velocities to hits
   - [ ] PS4
-  - [ ] Wii
+  - [x] Wii
+    - [x] Controls and velocity
+    - [ ] Pair velocities to hits
 - Guitar Hero Kits
   - [x] Xbox 360
     - [x] Controls and velocity

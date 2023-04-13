@@ -13,10 +13,10 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
-    /// The state format for PS3 4-lane drumkits.
+    /// The state format for PS3 and Wii 4-lane drumkits.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3FourLaneDrumkitState : IInputStateTypeInfo
+    internal unsafe struct PS3WiiFourLaneDrumkitState : IInputStateTypeInfo
     {
         const string kPadParameters = "redBit=2,yellowBit=3,blueBit=0,greenBit=1,padBit=10,cymbalBit=11";
         public FourCC format => HidDefinitions.InputFormat;
@@ -76,7 +76,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS3 4-lane drumkit.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3FourLaneDrumkitState), displayName = "Harmonix Drum Kit for PlayStation(R)3")]
+    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState), displayName = "Harmonix Drum Kit for PlayStation(R)3")]
     public class PS3FourLaneDrumkit : FourLaneDrumkit
     {
         /// <summary>
@@ -104,6 +104,73 @@ namespace PlasticBand.Devices
 
         /// <summary>
         /// Sets this device as the current <see cref="PS3FourLaneDrumkit"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        /// <summary>
+        /// Processes when this device is added to the system.
+        /// </summary>
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        /// <summary>
+        /// Processes when this device is removed from the system.
+        /// </summary>
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
+        }
+    }
+
+    /// <summary>
+    /// A Wii 4-lane drumkit.
+    /// </summary>
+    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState), displayName = "Harmonix Drum Kit for Nintendo Wii")]
+    public class WiiFourLaneDrumkit : FourLaneDrumkit
+    {
+        /// <summary>
+        /// The current <see cref="WiiFourLaneDrumkit"/>.
+        /// </summary>
+        public static new WiiFourLaneDrumkit current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="WiiFourLaneDrumkit"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<WiiFourLaneDrumkit> all => s_AllDevices;
+        private static readonly List<WiiFourLaneDrumkit> s_AllDevices = new List<WiiFourLaneDrumkit>();
+
+        /// <summary>
+        /// Registers <see cref="WiiFourLaneDrumkit"/> to the input system.
+        /// </summary>
+        internal new static void Initialize()
+        {
+            // RB1
+            InputSystem.RegisterLayout<WiiFourLaneDrumkit>(matches: new InputDeviceMatcher()
+                .WithInterface("HID")
+                .WithCapability("vendorId", 0x1BAD)
+                .WithCapability("productId", 0x0005)
+            );
+
+            // RB2 and later
+            InputSystem.RegisterLayout<WiiFourLaneDrumkit>(matches: new InputDeviceMatcher()
+                .WithInterface("HID")
+                .WithCapability("vendorId", 0x1BAD)
+                .WithCapability("productId", 0x3110)
+            );
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="WiiFourLaneDrumkit"/>.
         /// </summary>
         public override void MakeCurrent()
         {
