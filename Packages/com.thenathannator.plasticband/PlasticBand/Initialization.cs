@@ -55,6 +55,8 @@ namespace PlasticBand
             // Pro Guitars
             ProGuitar.Initialize();
             XInputProGuitar.Initialize();
+            PS3ProGuitar.Initialize();
+            WiiProGuitar.Initialize();
 
             // 4-lane drumkits
             FourLaneDrumkit.Initialize();

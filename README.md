@@ -134,8 +134,12 @@ Devices to support:
 - Rock Band Pro Guitars
   - [x] Xbox 360
     - Some things are missing but either that's outside of our control, or it doesn't matter very much and just needs a bit more research.
-  - [ ] PS3
-  - [ ] Wii
+  - [x] PS3
+    - [x] Controls
+    - [ ] Auto-calibration sensors
+  - [x] Wii
+    - [x] Controls
+    - [ ] Auto-calibration sensors
 
 Unity will automatically restore from the latest Git commit upon regaining focus.
 

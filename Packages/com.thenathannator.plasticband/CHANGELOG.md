@@ -11,6 +11,7 @@ Dates are relative to UTC.
 ### Added
 
 - Wii Rock Band guitars are now supported.
+- PS3 and Wii Pro Guitars are now supported.
 
 ### Fixes
 
