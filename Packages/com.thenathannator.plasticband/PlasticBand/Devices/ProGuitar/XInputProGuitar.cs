@@ -39,27 +39,38 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "buttonNorth", layout = "Button", bit = 15, displayName = "Y")]
         public ushort buttons;
 
-        [InputControl(name = "fret1", layout = "Integer", format = "BIT", offset = 2, bit = 0,  sizeInBits = 5)]
-        [InputControl(name = "fret2", layout = "Integer", format = "BIT", offset = 2, bit = 5,  sizeInBits = 5)]
-        [InputControl(name = "fret3", layout = "Integer", format = "BIT", offset = 2, bit = 10, sizeInBits = 5)]
-        [InputControl(name = "fret4", layout = "Integer", format = "BIT", offset = 3, bit = 0,  sizeInBits = 5)]
-        [InputControl(name = "fret5", layout = "Integer", format = "BIT", offset = 3, bit = 5,  sizeInBits = 5)]
-        [InputControl(name = "fret6", layout = "Integer", format = "BIT", offset = 3, bit = 10, sizeInBits = 5)]
-        public fixed ushort frets[2];
+        [InputControl(name = "fret1", layout = "Integer", format = "BIT", bit = 0,  sizeInBits = 5)]
+        [InputControl(name = "fret2", layout = "Integer", format = "BIT", bit = 5,  sizeInBits = 5)]
+        [InputControl(name = "fret3", layout = "Integer", format = "BIT", bit = 10, sizeInBits = 5)]
+        public ushort frets1;
 
-        [InputControl(name = "velocity1", layout = "Axis", format = "BIT", offset = 6,  bit = 0, sizeInBits = 7)]
-        [InputControl(name = "velocity2", layout = "Axis", format = "BIT", offset = 7,  bit = 0, sizeInBits = 7)]
-        [InputControl(name = "velocity3", layout = "Axis", format = "BIT", offset = 8,  bit = 0, sizeInBits = 7)]
-        [InputControl(name = "velocity4", layout = "Axis", format = "BIT", offset = 9,  bit = 0, sizeInBits = 7)]
-        [InputControl(name = "velocity5", layout = "Axis", format = "BIT", offset = 10, bit = 0, sizeInBits = 7)]
-        [InputControl(name = "velocity6", layout = "Axis", format = "BIT", offset = 11, bit = 0, sizeInBits = 7)]
+        [InputControl(name = "fret4", layout = "Integer", format = "BIT", bit = 0,  sizeInBits = 5)]
+        [InputControl(name = "fret5", layout = "Integer", format = "BIT", bit = 5,  sizeInBits = 5)]
+        [InputControl(name = "fret6", layout = "Integer", format = "BIT", bit = 10, sizeInBits = 5)]
+        public ushort frets2;
 
-        [InputControl(name = "greenFret", layout = "Button", offset = 6, bit = 7)]
-        [InputControl(name = "redFret", layout = "Button", offset = 7, bit = 7)]
-        [InputControl(name = "yellowFret", layout = "Button", offset = 8, bit = 7)]
-        [InputControl(name = "blueFret", layout = "Button", offset = 9, bit = 7)]
-        [InputControl(name = "orangeFret", layout = "Button", offset = 10, bit = 7)]
-        public fixed byte velocities[6];
+        [InputControl(name = "velocity1", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
+        [InputControl(name = "greenFret", layout = "Button", bit = 7)]
+        public byte velocity1;
+
+        [InputControl(name = "velocity2", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
+        [InputControl(name = "redFret", layout = "Button", bit = 7)]
+        public byte velocity2;
+
+        [InputControl(name = "velocity3", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
+        [InputControl(name = "yellowFret", layout = "Button", bit = 7)]
+        public byte velocity3;
+
+        [InputControl(name = "velocity4", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
+        [InputControl(name = "blueFret", layout = "Button", bit = 7)]
+        public byte velocity4;
+
+        [InputControl(name = "velocity5", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
+        [InputControl(name = "orangeFret", layout = "Button", bit = 7)]
+        public byte velocity5;
+
+        [InputControl(name = "velocity6", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
+        public byte velocity6;
     }
 }
 
