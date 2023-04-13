@@ -113,7 +113,11 @@ Devices to support:
   - [x] PS2/PS3
     - [x] Controls and velocity
     - [ ] Pair velocities to hits
-  - [ ] PS4
+  - [x] PS4
+    - [x] Controls and velocity
+    - [ ] Face buttons (they are currently ignored since it'll be quite a bit of effort to make them register the same as the pads, like how the other kits behave)
+    - [ ] Pair velocities to hits
+    - [ ] PDP drumkit product ID
   - [x] Wii
     - [x] Controls and velocity
     - [ ] Pair velocities to hits

@@ -12,7 +12,7 @@ Dates are relative to UTC.
 
 - Wii Rock Band guitars and drumkits are now supported.
 - PS3 and Wii Pro Guitars are now supported.
-- PS4 Rock Band guitars are now supported.
+- PS4 Rock Band guitars and drumkits are now supported.
 
 ### Fixes
 
