@@ -139,8 +139,12 @@ Devices to support:
   - [x] Xbox 360
     - [x] Controls and velocity
     - [ ] Pair velocities to keypresses
-  - [ ] PS3
-  - [ ] Wii
+  - [x] PS3
+    - [x] Controls and velocity
+    - [ ] Pair velocities to keypresses
+  - [x] Wii
+    - [x] Controls and velocity
+    - [ ] Pair velocities to keypresses
 - Rock Band Pro Guitars
   - [x] Xbox 360
     - Some things are missing but either that's outside of our control, or it doesn't matter very much and just needs a bit more research.
@@ -152,14 +156,8 @@ Devices to support:
     - [ ] Auto-calibration sensors
 - Rock Band MIDI Pro Adapter
   - [x] Xbox 360
-  - [ ] PS3
-    - [x] Pro Guitar mode
-    - [x] Drums mode
-    - [ ] Keys mode
-  - [ ] Wii
-    - [x] Pro Guitar mode
-    - [x] Drums mode
-    - [ ] Keys mode
+  - [x] PS3
+  - [x] Wii
 
 ## License
 
