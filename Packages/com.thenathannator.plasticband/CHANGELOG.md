@@ -11,7 +11,7 @@ Dates are relative to UTC.
 ### Added
 
 - Wii Rock Band guitars and drumkits are now supported.
-- PS3 and Wii Pro Guitars are now supported.
+- PS3 and Wii Pro Guitars are now supported, along with the PS3 and Wii MIDI Pro Adapter in Pro Guitar mode.
 - PS4 Rock Band guitars and drumkits are now supported.
 - The drums mode for the PS3 and Wii MIDI Pro adapters are now supported.
 

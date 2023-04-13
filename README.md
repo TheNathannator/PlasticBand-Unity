@@ -150,6 +150,16 @@ Devices to support:
   - [x] Wii
     - [x] Controls
     - [ ] Auto-calibration sensors
+- Rock Band MIDI Pro Adapter
+  - [x] Xbox 360
+  - [ ] PS3
+    - [x] Pro Guitar mode
+    - [x] Drums mode
+    - [ ] Keys mode
+  - [ ] Wii
+    - [x] Pro Guitar mode
+    - [x] Drums mode
+    - [ ] Keys mode
 
 ## License
 
