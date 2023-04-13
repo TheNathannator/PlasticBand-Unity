@@ -7,12 +7,14 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Lane%20Drums/PS3.md
+
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
     /// The state format for PS3 5-lane drumkits.
     /// </summary>
-    // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-gh-drums.html
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3FiveLaneDrumkitState : IInputStateTypeInfo
     {

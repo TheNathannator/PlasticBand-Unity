@@ -9,6 +9,9 @@ using System.Text;
 using UnityEngine;
 #endif
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/General%20Notes.md#deciphering-pads-and-cymbals
+
 // TODO: Velocity
 // REVIEW/TODO: would using a stateful approach that tracks the previous buttons and
 // only acts on what's different work better with the hardware issues?
@@ -167,9 +170,6 @@ namespace PlasticBand.Controls
         /// </summary>
         public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
         {
-            // A version of this with more detailed comments may be found here:
-            // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/General%20Notes.md
-
             // Read button bits
             int buttons = stateBlock.ReadInt(statePtr);
 #if !PLASTICBAND_DEBUG_CONTROLS // Don't skip processing when debugging, keeps the logic in one place

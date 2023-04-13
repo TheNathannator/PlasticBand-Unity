@@ -7,13 +7,14 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Turntable/PS3.md
+
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
     /// The state format for PS3 DJ Hero turntables.
     /// </summary>
-    // https://github.com/RPCS3/rpcs3/blob/master/rpcs3/Emu/Io/Turntable.cpp
-    // https://github.com/shockdude/DJHtableUtility
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3TurntableState : IInputStateTypeInfo
     {

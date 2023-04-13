@@ -7,12 +7,14 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Pro%20Guitar/Xbox%20360.md
+
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
     /// The state format for XInput Pro Guitar devices.
     /// </summary>
-    // https://dwsk.proboards.com/thread/404/song-standard-advancements
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputProGuitarState : IInputStateTypeInfo
     {

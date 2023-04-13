@@ -9,6 +9,9 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine;
 #endif
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Fret%20Guitar/Guitar%20Hero/General%20Notes.md#touchslider-bar
+
 namespace PlasticBand.Controls
 {
     /// <summary>
@@ -41,7 +44,6 @@ namespace PlasticBand.Controls
         /// <summary>
         /// Lookup for possible values for the slider bar.
         /// </summary>
-        // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/gh5_neck.html
         private static readonly Dictionary<byte, SliderFret> s_SliderLookup = new Dictionary<byte, SliderFret>()
         {
             // TODO: This might not support World Tour guitars yet.

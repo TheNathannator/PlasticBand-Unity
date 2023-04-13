@@ -7,12 +7,14 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/PS3%20and%20Wii.md
+
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
     /// The state format for PS3 4-lane drumkits.
     /// </summary>
-    // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-rockband-drums.html
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3FourLaneDrumkitState : IInputStateTypeInfo
     {

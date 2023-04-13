@@ -6,6 +6,9 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Keytar/Xbox%20360.md
+
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>

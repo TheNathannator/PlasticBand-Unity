@@ -7,13 +7,14 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/6-Fret%20Guitar/PS4.md
+
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
     /// The state format for PS4 GHL devices.
     /// </summary>
-    // https://github.com/Sera486/GHLtarUtility/blob/master/PS4Guitar.cs
-    // It appears this uses a PS4 report format rather than a PS3 one, based on comparing against the DualShock info in the main InputSystem
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS4SixFretGuitarState : IInputStateTypeInfo
     {
@@ -121,7 +122,6 @@ namespace PlasticBand.Devices
         }
 
         // Magic data to be sent periodically to unlock full input data.
-        // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L37
         private static PS3OutputCommand s_PokeCommand = new PS3OutputCommand(
             0x30, // TODO: Determine if this report ID is correct/necessary
             0x02,

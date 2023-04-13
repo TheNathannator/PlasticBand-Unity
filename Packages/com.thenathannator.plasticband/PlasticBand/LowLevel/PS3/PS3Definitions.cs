@@ -4,6 +4,9 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/_Templates/PS3%20Base.md
+
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
@@ -11,7 +14,6 @@ namespace PlasticBand.Devices.LowLevel
     /// Note that this most likely does not reflect the actual PS3 controller input state.
     /// This is meant for use as a base for the states of other PS3 devices, which follow a common report structure.
     /// </summary>
-    // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-controllers.html
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct PS3Gamepad : IInputStateTypeInfo
     {

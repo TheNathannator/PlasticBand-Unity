@@ -7,13 +7,14 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Fret%20Guitar/Rock%20Band/PS3%20and%20Wii.md
+
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
     /// The state format for PS3 Guitar Hero guitars.
     /// </summary>
-    // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-rockband-guitar.html
-    // https://sites.google.com/site/infnorm/rbguitartechnicaldetails
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3RockBandGuitarState : IInputStateTypeInfo
     {

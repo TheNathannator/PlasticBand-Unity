@@ -7,15 +7,14 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/6-Fret%20Guitar/PS3%20and%20Wii%20U.md
+
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
     /// The state format for PS3/Wii U GHL devices.
     /// </summary>
-    // https://github.com/ghlre/GHLtarUtility/blob/master/PS3Guitar.cs
-    // https://github.com/RPCS3/rpcs3/blob/master/rpcs3/Emu/Io/GHLtar.cpp
-    // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-controllers.html for general format
-    // guidance and some additional inputs, as this does follow the same layout as other PS3 controllers
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3WiiUSixFretGuitarState : IInputStateTypeInfo
     {
@@ -133,9 +132,6 @@ namespace PlasticBand.Devices
         /// <summary>
         /// Magic data to be sent periodically to unlock full input data.
         /// </summary>
-        // https://github.com/ghlre/GHLtarUtility/blob/master/PS3Guitar.cs#L104
-        // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L32
-        // https://github.com/Octave13/GHLPokeMachine/blob/master/GHL_Library/GHLPoke.h#L25
         private static PS3OutputCommand s_PokeCommand = new PS3OutputCommand(
             0x02, // TODO: Determine if this report ID is correct/necessary
             0x02,
