@@ -93,7 +93,9 @@ Devices to support:
   - [x] PS3
     - [x] Controls
     - [ ] Auto-calibration sensors
-  - [ ] PS4
+  - [x] PS4
+    - [x] Controls
+    - [ ] Auto-calibration sensors
   - [x] Wii
     - [x] Controls
     - [ ] Auto-calibration sensors
