@@ -95,10 +95,18 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
+            // Drumkit
             InputSystem.RegisterLayout<PS3FourLaneDrumkit>(matches: new InputDeviceMatcher()
                 .WithInterface("HID")
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x0210)
+            );
+
+            // MIDI Pro Adapter
+            InputSystem.RegisterLayout<PS3FourLaneDrumkit>(matches: new InputDeviceMatcher()
+                .WithInterface("HID")
+                .WithCapability("vendorId", 0x12BA)
+                .WithCapability("productId", 0x0218)
             );
         }
 
@@ -166,6 +174,13 @@ namespace PlasticBand.Devices
                 .WithInterface("HID")
                 .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x3110)
+            );
+
+            // MIDI Pro Adapter
+            InputSystem.RegisterLayout<WiiFourLaneDrumkit>(matches: new InputDeviceMatcher()
+                .WithInterface("HID")
+                .WithCapability("vendorId", 0x1BAD)
+                .WithCapability("productId", 0x3118)
             );
         }
 
