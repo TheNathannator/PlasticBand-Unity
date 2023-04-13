@@ -84,11 +84,8 @@ namespace PlasticBand.Devices
         {
             InputSystem.RegisterLayout<PS4SixFretGuitar>(matches: new InputDeviceMatcher()
                 .WithInterface("HID")
-                // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ids.h
-                // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L196
-                // Names retrieved from https://www.pcilookup.com
-                .WithCapability("vendorId", 0x1430) // RedOctane
-                .WithCapability("productId", 0x07BB) // (Not registered)
+                .WithCapability("vendorId", 0x1430)
+                .WithCapability("productId", 0x07BB)
             );
         }
 

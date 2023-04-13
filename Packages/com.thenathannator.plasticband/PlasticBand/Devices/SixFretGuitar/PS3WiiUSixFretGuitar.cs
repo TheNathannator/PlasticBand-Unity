@@ -92,11 +92,8 @@ namespace PlasticBand.Devices
         {
             InputSystem.RegisterLayout<PS3WiiUSixFretGuitar>(matches: new InputDeviceMatcher()
                 .WithInterface("HID")
-                // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ids.h
-                // https://github.com/evilynux/hid-ghlive-dkms/blob/main/hid-ghlive/src/hid-ghlive.c#L194
-                // Names retrieved from https://www.pcilookup.com
-                .WithCapability("vendorId", 0x12BA) // "Licensed by Sony Computer Entertainment America"
-                .WithCapability("productId", 0x074B) // (Not registered)
+                .WithCapability("vendorId", 0x12BA)
+                .WithCapability("productId", 0x074B)
             );
         }
 

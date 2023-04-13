@@ -102,9 +102,8 @@ namespace PlasticBand.Devices
         {
             InputSystem.RegisterLayout<PS3GuitarHeroGuitar>(matches: new InputDeviceMatcher()
                 .WithInterface("HID")
-                // Names retrieved from https://www.pcilookup.com
-                .WithCapability("vendorId", 0x12BA) // "Licensed by Sony Computer Entertainment America"
-                .WithCapability("productId", 0x0100) // "RedOctane Guitar for PlayStation(R)3"
+                .WithCapability("vendorId", 0x12BA)
+                .WithCapability("productId", 0x0100)
             );
         }
 

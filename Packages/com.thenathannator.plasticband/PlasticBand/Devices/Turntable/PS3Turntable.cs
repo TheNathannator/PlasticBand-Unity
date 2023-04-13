@@ -96,10 +96,8 @@ namespace PlasticBand.Devices
         {
             InputSystem.RegisterLayout<PS3Turntable>(matches: new InputDeviceMatcher()
                 .WithInterface("HID")
-                // https://github.com/shockdude/DJHtableUtility/blob/turntable/MainWindow.cs#L361
-                // Names retrieved from https://www.pcilookup.com
-                .WithCapability("vendorId", 0x12BA) // "Licensed by Sony Computer Entertainment America"
-                .WithCapability("productId", 0x0140) // (Not registered)
+                .WithCapability("vendorId", 0x12BA)
+                .WithCapability("productId", 0x0140)
             );
         }
 

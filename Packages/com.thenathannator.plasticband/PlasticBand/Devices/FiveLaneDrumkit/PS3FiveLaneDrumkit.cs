@@ -97,10 +97,8 @@ namespace PlasticBand.Devices
         {
             InputSystem.RegisterLayout<PS3FiveLaneDrumkit>(matches: new InputDeviceMatcher()
                 .WithInterface("HID")
-                // https://sanjay900.github.io/guitar-configurator/controller-reverse-engineering/ps3-gh-drums.html#vid-and-pid
-                // Names retrieved from https://www.pcilookup.com
-                .WithCapability("vendorId", 0x12BA) // "Licensed by Sony Computer Entertainment America"
-                .WithCapability("productId", 0x0120) // "RedOctane Drum Kit for PlayStation(R)3"
+                .WithCapability("vendorId", 0x12BA)
+                .WithCapability("productId", 0x0120)
             );
         }
 
