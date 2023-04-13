@@ -75,6 +75,8 @@ To update, go into Packages > `package-lock.json` and remove the `hash` field fr
 }
 ```
 
+Unity will automatically restore from the latest Git commit upon regaining focus.
+
 ## TODO List
 
 Devices to support:
@@ -148,8 +150,6 @@ Devices to support:
   - [x] Wii
     - [x] Controls
     - [ ] Auto-calibration sensors
-
-Unity will automatically restore from the latest Git commit upon regaining focus.
 
 ## License
 
