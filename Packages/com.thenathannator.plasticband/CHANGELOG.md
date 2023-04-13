@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## Unreleased
+
+### Fixes
+
+- Fixed the layouts for PS3 drumkits and turntables not being initialized.
+
 ## [0.1.2] - 2023/08/04
 
 Minor bugfix release for other issues present in v0.1.

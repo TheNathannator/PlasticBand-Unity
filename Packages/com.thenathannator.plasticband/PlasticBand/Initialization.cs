@@ -58,14 +58,17 @@ namespace PlasticBand
             // 4-lane drumkits
             FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
+            PS3FourLaneDrumkit.Initialize();
 
             // 5-lane drumkits
             FiveLaneDrumkit.Initialize();
             XInputFiveLaneDrumkit.Initialize();
+            PS3FiveLaneDrumkit.Initialize();
 
             // Turntables
             Turntable.Initialize();
             XInputTurntable.Initialize();
+            PS3Turntable.Initialize();
 
             // Keytars
             Keytar.Initialize();
