@@ -8,6 +8,10 @@ Dates are relative to UTC.
 
 ## Unreleased
 
+### Added
+
+- Wii Rock Band guitars are now supported.
+
 ### Fixes
 
 - Fixed the layouts for PS3 drumkits and turntables not being initialized.

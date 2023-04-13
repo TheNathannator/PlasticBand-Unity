@@ -94,7 +94,9 @@ Devices to support:
     - [x] Controls
     - [ ] Auto-calibration sensors
   - [ ] PS4
-  - [ ] Wii
+  - [x] Wii
+    - [x] Controls
+    - [ ] Auto-calibration sensors
 - 6-Fret Guitars
   - [x] Xbox 360
   - [ ] Xbox One

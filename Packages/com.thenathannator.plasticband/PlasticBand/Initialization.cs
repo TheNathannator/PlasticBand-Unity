@@ -44,6 +44,7 @@ namespace PlasticBand
             XInputGuitarAlternate.Initialize();
             PS3GuitarHeroGuitar.Initialize();
             PS3RockBandGuitar.Initialize();
+            WiiRockBandGuitar.Initialize();
 
             // 6-fret Guitars
             SixFretGuitar.Initialize();
