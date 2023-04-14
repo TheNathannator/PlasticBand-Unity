@@ -32,13 +32,17 @@ namespace PlasticBand
             MaskButtonControl.Initialize();
 
             // 5-fret guitars
-            GuitarHeroSliderControl.Initialize();
             FiveFretGuitar.Initialize();
+
+            // Guitar Hero guitars
+            GuitarHeroSliderControl.Initialize();
             GuitarHeroGuitar.Initialize();
-            RockBandGuitar.Initialize();
-            XInputGuitar.Initialize();
             XInputGuitarAlternate.Initialize();
             PS3GuitarHeroGuitar.Initialize();
+
+            // Rock Band guitars
+            RockBandGuitar.Initialize();
+            XInputGuitar.Initialize();
             PS3RockBandGuitar.Initialize();
             WiiRockBandGuitar.Initialize();
 
