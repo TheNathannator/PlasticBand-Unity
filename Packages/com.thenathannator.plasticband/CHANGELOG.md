@@ -10,11 +10,17 @@ Dates are relative to UTC.
 
 ### Added
 
+Instrument support:
+
 - Wii Rock Band guitars and drumkits are now supported.
 - PS3 and Wii Pro Guitars are now supported, along with the PS3 and Wii MIDI Pro Adapter in Pro Guitar mode.
 - PS4 Rock Band guitars and drumkits are now supported.
 - The drums mode for the PS3 and Wii MIDI Pro adapters are now supported.
 - PS3 and Wii Pro Keyboards are now supported, along with the PS3 and Wii MIDI Pro Adapter in keys mode.
+
+Layout controls:
+
+- A new ButtonAxisPair control type has been added, which allows an axis and a button to function as a single axis/button.
 
 ### Fixes
 

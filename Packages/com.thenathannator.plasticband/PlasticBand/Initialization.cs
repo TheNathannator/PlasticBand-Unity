@@ -32,6 +32,7 @@ namespace PlasticBand
         internal static void Initialize()
         {
             // Controls
+            ButtonAxisPairControl.Initialize();
             MaskButtonControl.Initialize();
             GuitarHeroSliderControl.Initialize();
             FourLanePadsControl.Initialize();
