@@ -28,6 +28,7 @@ Layout controls:
 - Fixed the layouts for Xbox 360 Pro Guitars having some incorrect offsets.
 - Fixed the layouts for Xbox 360 keytars potentially having incorrect offsets.
 - Fixed the solo fret controls on PS3/Wii Rock Band guitars having the wrong offset.
+- Rock Band keyboards now have (hopefully) the correct normalization applied to the analog pedal input.
 
 ## [0.1.2] - 2023/08/04
 

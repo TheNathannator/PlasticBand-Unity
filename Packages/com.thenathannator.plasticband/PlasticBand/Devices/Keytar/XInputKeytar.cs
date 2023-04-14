@@ -87,7 +87,8 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "touchStrip", layout = "Axis", format = "BIT", sizeInBits = 7)]
         public byte overdrive;
 
-        [InputControl(name = "analogPedal", layout = "Axis", format = "BIT", sizeInBits = 7)]
+        // TODO: The normalization here needs verification
+        [InputControl(name = "analogPedal", layout = "Axis", format = "BIT", sizeInBits = 7, parameters = "normalize,normalizeMin=1,normalizeMax=0,normalizeZero=1")]
         [InputControl(name = "digitalPedal", layout = "Button", bit = 7)]
         public byte pedal;
     }
