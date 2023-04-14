@@ -4,10 +4,6 @@ using PlasticBand.LowLevel;
 using UnityEditor;
 using UnityEngine;
 
-#if PLASTICBAND_DEBUG_HIGH_POLL
-using UnityEngine.InputSystem;
-#endif
-
 namespace PlasticBand
 {
     /// <summary>
@@ -31,13 +27,12 @@ namespace PlasticBand
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         internal static void Initialize()
         {
-            // Controls
+            // General controls
             ButtonAxisPairControl.Initialize();
             MaskButtonControl.Initialize();
-            GuitarHeroSliderControl.Initialize();
-            FourLanePadsControl.Initialize();
 
-            // 5-fret Guitars
+            // 5-fret guitars
+            GuitarHeroSliderControl.Initialize();
             FiveFretGuitar.Initialize();
             GuitarHeroGuitar.Initialize();
             RockBandGuitar.Initialize();
@@ -47,7 +42,7 @@ namespace PlasticBand
             PS3RockBandGuitar.Initialize();
             WiiRockBandGuitar.Initialize();
 
-            // 6-fret Guitars
+            // 6-fret guitars
             SixFretGuitar.Initialize();
             XInputGuitarGHL.Initialize();
             PS3WiiUSixFretGuitar.Initialize();
@@ -60,6 +55,7 @@ namespace PlasticBand
             WiiProGuitar.Initialize();
 
             // 4-lane drumkits
+            FourLanePadsControl.Initialize();
             FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
             PS3FourLaneDrumkit.Initialize();
@@ -81,10 +77,6 @@ namespace PlasticBand
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             // XInput layout fix-ups for devices that require state information to determine the true type
             XInputLayoutFixup.Initialize();
-#endif
-
-#if PLASTICBAND_DEBUG_HIGH_POLL
-            InputSystem.pollingFrequency = 1000;
 #endif
         }
     }
