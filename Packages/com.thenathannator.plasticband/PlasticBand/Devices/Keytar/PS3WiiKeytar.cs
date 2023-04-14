@@ -107,73 +107,6 @@ namespace PlasticBand.Devices.LowLevel
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// A Wii keytar controller.
-    /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiKeytarState), displayName = "Harmonix Pro Keyboard for Nintendo Wii")]
-    internal class WiiKeytar : Keytar
-    {
-        /// <summary>
-        /// The current <see cref="WiiKeytar"/>.
-        /// </summary>
-        public static new WiiKeytar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="WiiKeytar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<WiiKeytar> all => s_AllDevices;
-        private static readonly List<WiiKeytar> s_AllDevices = new List<WiiKeytar>();
-
-        /// <summary>
-        /// Registers <see cref="WiiKeytar"/> to the input system.
-        /// </summary>
-        internal new static void Initialize()
-        {
-            // Keytar
-            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x3330)
-            );
-
-            // MIDI Pro Adapter
-            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x3338)
-            );
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="WiiKeytar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        /// <summary>
-        /// Processes when this device is added to the system.
-        /// </summary>
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        /// <summary>
-        /// Processes when this device is removed from the system.
-        /// </summary>
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
-        }
-    }
-
-    /// <summary>
     /// A PS3 keytar controller.
     /// </summary>
     [InputControlLayout(stateType = typeof(PS3WiiKeytarState), displayName = "Harmonix Pro Keyboard for PlayStation(R)3")]
@@ -212,6 +145,73 @@ namespace PlasticBand.Devices
 
         /// <summary>
         /// Sets this device as the current <see cref="PS3Keytar"/>.
+        /// </summary>
+        public override void MakeCurrent()
+        {
+            base.MakeCurrent();
+            current = this;
+        }
+
+        /// <summary>
+        /// Processes when this device is added to the system.
+        /// </summary>
+        protected override void OnAdded()
+        {
+            base.OnAdded();
+            s_AllDevices.Add(this);
+        }
+
+        /// <summary>
+        /// Processes when this device is removed from the system.
+        /// </summary>
+        protected override void OnRemoved()
+        {
+            base.OnRemoved();
+            s_AllDevices.Remove(this);
+            if (current == this)
+                current = null;
+        }
+    }
+
+    /// <summary>
+    /// A Wii keytar controller.
+    /// </summary>
+    [InputControlLayout(stateType = typeof(PS3WiiKeytarState), displayName = "Harmonix Pro Keyboard for Nintendo Wii")]
+    internal class WiiKeytar : Keytar
+    {
+        /// <summary>
+        /// The current <see cref="WiiKeytar"/>.
+        /// </summary>
+        public static new WiiKeytar current { get; private set; }
+
+        /// <summary>
+        /// A collection of all <see cref="WiiKeytar"/>s currently connected to the system.
+        /// </summary>
+        public new static IReadOnlyList<WiiKeytar> all => s_AllDevices;
+        private static readonly List<WiiKeytar> s_AllDevices = new List<WiiKeytar>();
+
+        /// <summary>
+        /// Registers <see cref="WiiKeytar"/> to the input system.
+        /// </summary>
+        internal new static void Initialize()
+        {
+            // Keytar
+            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
+                .WithInterface("HID")
+                .WithCapability("vendorId", 0x12BA)
+                .WithCapability("productId", 0x3330)
+            );
+
+            // MIDI Pro Adapter
+            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
+                .WithInterface("HID")
+                .WithCapability("vendorId", 0x12BA)
+                .WithCapability("productId", 0x3338)
+            );
+        }
+
+        /// <summary>
+        /// Sets this device as the current <see cref="WiiKeytar"/>.
         /// </summary>
         public override void MakeCurrent()
         {
