@@ -30,8 +30,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
 
-        // TODO: These need to trigger the same input as the pads
-        // This will most likely require a custom control
+        // Handled below, FourLaneDrums doesn't have these
         // [InputControl(name = "buttonWest", layout = "Button", bit = 4, displayName = "Square")]
         // [InputControl(name = "buttonSouth", layout = "Button", bit = 5, displayName = "Cross")]
         // [InputControl(name = "buttonEast", layout = "Button", bit = 6, displayName = "Circle")]
@@ -51,16 +50,24 @@ namespace PlasticBand.Devices.LowLevel
 
         // TODO: Currently these just act like buttons, when velocity support is implemented for the other drumkits
         // this needs to be adjusted to match how those will then behave
-        [InputControl(name = "redPad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
+        [InputControl(name = "redPad", layout = "ButtonAxisPair", offset = 0)]
+        [InputControl(name = "redPad/button", offset = 5, bit = 6)] // buttonEast (Circle)
+        [InputControl(name = "redPad/axis", layout = "DiscreteButton", format = "BYTE", offset = 43, parameters = "minValue=1, maxValue=255")]
         public byte redPadVelocity;
 
-        [InputControl(name = "bluePad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
+        [InputControl(name = "bluePad", layout = "ButtonAxisPair", offset = 0)]
+        [InputControl(name = "bluePad/button", offset = 5, bit = 4)] // buttonWest (Square)
+        [InputControl(name = "bluePad/axis", layout = "DiscreteButton", format = "BYTE", offset = 44, parameters = "minValue=1, maxValue=255")]
         public byte bluePadVelocity;
 
-        [InputControl(name = "yellowPad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
+        [InputControl(name = "yellowPad", layout = "ButtonAxisPair", offset = 0)]
+        [InputControl(name = "redPad/button", offset = 5, bit = 7)] // buttonNorth (Triangle)
+        [InputControl(name = "redPad/axis", layout = "DiscreteButton", format = "BYTE", offset = 45, parameters = "minValue=1, maxValue=255")]
         public byte yellowPadVelocity;
 
-        [InputControl(name = "greenPad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
+        [InputControl(name = "greenPad", layout = "ButtonAxisPair", offset = 0)]
+        [InputControl(name = "redPad/button", offset = 5, bit = 5)] // buttonSouth (Cross)
+        [InputControl(name = "redPad/axis", layout = "DiscreteButton", format = "BYTE", offset = 46, parameters = "minValue=1, maxValue=255")]
         public byte greenPadVelocity;
 
         [InputControl(name = "yellowCymbal", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
