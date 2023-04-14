@@ -17,6 +17,7 @@ Instrument support:
 - PS4 Rock Band guitars and drumkits are now supported.
 - The drums mode for the PS3 and Wii MIDI Pro adapters are now supported.
 - PS3 and Wii Pro Keyboards are now supported, along with the PS3 and Wii MIDI Pro Adapter in keys mode.
+- The World Tour PC guitar is now supported.
 
 Layout controls:
 
