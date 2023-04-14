@@ -100,7 +100,7 @@ namespace PlasticBand.Devices
     /// An XInput keytar controller.
     /// </summary>
     [InputControlLayout(stateType = typeof(XInputKeytarState), displayName = "XInput Keytar")]
-    internal class XInputKeytar : Keytar
+    public class XInputKeytar : Keytar
     {
         /// <summary>
         /// The current <see cref="XInputKeytar"/>.

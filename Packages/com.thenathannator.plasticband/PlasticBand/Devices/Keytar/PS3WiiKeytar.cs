@@ -110,7 +110,7 @@ namespace PlasticBand.Devices
     /// A PS3 keytar controller.
     /// </summary>
     [InputControlLayout(stateType = typeof(PS3WiiKeytarState), displayName = "Harmonix Pro Keyboard for PlayStation(R)3")]
-    internal class PS3Keytar : Keytar
+    public class PS3Keytar : Keytar
     {
         /// <summary>
         /// The current <see cref="PS3Keytar"/>.
@@ -177,7 +177,7 @@ namespace PlasticBand.Devices
     /// A Wii keytar controller.
     /// </summary>
     [InputControlLayout(stateType = typeof(PS3WiiKeytarState), displayName = "Harmonix Pro Keyboard for Nintendo Wii")]
-    internal class WiiKeytar : Keytar
+    public class WiiKeytar : Keytar
     {
         /// <summary>
         /// The current <see cref="WiiKeytar"/>.

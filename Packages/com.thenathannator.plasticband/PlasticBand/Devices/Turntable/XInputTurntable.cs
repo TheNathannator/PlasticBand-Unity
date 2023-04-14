@@ -67,7 +67,7 @@ namespace PlasticBand.Devices
     /// An XInput DJ Hero turntable.
     /// </summary>
     [InputControlLayout(stateType = typeof(XInputTurntableState), displayName = "XInput Turntable")]
-    internal class XInputTurntable : Turntable
+    public class XInputTurntable : Turntable
     {
         /// <summary>
         /// The current <see cref="XInputTurntable"/>.
