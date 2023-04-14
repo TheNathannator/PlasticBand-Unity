@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.2.1] - 2023/14/04
+
+### Fixes
+
+- I forgot to initialize some things again lol, that is now addressed.
+
 ## [0.2.0] - 2023/14/04
 
 ### Added
