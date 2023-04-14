@@ -101,6 +101,7 @@ public class BuildPackageWindow : EditorWindow
                 if (!Directory.Exists(outputPath))
                 {
                     EditorUtility.DisplayDialog("Invalid Directory", $"{outputPath} is not a valid directory!", "OK");
+                    SetStatus(BuildStatus.Idle);
                     return;
                 }
 
