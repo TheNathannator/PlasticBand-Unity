@@ -131,12 +131,12 @@ namespace PlasticBand.Controls
             if (stateBlock.sizeInBits < 8)
                 throw new NotSupportedException($"FourLanePads '{this}' must be at least 8 bits in size.");
 
-            if (redBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter 'redBit' ({redBit}) must be less than state block size ({stateBlock.sizeInBits}).");
-            if (yellowBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter 'yellowBit' ({yellowBit}) must be less than state block size ({stateBlock.sizeInBits}).");
-            if (blueBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter 'blueBit' ({blueBit}) must be less than state block size ({stateBlock.sizeInBits}).");
-            if (greenBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter 'greenBit' ({greenBit}) must be less than state block size ({stateBlock.sizeInBits}).");
-            if (padBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter 'padBit' ({padBit}) must be less than state block size ({stateBlock.sizeInBits}).");
-            if (cymbalBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter 'cymbalBit' ({cymbalBit}) must be less than state block size ({stateBlock.sizeInBits}).");
+            if (redBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter '{nameof(redBit)}' ({redBit}) must be less than state block size ({stateBlock.sizeInBits}).");
+            if (yellowBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter '{nameof(yellowBit)}' ({yellowBit}) must be less than state block size ({stateBlock.sizeInBits}).");
+            if (blueBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter '{nameof(blueBit)}' ({blueBit}) must be less than state block size ({stateBlock.sizeInBits}).");
+            if (greenBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter '{nameof(greenBit)}' ({greenBit}) must be less than state block size ({stateBlock.sizeInBits}).");
+            if (padBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter '{nameof(padBit)}' ({padBit}) must be less than state block size ({stateBlock.sizeInBits}).");
+            if (cymbalBit >= stateBlock.sizeInBits) throw new NotSupportedException($"FourLanePads parameter '{nameof(cymbalBit)}' ({cymbalBit}) must be less than state block size ({stateBlock.sizeInBits}).");
 
             switch (name)
             {

@@ -47,7 +47,7 @@ namespace PlasticBand.Controls
             base.FinishSetup();
 
             if (mask == 0)
-                throw new NotSupportedException($"MaskButtonControl '{this}' must have its 'mask' parameter set.");
+                throw new NotSupportedException($"MaskButtonControl '{this}' must have its '{nameof(mask)}' parameter set.");
 
             if (!stateBlock.format.IsIntegerFormat())
                 throw new NotSupportedException($"Non-integer format '{stateBlock.format}' is not supported for MaskButtonControl '{this}'");
@@ -67,7 +67,7 @@ namespace PlasticBand.Controls
 #if PLASTICBAND_DEBUG_CONTROLS
             if (rawValue != previousValue)
             {
-                Debug.Log($"[MaskButton] rawValue: {rawValue:X}  mask: {mask:X}  value: {value}");
+                Debug.Log($"[MaskButton] {nameof(rawValue)}: {rawValue:X}  {nameof(mask)}: {mask:X}  {nameof(value)}: {value}");
                 previousValue = rawValue;
             }
 #endif

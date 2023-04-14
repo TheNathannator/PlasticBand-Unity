@@ -133,7 +133,7 @@ namespace PlasticBand.Controls
 #if PLASTICBAND_DEBUG_CONTROLS
                 if (rawValue != m_previousValue)
                 {
-                    Debug.LogWarning($"[GuitarHeroSlider] rawValue {rawValue:X} is not defined in lookup!");
+                    Debug.LogWarning($"[GuitarHeroSlider] {nameof(rawValue)} {rawValue:X} is not defined in lookup!");
                     m_previousValue = rawValue;
                 }
 #endif
@@ -144,7 +144,7 @@ namespace PlasticBand.Controls
 #if PLASTICBAND_DEBUG_CONTROLS
             if (rawValue != m_previousValue)
             {
-                Debug.Log($"[GuitarHeroSlider] rawValue: {rawValue:X}  flags: {flags}");
+                Debug.Log($"[GuitarHeroSlider] {nameof(rawValue)}: {rawValue:X}  flags: {flags}");
                 m_previousValue = rawValue;
             }
 #endif
