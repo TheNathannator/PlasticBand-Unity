@@ -44,6 +44,7 @@ namespace PlasticBand
             RockBandGuitar.Initialize();
             XInputGuitar.Initialize();
             PS3RockBandGuitar.Initialize();
+            PS4RockBandGuitar.Initialize();
             WiiRockBandGuitar.Initialize();
 
             // 6-fret guitars
@@ -63,6 +64,8 @@ namespace PlasticBand
             FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
             PS3FourLaneDrumkit.Initialize();
+            PS4FourLaneDrumkit.Initialize();
+            WiiFourLaneDrumkit.Initialize();
 
             // 5-lane drumkits
             FiveLaneDrumkit.Initialize();
@@ -77,6 +80,8 @@ namespace PlasticBand
             // Keytars
             Keytar.Initialize();
             XInputKeytar.Initialize();
+            PS3Keytar.Initialize();
+            WiiKeytar.Initialize();
 
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             // XInput layout fix-ups for devices that require state information to determine the true type
