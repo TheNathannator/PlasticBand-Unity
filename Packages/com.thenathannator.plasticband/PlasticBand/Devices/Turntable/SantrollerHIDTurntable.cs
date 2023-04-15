@@ -7,6 +7,9 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Turntable/PS3.md
+
 namespace PlasticBand.Devices
 {
     [InputControlLayout(stateType = typeof(PS3TurntableState_ReportId), displayName = "Santroller HID Turntable")]

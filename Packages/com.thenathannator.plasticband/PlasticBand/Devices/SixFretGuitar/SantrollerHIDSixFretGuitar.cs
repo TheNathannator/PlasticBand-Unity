@@ -7,6 +7,9 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/6-Fret%20Guitar/Santroller.md
+
 namespace PlasticBand.Devices.LowLevel
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
