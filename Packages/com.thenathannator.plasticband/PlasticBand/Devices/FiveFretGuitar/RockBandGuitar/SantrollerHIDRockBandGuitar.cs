@@ -13,7 +13,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
-    /// The state format for PS3 and Wii Rock Band guitars.
+    /// The state format for Santroller HID Rock Band Guitars.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct SantrollerHIDRockBandGuitarState : IInputStateTypeInfo
@@ -70,9 +70,9 @@ namespace PlasticBand.Devices.LowLevel
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// A PS3 Rock Band guitar.
+    /// A Santroller HID Rock Band Guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(SantrollerHIDRockBandGuitarState), displayName = "Santroller device in RockBand Guitar Mode")]
+    [InputControlLayout(stateType = typeof(SantrollerHIDRockBandGuitarState), displayName = "Santroller HID Rock Band Guitar")]
     public class SantrollerHIDRockBandGuitar : RockBandGuitar
     {
         /// <summary>

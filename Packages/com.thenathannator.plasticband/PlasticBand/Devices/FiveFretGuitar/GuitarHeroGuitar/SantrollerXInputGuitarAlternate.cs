@@ -11,9 +11,9 @@ using UnityEngine.InputSystem.XInput;
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// A Santroller XInput GuitarAlternate device.
+    /// A Santroller XInput Guitar Hero Guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(XInputGuitarAlternateState), displayName = "Santroller device in XInput Guitar Alternate mode")]
+    [InputControlLayout(stateType = typeof(XInputGuitarAlternateState), displayName = "Santroller XInput Guitar Hero Guitar")]
     public class SantrollerXInputGuitarAlternate : XInputGuitarAlternate
     {
         /// <summary>

@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
-    /// The state format for Santroller GHL devices.
+    /// The state format for Santroller HID Guitar Hero Live Guitars.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct SantrollerHIDSixFretGuitarState : IInputStateTypeInfo
@@ -63,9 +63,9 @@ namespace PlasticBand.Devices.LowLevel
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// A PS3/Wii U GHL guitar.
+    /// A Santroller HID Guitar Hero Live Guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(SantrollerHIDSixFretGuitarState), displayName = "Santroller Device in 6-Fret Guitar Mode")]
+    [InputControlLayout(stateType = typeof(SantrollerHIDSixFretGuitarState), displayName = "Santroller HID Guitar Hero Live Guitar")]
     public class SantrollerHIDSixFretGuitar : SixFretGuitar
     {
         /// <summary>

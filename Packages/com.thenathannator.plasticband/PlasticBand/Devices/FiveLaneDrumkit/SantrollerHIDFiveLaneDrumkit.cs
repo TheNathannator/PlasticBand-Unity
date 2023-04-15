@@ -10,9 +10,9 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// A Santroller 5-lane drumkit.
+    /// A Santroller HID Guitar Hero Drum Kit.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState), displayName = "Santroller device in Guitar Hero Drum Mode")]
+    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState), displayName = "Santroller HID Guitar Hero Drum Kit")]
     public class SantrollerHIDFiveLaneDrumkit : FiveLaneDrumkit
     {
         /// <summary>

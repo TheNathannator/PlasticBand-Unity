@@ -11,9 +11,9 @@ using UnityEngine.InputSystem.XInput;
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// An XInput Guitar.
+    /// A Santroller XInput Turntable.
     /// </summary>
-    [InputControlLayout(stateType = typeof(XInputTurntableState), displayName = "Santroller device in XInput Turntable mode")]
+    [InputControlLayout(stateType = typeof(XInputTurntableState), displayName = "Santroller XInput Turntable")]
     public class SantrollerXInputTurntable : XInputTurntable
     {
         /// <summary>

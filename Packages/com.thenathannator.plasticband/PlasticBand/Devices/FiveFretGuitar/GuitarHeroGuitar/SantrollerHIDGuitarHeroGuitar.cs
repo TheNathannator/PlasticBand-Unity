@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
-    /// The state format for Santroller devices emulating a Guitar Hero guitar in HID mode.
+    /// The state format for Santroller HID Guitar Hero Guitars.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct SantrollerHIDGuitarHeroGuitarState : IInputStateTypeInfo
@@ -78,9 +78,9 @@ namespace PlasticBand.Devices.LowLevel
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// A Santroller Guitar Hero guitar.
+    /// A Santroller HID Guitar Hero Guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(SantrollerHIDGuitarHeroGuitarState), displayName = "Santroller device in Guitar Hero Guitar mode")]
+    [InputControlLayout(stateType = typeof(SantrollerHIDGuitarHeroGuitarState), displayName = "Santroller HID Guitar Hero Guitar")]
     public class SantrollerHIDGuitarHeroGuitar : GuitarHeroGuitar
     {
         /// <summary>
