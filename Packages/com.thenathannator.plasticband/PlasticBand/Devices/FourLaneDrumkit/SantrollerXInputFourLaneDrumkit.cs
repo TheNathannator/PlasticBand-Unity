@@ -11,7 +11,7 @@ using UnityEngine.InputSystem.XInput;
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// An XInput FourLaneDrum.
+    /// A Santroller XInput 4-lane drumkit.
     /// </summary>
     [InputControlLayout(stateType = typeof(XInputFourLaneDrumkitState), displayName = "Santroller device in XInput FourLaneDrum mode")]
     public class SantrollerXInputFourLaneDrumkit : XInputFourLaneDrumkit
