@@ -13,10 +13,7 @@ using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.Devices
 {
-    /// <summary>
-    /// An XInput stagekit.
-    /// </summary>
-    [InputControlLayout(stateType = typeof(XInputStageKitState), displayName = "Santroller device in XInput Stagekit mode")]
+    [InputControlLayout(stateType = typeof(XInputStageKitState), displayName = "Santroller XInput Stage Kit")]
     internal class SantrollerXInputStageKit : XInputStageKit
     {
         internal new static void Initialize()

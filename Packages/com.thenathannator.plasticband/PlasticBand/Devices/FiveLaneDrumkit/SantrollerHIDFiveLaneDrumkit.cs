@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState_ReportId), displayName = "Santroller device in Guitar Hero Drum Mode")]
+    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState_ReportId), displayName = "Santroller HID Guitar Hero Drum Kit")]
     internal class SantrollerHIDFiveLaneDrumkit : FiveLaneDrumkit
     {
         internal new static void Initialize()

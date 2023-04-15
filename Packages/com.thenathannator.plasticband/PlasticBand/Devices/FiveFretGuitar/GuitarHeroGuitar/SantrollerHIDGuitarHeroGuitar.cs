@@ -74,7 +74,7 @@ namespace PlasticBand.Devices.LowLevel
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(SantrollerHIDGuitarHeroGuitarState), displayName = "Santroller device in Guitar Hero Guitar mode")]
+    [InputControlLayout(stateType = typeof(SantrollerHIDGuitarHeroGuitarState), displayName = "Santroller HID Guitar Hero Guitar")]
     internal class SantrollerHIDGuitarHeroGuitar : GuitarHeroGuitar
     {
         internal new static void Initialize()

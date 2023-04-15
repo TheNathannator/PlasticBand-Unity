@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(PS3TurntableState_ReportId), displayName = "Santroller Device in Turntable Mode")]
+    [InputControlLayout(stateType = typeof(PS3TurntableState_ReportId), displayName = "Santroller HID Turntable")]
     internal class SantrollerHIDTurntable : PS3Turntable
     {
         internal new static void Initialize()

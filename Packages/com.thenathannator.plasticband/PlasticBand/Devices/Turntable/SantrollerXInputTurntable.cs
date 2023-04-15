@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(XInputTurntableState), displayName = "Santroller device in XInput Turntable mode")]
+    [InputControlLayout(stateType = typeof(XInputTurntableState), displayName = "Santroller XInput Turntable")]
     internal class SantrollerXInputTurntable : XInputTurntable
     {
         internal new static void Initialize()
