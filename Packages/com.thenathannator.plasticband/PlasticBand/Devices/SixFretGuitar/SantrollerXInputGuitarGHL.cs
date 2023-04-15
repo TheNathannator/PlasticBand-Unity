@@ -13,6 +13,8 @@ using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.Devices
 {
+    using XInputFlags = XInputController.DeviceFlags;
+
     /// <summary>
     /// A Santroller XInput Guitar Hero Live Guitar.
     /// </summary>
