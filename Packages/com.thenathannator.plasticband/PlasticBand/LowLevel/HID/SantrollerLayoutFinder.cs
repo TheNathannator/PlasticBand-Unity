@@ -32,7 +32,15 @@ namespace PlasticBand.LowLevel
     /// </summary>
     internal static class SantrollerLayoutFinder
     {
-              
+        /// <summary>
+        /// Vendor Id for Santroller devices
+        /// </summary>
+        internal static short SantrollerVendorID = 0x1209;      
+
+        /// <summary>
+        /// Product Id for Santroller devices
+        /// </summary>
+        internal static short SantrollerProductID = 0x2882;
 
 
         /// <summary>
@@ -72,7 +80,7 @@ namespace PlasticBand.LowLevel
             // Parse HID descriptor
             HID.HIDDeviceDescriptor descriptor = HID.HIDDeviceDescriptor.FromJson(description.capabilities);
 
-            if (descriptor.vendorId != 0x1209 && descriptor.productId != 0x2882)
+            if (descriptor.vendorId != SantrollerLayoutFinder.SantrollerVendorID && descriptor.productId != SantrollerLayoutFinder.SantrollerProductID)
                 return null;
 
             // Parse version
@@ -124,8 +132,8 @@ namespace PlasticBand.LowLevel
             InputSystem.RegisterLayout<TDevice>(matches: new InputDeviceMatcher()
                 .WithInterface(XInputOther.kInterfaceName)
                 .WithCapability("subType", subType)
-                .WithCapability("leftStickX", 0x1209)
-                .WithCapability("leftStickY", 0x2882)
+                .WithCapability("leftStickX", SantrollerLayoutFinder.SantrollerVendorID)
+                .WithCapability("leftStickY", SantrollerLayoutFinder.SantrollerProductID)
             );
     #endif
         }

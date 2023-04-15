@@ -20,8 +20,8 @@ namespace PlasticBand.Devices
                 // Annoyingly, GHL guitars do not have a unique subtype. So, we have to use some other information to identify them.
                 .WithInterface(XInputOther.kInterfaceName)
                 .WithCapability("subType", XInputController.DeviceSubType.GuitarAlternate)
-                .WithCapability("leftStickX", 0x1209)
-                .WithCapability("leftStickY", 0x2882)
+                .WithCapability("leftStickX", SantrollerLayoutFinder.SantrollerVendorID)
+                .WithCapability("leftStickY", SantrollerLayoutFinder.SantrollerProductID)
                 // so we use the flags as the distinguisher.
                 .WithCapability("flags", (int)(XInputFlags.VoiceSupported | XInputFlags.PluginModulesSupported | XInputFlags.NoNavigation)) // 28
             );
