@@ -32,7 +32,7 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<SantrollerHIDFiveLaneDrumkit>();
-            SantrollerLayoutFinder.RegisterLayout(SantrollerDeviceType.Drums, SantrollerRhythmType.RockBand, nameof(SantrollerHIDFiveLaneDrumkit));
+            SantrollerLayoutFinder.RegisterLayout(SantrollerDeviceType.Drums, SantrollerRhythmType.GuitarHero, nameof(SantrollerHIDFiveLaneDrumkit));
         }
 
         /// <summary>
