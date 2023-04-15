@@ -36,6 +36,8 @@ namespace PlasticBand
             GuitarHeroGuitar.Initialize();
             XInputGuitarHeroGuitar.Initialize();
             PS3GuitarHeroGuitar.Initialize();
+            SantrollerHIDGuitarHeroGuitar.Initialize();
+            SantrollerXInputGuitarHeroGuitar.Initialize();
 
             // Rock Band guitars
             RockBandGuitar.Initialize();
@@ -43,12 +45,16 @@ namespace PlasticBand
             PS3RockBandGuitar.Initialize();
             // PS4RockBandGuitar.Initialize(); // Temporarily disabled to avoid a crash bug
             WiiRockBandGuitar.Initialize();
+            SantrollerHIDRockBandGuitar.Initialize();
+            SantrollerXInputRockBandGuitar.Initialize();
 
             // 6-fret guitars
             SixFretGuitar.Initialize();
             XInputSixFretGuitar.Initialize();
             PS3WiiUSixFretGuitar.Initialize();
             // PS4SixFretGuitar.Initialize(); // Temporarily disabled to avoid a crash bug
+            SantrollerHIDSixFretGuitar.Initialize();
+            SantrollerXInputSixFretGuitar.Initialize();
 
             // Pro Guitars
             ProGuitar.Initialize();
@@ -63,16 +69,22 @@ namespace PlasticBand
             PS3FourLaneDrumkit.Initialize();
             // PS4FourLaneDrumkit.Initialize(); // Temporarily disabled to avoid a crash bug
             WiiFourLaneDrumkit.Initialize();
+            SantrollerHIDFourLaneDrumkit.Initialize();
+            SantrollerXInputFourLaneDrumkit.Initialize();
 
             // 5-lane drumkits
             FiveLaneDrumkit.Initialize();
             XInputFiveLaneDrumkit.Initialize();
             PS3FiveLaneDrumkit.Initialize();
+            SantrollerHIDFiveLaneDrumkit.Initialize();
+            SantrollerXInputFiveLaneDrumkit.Initialize();
 
             // Turntables
             Turntable.Initialize();
             XInputTurntable.Initialize();
             PS3Turntable.Initialize();
+            SantrollerHIDTurntable.Initialize();
+            SantrollerXInputTurntable.Initialize();
 
             // Pro Keyboards
             ProKeyboard.Initialize();
@@ -86,6 +98,8 @@ namespace PlasticBand
 
             // Layout finders
             HidReportIdLayoutFinder.Initialize();
+            SantrollerLayoutFinder.Initialize();
+
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             XInputLayoutFixup.Initialize();
 #endif
