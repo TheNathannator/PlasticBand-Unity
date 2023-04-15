@@ -7,6 +7,9 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
+// PlasticBand reference doc:
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/PS3%20and%20Wii.md
+
 namespace PlasticBand.Devices
 {
     /// <summary>

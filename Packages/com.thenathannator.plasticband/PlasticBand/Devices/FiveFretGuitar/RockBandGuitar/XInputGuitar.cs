@@ -81,7 +81,7 @@ namespace PlasticBand.Devices
         private static readonly List<XInputGuitar> s_AllDevices = new List<XInputGuitar>();
 
         /// <summary>
-        /// Registers <see cref="RockBandGuitar"/> to the input system.
+        /// Registers <see cref="XInputGuitar"/> to the input system.
         /// </summary>
         internal new static void Initialize()
         {
