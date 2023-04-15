@@ -13,6 +13,8 @@ using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.Devices
 {
+    using XInputFlags = XInputController.DeviceFlags;
+
     [InputControlLayout(stateType = typeof(XInputSixFretGuitarState), displayName = "Santroller XInput Guitar Hero Live Guitar")]
     internal class SantrollerXInputSixFretGuitar : XInputSixFretGuitar
     {
