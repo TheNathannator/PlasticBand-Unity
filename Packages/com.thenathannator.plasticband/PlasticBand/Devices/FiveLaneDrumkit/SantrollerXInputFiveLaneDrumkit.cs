@@ -37,9 +37,9 @@ namespace PlasticBand.Devices
             // 5-lane kits always hold the left-stick click input, 4-lane kits use that for the second kick but
             // realistically that isn't likely to be held when powering on
             XInputLayoutFinder.RegisterLayout<SantrollerXInputFiveLaneDrumkit>(XInputController.DeviceSubType.DrumKit,
-                (capabilities, state) => capabilities.gamepad.leftStickX == SantrollerLayoutFinder.SantrollerVendorID &&
-                    capabilities.gamepad.leftStickY == SantrollerLayoutFinder.SantrollerProductID &&
-                    (state.buttons & (ushort)XInputGamepad.Button.LeftThumb) != 0);
+                (state) => (state.buttons & (ushort)XInputGamepad.Button.LeftThumb) != 0,
+                SantrollerLayoutFinder.GetXInputMatcher((int)XInputController.DeviceSubType.DrumKit)
+            );
 #endif
         }
 
