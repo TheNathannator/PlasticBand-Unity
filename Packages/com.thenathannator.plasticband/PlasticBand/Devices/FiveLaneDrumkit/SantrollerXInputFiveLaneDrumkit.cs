@@ -15,15 +15,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            // 4-lane kits and 5-lane kits share the same subtype, they need to be differentiated in another way
-            // 5-lane kits always hold the left-stick click input, 4-lane kits use that for the second kick but
-            // realistically that isn't likely to be held when powering on
-            XInputLayoutFinder.RegisterLayout<SantrollerXInputFiveLaneDrumkit>(XInputController.DeviceSubType.DrumKit,
-                (state) => (state.buttons & (ushort)XInputGamepad.Button.LeftThumb) != 0,
-                SantrollerLayoutFinder.GetXInputMatcher((int)XInputController.DeviceSubType.DrumKit)
-            );
-#endif
+            SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputFiveLaneDrumkit>(SantrollerDeviceType.Drums, SantrollerRhythmType.GuitarHero);
         }
     }
 }

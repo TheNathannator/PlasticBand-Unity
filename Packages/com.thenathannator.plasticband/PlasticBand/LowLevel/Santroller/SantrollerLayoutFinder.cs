@@ -140,6 +140,17 @@ namespace PlasticBand.LowLevel
         }
 
         /// <summary>
+        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified device type and rhythm type.
+        /// </summary>
+        internal static void RegisterXInputLayout<TDevice>(SantrollerDeviceType deviceType, SantrollerRhythmType rhythmType)
+            where TDevice : InputDevice
+        {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+            InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(deviceType, rhythmType));
+#endif
+        }
+
+        /// <summary>
         /// Gets a matcher that matches XInput Santroller devices with the given subtype.
         /// </summary>
         internal static InputDeviceMatcher GetXInputMatcher(int subType)
@@ -149,6 +160,19 @@ namespace PlasticBand.LowLevel
                 .WithCapability("subType", subType)
                 .WithCapability("gamepad/leftStickX", (int)VendorID)
                 .WithCapability("gamepad/leftStickY", (int)ProductID);
+        }
+        
+        /// <summary>
+        /// Gets a matcher that matches XInput Santroller devices with the given device type and rhythm type.
+        /// </summary>
+        internal static InputDeviceMatcher GetXInputMatcher(SantrollerDeviceType deviceType, SantrollerRhythmType rhythmType)
+        {
+            int revision = (((int)deviceType) << 8) | (((int)rhythmType) << 4);
+            return new InputDeviceMatcher()
+                .WithInterface(XInputLayoutFinder.InterfaceName)
+                .WithCapability("gamepad/leftStickX", (int)VendorID)
+                .WithCapability("gamepad/leftStickY", (int)ProductID)
+                .WithCapability("gamepad/rightStickX", revision);
         }
     }
 }
