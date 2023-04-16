@@ -123,24 +123,24 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
 
-            black1 = GetChildControl<ButtonControl>("black1");
-            black2 = GetChildControl<ButtonControl>("black2");
-            black3 = GetChildControl<ButtonControl>("black3");
-            white1 = GetChildControl<ButtonControl>("white1");
-            white2 = GetChildControl<ButtonControl>("white2");
-            white3 = GetChildControl<ButtonControl>("white3");
+            black1 = GetChildControl<ButtonControl>(nameof(black1));
+            black2 = GetChildControl<ButtonControl>(nameof(black2));
+            black3 = GetChildControl<ButtonControl>(nameof(black3));
+            white1 = GetChildControl<ButtonControl>(nameof(white1));
+            white2 = GetChildControl<ButtonControl>(nameof(white2));
+            white3 = GetChildControl<ButtonControl>(nameof(white3));
 
-            strumUp = GetChildControl<ButtonControl>("strumUp");
-            strumDown = GetChildControl<ButtonControl>("strumDown");
+            strumUp = GetChildControl<ButtonControl>(nameof(strumUp));
+            strumDown = GetChildControl<ButtonControl>(nameof(strumDown));
 
-            dpad = GetChildControl<DpadControl>("dpad");
+            dpad = GetChildControl<DpadControl>(nameof(dpad));
 
-            tilt = GetChildControl<AxisControl>("tilt");
-            whammy = GetChildControl<AxisControl>("whammy");
+            tilt = GetChildControl<AxisControl>(nameof(tilt));
+            whammy = GetChildControl<AxisControl>(nameof(whammy));
 
-            startButton = GetChildControl<ButtonControl>("startButton");
-            selectButton = GetChildControl<ButtonControl>("selectButton");
-            ghtvButton = GetChildControl<ButtonControl>("ghtvButton");
+            startButton = GetChildControl<ButtonControl>(nameof(startButton));
+            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
+            ghtvButton = GetChildControl<ButtonControl>(nameof(ghtvButton));
         }
 
         /// <summary>

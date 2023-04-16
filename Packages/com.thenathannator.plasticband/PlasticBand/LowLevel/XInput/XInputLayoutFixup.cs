@@ -51,7 +51,7 @@ namespace PlasticBand.LowLevel
         internal static void Initialize()
         {
             // Replace XInputControllerWindows layout matcher with one that only matches gamepads
-            InputSystem.RemoveLayout(typeof(XInputControllerWindows).Name);
+            InputSystem.RemoveLayout(nameof(XInputControllerWindows));
             InputSystem.RegisterLayout<XInputControllerWindows>(matches: new InputDeviceMatcher()
                 .WithInterface(XInputOther.kInterfaceName)
                 .WithCapability("subType", (int)DeviceSubType.Gamepad)
@@ -85,7 +85,7 @@ namespace PlasticBand.LowLevel
             {
                 // Default to regular controller if no layout was matched already
                 if (string.IsNullOrEmpty(matchedLayout))
-                    return typeof(XInputControllerWindows).Name;
+                    return nameof(XInputControllerWindows);
 
                 return null;
             }
@@ -103,11 +103,11 @@ namespace PlasticBand.LowLevel
             }
 
             // Don't change the existing layout if no override was specified but it's not already set to a standard controller
-            if (!string.IsNullOrEmpty(matchedLayout) && matchedLayout != typeof(XInputControllerWindows).Name)
+            if (!string.IsNullOrEmpty(matchedLayout) && matchedLayout != nameof(XInputControllerWindows))
                 return null;
 
             // Set all other subtypes to be regular controllers, per XInput specs
-            return typeof(XInputControllerWindows).Name;
+            return nameof(XInputControllerWindows);
         }
 #endif
     }

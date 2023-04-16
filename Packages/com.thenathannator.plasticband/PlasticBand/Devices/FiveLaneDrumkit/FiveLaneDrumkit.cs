@@ -91,18 +91,18 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
 
-            dpad = GetChildControl<DpadControl>("dpad");
+            dpad = GetChildControl<DpadControl>(nameof(dpad));
 
-            startButton = GetChildControl<ButtonControl>("startButton");
-            selectButton = GetChildControl<ButtonControl>("selectButton");
+            startButton = GetChildControl<ButtonControl>(nameof(startButton));
+            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
 
-            redPad = GetChildControl<ButtonControl>("redPad");
-            yellowCymbal = GetChildControl<ButtonControl>("yellowCymbal");
-            bluePad = GetChildControl<ButtonControl>("bluePad");
-            orangeCymbal = GetChildControl<ButtonControl>("orangeCymbal");
-            greenPad = GetChildControl<ButtonControl>("greenPad");
+            redPad = GetChildControl<ButtonControl>(nameof(redPad));
+            yellowCymbal = GetChildControl<ButtonControl>(nameof(yellowCymbal));
+            bluePad = GetChildControl<ButtonControl>(nameof(bluePad));
+            orangeCymbal = GetChildControl<ButtonControl>(nameof(orangeCymbal));
+            greenPad = GetChildControl<ButtonControl>(nameof(greenPad));
 
-            kick = GetChildControl<ButtonControl>("kick");
+            kick = GetChildControl<ButtonControl>(nameof(kick));
         }
 
         /// <summary>

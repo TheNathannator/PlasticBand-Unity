@@ -113,22 +113,24 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
 
-            greenFret = GetChildControl<ButtonControl>("greenFret");
-            redFret = GetChildControl<ButtonControl>("redFret");
-            yellowFret = GetChildControl<ButtonControl>("yellowFret");
-            blueFret = GetChildControl<ButtonControl>("blueFret");
-            orangeFret = GetChildControl<ButtonControl>("orangeFret");
+            greenFret = GetChildControl<ButtonControl>(nameof(greenFret));
+            redFret = GetChildControl<ButtonControl>(nameof(redFret));
+            yellowFret = GetChildControl<ButtonControl>(nameof(yellowFret));
+            blueFret = GetChildControl<ButtonControl>(nameof(blueFret));
+            orangeFret = GetChildControl<ButtonControl>(nameof(orangeFret));
 
-            strumUp = GetChildControl<ButtonControl>("strumUp");
-            strumDown = GetChildControl<ButtonControl>("strumDown");
+            m_Frets = new ButtonControl[] { greenFret, redFret, yellowFret, blueFret, orangeFret };
 
-            dpad = GetChildControl<DpadControl>("dpad");
+            strumUp = GetChildControl<ButtonControl>(nameof(strumUp));
+            strumDown = GetChildControl<ButtonControl>(nameof(strumDown));
 
-            tilt = GetChildControl<AxisControl>("tilt");
-            whammy = GetChildControl<AxisControl>("whammy");
+            dpad = GetChildControl<DpadControl>(nameof(dpad));
 
-            startButton = GetChildControl<ButtonControl>("startButton");
-            selectButton = GetChildControl<ButtonControl>("selectButton");
+            tilt = GetChildControl<AxisControl>(nameof(tilt));
+            whammy = GetChildControl<AxisControl>(nameof(whammy));
+
+            startButton = GetChildControl<ButtonControl>(nameof(startButton));
+            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
         }
 
         /// <summary>

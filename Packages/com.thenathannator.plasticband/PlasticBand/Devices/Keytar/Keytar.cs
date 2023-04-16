@@ -253,47 +253,47 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
 
-            key1 = GetChildControl<ButtonControl>("key1");
-            key2 = GetChildControl<ButtonControl>("key2");
-            key3 = GetChildControl<ButtonControl>("key3");
-            key4 = GetChildControl<ButtonControl>("key4");
-            key5 = GetChildControl<ButtonControl>("key5");
-            key6 = GetChildControl<ButtonControl>("key6");
-            key7 = GetChildControl<ButtonControl>("key7");
-            key8 = GetChildControl<ButtonControl>("key8");
-            key9 = GetChildControl<ButtonControl>("key9");
-            key10 = GetChildControl<ButtonControl>("key10");
-            key11 = GetChildControl<ButtonControl>("key11");
-            key12 = GetChildControl<ButtonControl>("key12");
-            key13 = GetChildControl<ButtonControl>("key13");
-            key14 = GetChildControl<ButtonControl>("key14");
-            key15 = GetChildControl<ButtonControl>("key15");
-            key16 = GetChildControl<ButtonControl>("key16");
-            key17 = GetChildControl<ButtonControl>("key17");
-            key18 = GetChildControl<ButtonControl>("key18");
-            key19 = GetChildControl<ButtonControl>("key19");
-            key20 = GetChildControl<ButtonControl>("key20");
-            key21 = GetChildControl<ButtonControl>("key21");
-            key22 = GetChildControl<ButtonControl>("key22");
-            key23 = GetChildControl<ButtonControl>("key23");
-            key24 = GetChildControl<ButtonControl>("key24");
-            key25 = GetChildControl<ButtonControl>("key25");
+            key1 = GetChildControl<ButtonControl>(nameof(key1));
+            key2 = GetChildControl<ButtonControl>(nameof(key2));
+            key3 = GetChildControl<ButtonControl>(nameof(key3));
+            key4 = GetChildControl<ButtonControl>(nameof(key4));
+            key5 = GetChildControl<ButtonControl>(nameof(key5));
+            key6 = GetChildControl<ButtonControl>(nameof(key6));
+            key7 = GetChildControl<ButtonControl>(nameof(key7));
+            key8 = GetChildControl<ButtonControl>(nameof(key8));
+            key9 = GetChildControl<ButtonControl>(nameof(key9));
+            key10 = GetChildControl<ButtonControl>(nameof(key10));
+            key11 = GetChildControl<ButtonControl>(nameof(key11));
+            key12 = GetChildControl<ButtonControl>(nameof(key12));
+            key13 = GetChildControl<ButtonControl>(nameof(key13));
+            key14 = GetChildControl<ButtonControl>(nameof(key14));
+            key15 = GetChildControl<ButtonControl>(nameof(key15));
+            key16 = GetChildControl<ButtonControl>(nameof(key16));
+            key17 = GetChildControl<ButtonControl>(nameof(key17));
+            key18 = GetChildControl<ButtonControl>(nameof(key18));
+            key19 = GetChildControl<ButtonControl>(nameof(key19));
+            key20 = GetChildControl<ButtonControl>(nameof(key20));
+            key21 = GetChildControl<ButtonControl>(nameof(key21));
+            key22 = GetChildControl<ButtonControl>(nameof(key22));
+            key23 = GetChildControl<ButtonControl>(nameof(key23));
+            key24 = GetChildControl<ButtonControl>(nameof(key24));
+            key25 = GetChildControl<ButtonControl>(nameof(key25));
 
-            dpad = GetChildControl<DpadControl>("dpad");
+            dpad = GetChildControl<DpadControl>(nameof(dpad));
 
-            buttonSouth = GetChildControl<ButtonControl>("buttonSouth");
-            buttonEast = GetChildControl<ButtonControl>("buttonEast");
-            buttonWest = GetChildControl<ButtonControl>("buttonWest");
-            buttonNorth = GetChildControl<ButtonControl>("buttonNorth");
+            buttonSouth = GetChildControl<ButtonControl>(nameof(buttonSouth));
+            buttonEast = GetChildControl<ButtonControl>(nameof(buttonEast));
+            buttonWest = GetChildControl<ButtonControl>(nameof(buttonWest));
+            buttonNorth = GetChildControl<ButtonControl>(nameof(buttonNorth));
 
-            startButton = GetChildControl<ButtonControl>("startButton");
-            selectButton = GetChildControl<ButtonControl>("selectButton");
+            startButton = GetChildControl<ButtonControl>(nameof(startButton));
+            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
 
-            overdrive = GetChildControl<ButtonControl>("overdrive");
-            digitalPedal = GetChildControl<ButtonControl>("digitalPedal");
+            overdrive = GetChildControl<ButtonControl>(nameof(overdrive));
+            digitalPedal = GetChildControl<ButtonControl>(nameof(digitalPedal));
 
-            analogPedal = GetChildControl<AxisControl>("analogPedal");
-            touchStrip = GetChildControl<AxisControl>("touchStrip");
+            analogPedal = GetChildControl<AxisControl>(nameof(analogPedal));
+            touchStrip = GetChildControl<AxisControl>(nameof(touchStrip));
         }
 
         /// <summary>

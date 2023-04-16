@@ -198,38 +198,38 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
 
-            dpad = GetChildControl<DpadControl>("dpad");
+            dpad = GetChildControl<DpadControl>(nameof(dpad));
 
-            buttonSouth = GetChildControl<ButtonControl>("buttonSouth");
-            buttonEast = GetChildControl<ButtonControl>("buttonEast");
-            buttonWest = GetChildControl<ButtonControl>("buttonWest");
-            buttonNorth = GetChildControl<ButtonControl>("buttonNorth");
+            buttonSouth = GetChildControl<ButtonControl>(nameof(buttonSouth));
+            buttonEast = GetChildControl<ButtonControl>(nameof(buttonEast));
+            buttonWest = GetChildControl<ButtonControl>(nameof(buttonWest));
+            buttonNorth = GetChildControl<ButtonControl>(nameof(buttonNorth));
 
-            startButton = GetChildControl<ButtonControl>("startButton");
-            selectButton = GetChildControl<ButtonControl>("selectButton");
+            startButton = GetChildControl<ButtonControl>(nameof(startButton));
+            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
 
-            fret1 = GetChildControl<IntegerControl>("fret1");
-            fret2 = GetChildControl<IntegerControl>("fret2");
-            fret3 = GetChildControl<IntegerControl>("fret3");
-            fret4 = GetChildControl<IntegerControl>("fret4");
-            fret5 = GetChildControl<IntegerControl>("fret5");
-            fret6 = GetChildControl<IntegerControl>("fret6");
+            fret1 = GetChildControl<IntegerControl>(nameof(fret1));
+            fret2 = GetChildControl<IntegerControl>(nameof(fret2));
+            fret3 = GetChildControl<IntegerControl>(nameof(fret3));
+            fret4 = GetChildControl<IntegerControl>(nameof(fret4));
+            fret5 = GetChildControl<IntegerControl>(nameof(fret5));
+            fret6 = GetChildControl<IntegerControl>(nameof(fret6));
 
-            velocity1 = GetChildControl<AxisControl>("velocity1");
-            velocity2 = GetChildControl<AxisControl>("velocity2");
-            velocity3 = GetChildControl<AxisControl>("velocity3");
-            velocity4 = GetChildControl<AxisControl>("velocity4");
-            velocity5 = GetChildControl<AxisControl>("velocity5");
-            velocity6 = GetChildControl<AxisControl>("velocity6");
+            velocity1 = GetChildControl<AxisControl>(nameof(velocity1));
+            velocity2 = GetChildControl<AxisControl>(nameof(velocity2));
+            velocity3 = GetChildControl<AxisControl>(nameof(velocity3));
+            velocity4 = GetChildControl<AxisControl>(nameof(velocity4));
+            velocity5 = GetChildControl<AxisControl>(nameof(velocity5));
+            velocity6 = GetChildControl<AxisControl>(nameof(velocity6));
 
-            greenFret = GetChildControl<ButtonControl>("greenFret");
-            redFret = GetChildControl<ButtonControl>("redFret");
-            yellowFret = GetChildControl<ButtonControl>("yellowFret");
-            blueFret = GetChildControl<ButtonControl>("blueFret");
-            orangeFret = GetChildControl<ButtonControl>("orangeFret");
+            greenFret = GetChildControl<ButtonControl>(nameof(greenFret));
+            redFret = GetChildControl<ButtonControl>(nameof(redFret));
+            yellowFret = GetChildControl<ButtonControl>(nameof(yellowFret));
+            blueFret = GetChildControl<ButtonControl>(nameof(blueFret));
+            orangeFret = GetChildControl<ButtonControl>(nameof(orangeFret));
 
-            tilt = GetChildControl<AxisControl>("tilt");
-            whammy = GetChildControl<AxisControl>("whammy");
+            tilt = GetChildControl<AxisControl>(nameof(tilt));
+            whammy = GetChildControl<AxisControl>(nameof(whammy));
         }
 
         /// <summary>

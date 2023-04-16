@@ -97,7 +97,7 @@ namespace PlasticBand.Devices
             // May be some more specific capability data that also distinguishes them, but that probably isn't reliable
             XInputLayoutFixup.RegisterLayoutResolver(XInputController.DeviceSubType.DrumKit, (capabilities, state) => {
                 if ((state.buttons & (ushort)XInputGamepad.Button.LeftThumb) != 0)
-                    return typeof(XInputFiveLaneDrumkit).Name;
+                    return nameof(XInputFiveLaneDrumkit);
 
                 return null;
             });
