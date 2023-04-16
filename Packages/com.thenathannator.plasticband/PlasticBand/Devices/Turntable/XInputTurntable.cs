@@ -85,7 +85,7 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-            XInputDeviceUtils.Register<XInputTurntable>((int)XInputNonStandardSubType.Turntable);
+            XInputLayoutFinder.RegisterLayout<XInputTurntable>(XInputNonStandardSubType.Turntable);
         }
 
         /// <summary>

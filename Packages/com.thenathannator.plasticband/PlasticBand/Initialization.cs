@@ -95,12 +95,9 @@ namespace PlasticBand
             PS3Keytar.Initialize();
             WiiKeytar.Initialize();
 
+            // Layout finders
+            XInputLayoutFinder.Initialize();
             SantrollerLayoutFinder.Initialize();
-
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            // XInput layout fix-ups for devices that require state information to determine the true type
-            XInputLayoutFixup.Initialize();
-#endif
         }
     }
 }

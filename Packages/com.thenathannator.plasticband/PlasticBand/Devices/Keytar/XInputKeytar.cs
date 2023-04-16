@@ -118,7 +118,7 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-            XInputDeviceUtils.Register<XInputKeytar>(XInputNonStandardSubType.Keytar);
+            XInputLayoutFinder.RegisterLayout<XInputKeytar>(XInputNonStandardSubType.Keytar);
         }
 
         /// <summary>
