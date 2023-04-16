@@ -10,6 +10,8 @@ Dates are relative to UTC.
 
 ### Added
 
+- [sanjay900](https://github.com/sanjay900)'s Santroller devices are now supported.
+  - Output reports (e.g. LED support) are not implemented yet, this will be done later.
 - A number of convenience APIs have been added to each of the base device classes, including being able to retrieve controls such as guitar frets or keyboard keys by index or enum, and to get a mask of the current state for each of those controls.
 
 ## [0.2.1] - 2023/14/04
