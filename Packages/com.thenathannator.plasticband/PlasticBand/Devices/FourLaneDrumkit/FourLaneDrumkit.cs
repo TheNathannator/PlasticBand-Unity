@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -5,6 +6,21 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
+    [Flags]
+    public enum FourLanePad
+    {
+        None = 0,
+        Kick1 = 0x01,
+        Kick2 = 0x02,
+        RedPad = 0x04,
+        YellowPad = 0x08,
+        BluePad = 0x10,
+        GreenPad = 0x20,
+        YellowCymbal = 0x40,
+        BlueCymbal = 0x80,
+        GreenCymbal = 0x100,
+    }
+
     /// <summary>
     /// A 4-lane (Rock Band) drumkit controller.
     /// </summary>
@@ -101,6 +117,70 @@ namespace PlasticBand.Devices
         /// </summary>
         [InputControl(displayName = "Kick 2")]
         public ButtonControl kick2 { get; private set; }
+
+        /// <summary>
+        /// The number of pads available on the drumkit.
+        /// </summary>
+        public const int PadCount = 9;
+
+        /// <summary>
+        /// Retrieves a pad control by index.<br/>
+        /// 0-1 = kicks, 2-5 = pads, 6-8 = cymbals.
+        /// </summary>
+        public ButtonControl GetPad(int index)
+        {
+            switch (index)
+            {
+                case 0: return kick1;
+                case 1: return kick2;
+                case 2: return redPad;
+                case 3: return yellowPad;
+                case 4: return bluePad;
+                case 5: return greenPad;
+                case 6: return yellowCymbal;
+                case 7: return blueCymbal;
+                case 8: return greenCymbal;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a pad control by enum value.
+        /// </summary>
+        public ButtonControl GetPad(FourLanePad fret)
+        {
+            switch (fret)
+            {
+                case FourLanePad.Kick1: return kick1;
+                case FourLanePad.Kick2: return kick2;
+                case FourLanePad.RedPad: return redPad;
+                case FourLanePad.YellowPad: return yellowPad;
+                case FourLanePad.BluePad: return bluePad;
+                case FourLanePad.GreenPad: return greenPad;
+                case FourLanePad.YellowCymbal: return yellowCymbal;
+                case FourLanePad.BlueCymbal: return blueCymbal;
+                case FourLanePad.GreenCymbal: return greenCymbal;
+                default: throw new ArgumentException($"Could not determine the pad to retrieve! Value: '{fret}'", nameof(fret));
+            }
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current pad states.
+        /// </summary>
+        public FourLanePad GetPadMask()
+        {
+            var mask = FourLanePad.None;
+            if (kick1.isPressed) mask |= FourLanePad.Kick1;
+            if (kick2.isPressed) mask |= FourLanePad.Kick2;
+            if (redPad.isPressed) mask |= FourLanePad.RedPad;
+            if (yellowPad.isPressed) mask |= FourLanePad.YellowPad;
+            if (bluePad.isPressed) mask |= FourLanePad.BluePad;
+            if (greenPad.isPressed) mask |= FourLanePad.GreenPad;
+            if (yellowCymbal.isPressed) mask |= FourLanePad.YellowCymbal;
+            if (blueCymbal.isPressed) mask |= FourLanePad.BlueCymbal;
+            if (greenCymbal.isPressed) mask |= FourLanePad.GreenCymbal;
+            return mask;
+        }
 
         /// <summary>
         /// Finishes setup of the device.

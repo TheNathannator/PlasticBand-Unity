@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -5,6 +6,18 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
+    [Flags]
+    public enum SixFretGuitarFret
+    {
+        None = 0,
+        Black1 = 0x01,
+        Black2 = 0x02,
+        Black3 = 0x04,
+        White1 = 0x08,
+        White2 = 0x10,
+        White3 = 0x20,
+    }
+
     /// <summary>
     /// A 6-fret guitar controller.
     /// </summary>
@@ -115,6 +128,61 @@ namespace PlasticBand.Devices
         /// </summary>
         [InputControl(displayName = "GHTV Button")]
         public ButtonControl ghtvButton { get; private set; }
+
+        /// <summary>
+        /// The number of frets available on the guitar.
+        /// </summary>
+        public const int FretCount = 6;
+
+        /// <summary>
+        /// Retrieves a fret control by index.<br/>
+        /// 0 = black 1, 5 = white 3.
+        /// </summary>
+        public ButtonControl GetFret(int index)
+        {
+            switch (index)
+            {
+                case 0: return black1;
+                case 1: return black2;
+                case 2: return black3;
+                case 3: return white1;
+                case 4: return white2;
+                case 5: return white3;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a fret control by enum value.
+        /// </summary>
+        public ButtonControl GetFret(SixFretGuitarFret fret)
+        {
+            switch (fret)
+            {
+                case SixFretGuitarFret.Black1: return black1;
+                case SixFretGuitarFret.Black2: return black2;
+                case SixFretGuitarFret.Black3: return black3;
+                case SixFretGuitarFret.White1: return white1;
+                case SixFretGuitarFret.White2: return white2;
+                case SixFretGuitarFret.White3: return white3;
+                default: throw new ArgumentException($"Could not determine the fret to retrieve! Value: '{fret}'", nameof(fret));
+            }
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current fret states.
+        /// </summary>
+        public SixFretGuitarFret GetFretMask()
+        {
+            var mask = SixFretGuitarFret.None;
+            if (black1.isPressed) mask |= SixFretGuitarFret.Black1;
+            if (black2.isPressed) mask |= SixFretGuitarFret.Black2;
+            if (black3.isPressed) mask |= SixFretGuitarFret.Black3;
+            if (white1.isPressed) mask |= SixFretGuitarFret.White1;
+            if (white2.isPressed) mask |= SixFretGuitarFret.White2;
+            if (white3.isPressed) mask |= SixFretGuitarFret.White3;
+            return mask;
+        }
 
         /// <summary>
         /// Finishes setup of the device.

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -190,6 +191,45 @@ namespace PlasticBand.Devices
         /// </summary>
         [InputControl(displayName = "Whammy")]
         public AxisControl whammy { get; private set; }
+
+        /// <summary>
+        /// The number of strings available on the guitar.
+        /// </summary>
+        public const int StringCount = 6;
+
+        /// <summary>
+        /// Retrieves a fret control by index.
+        /// </summary>
+        public IntegerControl GetFret(int index)
+        {
+            switch (index)
+            {
+                case 0: return fret1;
+                case 1: return fret2;
+                case 2: return fret3;
+                case 3: return fret4;
+                case 4: return fret5;
+                case 5: return fret6;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a velocity control by index.
+        /// </summary>
+        public AxisControl GetVelocity(int index)
+        {
+            switch (index)
+            {
+                case 0: return velocity1;
+                case 1: return velocity2;
+                case 2: return velocity3;
+                case 3: return velocity4;
+                case 4: return velocity5;
+                case 5: return velocity6;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
 
         /// <summary>
         /// Finishes setup of the device.

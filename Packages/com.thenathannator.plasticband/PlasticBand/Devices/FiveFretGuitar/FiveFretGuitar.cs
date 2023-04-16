@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -5,6 +6,17 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
+    [Flags]
+    public enum FiveFret
+    {
+        None = 0,
+        Green = 0x01,
+        Red = 0x02,
+        Yellow = 0x04,
+        Blue = 0x08,
+        Orange = 0x10
+    }
+
     /// <summary>
     /// A 5-fret guitar controller.
     /// </summary>
@@ -107,6 +119,58 @@ namespace PlasticBand.Devices
         public ButtonControl selectButton { get; private set; }
 
         /// <summary>
+        /// The number of frets available on the guitar.
+        /// </summary>
+        public const int FretCount = 5;
+
+        /// <summary>
+        /// Retrieves a fret control by index.<br/>
+        /// 0 = green, 4 = orange.
+        /// </summary>
+        public ButtonControl GetFret(int index)
+        {
+            switch (index)
+            {
+                case 0: return greenFret;
+                case 1: return redFret;
+                case 2: return yellowFret;
+                case 3: return blueFret;
+                case 4: return orangeFret;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a fret control by enum value.
+        /// </summary>
+        public ButtonControl GetFret(FiveFret fret)
+        {
+            switch (fret)
+            {
+                case FiveFret.Green: return greenFret;
+                case FiveFret.Red: return redFret;
+                case FiveFret.Yellow: return yellowFret;
+                case FiveFret.Blue: return blueFret;
+                case FiveFret.Orange: return orangeFret;
+                default: throw new ArgumentException($"Could not determine the fret to retrieve! Value: '{fret}'", nameof(fret));
+            }
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current fret states.
+        /// </summary>
+        public FiveFret GetFretMask()
+        {
+            var mask = FiveFret.None;
+            if (greenFret.isPressed) mask |= FiveFret.Green;
+            if (redFret.isPressed) mask |= FiveFret.Red;
+            if (yellowFret.isPressed) mask |= FiveFret.Yellow;
+            if (blueFret.isPressed) mask |= FiveFret.Blue;
+            if (orangeFret.isPressed) mask |= FiveFret.Orange;
+            return mask;
+        }
+
+        /// <summary>
         /// Finishes setup of the device.
         /// </summary>
         protected override void FinishSetup()
@@ -118,8 +182,6 @@ namespace PlasticBand.Devices
             yellowFret = GetChildControl<ButtonControl>(nameof(yellowFret));
             blueFret = GetChildControl<ButtonControl>(nameof(blueFret));
             orangeFret = GetChildControl<ButtonControl>(nameof(orangeFret));
-
-            m_Frets = new ButtonControl[] { greenFret, redFret, yellowFret, blueFret, orangeFret };
 
             strumUp = GetChildControl<ButtonControl>(nameof(strumUp));
             strumDown = GetChildControl<ButtonControl>(nameof(strumDown));

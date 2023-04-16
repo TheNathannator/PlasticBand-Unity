@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -245,6 +246,62 @@ namespace PlasticBand.Devices
         /// </summary>
         [InputControl(displayName = "Touch Strip")]
         public AxisControl touchStrip { get; private set; }
+
+        /// <summary>
+        /// The number of keys available on the keyboard.
+        /// </summary>
+        public const int KeyCount = 25;
+
+        /// <summary>
+        /// Retrieves a key control by index.
+        /// </summary>
+        public ButtonControl GetKey(int index)
+        {
+            switch (index)
+            {
+                case 0: return key1;
+                case 1: return key2;
+                case 2: return key3;
+                case 3: return key4;
+                case 4: return key5;
+                case 5: return key6;
+                case 6: return key7;
+                case 7: return key8;
+                case 8: return key9;
+                case 9: return key10;
+                case 10: return key11;
+                case 11: return key12;
+                case 12: return key13;
+                case 13: return key14;
+                case 14: return key15;
+                case 15: return key16;
+                case 16: return key17;
+                case 17: return key18;
+                case 18: return key19;
+                case 19: return key20;
+                case 20: return key21;
+                case 21: return key22;
+                case 22: return key23;
+                case 23: return key24;
+                case 24: return key25;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current key states.<br/>
+        /// Bit 0 (the lowest bit) is key 1, bit 24 is key 25.
+        /// </summary>
+        public int GetKeyMask()
+        {
+            int mask = 0;
+            for (int i = 0; i < KeyCount; i++)
+            {
+                mask <<= 1;
+                mask |= GetKey(i).isPressed ? 1 : 0;
+            }
+            return mask;
+        }
 
         /// <summary>
         /// Finishes setup of the device.

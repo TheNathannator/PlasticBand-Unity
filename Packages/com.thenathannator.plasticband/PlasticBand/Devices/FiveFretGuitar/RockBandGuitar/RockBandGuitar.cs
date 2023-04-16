@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -66,6 +67,58 @@ namespace PlasticBand.Devices
         /// </summary>
         [InputControl(displayName = "Pickup Switch")]
         public AxisControl pickupSwitch { get; private set; }
+
+        /// <summary>
+        /// The number of frets available on the guitar.
+        /// </summary>
+        public const int SoloFretCount = 5;
+
+        /// <summary>
+        /// Retrieves a solo fret control by index.<br/>
+        /// 0 = green, 4 = orange.
+        /// </summary>
+        public ButtonControl GetSoloFret(int index)
+        {
+            switch (index)
+            {
+                case 0: return soloGreen;
+                case 1: return soloRed;
+                case 2: return soloYellow;
+                case 3: return soloBlue;
+                case 4: return soloOrange;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a solo fret control by enum value.
+        /// </summary>
+        public ButtonControl GetSoloFret(FiveFret fret)
+        {
+            switch (fret)
+            {
+                case FiveFret.Green: return soloGreen;
+                case FiveFret.Red: return soloRed;
+                case FiveFret.Yellow: return soloYellow;
+                case FiveFret.Blue: return soloBlue;
+                case FiveFret.Orange: return soloOrange;
+                default: throw new ArgumentException($"Could not determine the solo fret to retrieve! Value: '{fret}'", nameof(fret));
+            }
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current solo fret states.
+        /// </summary>
+        public FiveFret GetSoloFretMask()
+        {
+            var mask = FiveFret.None;
+            if (soloGreen.isPressed) mask |= FiveFret.Green;
+            if (soloRed.isPressed) mask |= FiveFret.Red;
+            if (soloYellow.isPressed) mask |= FiveFret.Yellow;
+            if (soloBlue.isPressed) mask |= FiveFret.Blue;
+            if (soloOrange.isPressed) mask |= FiveFret.Orange;
+            return mask;
+        }
 
         /// <summary>
         /// Finishes setup of the device.
