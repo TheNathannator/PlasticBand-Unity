@@ -167,7 +167,7 @@ namespace PlasticBand.LowLevel
         /// </summary>
         internal static InputDeviceMatcher GetXInputMatcher(SantrollerDeviceType deviceType, SantrollerRhythmType rhythmType)
         {
-            int revision = (deviceType << 8) | (rhythmType << 4);
+            int revision = (((int)deviceType) << 8) | (((int)rhythmType) << 4);
             return new InputDeviceMatcher()
                 .WithInterface(XInputLayoutFinder.InterfaceName)
                 .WithCapability("gamepad/leftStickX", (int)VendorID)
