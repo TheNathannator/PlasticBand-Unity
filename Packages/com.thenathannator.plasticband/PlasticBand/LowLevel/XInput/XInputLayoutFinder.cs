@@ -160,11 +160,18 @@ namespace PlasticBand.LowLevel
             where TDevice : InputDevice
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            InputSystem.RegisterLayout<TDevice>(matches: new InputDeviceMatcher()
-                .WithInterface(InterfaceName)
-                .WithCapability("subType", subType)
-            );
+            InputSystem.RegisterLayout<TDevice>(matches: GetMatcher(subType));
 #endif
+        }
+
+        /// <summary>
+        /// Gets a matcher that matches XInput Santroller devices with the given subtype.
+        /// </summary>
+        internal static InputDeviceMatcher GetMatcher(int subType)
+        {
+            return new InputDeviceMatcher()
+                .WithInterface(InterfaceName)
+                .WithCapability("subType", subType);
         }
     }
 }
