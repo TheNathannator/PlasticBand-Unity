@@ -31,9 +31,7 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            InputSystem.RegisterLayout<SantrollerXInputFiveLaneDrumkit>(matches: GetXInputMatcher(SantrollerDeviceType.DrumKit, SantrollerRhythmType.RockBand));
-#endif
+            SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputRockBandGuitar>(SantrollerDeviceType.Drums, SantrollerRhythmType.RockBand);
         }
 
         /// <summary>
