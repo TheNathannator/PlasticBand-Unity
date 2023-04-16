@@ -59,8 +59,6 @@ namespace PlasticBand.Devices.LowLevel
 
         public fixed byte unused2[12];
 
-        // This was the previous version of the control, left this here in case it's still needed
-        // [InputControl(name = "tilt", layout = "DiscreteButton", noisy = true, parameters = "minValue=0x0185,maxValue=0x01F7,nullValue=0x0184")]
         [InputControl(name = "accelX", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public short accelX;
 
@@ -81,8 +79,8 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerHIDGuitarHeroGuitar>();
-            SantrollerLayoutFinder.RegisterLayout(SantrollerDeviceType.Guitar, SantrollerRhythmType.GuitarHero, nameof(SantrollerHIDGuitarHeroGuitar));
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDGuitarHeroGuitar>(
+                SantrollerDeviceType.Guitar, SantrollerRhythmType.GuitarHero);
         }
     }
 }

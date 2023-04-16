@@ -1,12 +1,6 @@
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.XInput;
 
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Other/Xbox%20360%20Rock%20Band%20Stage%20Kit.md
@@ -18,7 +12,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.Register<SantrollerXInputStageKit>(XInputNonStandardSubType.StageKit);
+            SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputStageKit>(XInputNonStandardSubType.StageKit);
         }
     }
 }
