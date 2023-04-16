@@ -150,5 +150,18 @@ namespace PlasticBand.LowLevel
                 .WithCapability("gamepad/leftStickX", (int)VendorID)
                 .WithCapability("gamepad/leftStickY", (int)ProductID);
         }
+        
+        /// <summary>
+        /// Gets a matcher that matches XInput Santroller devices with the given device type and rhythm type.
+        /// </summary>
+        internal static InputDeviceMatcher GetXInputMatcher(SantrollerDeviceType deviceType, SantrollerRhythmType rhythmType)
+        {
+            int revision = (deviceType << 8) | (rhythmType << 4);
+            return new InputDeviceMatcher()
+                .WithInterface(XInputLayoutFinder.InterfaceName)
+                .WithCapability("gamepad/leftStickX", (int)VendorID)
+                .WithCapability("gamepad/leftStickY", (int)ProductID)
+                .WithCapability("gamepad/rightStickX", revision);
+        }
     }
 }
