@@ -9,37 +9,36 @@ using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.XInput;
 
 // PlasticBand reference doc:
-// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Fret%20Guitar/Rock%20Band/Xbox%20360.md
-
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Fret%20Guitar/Guitar%20Hero/Xbox%20360.md
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// A Santroller XInput Rock Band Guitar.
+    /// A Santroller XInput Guitar Hero Guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(XInputGuitarState), displayName = "Santroller XInput Rock Band Guitar")]
-    public class SantrollerXInputGuitar : XInputGuitar
+    [InputControlLayout(stateType = typeof(XInputGuitarHeroGuitarState), displayName = "Santroller XInput Guitar Hero Guitar")]
+    public class SantrollerXInputGuitarHeroGuitar : XInputGuitarHeroGuitar
     {
         /// <summary>
-        /// The current <see cref="SantrollerXInputGuitar"/>.
+        /// The current <see cref="SantrollerXInputGuitarHeroGuitar"/>.
         /// </summary>
-        public static new SantrollerXInputGuitar current { get; private set; }
+        public static new SantrollerXInputGuitarHeroGuitar current { get; private set; }
 
         /// <summary>
-        /// A collection of all <see cref="SantrollerXInputGuitar"/>s currently connected to the system.
+        /// A collection of all <see cref="SantrollerXInputGuitarHeroGuitar"/>s currently connected to the system.
         /// </summary>
-        public new static IReadOnlyList<SantrollerXInputGuitar> all => s_AllDevices;
-        private static readonly List<SantrollerXInputGuitar> s_AllDevices = new List<SantrollerXInputGuitar>();
+        public new static IReadOnlyList<SantrollerXInputGuitarHeroGuitar> all => s_AllDevices;
+        private static readonly List<SantrollerXInputGuitarHeroGuitar> s_AllDevices = new List<SantrollerXInputGuitarHeroGuitar>();
 
         /// <summary>
-        /// Registers <see cref="SantrollerXInputGuitar"/> to the input system.
+        /// Registers <see cref="SantrollerXInputGuitarHeroGuitar"/> to the input system.
         /// </summary>
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.Register<SantrollerXInputGuitar>(XInputController.DeviceSubType.Guitar);
+            SantrollerLayoutFinder.Register<SantrollerXInputGuitarHeroGuitar>(XInputController.DeviceSubType.GuitarAlternate);
         }
 
         /// <summary>
-        /// Sets this device as the current <see cref="SantrollerXInputGuitar"/>.
+        /// Sets this device as the current <see cref="SantrollerXInputGuitarHeroGuitar"/>.
         /// </summary>
         public override void MakeCurrent()
         {

@@ -37,19 +37,19 @@ namespace PlasticBand
             // Guitar Hero guitars
             GuitarHeroSliderControl.Initialize();
             GuitarHeroGuitar.Initialize();
-            XInputGuitarAlternate.Initialize();
+            XInputGuitarHeroGuitar.Initialize();
             PS3GuitarHeroGuitar.Initialize();
             SantrollerHIDGuitarHeroGuitar.Initialize();
-            SantrollerXInputGuitarAlternate.Initialize();
+            SantrollerXInputGuitarHeroGuitar.Initialize();
 
             // Rock Band guitars
             RockBandGuitar.Initialize();
-            XInputGuitar.Initialize();
+            XInputRockBandGuitar.Initialize();
             PS3RockBandGuitar.Initialize();
             PS4RockBandGuitar.Initialize();
             WiiRockBandGuitar.Initialize();
             SantrollerHIDRockBandGuitar.Initialize();
-            SantrollerXInputGuitar.Initialize();
+            SantrollerXInputRockBandGuitar.Initialize();
 
             // 6-fret guitars
             SixFretGuitar.Initialize();

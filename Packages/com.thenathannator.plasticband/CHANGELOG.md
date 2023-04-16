@@ -14,6 +14,10 @@ Dates are relative to UTC.
   - Output reports (e.g. LED support) are not implemented yet, this will be done later.
 - A number of convenience APIs have been added to each of the base device classes, including being able to retrieve controls such as guitar frets or keyboard keys by index or enum, and to get a mask of the current state for each of those controls.
 
+### Changes
+
+- BREAKING: XInputGuitar and XInputGuitarAlternate have been renamed to XInputRockBandGuitar and XInputGuitarHeroGuitar, respectively. This was done for clarity, as just saying Guitar and GuitarAlternate isn't very descriptive.
+
 ## [0.2.1] - 2023/14/04
 
 ### Fixed
