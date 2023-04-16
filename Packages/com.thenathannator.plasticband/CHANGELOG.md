@@ -14,7 +14,7 @@ Dates are relative to UTC.
 
 ## [0.2.1] - 2023/14/04
 
-### Fixes
+### Fixed
 
 - I forgot to initialize some things again lol, that is now addressed.
 
@@ -35,7 +35,7 @@ Layout controls:
 
 - A new ButtonAxisPair control type has been added, which allows an axis and a button to function as a single axis/button.
 
-### Fixes
+### Fixed
 
 - Fixed the layouts for PS3 drumkits and turntables not being initialized.
 - Fixed the layouts for Xbox 360 Pro Guitars having some incorrect offsets.
@@ -48,7 +48,7 @@ Layout controls:
 
 Minor bugfix release for other issues present in v0.1.
 
-### Fixes
+### Fixed
 
 - Fixed PS3/4 GHL guitar strumbar inputs being flipped.
 - Fixed PS4 GHL guitar face button mappings (Start, Hero Power, GHTV button, d-pad center).
@@ -58,7 +58,7 @@ Minor bugfix release for other issues present in v0.1.
 
 Hotfix release for issues present in v0.1.0.
 
-### Fixes
+### Fixed
 
 XInputProGuitar was incorrectly inheriting from RockBandGuitar instead of ProGuitar.
 
