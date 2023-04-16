@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine.InputSystem;
@@ -44,15 +43,24 @@ namespace PlasticBand.LowLevel
 #endif
 
         /// <summary>
+        /// Determines whether or not an override should apply to a device.
+        /// </summary>
+        internal delegate bool XInputOverrideMatch(XInputCapabilities capabilities, XInputGamepad state);
+
+        /// <summary>
         /// Resolves the layout of an XInput device.
         /// </summary>
-        internal delegate bool XInputLayoutResolver(XInputCapabilities capabilities, XInputGamepad state);
+        private struct XInputLayoutOverride
+        {
+            public DeviceSubType subType;
+            public XInputOverrideMatch resolve;
+            public string layoutName;
+        }
 
         /// <summary>
         /// Registered layout resolvers for a given subtype.
         /// </summary>
-        private static readonly Dictionary<DeviceSubType, (XInputLayoutResolver resolve, string name)> s_SubTypeLayoutOverrideMap
-            = new Dictionary<DeviceSubType, (XInputLayoutResolver, string)>();
+        private static readonly List<XInputLayoutOverride> s_LayoutOverrides = new List<XInputLayoutOverride>();
 
         /// <summary>
         /// Initializes the layout resolver.
@@ -86,14 +94,17 @@ namespace PlasticBand.LowLevel
             }
 
             // Check if the subtype has an override registered
-            if (s_SubTypeLayoutOverrideMap.TryGetValue(capabilities.subType, out var entry))
+            int index = s_LayoutOverrides.FindIndex((entry) => entry.subType == capabilities.subType);
+            if (index >= 0)
             {
+                var entry = s_LayoutOverrides[index];
+
                 int result = XInputGetState(capabilities.userIndex, out var state);
                 if (result != 0)
                     return null;
 
-                if (entry.resolve(capabilities, state.gamepad) && !string.IsNullOrEmpty(entry.name))
-                    return entry.name;
+                if (entry.resolve(capabilities, state.gamepad) && !string.IsNullOrEmpty(entry.layoutName))
+                    return entry.layoutName;
             }
 
             // Don't change the existing layout if no override was specified
@@ -111,17 +122,19 @@ namespace PlasticBand.LowLevel
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
         /// <see cref="DeviceSubType"/>, with a layout resolver used to identify it.
         /// </summary>
-        internal static void RegisterLayout<TDevice>(DeviceSubType subType, XInputLayoutResolver resolveLayout)
+        internal static void RegisterLayout<TDevice>(DeviceSubType subType, XInputOverrideMatch resolveLayout)
             where TDevice : InputDevice
         {
             // Register to the input system
             InputSystem.RegisterLayout<TDevice>();
 
-            // Ensure it doesn't exist yet
-            if (s_SubTypeLayoutOverrideMap.ContainsKey(subType))
-                throw new ArgumentException($"Subtype '{subType}' is already registered!");
-
-            s_SubTypeLayoutOverrideMap.Add(subType, (resolveLayout, typeof(TDevice).Name));
+            // Add to override list
+            s_LayoutOverrides.Add(new XInputLayoutOverride()
+            {
+                subType = subType,
+                resolve = resolveLayout,
+                layoutName = typeof(TDevice).Name
+            });
         }
 
         /// <summary>
