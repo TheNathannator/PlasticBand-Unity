@@ -71,7 +71,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            XInputDeviceUtils.Register<XInputFourLaneDrumkit>(XInputController.DeviceSubType.DrumKit);
+            XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(XInputController.DeviceSubType.DrumKit);
         }
     }
 }

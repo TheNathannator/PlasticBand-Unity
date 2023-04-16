@@ -98,11 +98,8 @@ namespace PlasticBand
 
             // Layout finders
             HidReportIdLayoutFinder.Initialize();
+            XInputLayoutFinder.Initialize();
             SantrollerLayoutFinder.Initialize();
-
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            XInputLayoutFixup.Initialize();
-#endif
         }
     }
 }

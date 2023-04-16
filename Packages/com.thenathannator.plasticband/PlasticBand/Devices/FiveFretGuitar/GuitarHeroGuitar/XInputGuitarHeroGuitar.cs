@@ -75,7 +75,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            XInputDeviceUtils.Register<XInputGuitarHeroGuitar>(XInputController.DeviceSubType.GuitarAlternate);
+            XInputLayoutFinder.RegisterLayout<XInputGuitarHeroGuitar>(XInputController.DeviceSubType.GuitarAlternate);
         }
     }
 }

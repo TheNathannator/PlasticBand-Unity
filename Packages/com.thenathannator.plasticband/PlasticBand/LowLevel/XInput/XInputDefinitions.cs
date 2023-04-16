@@ -149,15 +149,4 @@ namespace PlasticBand.LowLevel
         Turntable = 23,
         ProGuitar = 25,
     }
-
-    /// <summary>
-    /// Other miscellaneous definitions for XInput devices.
-    /// </summary>
-    internal static class XInputOther
-    {
-        /// <summary>
-        /// The name of the XInput interface.
-        /// </summary>
-        internal const string kInterfaceName = "XInput";
-    }
 }

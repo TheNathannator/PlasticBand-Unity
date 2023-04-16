@@ -136,7 +136,7 @@ namespace PlasticBand.LowLevel
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             InputSystem.RegisterLayout<TDevice>(matches: new InputDeviceMatcher()
-                .WithInterface(XInputOther.kInterfaceName)
+                .WithInterface(XInputLayoutFinder.InterfaceName)
                 .WithCapability("subType", subType)
                 .WithCapability("leftStickX", SantrollerVendorID)
                 .WithCapability("leftStickY", SantrollerProductID)

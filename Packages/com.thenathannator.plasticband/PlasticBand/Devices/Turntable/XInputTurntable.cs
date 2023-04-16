@@ -65,7 +65,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            XInputDeviceUtils.Register<XInputTurntable>((int)XInputNonStandardSubType.Turntable);
+            XInputLayoutFinder.RegisterLayout<XInputTurntable>(XInputNonStandardSubType.Turntable);
         }
 
         protected override void OnEuphoriaTick(float brightness)

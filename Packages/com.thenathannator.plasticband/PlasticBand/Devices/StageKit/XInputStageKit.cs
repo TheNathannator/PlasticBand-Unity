@@ -65,7 +65,7 @@ namespace PlasticBand.Devices
 
         internal static new void Initialize()
         {
-            XInputDeviceUtils.Register<XInputStageKit>(XInputNonStandardSubType.StageKit);
+            XInputLayoutFinder.RegisterLayout<XInputStageKit>(XInputNonStandardSubType.StageKit);
         }
 
         protected override void SendFog(bool enabled)
