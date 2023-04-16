@@ -36,12 +36,12 @@ namespace PlasticBand.LowLevel
         /// <summary>
         /// Vendor ID for Santroller devices.
         /// </summary>
-        public const short SantrollerVendorID = 0x1209;
+        public const ushort VendorID = 0x1209;
 
         /// <summary>
         /// Product ID for Santroller devices.
         /// </summary>
-        public const short SantrollerProductID = 0x2882;
+        public const ushort ProductID = 0x2882;
 
         /// <summary>
         /// Registered layout resolvers for a given subtype.
@@ -69,7 +69,7 @@ namespace PlasticBand.LowLevel
 
             // Parse HID descriptor
             HID.HIDDeviceDescriptor descriptor = HID.HIDDeviceDescriptor.FromJson(description.capabilities);
-            if (descriptor.vendorId != SantrollerVendorID && descriptor.productId != SantrollerProductID)
+            if (descriptor.vendorId != VendorID && descriptor.productId != ProductID)
                 return null;
 
             // Parse version
@@ -147,8 +147,8 @@ namespace PlasticBand.LowLevel
             return new InputDeviceMatcher()
                 .WithInterface(XInputLayoutFinder.InterfaceName)
                 .WithCapability("subType", subType)
-                .WithCapability("gamepad/leftStickX", SantrollerVendorID)
-                .WithCapability("gamepad/leftStickY", SantrollerProductID);
+                .WithCapability("gamepad/leftStickX", (int)VendorID)
+                .WithCapability("gamepad/leftStickY", (int)ProductID);
         }
     }
 }
