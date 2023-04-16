@@ -34,37 +34,37 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The Star Power pedal port on the bottom of the guitar.
         /// </summary>
-        [InputControl(name = "spPedal", displayName = "Star Power Pedal")]
+        [InputControl(displayName = "Star Power Pedal")]
         public ButtonControl spPedal { get; private set; }
 
         /// <summary>
         /// The green segment of the guitar's touch/slider bar.
         /// </summary>
-        [InputControl(name = "touchGreen", displayName = "Touch/Slider Bar Green")]
+        [InputControl(displayName = "Touch/Slider Bar Green")]
         public ButtonControl touchGreen { get; private set; }
 
         /// <summary>
         /// The red segment of the guitar's touch/slider bar.
         /// </summary>
-        [InputControl(name = "touchRed", displayName = "Touch/Slider Bar Red")]
+        [InputControl(displayName = "Touch/Slider Bar Red")]
         public ButtonControl touchRed { get; private set; }
 
         /// <summary>
         /// The yellow segment of the guitar's touch/slider bar.
         /// </summary>
-        [InputControl(name = "touchYellow", displayName = "Touch/Slider Bar Yellow")]
+        [InputControl(displayName = "Touch/Slider Bar Yellow")]
         public ButtonControl touchYellow { get; private set; }
 
         /// <summary>
         /// The blue segment of the guitar's touch/slider bar.
         /// </summary>
-        [InputControl(name = "touchBlue", displayName = "Touch/Slider Bar Blue")]
+        [InputControl(displayName = "Touch/Slider Bar Blue")]
         public ButtonControl touchBlue { get; private set; }
 
         /// <summary>
         /// The orange segment of the guitar's touch/slider bar.
         /// </summary>
-        [InputControl(name = "touchOrange", displayName = "Touch/Slider Bar Orange")]
+        [InputControl(displayName = "Touch/Slider Bar Orange")]
         public ButtonControl touchOrange { get; private set; }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace PlasticBand.Devices
         /// <remarks>
         /// Positive is when the guitar is pointed up, negative is when the guitar is pointed down.
         /// </remarks>
-        [InputControl(name = "accelX", noisy = true, displayName = "Accelerometer X")]
+        [InputControl(displayName = "Accelerometer X", noisy = true)]
         public AxisControl accelX { get; private set; }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace PlasticBand.Devices
         /// <remarks>
         /// Positive is when the guitar is face down, negative is when the guitar is face up.
         /// </remarks>
-        [InputControl(name = "accelY", noisy = true, displayName = "Accelerometer Y")]
+        [InputControl(displayName = "Accelerometer Y", noisy = true)]
         public AxisControl accelY { get; private set; }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace PlasticBand.Devices
         /// <remarks>
         /// Positive is when the guitar is pointed right, negative is when the guitar is pointed left.
         /// </remarks>
-        [InputControl(name = "accelZ", noisy = true, displayName = "Accelerometer Z")]
+        [InputControl(displayName = "Accelerometer Z", noisy = true)]
         public AxisControl accelZ { get; private set; }
 
         /// <summary>

@@ -36,109 +36,109 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The D-pad in the navigation button compartment.
         /// </summary>
-        [InputControl(name = "dpad", displayName = "D-Pad", usage = "Hatswitch")]
+        [InputControl(displayName = "D-Pad", usage = "Hatswitch")]
         public DpadControl dpad { get; private set; }
 
         /// <summary>
         /// The Start button in the navigation button compartment.
         /// </summary>
-        [InputControl(name = "startButton", displayName = "Start", usage = "Menu")]
+        [InputControl(displayName = "Start", usage = "Menu")]
         public ButtonControl startButton { get; private set; }
 
         /// <summary>
         /// The Select button in the navigation button compartment.
         /// </summary>
-        [InputControl(name = "selectButton", displayName = "Back")]
+        [InputControl(displayName = "Back")]
         public ButtonControl selectButton { get; private set; }
 
         /// <summary>
         /// The bottom face button in the navigation button compartment.
         /// </summary>
-        [InputControl(name = "buttonSouth", displayName = "Button South", usages = new[] { "PrimaryAction", "Submit" })]
+        [InputControl(displayName = "Button South", usages = new[] { "PrimaryAction", "Submit" })]
         public ButtonControl buttonSouth { get; private set; }
 
         /// <summary>
         /// The right face button in the navigation button compartment.
         /// </summary>
-        [InputControl(name = "buttonEast", displayName = "Button East", usages = new[] { "Back", "Cancel" })]
+        [InputControl(displayName = "Button East", usages = new[] { "Back", "Cancel" })]
         public ButtonControl buttonEast { get; private set; }
 
         /// <summary>
         /// The left face button in the navigation button compartment.
         /// </summary>
-        [InputControl(name = "buttonWest", displayName = "Button West")]
+        [InputControl(displayName = "Button West")]
         public ButtonControl buttonWest { get; private set; }
 
         /// <summary>
         /// The top face button in the navigation button compartment.
         /// </summary>
-        [InputControl(name = "buttonNorth", displayName = "Button North")]
+        [InputControl(displayName = "Button North")]
         public ButtonControl buttonNorth { get; private set; }
 
         /// <summary>
         /// The euphoria button on the deck.
         /// </summary>
-        [InputControl(name = "euphoria", displayName = "Euphoria")]
+        [InputControl(displayName = "Euphoria")]
         public ButtonControl euphoria { get; private set; }
 
         /// <summary>
         /// The green button on the left turntable.
         /// </summary>
-        [InputControl(name = "leftTableGreen", displayName = "Left Turntable Green", usages = new[] { "PrimaryAction", "Submit" })]
+        [InputControl(displayName = "Left Turntable Green", usages = new[] { "PrimaryAction", "Submit" })]
         public ButtonControl leftTableGreen { get; private set; }
 
         /// <summary>
         /// The red button on the left turntable.
         /// </summary>
-        [InputControl(name = "leftTableRed", displayName = "Left Turntable Red", usages = new[] { "Back", "Cancel" })]
+        [InputControl(displayName = "Left Turntable Red", usages = new[] { "Back", "Cancel" })]
         public ButtonControl leftTableRed { get; private set; }
 
         /// <summary>
         /// The blue button on the left turntable.
         /// </summary>
-        [InputControl(name = "leftTableBlue", displayName = "Left Turntable Blue")]
+        [InputControl(displayName = "Left Turntable Blue")]
         public ButtonControl leftTableBlue { get; private set; }
 
         /// <summary>
         /// The green button on the right turntable.
         /// </summary>
-        [InputControl(name = "rightTableGreen", displayName = "Right Turntable Green", usages = new[] { "PrimaryAction", "Submit" })]
+        [InputControl(displayName = "Right Turntable Green", usages = new[] { "PrimaryAction", "Submit" })]
         public ButtonControl rightTableGreen { get; private set; }
 
         /// <summary>
         /// The red button on the right turntable.
         /// </summary>
-        [InputControl(name = "rightTableRed", displayName = "Right Turntable Red", usages = new[] { "Back", "Cancel" })]
+        [InputControl(displayName = "Right Turntable Red", usages = new[] { "Back", "Cancel" })]
         public ButtonControl rightTableRed { get; private set; }
 
         /// <summary>
         /// The blue button on the right turntable.
         /// </summary>
-        [InputControl(name = "rightTableBlue", displayName = "Right Turntable Blue")]
+        [InputControl(displayName = "Right Turntable Blue")]
         public ButtonControl rightTableBlue { get; private set; }
 
         /// <summary>
         /// The rotational speed of the left turntable.
         /// </summary>
-        [InputControl(name = "leftTableVelocity", noisy = true, displayName = "Left Turntable Velocity")]
+        [InputControl(displayName = "Left Turntable Velocity", noisy = true)]
         public AxisControl leftTableVelocity { get; private set; }
 
         /// <summary>
         /// The rotational speed of the right turntable.
         /// </summary>
-        [InputControl(name = "rightTableVelocity", noisy = true, displayName = "Right Turntable Velocity")]
+        [InputControl(displayName = "Right Turntable Velocity", noisy = true)]
         public AxisControl rightTableVelocity { get; private set; }
 
         /// <summary>
         /// The effects dial on the deck.
         /// </summary>
-        [InputControl(name = "effectsDial", displayName = "Effects Dial")]
+        [InputControl(displayName = "Effects Dial")]
         public AxisControl effectsDial { get; private set; }
 
         /// <summary>
         /// The cross-fader on the deck.
         /// </summary>
-        [InputControl(name = "crossFader", displayName = "Crossfader")]
+        [InputControl(displayName = "Crossfader")]
         public AxisControl crossFader { get; private set; }
 
         /// <summary>

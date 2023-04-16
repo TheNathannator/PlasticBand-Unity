@@ -33,55 +33,55 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The drumkit's d-pad.
         /// </summary>
-        [InputControl(name = "dpad", displayName = "D-Pad", usage = "Hatswitch")]
+        [InputControl(displayName = "D-Pad", usage = "Hatswitch")]
         public DpadControl dpad { get; private set; }
 
         /// <summary>
         /// The Start button on the drumkit.
         /// </summary>
-        [InputControl(name = "startButton", displayName = "Start", usage = "Menu")]
+        [InputControl(displayName = "Start", usage = "Menu")]
         public ButtonControl startButton { get; private set; }
 
         /// <summary>
         /// The Select button on the drumkit.
         /// </summary>
-        [InputControl(name = "selectButton", displayName = "Back")]
+        [InputControl(displayName = "Back")]
         public ButtonControl selectButton { get; private set; }
 
         /// <summary>
         /// The red pad on the drumkit.
         /// </summary>
-        [InputControl(name = "redPad", displayName = "Red Pad", usages = new[] { "Back", "Cancel" })]
+        [InputControl(displayName = "Red Pad", usages = new[] { "Back", "Cancel" })]
         public ButtonControl redPad { get; private set; }
 
         /// <summary>
         /// The yellow pad on the drumkit.
         /// </summary>
-        [InputControl(name = "yellowCymbal", displayName = "Yellow Cymbal")]
+        [InputControl(displayName = "Yellow Cymbal")]
         public ButtonControl yellowCymbal { get; private set; }
 
         /// <summary>
         /// The blue pad on the drumkit.
         /// </summary>
-        [InputControl(name = "bluePad", displayName = "Blue Pad")]
+        [InputControl(displayName = "Blue Pad")]
         public ButtonControl bluePad { get; private set; }
 
         /// <summary>
         /// The green pad on the drumkit.
         /// </summary>
-        [InputControl(name = "orangeCymbal", displayName = "Orange Cymbal")]
+        [InputControl(displayName = "Orange Cymbal")]
         public ButtonControl orangeCymbal { get; private set; }
 
         /// <summary>
         /// The yellow cymbal on the drumkit.
         /// </summary>
-        [InputControl(name = "greenPad", displayName = "Green Pad", usages = new[] { "PrimaryAction", "Submit" })]
+        [InputControl(displayName = "Green Pad", usages = new[] { "PrimaryAction", "Submit" })]
         public ButtonControl greenPad { get; private set; }
 
         /// <summary>
         /// The kick pedal on the drumkit.
         /// </summary>
-        [InputControl(name = "kick", displayName = "Kick")]
+        [InputControl(displayName = "Kick")]
         public ButtonControl kick { get; private set; }
 
         /// <summary>
