@@ -138,8 +138,8 @@ namespace PlasticBand.LowLevel
             InputSystem.RegisterLayout<TDevice>(matches: new InputDeviceMatcher()
                 .WithInterface(XInputLayoutFinder.InterfaceName)
                 .WithCapability("subType", subType)
-                .WithCapability("leftStickX", SantrollerVendorID)
-                .WithCapability("leftStickY", SantrollerProductID)
+                .WithCapability("gamepad/leftStickX", SantrollerVendorID)
+                .WithCapability("gamepad/leftStickY", SantrollerProductID)
             );
 #endif
         }
