@@ -91,8 +91,8 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerHIDRockBandGuitar>();
-            SantrollerLayoutFinder.RegisterLayout(SantrollerDeviceType.Guitar, SantrollerRhythmType.RockBand, nameof(SantrollerHIDRockBandGuitar));
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDRockBandGuitar>(
+                SantrollerDeviceType.Guitar, SantrollerRhythmType.RockBand);
         }
 
         /// <summary>

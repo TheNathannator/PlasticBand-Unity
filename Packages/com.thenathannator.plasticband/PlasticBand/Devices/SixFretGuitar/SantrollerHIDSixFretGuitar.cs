@@ -87,8 +87,7 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerHIDSixFretGuitar>();
-            SantrollerLayoutFinder.RegisterLayout(SantrollerDeviceType.LiveGuitar, null, nameof(SantrollerHIDSixFretGuitar));
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDSixFretGuitar>(SantrollerDeviceType.LiveGuitar);
         }
 
         /// <summary>

@@ -1,16 +1,16 @@
+using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.HID;
 using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.LowLevel
 {
-    internal enum SantrollerDeviceType {
-        Gamepad=1,
+    internal enum SantrollerDeviceType
+    {
+        Gamepad = 1,
         Wheel,
         ArcadeStick,
         FlightStick,
@@ -22,8 +22,9 @@ namespace PlasticBand.LowLevel
         DjHeroTurntable
     }
 
-    internal enum SantrollerRhythmType {
-        GuitarHero,
+    internal enum SantrollerRhythmType
+    {
+        GuitarHero = 0,
         RockBand
     }
 
@@ -33,20 +34,20 @@ namespace PlasticBand.LowLevel
     internal static class SantrollerLayoutFinder
     {
         /// <summary>
-        /// Vendor Id for Santroller devices
+        /// Vendor ID for Santroller devices.
         /// </summary>
-        internal static short SantrollerVendorID = 0x1209;      
+        public const short SantrollerVendorID = 0x1209;
 
         /// <summary>
-        /// Product Id for Santroller devices
+        /// Product ID for Santroller devices.
         /// </summary>
-        internal static short SantrollerProductID = 0x2882;
-
+        public const short SantrollerProductID = 0x2882;
 
         /// <summary>
         /// Registered layout resolvers for a given subtype.
         /// </summary>
-        private static readonly Dictionary<(SantrollerDeviceType, SantrollerRhythmType?), string> s_DeviceTypeLayoutOverrideMap = new Dictionary<(SantrollerDeviceType, SantrollerRhythmType?), string>();
+        private static readonly Dictionary<(SantrollerDeviceType, SantrollerRhythmType?), string> s_LayoutOverrides
+            = new Dictionary<(SantrollerDeviceType, SantrollerRhythmType?), string>();
 
         /// <summary>
         /// Initializes the layout resolver.
@@ -57,21 +58,10 @@ namespace PlasticBand.LowLevel
         }
 
         /// <summary>
-        /// Registers a layout resolver for a subtype.
-        /// </summary>
-        internal static void RegisterLayout(SantrollerDeviceType deviceType, SantrollerRhythmType? rhythmType, string layout)
-        {
-            // TODO: May be something better to do than just do nothing in this case
-            if (s_DeviceTypeLayoutOverrideMap.ContainsKey((deviceType, rhythmType)))
-                return;
-
-            s_DeviceTypeLayoutOverrideMap.Add((deviceType, rhythmType), layout);
-        }
-
-        /// <summary>
         /// Determines the layout to use for the given device description.
         /// </summary>
-        internal static string FindSantrollerDeviceLayout(ref InputDeviceDescription description, string matchedLayout, InputDeviceExecuteCommandDelegate executeDeviceCommand)
+        private static string FindSantrollerDeviceLayout(ref InputDeviceDescription description, string matchedLayout,
+            InputDeviceExecuteCommandDelegate executeDeviceCommand)
         {
             // Ignore non-HID devices
             if (description.interfaceName != "HID")
@@ -79,63 +69,79 @@ namespace PlasticBand.LowLevel
 
             // Parse HID descriptor
             HID.HIDDeviceDescriptor descriptor = HID.HIDDeviceDescriptor.FromJson(description.capabilities);
-
-            if (descriptor.vendorId != SantrollerLayoutFinder.SantrollerVendorID && descriptor.productId != SantrollerLayoutFinder.SantrollerProductID)
+            if (descriptor.vendorId != SantrollerVendorID && descriptor.productId != SantrollerProductID)
                 return null;
 
             // Parse version
-            if (!short.TryParse(description.version, out var version)) {
+            if (!short.TryParse(description.version, out var version))
                 return null;
-            }
+
             var major = version >> 8;
             var minor = version >> 4 & 0x0f;
-            var revision = version & 0x0f;
+            // var revision = version & 0x0f; // For reference
+
             var deviceType = (SantrollerDeviceType)major;
             var rhythmType = (SantrollerRhythmType)minor;
-            // Check if the devicetype and rhythm type has an override registered
-            if (s_DeviceTypeLayoutOverrideMap.TryGetValue((deviceType, rhythmType), out var layout))
-            {
-                return layout;
-            }
+            // var consoleType = (SantrollerConsoleType)revision; // For reference
 
-            // A lot of devices are rhythm type independant, so also match on just the device type
-            if (s_DeviceTypeLayoutOverrideMap.TryGetValue((deviceType, null), out layout))
-            {
+            // Check if the devicetype and rhythm type has an override registered
+            if (s_LayoutOverrides.TryGetValue((deviceType, rhythmType), out var layout))
                 return layout;
-            }
+
+            // A lot of devices are rhythm type independent, so also match on just the device type
+            if (s_LayoutOverrides.TryGetValue((deviceType, null), out layout))
+                return layout;
 
             return null;
         }
 
         /// <summary>
-        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device of the specified <see cref="XInputController.DeviceSubType"/>.
+        /// Registers <typeparamref name="TDevice"/> to the input system as an HID Santroller device using the specified
+        /// <see cref="SantrollerDeviceType"/> and <see cref="SantrollerRhythmType"/>.
         /// </summary>
-        public static void Register<TDevice>(XInputController.DeviceSubType subType)
-            where TDevice : InputDevice
-            => Register<TDevice>((int)subType);
-
-        /// <summary>
-        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device of the specified <see cref="XInputNonStandardSubType"/>.
-        /// </summary>
-        public static void Register<TDevice>(XInputNonStandardSubType subType)
-            where TDevice : InputDevice
-            => Register<TDevice>((int)subType);
-
-
-        /// <summary>
-        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device of the specified subtype.
-        /// </summary>
-        public static void Register<TDevice>(int subType)
+        internal static void RegisterHIDLayout<TDevice>(SantrollerDeviceType deviceType, SantrollerRhythmType? rhythmType = null)
             where TDevice : InputDevice
         {
-    #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+            // Register to the input system
+            InputSystem.RegisterLayout<TDevice>();
+
+            // Ensure no resolver is registered yet
+            if (s_LayoutOverrides.ContainsKey((deviceType, rhythmType)))
+                throw new ArgumentException($"Device type {deviceType}:{(rhythmType != null ? rhythmType.ToString() : "All")} is already registered!");
+
+            s_LayoutOverrides.Add((deviceType, rhythmType), typeof(TDevice).Name);
+        }
+
+        /// <summary>
+        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified
+        /// <see cref="XInputController.DeviceSubType"/>.
+        /// </summary>
+        internal static void RegisterXInputLayout<TDevice>(XInputController.DeviceSubType subType)
+            where TDevice : InputDevice
+            => RegisterXInputLayout<TDevice>((int)subType);
+
+        /// <summary>
+        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified
+        /// <see cref="XInputNonStandardSubType"/>.
+        /// </summary>
+        internal static void RegisterXInputLayout<TDevice>(XInputNonStandardSubType subType)
+            where TDevice : InputDevice
+            => RegisterXInputLayout<TDevice>((int)subType);
+
+        /// <summary>
+        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified subtype.
+        /// </summary>
+        internal static void RegisterXInputLayout<TDevice>(int subType)
+            where TDevice : InputDevice
+        {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             InputSystem.RegisterLayout<TDevice>(matches: new InputDeviceMatcher()
                 .WithInterface(XInputOther.kInterfaceName)
                 .WithCapability("subType", subType)
-                .WithCapability("leftStickX", SantrollerLayoutFinder.SantrollerVendorID)
-                .WithCapability("leftStickY", SantrollerLayoutFinder.SantrollerProductID)
+                .WithCapability("leftStickX", SantrollerVendorID)
+                .WithCapability("leftStickY", SantrollerProductID)
             );
-    #endif
+#endif
         }
     }
 }

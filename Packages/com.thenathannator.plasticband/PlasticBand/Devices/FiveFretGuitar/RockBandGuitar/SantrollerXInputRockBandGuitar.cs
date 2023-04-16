@@ -1,11 +1,7 @@
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.XInput;
 
 // PlasticBand reference doc:
@@ -35,7 +31,7 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.Register<SantrollerXInputRockBandGuitar>(XInputController.DeviceSubType.Guitar);
+            SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputRockBandGuitar>(XInputController.DeviceSubType.Guitar);
         }
 
         /// <summary>

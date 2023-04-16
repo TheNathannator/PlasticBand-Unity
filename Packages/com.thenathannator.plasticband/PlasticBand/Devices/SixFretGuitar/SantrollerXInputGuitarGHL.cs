@@ -1,11 +1,8 @@
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.XInput;
 
 // PlasticBand reference doc:
@@ -37,7 +34,7 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-            #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             InputSystem.RegisterLayout<SantrollerXInputGuitarGHL>(matches: new InputDeviceMatcher()
                 // Annoyingly, GHL guitars do not have a unique subtype. So, we have to use some other information to identify them.
                 .WithInterface(XInputOther.kInterfaceName)
@@ -47,7 +44,7 @@ namespace PlasticBand.Devices
                 // so we use the flags as the distinguisher.
                 .WithCapability("flags", (int)(XInputFlags.VoiceSupported | XInputFlags.PluginModulesSupported | XInputFlags.NoNavigation)) // 28
             );
-            #endif
+#endif
         }
 
         /// <summary>
