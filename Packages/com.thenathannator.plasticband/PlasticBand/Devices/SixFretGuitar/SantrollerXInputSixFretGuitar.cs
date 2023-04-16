@@ -18,12 +18,9 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            InputSystem.RegisterLayout<SantrollerXInputSixFretGuitar>(matches: new InputDeviceMatcher()
+            InputSystem.RegisterLayout<SantrollerXInputSixFretGuitar>(matches:
+                SantrollerLayoutFinder.GetXInputMatcher((int)XInputController.DeviceSubType.GuitarAlternate)
                 // Annoyingly, GHL guitars do not have a unique subtype. So, we have to use some other information to identify them.
-                .WithInterface(XInputLayoutFinder.InterfaceName)
-                .WithCapability("subType", XInputController.DeviceSubType.GuitarAlternate)
-                .WithCapability("gamepad/leftStickX", SantrollerLayoutFinder.SantrollerVendorID)
-                .WithCapability("gamepad/leftStickY", SantrollerLayoutFinder.SantrollerProductID)
                 // so we use the flags as the distinguisher.
                 .WithCapability("flags", (int)(XInputFlags.VoiceSupported | XInputFlags.PluginModulesSupported | XInputFlags.NoNavigation)) // 28
             );

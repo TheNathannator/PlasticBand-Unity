@@ -62,10 +62,9 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            InputSystem.RegisterLayout<XInputSixFretGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(XInputLayoutFinder.InterfaceName)
+            InputSystem.RegisterLayout<XInputSixFretGuitar>(matches:
+                XInputLayoutFinder.GetMatcher((int)XInputController.DeviceSubType.GuitarAlternate)
                 // Annoyingly, GHL guitars do not have a unique subtype. So, we have to use some other information to identify them.
-                .WithCapability("subType", (int)XInputController.DeviceSubType.GuitarAlternate)
                 // Strangely, they report having No Navigation. Most likely, none of the other guitars report this information,
                 // so we use the flags as the distinguisher.
                 .WithCapability("flags", (int)(XInputFlags.VoiceSupported | XInputFlags.PluginModulesSupported | XInputFlags.NoNavigation)) // 28

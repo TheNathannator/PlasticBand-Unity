@@ -135,13 +135,20 @@ namespace PlasticBand.LowLevel
             where TDevice : InputDevice
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            InputSystem.RegisterLayout<TDevice>(matches: new InputDeviceMatcher()
+            InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType));
+#endif
+        }
+
+        /// <summary>
+        /// Gets a matcher that matches XInput Santroller devices with the given subtype.
+        /// </summary>
+        internal static InputDeviceMatcher GetXInputMatcher(int subType)
+        {
+            return new InputDeviceMatcher()
                 .WithInterface(XInputLayoutFinder.InterfaceName)
                 .WithCapability("subType", subType)
                 .WithCapability("gamepad/leftStickX", SantrollerVendorID)
-                .WithCapability("gamepad/leftStickY", SantrollerProductID)
-            );
-#endif
+                .WithCapability("gamepad/leftStickY", SantrollerProductID);
         }
     }
 }
