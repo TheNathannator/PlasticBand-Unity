@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -43,17 +46,13 @@ namespace PlasticBand.LowLevel
 #endif
 
         /// <summary>
-        /// Determines whether or not an override should apply to a device.
-        /// </summary>
-        internal delegate bool XInputOverrideMatch(XInputCapabilities capabilities, XInputGamepad state);
-
-        /// <summary>
         /// Resolves the layout of an XInput device.
         /// </summary>
         private struct XInputLayoutOverride
         {
-            public DeviceSubType subType;
-            public XInputOverrideMatch resolve;
+            public int subType;
+            public Func<XInputGamepad, bool> resolve;
+            public InputDeviceMatcher matcher;
             public string layoutName;
         }
 
@@ -78,51 +77,112 @@ namespace PlasticBand.LowLevel
         private static string FindXInputDeviceLayout(ref InputDeviceDescription description, string matchedLayout,
             InputDeviceExecuteCommandDelegate executeDeviceCommand)
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             // Ignore non-XInput devices
             if (description.interfaceName != InterfaceName)
                 return null;
 
+            Debug.Log($"[XInputLayoutFinder] Received XInput device. Matched layout: {matchedLayout ?? "None"}, description:\n{description}");
+
             // Parse capabilities
             if (!Utilities.TryParseJson<XInputCapabilities>(description.capabilities, out var capabilities))
             {
-                // Default to regular controller if no layout was matched already
-                if (string.IsNullOrEmpty(matchedLayout))
-                    return nameof(XInputControllerWindows);
-
-                return null;
+                Debug.LogError($"[XInputLayoutFinder] Failed to parse device capabilities!");
+                return DefaultLayoutIfNull(matchedLayout);
             }
 
             // Check if the subtype has an override registered
-            int index = s_LayoutOverrides.FindIndex((entry) => entry.subType == capabilities.subType);
-            if (index >= 0)
+            var overrides = s_LayoutOverrides.Where((entry) => entry.subType == (int)capabilities.subType);
+            if (!overrides.Any())
             {
-                var entry = s_LayoutOverrides[index];
-
-                int result = XInputGetState(capabilities.userIndex, out var state);
-                if (result != 0)
-                    return null;
-
-                if (entry.resolve(capabilities, state.gamepad) && !string.IsNullOrEmpty(entry.layoutName))
-                    return entry.layoutName;
+                Debug.Log($"[XInputLayoutFinder] No overrides for subtype '{capabilities.subType}'");
+                return DefaultLayoutIfNull(matchedLayout);
             }
 
-            // Don't change the existing layout if no override was specified
-            if (!string.IsNullOrEmpty(matchedLayout))
-                return null;
+            // Get device state
+            XInputGamepad state = default;
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+            if (XInputGetState(capabilities.userIndex, out var packet) != 0)
+            {
+                Debug.LogError($"[XInputLayoutFinder] Failed to get state for user index {capabilities.userIndex}!");
+                return DefaultLayoutIfNull(matchedLayout);
+            }
 
-            // Set all other subtypes to be regular controllers, per XInput specs
-            return nameof(XInputControllerWindows);
-#else
-            return null;
+            state = packet.gamepad;
 #endif
+
+            // Go through device matchers
+            XInputLayoutOverride? matchedEntry = null;
+            float greatestMatch = 0f;
+            foreach (var entry in overrides)
+            {
+                // Ignore invalid overrides
+                if (string.IsNullOrEmpty(entry.layoutName))
+                {
+                    Debug.LogWarning($"[XInputLayoutFinder] No layout found on override entry with matcher '{entry.matcher}'!");
+                    continue;
+                }
+
+                // Ignore non-matching resolvers
+                if (!entry.resolve(state))
+                {
+                    Debug.Log($"[XInputLayoutFinder] Override '{entry.layoutName}' does not match");
+                    continue;
+                }
+
+                // Keep track of the best match
+                float match = entry.matcher.MatchPercentage(description);
+                if (match > greatestMatch)
+                {
+                    greatestMatch = match;
+                    matchedEntry = entry;
+                }
+
+                Debug.Log($"[XInputLayoutFinder] Matcher for override '{entry.layoutName}': Score: {match}, properties: {entry.matcher}");
+            }
+
+            // Use matched entry if available
+            if (matchedEntry.HasValue)
+            {
+                var entry = matchedEntry.GetValueOrDefault();
+                if (!string.IsNullOrEmpty(entry.layoutName))
+                {
+                    Debug.Log($"[XInputLayoutFinder] Using layout '{entry.layoutName}'");
+                    return entry.layoutName;
+                }
+            }
+
+            // Use existing or default layout otherwise
+            Debug.Log($"[XInputLayoutFinder] No overrides match.");
+            return DefaultLayoutIfNull(matchedLayout);
         }
+
+        private static string DefaultLayoutIfNull(string matchedLayout)
+            => string.IsNullOrEmpty(matchedLayout) ? nameof(XInputControllerWindows) : null;
 
         /// <summary>
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
         /// <see cref="DeviceSubType"/>, with a layout resolver used to identify it.
         /// </summary>
-        internal static void RegisterLayout<TDevice>(DeviceSubType subType, XInputOverrideMatch resolveLayout)
+        internal static void RegisterLayout<TDevice>(DeviceSubType subType, Func<XInputGamepad, bool> resolveLayout,
+            InputDeviceMatcher matcher = default)
+            where TDevice : InputDevice
+            => RegisterLayout<TDevice>((int)subType, resolveLayout, matcher);
+
+        /// <summary>
+        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
+        /// <see cref="XInputNonStandardSubType"/>, with a layout resolver used to identify it.
+        /// </summary>
+        internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType, Func<XInputGamepad, bool> resolveLayout,
+            InputDeviceMatcher matcher = default)
+            where TDevice : InputDevice
+            => RegisterLayout<TDevice>((int)subType, resolveLayout, matcher);
+
+        /// <summary>
+        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
+        /// subtype, with a layout resolver used to identify it.
+        /// </summary>
+        internal static void RegisterLayout<TDevice>(int subType, Func<XInputGamepad, bool> resolveLayout,
+            InputDeviceMatcher matcher = default)
             where TDevice : InputDevice
         {
             // Register to the input system
@@ -133,6 +193,7 @@ namespace PlasticBand.LowLevel
             {
                 subType = subType,
                 resolve = resolveLayout,
+                matcher = matcher.empty ? GetMatcher(subType) : matcher,
                 layoutName = typeof(TDevice).Name
             });
         }
