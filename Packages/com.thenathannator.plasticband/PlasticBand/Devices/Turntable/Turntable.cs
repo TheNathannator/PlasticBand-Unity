@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using PlasticBand.Haptics;
@@ -8,6 +9,15 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
+    [Flags]
+    public enum TurntableButtons
+    {
+        None = 0,
+        Green = 0x01,
+        Red = 0x02,
+        Blue = 0x04
+    }
+
     /// <summary>
     /// A DJ Hero turntable.
     /// </summary>
@@ -140,6 +150,117 @@ namespace PlasticBand.Devices
         /// </summary>
         [InputControl(displayName = "Crossfader")]
         public AxisControl crossFader { get; private set; }
+
+        /// <summary>
+        /// The number of pads available on the drumkit.
+        /// </summary>
+        public const int ButtonCount = 3;
+
+        /// <summary>
+        /// Retrieves a left table button control by index.<br/>
+        /// 0 = green, 1 = red, 2 = blue.
+        /// </summary>
+        public ButtonControl GetLeftButton(int index)
+        {
+            switch (index)
+            {
+                case 0: return leftTableGreen;
+                case 1: return leftTableRed;
+                case 2: return leftTableBlue;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a left table button control by enum value.
+        /// </summary>
+        public ButtonControl GetLeftButton(TurntableButtons button)
+        {
+            switch (button)
+            {
+                case TurntableButtons.Green: return leftTableGreen;
+                case TurntableButtons.Red: return leftTableRed;
+                case TurntableButtons.Blue: return leftTableBlue;
+                default: throw new ArgumentOutOfRangeException(nameof(button));
+            }
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current left table button states.
+        /// </summary>
+        public TurntableButtons GetLeftButtonMask()
+        {
+            var frets = TurntableButtons.None;
+            if (leftTableGreen.isPressed) frets |= TurntableButtons.Green;
+            if (leftTableRed.isPressed) frets |= TurntableButtons.Red;
+            if (leftTableBlue.isPressed) frets |= TurntableButtons.Blue;
+            return frets;
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current left table button states.
+        /// </summary>
+        public TurntableButtons GetLeftButtonMask(InputEventPtr eventPtr)
+        {
+            var frets = TurntableButtons.None;
+            if (leftTableGreen.IsPressedInEvent(eventPtr)) frets |= TurntableButtons.Green;
+            if (leftTableRed.IsPressedInEvent(eventPtr)) frets |= TurntableButtons.Red;
+            if (leftTableBlue.IsPressedInEvent(eventPtr)) frets |= TurntableButtons.Blue;
+            return frets;
+        }
+
+        /// <summary>
+        /// Retrieves a right table button control by index.<br/>
+        /// 0 = green, 1 = red, 2 = blue.
+        /// </summary>
+        public ButtonControl GetRightButton(int index)
+        {
+            switch (index)
+            {
+                case 0: return rightTableGreen;
+                case 1: return rightTableRed;
+                case 2: return rightTableBlue;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a right table button control by enum value.
+        /// </summary>
+        public ButtonControl GetRightButton(TurntableButtons button)
+        {
+            switch (button)
+            {
+                case TurntableButtons.Green: return rightTableGreen;
+                case TurntableButtons.Red: return rightTableRed;
+                case TurntableButtons.Blue: return rightTableBlue;
+                default: throw new ArgumentOutOfRangeException(nameof(button));
+            }
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current right table button states.
+        /// </summary>
+        public TurntableButtons GetRightButtonMask()
+        {
+            var mask = TurntableButtons.None;
+            if (rightTableGreen.isPressed) mask |= TurntableButtons.Green;
+            if (rightTableRed.isPressed) mask |= TurntableButtons.Red;
+            if (rightTableBlue.isPressed) mask |= TurntableButtons.Blue;
+            return mask;
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current right table button states.
+        /// </summary>
+        public TurntableButtons GetRightButtonMask(InputEventPtr eventPtr)
+        {
+            var mask = TurntableButtons.None;
+            if (rightTableGreen.IsPressedInEvent(eventPtr)) mask |= TurntableButtons.Green;
+            if (rightTableRed.IsPressedInEvent(eventPtr)) mask |= TurntableButtons.Red;
+            if (rightTableBlue.IsPressedInEvent(eventPtr)) mask |= TurntableButtons.Blue;
+            return mask;
+        }
 
         /// <summary>
         /// Finishes setup of the device.

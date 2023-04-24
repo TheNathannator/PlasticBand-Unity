@@ -1,4 +1,8 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand
 {
@@ -28,5 +32,9 @@ namespace PlasticBand
             data = default;
             return false;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsPressedInEvent(this ButtonControl control, InputEventPtr eventPtr)
+            => control.HasValueChangeInEvent(eventPtr) && control.IsValueConsideredPressed(control.ReadValueFromEvent(eventPtr));
     }
 }

@@ -1,10 +1,24 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
+    [Flags]
+    public enum FiveLanePad
+    {
+        None = 0,
+        Kick = 0x01,
+        Red = 0x02,
+        Yellow = 0x04,
+        Blue = 0x08,
+        Orange = 0x10,
+        Green = 0x20,
+    }
+
     /// <summary>
     /// A 5-lane (Guitar Hero) drumkit controller.
     /// </summary>
@@ -83,6 +97,76 @@ namespace PlasticBand.Devices
         /// </summary>
         [InputControl(displayName = "Kick")]
         public ButtonControl kick { get; private set; }
+
+        /// <summary>
+        /// The number of pads available on the drumkit.
+        /// </summary>
+        public const int PadCount = 6;
+
+        /// <summary>
+        /// Retrieves a pad control by index.<br/>
+        /// 0 = kick, 1 = red, 5 = green.
+        /// </summary>
+        public ButtonControl GetPad(int index)
+        {
+            switch (index)
+            {
+                case 0: return kick;
+                case 1: return redPad;
+                case 2: return yellowCymbal;
+                case 3: return bluePad;
+                case 4: return orangeCymbal;
+                case 5: return greenPad;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a pad control by enum value.
+        /// </summary>
+        public ButtonControl GetPad(FiveLanePad pad)
+        {
+            switch (pad)
+            {
+                case FiveLanePad.Kick: return kick;
+                case FiveLanePad.Red: return redPad;
+                case FiveLanePad.Yellow: return yellowCymbal;
+                case FiveLanePad.Blue: return bluePad;
+                case FiveLanePad.Orange: return orangeCymbal;
+                case FiveLanePad.Green: return greenPad;
+                default: throw new ArgumentException($"Could not determine the pad to retrieve! Value: '{pad}'", nameof(pad));
+            }
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current pad states.
+        /// </summary>
+        public FiveLanePad GetPadMask()
+        {
+            var mask = FiveLanePad.None;
+            if (kick.isPressed) mask |= FiveLanePad.Kick;
+            if (redPad.isPressed) mask |= FiveLanePad.Red;
+            if (yellowCymbal.isPressed) mask |= FiveLanePad.Yellow;
+            if (bluePad.isPressed) mask |= FiveLanePad.Blue;
+            if (orangeCymbal.isPressed) mask |= FiveLanePad.Orange;
+            if (greenPad.isPressed) mask |= FiveLanePad.Green;
+            return mask;
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the pad states in the given state event.
+        /// </summary>
+        public FiveLanePad GetPadMask(InputEventPtr eventPtr)
+        {
+            var mask = FiveLanePad.None;
+            if (kick.IsPressedInEvent(eventPtr)) mask |= FiveLanePad.Kick;
+            if (redPad.IsPressedInEvent(eventPtr)) mask |= FiveLanePad.Red;
+            if (yellowCymbal.IsPressedInEvent(eventPtr)) mask |= FiveLanePad.Yellow;
+            if (bluePad.IsPressedInEvent(eventPtr)) mask |= FiveLanePad.Blue;
+            if (orangeCymbal.IsPressedInEvent(eventPtr)) mask |= FiveLanePad.Orange;
+            if (greenPad.IsPressedInEvent(eventPtr)) mask |= FiveLanePad.Green;
+            return mask;
+        }
 
         /// <summary>
         /// Finishes setup of the device.

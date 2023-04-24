@@ -33,24 +33,6 @@ namespace PlasticBand.Controls
         }
 
         /// <summary>
-        /// Flags of active pads/cymbals.
-        /// </summary>
-        [Flags]
-        private enum FourLanePad
-        {
-            None = 0,
-
-            RedPad = 0x01,
-            YellowPad = 0x02,
-            BluePad = 0x04,
-            GreenPad = 0x08,
-
-            YellowCymbal = 0x20,
-            BlueCymbal = 0x40,
-            GreenCymbal = 0x80
-        }
-
-        /// <summary>
         /// The button bit to use as the red flag.
         /// </summary>
         /// <remarks>

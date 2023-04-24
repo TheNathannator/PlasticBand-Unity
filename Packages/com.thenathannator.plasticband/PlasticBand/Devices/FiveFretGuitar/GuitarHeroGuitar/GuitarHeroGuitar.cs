@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
@@ -93,6 +95,72 @@ namespace PlasticBand.Devices
         /// </remarks>
         [InputControl(displayName = "Accelerometer Z", noisy = true)]
         public AxisControl accelZ { get; private set; }
+
+        /// <summary>
+        /// The number of frets available on the guitar.
+        /// </summary>
+        public const int TouchFretCount = 5;
+
+        /// <summary>
+        /// Retrieves a touch fret control by index.<br/>
+        /// 0 = green, 4 = orange.
+        /// </summary>
+        public ButtonControl GetTouchFret(int index)
+        {
+            switch (index)
+            {
+                case 0: return touchGreen;
+                case 1: return touchRed;
+                case 2: return touchYellow;
+                case 3: return touchBlue;
+                case 4: return touchOrange;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a touch fret control by enum value.
+        /// </summary>
+        public ButtonControl GetTouchFret(FiveFret fret)
+        {
+            switch (fret)
+            {
+                case FiveFret.Green: return touchGreen;
+                case FiveFret.Red: return touchRed;
+                case FiveFret.Yellow: return touchYellow;
+                case FiveFret.Blue: return touchBlue;
+                case FiveFret.Orange: return touchOrange;
+                default: throw new ArgumentException($"Could not determine the touch fret to retrieve! Value: '{fret}'", nameof(fret));
+            }
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current touch fret states.
+        /// </summary>
+        public FiveFret GetTouchFretMask()
+        {
+            var mask = FiveFret.None;
+            if (touchGreen.isPressed) mask |= FiveFret.Green;
+            if (touchRed.isPressed) mask |= FiveFret.Red;
+            if (touchYellow.isPressed) mask |= FiveFret.Yellow;
+            if (touchBlue.isPressed) mask |= FiveFret.Blue;
+            if (touchOrange.isPressed) mask |= FiveFret.Orange;
+            return mask;
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the touch fret states in the given state event.
+        /// </summary>
+        public FiveFret GetTouchFretMask(InputEventPtr eventPtr)
+        {
+            var mask = FiveFret.None;
+            if (touchGreen.IsPressedInEvent(eventPtr)) mask |= FiveFret.Green;
+            if (touchRed.IsPressedInEvent(eventPtr)) mask |= FiveFret.Red;
+            if (touchYellow.IsPressedInEvent(eventPtr)) mask |= FiveFret.Yellow;
+            if (touchBlue.IsPressedInEvent(eventPtr)) mask |= FiveFret.Blue;
+            if (touchOrange.IsPressedInEvent(eventPtr)) mask |= FiveFret.Orange;
+            return mask;
+        }
 
         /// <summary>
         /// Finishes setup of the device.

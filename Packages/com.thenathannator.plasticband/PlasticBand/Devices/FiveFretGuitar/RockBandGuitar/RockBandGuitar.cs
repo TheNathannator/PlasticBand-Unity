@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
@@ -66,6 +68,100 @@ namespace PlasticBand.Devices
         /// </summary>
         [InputControl(displayName = "Pickup Switch")]
         public AxisControl pickupSwitch { get; private set; }
+
+        /// <summary>
+        /// The number of frets available on the guitar.
+        /// </summary>
+        public const int SoloFretCount = 5;
+
+        /// <summary>
+        /// Retrieves a solo fret control by index.<br/>
+        /// 0 = green, 4 = orange.
+        /// </summary>
+        public ButtonControl GetSoloFret(int index)
+        {
+            switch (index)
+            {
+                case 0: return soloGreen;
+                case 1: return soloRed;
+                case 2: return soloYellow;
+                case 3: return soloBlue;
+                case 4: return soloOrange;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a solo fret control by enum value.
+        /// </summary>
+        public ButtonControl GetSoloFret(FiveFret fret)
+        {
+            switch (fret)
+            {
+                case FiveFret.Green: return soloGreen;
+                case FiveFret.Red: return soloRed;
+                case FiveFret.Yellow: return soloYellow;
+                case FiveFret.Blue: return soloBlue;
+                case FiveFret.Orange: return soloOrange;
+                default: throw new ArgumentException($"Could not determine the solo fret to retrieve! Value: '{fret}'", nameof(fret));
+            }
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current solo fret states.
+        /// </summary>
+        public FiveFret GetSoloFretMask()
+        {
+            var mask = FiveFret.None;
+            if (soloGreen.isPressed) mask |= FiveFret.Green;
+            if (soloRed.isPressed) mask |= FiveFret.Red;
+            if (soloYellow.isPressed) mask |= FiveFret.Yellow;
+            if (soloBlue.isPressed) mask |= FiveFret.Blue;
+            if (soloOrange.isPressed) mask |= FiveFret.Orange;
+            return mask;
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the solo fret states in the given state event.
+        /// </summary>
+        public FiveFret GetSoloFretMask(InputEventPtr eventPtr)
+        {
+            var mask = FiveFret.None;
+            if (soloGreen.IsPressedInEvent(eventPtr)) mask |= FiveFret.Green;
+            if (soloRed.IsPressedInEvent(eventPtr)) mask |= FiveFret.Red;
+            if (soloYellow.IsPressedInEvent(eventPtr)) mask |= FiveFret.Yellow;
+            if (soloBlue.IsPressedInEvent(eventPtr)) mask |= FiveFret.Blue;
+            if (soloOrange.IsPressedInEvent(eventPtr)) mask |= FiveFret.Orange;
+            return mask;
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current fret states, excluding the solo frets.
+        /// </summary>
+        public FiveFret GetFretMaskExcludingSolo()
+        {
+            var mask = FiveFret.None;
+            if (greenFret.isPressed) mask |= FiveFret.Green;
+            if (redFret.isPressed) mask |= FiveFret.Red;
+            if (yellowFret.isPressed) mask |= FiveFret.Yellow;
+            if (blueFret.isPressed) mask |= FiveFret.Blue;
+            if (orangeFret.isPressed) mask |= FiveFret.Orange;
+            return mask & ~GetSoloFretMask();
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the fret states in the given state event, excluding the solo frets.
+        /// </summary>
+        public FiveFret GetFretMaskExcludingSolo(InputEventPtr eventPtr)
+        {
+            var mask = FiveFret.None;
+            if (greenFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Green;
+            if (redFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Red;
+            if (yellowFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Yellow;
+            if (blueFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Blue;
+            if (orangeFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Orange;
+            return mask & ~GetSoloFretMask(eventPtr);
+        }
 
         /// <summary>
         /// Finishes setup of the device.
