@@ -33,51 +33,51 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The green fret on the guitar.
         /// </summary>
-        [InputControl(name = "greenFret", displayName = "Green Fret", usages = new[] { "PrimaryAction", "Submit" })]
+        [InputControl(displayName = "Green Fret", usages = new[] { "PrimaryAction", "Submit" })]
         public ButtonControl greenFret { get; private set; }
 
         /// <summary>
         /// The red fret on the guitar.
         /// </summary>
-        [InputControl(name = "redFret", displayName = "Red Fret", usages = new[] { "Back", "Cancel" })]
+        [InputControl(displayName = "Red Fret", usages = new[] { "Back", "Cancel" })]
         public ButtonControl redFret { get; private set; }
 
         /// <summary>
         /// The yellow fret on the guitar.
         /// </summary>
-        [InputControl(name = "yellowFret", displayName = "Yellow Fret")]
+        [InputControl(displayName = "Yellow Fret")]
         public ButtonControl yellowFret { get; private set; }
 
         /// <summary>
         /// The blue fret on the guitar.
         /// </summary>
-        [InputControl(name = "blueFret", displayName = "Blue Fret")]
+        [InputControl(displayName = "Blue Fret")]
         public ButtonControl blueFret { get; private set; }
 
         /// <summary>
         /// The orange fret on the guitar.
         /// </summary>
-        [InputControl(name = "orangeFret", displayName = "Orange Fret")]
+        [InputControl(displayName = "Orange Fret")]
         public ButtonControl orangeFret { get; private set; }
 
         /// <summary>
         /// The guitar's strum up input.
         /// On most models this is equivalent to the d-pad up input, but on some it may not be.
         /// </summary>
-        [InputControl(name = "strumUp", displayName = "Strum Up")]
+        [InputControl(displayName = "Strum Up")]
         public ButtonControl strumUp { get; private set; }
 
         /// <summary>
         /// The guitar's strum down input.
         /// On most models this is equivalent to the d-pad down input, but on some it may not be.
         /// </summary>
-        [InputControl(name = "strumDown", displayName = "Strum Down")]
+        [InputControl(displayName = "Strum Down")]
         public ButtonControl strumDown { get; private set; }
 
         /// <summary>
         /// The guitar's d-pad.
         /// </summary>
-        [InputControl(name = "dpad", displayName = "D-Pad", usage = "Hatswitch")]
+        [InputControl(displayName = "D-Pad", usage = "Hatswitch")]
         [InputControl(name = "dpad/up", displayName = "Up/Strum Up")]
         [InputControl(name = "dpad/down", displayName = "Down/Strum Down")]
         public DpadControl dpad { get; private set; }
@@ -85,25 +85,25 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The guitar's tilt orientation.
         /// </summary>
-        [InputControl(name = "tilt", noisy = true, displayName = "Tilt")]
+        [InputControl(displayName = "Tilt", noisy = true)]
         public AxisControl tilt { get; private set; }
 
         /// <summary>
         /// The guitar's whammy bar.
         /// </summary>
-        [InputControl(name = "whammy", displayName = "Whammy")]
+        [InputControl(displayName = "Whammy")]
         public AxisControl whammy { get; private set; }
 
         /// <summary>
         /// The Start button on the guitar.
         /// </summary>
-        [InputControl(name = "startButton", displayName = "Start", usage = "Menu")]
+        [InputControl(displayName = "Start", usage = "Menu")]
         public ButtonControl startButton { get; private set; }
 
         /// <summary>
         /// The Select button on the guitar.
         /// </summary>
-        [InputControl(name = "selectButton", displayName = "Select")]
+        [InputControl(displayName = "Select")]
         public ButtonControl selectButton { get; private set; }
 
         /// <summary>
