@@ -148,31 +148,31 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
 
-            dpad = GetChildControl<DpadControl>("dpad");
+            dpad = GetChildControl<DpadControl>(nameof(dpad));
 
-            startButton = GetChildControl<ButtonControl>("startButton");
-            selectButton = GetChildControl<ButtonControl>("selectButton");
+            startButton = GetChildControl<ButtonControl>(nameof(startButton));
+            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
 
-            buttonSouth = GetChildControl<ButtonControl>("buttonSouth");
-            buttonEast = GetChildControl<ButtonControl>("buttonEast");
-            buttonWest = GetChildControl<ButtonControl>("buttonWest");
-            buttonNorth = GetChildControl<ButtonControl>("buttonNorth");
+            buttonSouth = GetChildControl<ButtonControl>(nameof(buttonSouth));
+            buttonEast = GetChildControl<ButtonControl>(nameof(buttonEast));
+            buttonWest = GetChildControl<ButtonControl>(nameof(buttonWest));
+            buttonNorth = GetChildControl<ButtonControl>(nameof(buttonNorth));
 
-            euphoria = GetChildControl<ButtonControl>("euphoria");
+            euphoria = GetChildControl<ButtonControl>(nameof(euphoria));
 
-            leftTableGreen = GetChildControl<ButtonControl>("leftTableGreen");
-            leftTableRed = GetChildControl<ButtonControl>("leftTableRed");
-            leftTableBlue = GetChildControl<ButtonControl>("leftTableBlue");
+            leftTableGreen = GetChildControl<ButtonControl>(nameof(leftTableGreen));
+            leftTableRed = GetChildControl<ButtonControl>(nameof(leftTableRed));
+            leftTableBlue = GetChildControl<ButtonControl>(nameof(leftTableBlue));
 
-            rightTableGreen = GetChildControl<ButtonControl>("rightTableGreen");
-            rightTableRed = GetChildControl<ButtonControl>("rightTableRed");
-            rightTableBlue = GetChildControl<ButtonControl>("rightTableBlue");
+            rightTableGreen = GetChildControl<ButtonControl>(nameof(rightTableGreen));
+            rightTableRed = GetChildControl<ButtonControl>(nameof(rightTableRed));
+            rightTableBlue = GetChildControl<ButtonControl>(nameof(rightTableBlue));
 
-            leftTableVelocity = GetChildControl<AxisControl>("leftTableVelocity");
-            rightTableVelocity = GetChildControl<AxisControl>("rightTableVelocity");
+            leftTableVelocity = GetChildControl<AxisControl>(nameof(leftTableVelocity));
+            rightTableVelocity = GetChildControl<AxisControl>(nameof(rightTableVelocity));
 
-            effectsDial = GetChildControl<AxisControl>("effectsDial");
-            crossFader = GetChildControl<AxisControl>("crossFader");
+            effectsDial = GetChildControl<AxisControl>(nameof(effectsDial));
+            crossFader = GetChildControl<AxisControl>(nameof(crossFader));
         }
 
         /// <summary>

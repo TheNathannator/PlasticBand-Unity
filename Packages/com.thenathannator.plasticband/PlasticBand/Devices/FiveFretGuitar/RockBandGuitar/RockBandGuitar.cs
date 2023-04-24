@@ -74,13 +74,13 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
 
-            soloGreen = GetChildControl<ButtonControl>("soloGreen");
-            soloRed = GetChildControl<ButtonControl>("soloRed");
-            soloYellow = GetChildControl<ButtonControl>("soloYellow");
-            soloBlue = GetChildControl<ButtonControl>("soloBlue");
-            soloOrange = GetChildControl<ButtonControl>("soloOrange");
+            soloGreen = GetChildControl<ButtonControl>(nameof(soloGreen));
+            soloRed = GetChildControl<ButtonControl>(nameof(soloRed));
+            soloYellow = GetChildControl<ButtonControl>(nameof(soloYellow));
+            soloBlue = GetChildControl<ButtonControl>(nameof(soloBlue));
+            soloOrange = GetChildControl<ButtonControl>(nameof(soloOrange));
 
-            pickupSwitch = GetChildControl<AxisControl>("pickupSwitch");
+            pickupSwitch = GetChildControl<AxisControl>(nameof(pickupSwitch));
         }
 
         /// <summary>

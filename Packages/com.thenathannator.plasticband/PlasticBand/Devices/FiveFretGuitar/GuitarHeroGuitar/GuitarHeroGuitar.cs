@@ -101,17 +101,17 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
 
-            spPedal = GetChildControl<ButtonControl>("spPedal");
+            spPedal = GetChildControl<ButtonControl>(nameof(spPedal));
 
-            touchGreen = GetChildControl<ButtonControl>("touchGreen");
-            touchRed = GetChildControl<ButtonControl>("touchRed");
-            touchYellow = GetChildControl<ButtonControl>("touchYellow");
-            touchBlue = GetChildControl<ButtonControl>("touchBlue");
-            touchOrange = GetChildControl<ButtonControl>("touchOrange");
+            touchGreen = GetChildControl<ButtonControl>(nameof(touchGreen));
+            touchRed = GetChildControl<ButtonControl>(nameof(touchRed));
+            touchYellow = GetChildControl<ButtonControl>(nameof(touchYellow));
+            touchBlue = GetChildControl<ButtonControl>(nameof(touchBlue));
+            touchOrange = GetChildControl<ButtonControl>(nameof(touchOrange));
 
-            accelX = GetChildControl<AxisControl>("accelX");
-            accelY = GetChildControl<AxisControl>("accelY");
-            accelZ = GetChildControl<AxisControl>("accelZ");
+            accelX = GetChildControl<AxisControl>(nameof(accelX));
+            accelY = GetChildControl<AxisControl>(nameof(accelY));
+            accelZ = GetChildControl<AxisControl>(nameof(accelZ));
         }
 
         /// <summary>

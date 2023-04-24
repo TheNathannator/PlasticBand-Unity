@@ -109,22 +109,22 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
 
-            dpad = GetChildControl<DpadControl>("dpad");
+            dpad = GetChildControl<DpadControl>(nameof(dpad));
 
-            startButton = GetChildControl<ButtonControl>("startButton");
-            selectButton = GetChildControl<ButtonControl>("selectButton");
+            startButton = GetChildControl<ButtonControl>(nameof(startButton));
+            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
 
-            redPad = GetChildControl<ButtonControl>("redPad");
-            yellowPad = GetChildControl<ButtonControl>("yellowPad");
-            bluePad = GetChildControl<ButtonControl>("bluePad");
-            greenPad = GetChildControl<ButtonControl>("greenPad");
+            redPad = GetChildControl<ButtonControl>(nameof(redPad));
+            yellowPad = GetChildControl<ButtonControl>(nameof(yellowPad));
+            bluePad = GetChildControl<ButtonControl>(nameof(bluePad));
+            greenPad = GetChildControl<ButtonControl>(nameof(greenPad));
 
-            yellowCymbal = GetChildControl<ButtonControl>("yellowCymbal");
-            blueCymbal = GetChildControl<ButtonControl>("blueCymbal");
-            greenCymbal = GetChildControl<ButtonControl>("greenCymbal");
+            yellowCymbal = GetChildControl<ButtonControl>(nameof(yellowCymbal));
+            blueCymbal = GetChildControl<ButtonControl>(nameof(blueCymbal));
+            greenCymbal = GetChildControl<ButtonControl>(nameof(greenCymbal));
 
-            kick1 = GetChildControl<ButtonControl>("kick1");
-            kick2 = GetChildControl<ButtonControl>("kick2");
+            kick1 = GetChildControl<ButtonControl>(nameof(kick1));
+            kick2 = GetChildControl<ButtonControl>(nameof(kick2));
         }
 
         /// <summary>
