@@ -115,6 +115,11 @@ namespace PlasticBand.Controls
         private FourLanePad m_PadToTest;
 
         /// <summary>
+        /// Indicates whether or not the pad/cymbal flags have been detected.
+        /// </summary>
+        private bool m_HasFlags;
+
+        /// <summary>
         /// Finishes setup of the control.
         /// </summary>
         protected override void FinishSetup()
@@ -209,6 +214,9 @@ namespace PlasticBand.Controls
             }
 #endif
 
+            if (pad || cymbal)
+                m_HasFlags = true;
+
             // Pad + cymbal hits can be ambiguous, we need to resolve this
             if (pad && cymbal)
             {
@@ -253,8 +261,9 @@ namespace PlasticBand.Controls
             // Now that disambiguation has been applied, we can process things normally
 
             // Check for pad hits
-            // Rock Band 1 kits don't send the pad or cymbal flags, so we also check if cymbal is not set for compatibility with those
-            if (pad || !cymbal)
+            // Rock Band 1 kits don't send the pad or cymbal flags, so we also check if
+            // flags have not been detected and if the cymbal flag is not active
+            if (pad || (!cymbal && !m_HasFlags))
             {
                 if (red) pads |= FourLanePad.RedPad;
                 if (yellow) pads |= FourLanePad.YellowPad;
