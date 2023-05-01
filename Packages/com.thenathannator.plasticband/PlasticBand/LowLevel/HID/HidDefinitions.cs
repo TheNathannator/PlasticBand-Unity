@@ -7,6 +7,8 @@ namespace PlasticBand.LowLevel
     /// </summary>
     internal static class HidDefinitions
     {
+        public const string InterfaceName = "HID";
+
         /// <summary>
         /// The format for HID input reports.
         /// </summary>

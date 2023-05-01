@@ -90,7 +90,7 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<PS3RockBandGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x0200)
             );
@@ -150,14 +150,14 @@ namespace PlasticBand.Devices
         {
             // RB1 guitars
             InputSystem.RegisterLayout<WiiRockBandGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x0004)
             );
 
             // RB2 and later
             InputSystem.RegisterLayout<WiiRockBandGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x3010)
             );

@@ -97,14 +97,14 @@ namespace PlasticBand.Devices
         {
             // Drumkit
             InputSystem.RegisterLayout<PS3FourLaneDrumkit>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x0210)
             );
 
             // MIDI Pro Adapter
             InputSystem.RegisterLayout<PS3FourLaneDrumkit>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x0218)
             );
@@ -164,21 +164,21 @@ namespace PlasticBand.Devices
         {
             // RB1
             InputSystem.RegisterLayout<WiiFourLaneDrumkit>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x0005)
             );
 
             // RB2 and later
             InputSystem.RegisterLayout<WiiFourLaneDrumkit>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x3110)
             );
 
             // MIDI Pro Adapter
             InputSystem.RegisterLayout<WiiFourLaneDrumkit>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x3118)
             );

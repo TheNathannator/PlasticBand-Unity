@@ -102,14 +102,14 @@ namespace PlasticBand.Devices
         {
             // PS3 guitars
             InputSystem.RegisterLayout<PS3GuitarHeroGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x0100)
             );
 
             // World Tour PC guitar
             InputSystem.RegisterLayout<PS3GuitarHeroGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x1430)
                 .WithCapability("productId", 0x474C)
             );

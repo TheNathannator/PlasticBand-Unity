@@ -91,7 +91,7 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<PS3WiiUSixFretGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x074B)
             );

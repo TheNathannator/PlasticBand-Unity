@@ -96,14 +96,14 @@ namespace PlasticBand.Devices
         {
             // Stratocaster
             InputSystem.RegisterLayout<PS4RockBandGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x0738)
                 .WithCapability("productId", 0x8261)
             );
 
             // Jaguar
             InputSystem.RegisterLayout<PS4RockBandGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x0E6F)
                 .WithCapability("productId", 0x0173)
             );

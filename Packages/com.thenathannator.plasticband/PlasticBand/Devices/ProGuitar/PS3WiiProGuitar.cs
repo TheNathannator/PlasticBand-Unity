@@ -117,28 +117,28 @@ namespace PlasticBand.Devices
         {
             // Mustang
             InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x2430)
             );
 
             // MIDI Pro Adapter (Mustang)
             InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x2438)
             );
 
             // Squire
             InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x2530)
             );
 
             // MIDI Pro Adapter (Squire)
             InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x2538)
             );
@@ -198,28 +198,28 @@ namespace PlasticBand.Devices
         {
             // Mustang
             InputSystem.RegisterLayout<WiiProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x3430)
             );
 
             // MIDI Pro Adapter (Mustang)
             InputSystem.RegisterLayout<WiiProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x3438)
             );
 
             // Squire
             InputSystem.RegisterLayout<WiiProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x3530)
             );
 
             // MIDI Pro Adapter (Squire)
             InputSystem.RegisterLayout<WiiProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x3538)
             );

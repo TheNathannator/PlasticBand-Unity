@@ -109,7 +109,7 @@ namespace PlasticBand.Devices
         {
             // MadCatz
             InputSystem.RegisterLayout<PS4FourLaneDrumkit>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x0738)
                 .WithCapability("productId", 0x8262)
             );
@@ -117,7 +117,7 @@ namespace PlasticBand.Devices
             // PDP
             // Product ID is not known yet
             // InputSystem.RegisterLayout<PS4FourLaneDrumkit>(matches: new InputDeviceMatcher()
-            //     .WithInterface("HID")
+            //     .WithInterface(HidDefinitions.InterfaceName)
             //     .WithCapability("vendorId", 0x0E6F)
             //     .WithCapability("productId", 0x0173)
             // );

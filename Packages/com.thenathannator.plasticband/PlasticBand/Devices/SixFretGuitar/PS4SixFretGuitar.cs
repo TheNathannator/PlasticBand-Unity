@@ -83,7 +83,7 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             InputSystem.RegisterLayout<PS4SixFretGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface("HID")
+                .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x1430)
                 .WithCapability("productId", 0x07BB)
             );
