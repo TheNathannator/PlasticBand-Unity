@@ -45,7 +45,7 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The Select button on the drumkit.
         /// </summary>
-        [InputControl(displayName = "Back")]
+        [InputControl(displayName = "Select")]
         public ButtonControl selectButton { get; private set; }
 
         /// <summary>

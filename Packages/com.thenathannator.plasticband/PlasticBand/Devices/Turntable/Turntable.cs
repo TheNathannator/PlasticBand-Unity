@@ -48,7 +48,7 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The Select button in the navigation button compartment.
         /// </summary>
-        [InputControl(displayName = "Back")]
+        [InputControl(displayName = "Select")]
         public ButtonControl selectButton { get; private set; }
 
         /// <summary>
