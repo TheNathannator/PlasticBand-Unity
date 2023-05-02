@@ -70,7 +70,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// An XInput 5-lane drumkit.
     /// </summary>
-    [InputControlLayout(stateType = typeof(XInputFiveLaneDrumkitState), displayName = "XInput 5-Lane Drumkit")]
+    [InputControlLayout(stateType = typeof(XInputFiveLaneDrumkitState), displayName = "XInput Guitar Hero Drumkit")]
     public class XInputFiveLaneDrumkit : FiveLaneDrumkit
     {
         /// <summary>

@@ -8,7 +8,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A 5-lane (Guitar Hero) drumkit controller.
     /// </summary>
-    [InputControlLayout(displayName = "5-Lane Drumkit")]
+    [InputControlLayout(displayName = "Guitar Hero (5-Lane) Drumkit")]
     public class FiveLaneDrumkit : InputDevice
     {
         /// <summary>

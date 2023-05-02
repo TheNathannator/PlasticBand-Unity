@@ -81,7 +81,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS3 Guitar Hero guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState), displayName = "RedOctane Guitar for PlayStation(R)3")]
+    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState), displayName = "PlayStation 3 Guitar Hero Guitar")]
     public class PS3GuitarHeroGuitar : GuitarHeroGuitar
     {
         /// <summary>

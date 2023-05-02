@@ -66,7 +66,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// An XInput Guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(XInputGuitarState), displayName = "XInput Guitar")]
+    [InputControlLayout(stateType = typeof(XInputGuitarState), displayName = "XInput Rock Band Guitar")]
     public class XInputGuitar : RockBandGuitar
     {
         /// <summary>

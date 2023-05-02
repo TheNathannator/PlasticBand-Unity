@@ -70,7 +70,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS3 Rock Band guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState), displayName = "Harmonix Guitar for PlayStation(R)3")]
+    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState), displayName = "PlayStation 3 Rock Band Guitar")]
     public class PS3RockBandGuitar : RockBandGuitar
     {
         /// <summary>
@@ -129,7 +129,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A Wii Rock Band guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState), displayName = "Harmonix Guitar for Nintendo Wii")]
+    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState), displayName = "Wii Rock Band Guitar")]
     public class WiiRockBandGuitar : RockBandGuitar
     {
         /// <summary>

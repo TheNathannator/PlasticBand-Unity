@@ -13,7 +13,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A Rock Band 3 Pro Guitar controller.
     /// </summary>
-    [InputControlLayout(displayName = "Pro Guitar")]
+    [InputControlLayout(displayName = "Rock Band Pro Guitar")]
     public class ProGuitar : InputDevice
     {
         /// <summary>

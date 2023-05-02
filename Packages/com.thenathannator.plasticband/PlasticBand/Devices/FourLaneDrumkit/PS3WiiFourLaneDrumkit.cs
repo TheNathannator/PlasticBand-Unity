@@ -76,7 +76,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS3 4-lane drumkit.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState), displayName = "Harmonix Drum Kit for PlayStation(R)3")]
+    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState), displayName = "PlayStation 3 Rock Band Drumkit")]
     public class PS3FourLaneDrumkit : FourLaneDrumkit
     {
         /// <summary>
@@ -143,7 +143,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A Wii 4-lane drumkit.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState), displayName = "Harmonix Drum Kit for Nintendo Wii")]
+    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState), displayName = "Wii Rock Band Drumkit")]
     public class WiiFourLaneDrumkit : FourLaneDrumkit
     {
         /// <summary>

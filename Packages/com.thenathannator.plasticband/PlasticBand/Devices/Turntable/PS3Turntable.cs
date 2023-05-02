@@ -75,7 +75,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS3 DJ Hero turntable.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3TurntableState), displayName = "PS3 Turntable")]
+    [InputControlLayout(stateType = typeof(PS3TurntableState), displayName = "PlayStation 3 DJ Hero Turntable")]
     public class PS3Turntable : Turntable
     {
         /// <summary>

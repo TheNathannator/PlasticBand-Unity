@@ -8,7 +8,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A 4-lane (Rock Band) drumkit controller.
     /// </summary>
-    [InputControlLayout(displayName = "4-Lane Drumkit")]
+    [InputControlLayout(displayName = "Rock Band (4-Lane) Drumkit")]
     public class FourLaneDrumkit : InputDevice
     {
         /// <summary>

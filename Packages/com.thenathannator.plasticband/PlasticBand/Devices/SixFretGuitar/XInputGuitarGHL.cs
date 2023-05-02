@@ -62,7 +62,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// An XInput GHL guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(XInputGuitarGHLState), displayName = "XInput 6-Fret Guitar")]
+    [InputControlLayout(stateType = typeof(XInputGuitarGHLState), displayName = "XInput Guitar Hero Live Guitar")]
     public class XInputGuitarGHL : SixFretGuitar
     {
         /// <summary>

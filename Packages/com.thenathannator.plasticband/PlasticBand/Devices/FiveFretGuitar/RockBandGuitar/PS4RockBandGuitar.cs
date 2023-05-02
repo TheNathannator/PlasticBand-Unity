@@ -75,7 +75,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS4 Rock Band guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS4RockBandGuitarState), displayName = "Harmonix Guitar for PlayStation(R)4")]
+    [InputControlLayout(stateType = typeof(PS4RockBandGuitarState), displayName = "PlayStation 4 Rock Band Guitar")]
     public class PS4RockBandGuitar : RockBandGuitar
     {
         /// <summary>

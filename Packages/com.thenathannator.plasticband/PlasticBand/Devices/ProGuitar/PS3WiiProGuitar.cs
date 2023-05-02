@@ -96,7 +96,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS3 Pro Guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState), displayName = "Harmonix Pro Guitar for PlayStation(R)3")]
+    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState), displayName = "PlayStation 3 Rock Band Pro Guitar")]
     public class PS3ProGuitar : ProGuitar
     {
         /// <summary>
@@ -177,7 +177,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A Wii Pro Guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState), displayName = "Harmonix Pro Guitar for Nintendo Wii")]
+    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState), displayName = "Wii Rock Band Pro Guitar")]
     public class WiiProGuitar : ProGuitar
     {
         /// <summary>

@@ -71,7 +71,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS3/Wii U GHL guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState), displayName = "PS3/Wii U 6-Fret Guitar")]
+    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState), displayName = "PS3/Wii U Guitar Hero Live Guitar")]
     public class PS3WiiUSixFretGuitar : PokedSixFretGuitar
     {
         /// <summary>

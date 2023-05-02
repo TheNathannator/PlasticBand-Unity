@@ -63,7 +63,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS4 GHL guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS4SixFretGuitarState), displayName = "PS4 6-Fret Guitar")]
+    [InputControlLayout(stateType = typeof(PS4SixFretGuitarState), displayName = "PlayStation 4 Guitar Hero Live Guitar")]
     public class PS4SixFretGuitar : PokedSixFretGuitar
     {
         /// <summary>

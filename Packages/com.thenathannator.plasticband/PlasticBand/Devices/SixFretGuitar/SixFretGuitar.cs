@@ -8,7 +8,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A 6-fret guitar controller.
     /// </summary>
-    [InputControlLayout(displayName = "6-Fret Guitar")]
+    [InputControlLayout(displayName = "Guitar Hero Live (6-Fret) Guitar")]
     public class SixFretGuitar : InputDevice
     {
         /// <summary>

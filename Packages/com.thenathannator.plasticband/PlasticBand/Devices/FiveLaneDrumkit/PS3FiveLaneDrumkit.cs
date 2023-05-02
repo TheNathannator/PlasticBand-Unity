@@ -76,7 +76,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS3 5-lane drumkit.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState), displayName = "RedOctane Drum Kit for PlayStation(R)3")]
+    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState), displayName = "PlayStation 3 Guitar Hero Drumkit")]
     public class PS3FiveLaneDrumkit : FiveLaneDrumkit
     {
         /// <summary>

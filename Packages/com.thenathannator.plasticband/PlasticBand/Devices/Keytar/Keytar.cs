@@ -8,7 +8,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A Rock Band 3 keytar controller.
     /// </summary>
-    [InputControlLayout(displayName = "Keytar")]
+    [InputControlLayout(displayName = "Rock Band Pro Keyboard")]
     public class Keytar : InputDevice
     {
         /// <summary>

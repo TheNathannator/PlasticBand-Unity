@@ -99,7 +99,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// An XInput keytar controller.
     /// </summary>
-    [InputControlLayout(stateType = typeof(XInputKeytarState), displayName = "XInput Keytar")]
+    [InputControlLayout(stateType = typeof(XInputKeytarState), displayName = "XInput Rock Band Pro Keyboard")]
     public class XInputKeytar : Keytar
     {
         /// <summary>

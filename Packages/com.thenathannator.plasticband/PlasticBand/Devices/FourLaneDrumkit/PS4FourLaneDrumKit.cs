@@ -88,7 +88,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A PS4 Rock Band drumkit.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS4FourLaneDrumkitState), displayName = "Harmonix Drum Kit for PlayStation(R)4")]
+    [InputControlLayout(stateType = typeof(PS4FourLaneDrumkitState), displayName = "PlayStation 4 Rock Band Drumkit")]
     public class PS4FourLaneDrumkit : FourLaneDrumkit
     {
         /// <summary>
