@@ -198,14 +198,14 @@ namespace PlasticBand.Devices
             // Keytar
             InputSystem.RegisterLayout<WiiKeytar>(matches: new InputDeviceMatcher()
                 .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
+                .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x3330)
             );
 
             // MIDI Pro Adapter
             InputSystem.RegisterLayout<WiiKeytar>(matches: new InputDeviceMatcher()
                 .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
+                .WithCapability("vendorId", 0x1BAD)
                 .WithCapability("productId", 0x3338)
             );
         }
