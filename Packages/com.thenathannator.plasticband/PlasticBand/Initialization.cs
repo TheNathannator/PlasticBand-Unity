@@ -44,14 +44,14 @@ namespace PlasticBand
             RockBandGuitar.Initialize();
             XInputGuitar.Initialize();
             PS3RockBandGuitar.Initialize();
-            PS4RockBandGuitar.Initialize();
+            // PS4RockBandGuitar.Initialize(); // Temporarily disabled to avoid a crash bug
             WiiRockBandGuitar.Initialize();
 
             // 6-fret guitars
             SixFretGuitar.Initialize();
             XInputGuitarGHL.Initialize();
             PS3WiiUSixFretGuitar.Initialize();
-            PS4SixFretGuitar.Initialize();
+            // PS4SixFretGuitar.Initialize(); // Temporarily disabled to avoid a crash bug
 
             // Pro Guitars
             ProGuitar.Initialize();
@@ -64,7 +64,7 @@ namespace PlasticBand
             FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
             PS3FourLaneDrumkit.Initialize();
-            PS4FourLaneDrumkit.Initialize();
+            // PS4FourLaneDrumkit.Initialize(); // Temporarily disabled to avoid a crash bug
             WiiFourLaneDrumkit.Initialize();
 
             // 5-lane drumkits
