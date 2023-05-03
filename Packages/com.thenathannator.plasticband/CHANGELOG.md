@@ -8,9 +8,17 @@ Dates are relative to UTC.
 
 ## Unreleased
 
-## Fixed
+### Fixed
 
+- Fixed newly-discovered edge case with 4-lane drumkit handling that would cause erroneous pad inputs when hitting a cymbal on some kits.
 - Fixed some devices incorrectly using "Back" for their `selectButton` display name instead of "Select".
+- Temporarily disabled PS4 device layouts to avoid a crash bug in the native side of the Unity input system on Windows.
+- Fixed a layout issue with PS4 drumkits where the red pad was being triggered with the wrong face button, and yellow and green wouldn't be triggered at all. ([GH-5](https://github.com/TheNathannator/PlasticBand-Unity/pull/5))
+- Fixed PS3 and Wii Rock Band keyboards not getting registered correctly.
+
+### Changed
+
+- Changed a bunch of device layout names for clarity. For example, instead of `Harmonix Guitar for PlayStation(R)3`, it's now labelled `PlayStation 3 Rock Band Guitar`.
 
 ## [0.2.1] - 2023/14/04
 
