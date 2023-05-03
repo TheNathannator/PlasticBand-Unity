@@ -61,13 +61,13 @@ namespace PlasticBand.Devices.LowLevel
         public byte bluePadVelocity;
 
         [InputControl(name = "yellowPad", layout = "ButtonAxisPair", offset = 0)]
-        [InputControl(name = "redPad/button", offset = 5, bit = 7)] // buttonNorth (Triangle)
-        [InputControl(name = "redPad/axis", layout = "DiscreteButton", format = "BYTE", offset = 45, parameters = "minValue=1, maxValue=255")]
+        [InputControl(name = "yellowPad/button", offset = 5, bit = 7)] // buttonNorth (Triangle)
+        [InputControl(name = "yellowPad/axis", layout = "DiscreteButton", format = "BYTE", offset = 45, parameters = "minValue=1, maxValue=255")]
         public byte yellowPadVelocity;
 
         [InputControl(name = "greenPad", layout = "ButtonAxisPair", offset = 0)]
-        [InputControl(name = "redPad/button", offset = 5, bit = 5)] // buttonSouth (Cross)
-        [InputControl(name = "redPad/axis", layout = "DiscreteButton", format = "BYTE", offset = 46, parameters = "minValue=1, maxValue=255")]
+        [InputControl(name = "greenPad/button", offset = 5, bit = 5)] // buttonSouth (Cross)
+        [InputControl(name = "greenPad/axis", layout = "DiscreteButton", format = "BYTE", offset = 46, parameters = "minValue=1, maxValue=255")]
         public byte greenPadVelocity;
 
         [InputControl(name = "yellowCymbal", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
