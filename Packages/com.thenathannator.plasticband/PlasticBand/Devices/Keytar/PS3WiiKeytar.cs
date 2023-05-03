@@ -129,14 +129,14 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // Keytar
-            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
+            InputSystem.RegisterLayout<PS3Keytar>(matches: new InputDeviceMatcher()
                 .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x2330)
             );
 
             // MIDI Pro Adapter
-            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
+            InputSystem.RegisterLayout<PS3Keytar>(matches: new InputDeviceMatcher()
                 .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x2338)
@@ -196,14 +196,14 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // Keytar
-            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
+            InputSystem.RegisterLayout<WiiKeytar>(matches: new InputDeviceMatcher()
                 .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x3330)
             );
 
             // MIDI Pro Adapter
-            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
+            InputSystem.RegisterLayout<WiiKeytar>(matches: new InputDeviceMatcher()
                 .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", 0x12BA)
                 .WithCapability("productId", 0x3338)
