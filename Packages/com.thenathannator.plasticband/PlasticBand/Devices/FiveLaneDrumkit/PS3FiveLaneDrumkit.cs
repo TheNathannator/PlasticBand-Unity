@@ -16,11 +16,9 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for PS3 5-lane drumkits.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3FiveLaneDrumkitState : IInputStateTypeInfo
+    internal unsafe struct PS3FiveLaneDrumkitState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
-
-        public byte reportId;
 
         [InputControl(name = "bluePad", layout = "Button", bit = 0)]
         [InputControl(name = "greenPad", layout = "Button", bit = 1)]
@@ -69,14 +67,35 @@ namespace PlasticBand.Devices.LowLevel
 
         public fixed byte unused3[10];
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct PS3FiveLaneDrumkitState_ReportId : IInputStateTypeInfo
+    {
+        public FourCC format => HidDefinitions.InputFormat;
+
+        public byte reportId;
+        public PS3FiveLaneDrumkitState_NoReportId state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState_NoReportId), hideInUI = true)]
+    internal class PS3FiveLaneDrumkit_NoReportId : PS3FiveLaneDrumkit { }
+
+    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState_ReportId), hideInUI = true)]
+    internal class PS3FiveLaneDrumkit_ReportId : PS3FiveLaneDrumkit { }
 }
 
 namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3FiveLaneDrumkitState_ReportId;
+#else
+    using DefaultState = PS3FiveLaneDrumkitState_NoReportId;
+#endif
+
     /// <summary>
     /// A PS3 5-lane drumkit.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState), displayName = "PlayStation 3 Guitar Hero Drumkit")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Guitar Hero Drumkit")]
     public class PS3FiveLaneDrumkit : FiveLaneDrumkit
     {
         /// <summary>
@@ -95,11 +114,8 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<PS3FiveLaneDrumkit>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x0120)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3FiveLaneDrumkit,
+                PS3FiveLaneDrumkit_ReportId, PS3FiveLaneDrumkit_NoReportId>(0x12BA, 0x0120);
         }
 
         /// <summary>

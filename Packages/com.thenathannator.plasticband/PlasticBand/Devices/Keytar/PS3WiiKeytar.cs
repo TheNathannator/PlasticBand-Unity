@@ -16,11 +16,9 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for PS3 and Wii keytars.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3WiiKeytarState : IInputStateTypeInfo
+    internal unsafe struct PS3WiiKeytarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
-
-        public byte reportId;
 
         [InputControl(name = "buttonWest", layout = "Button", bit = 0, displayName = "Square")]
         [InputControl(name = "buttonSouth", layout = "Button", bit = 1, displayName = "Cross")]
@@ -102,14 +100,41 @@ namespace PlasticBand.Devices.LowLevel
 
         private fixed byte unused2[11];
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct PS3WiiKeytarState_ReportId : IInputStateTypeInfo
+    {
+        public FourCC format => HidDefinitions.InputFormat;
+
+        public byte reportId;
+        public PS3WiiKeytarState_NoReportId state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS3WiiKeytarState_NoReportId), hideInUI = true)]
+    internal class PS3Keytar_NoReportId : PS3Keytar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiKeytarState_ReportId), hideInUI = true)]
+    internal class PS3Keytar_ReportId : PS3Keytar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiKeytarState_NoReportId), hideInUI = true)]
+    internal class WiiKeytar_NoReportId : WiiKeytar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiKeytarState_ReportId), hideInUI = true)]
+    internal class WiiKeytar_ReportId : WiiKeytar { }
 }
 
 namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3WiiKeytarState_ReportId;
+#else
+    using DefaultState = PS3WiiKeytarState_NoReportId;
+#endif
+
     /// <summary>
     /// A PS3 keytar controller.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiKeytarState), displayName = "PlayStation 3 Rock Band Pro Keyboard")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Pro Keyboard")]
     public class PS3Keytar : Keytar
     {
         /// <summary>
@@ -129,18 +154,12 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // Keytar
-            InputSystem.RegisterLayout<PS3Keytar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x2330)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3Keytar,
+                PS3Keytar_ReportId, PS3Keytar_NoReportId>(0x12BA, 0x2330);
 
             // MIDI Pro Adapter
-            InputSystem.RegisterLayout<PS3Keytar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x2338)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3Keytar,
+                PS3Keytar_ReportId, PS3Keytar_NoReportId>(0x12BA, 0x2338);
         }
 
         /// <summary>
@@ -176,7 +195,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A Wii keytar controller.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiKeytarState), displayName = "Wii Rock Band Pro Keyboard")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Pro Keyboard")]
     public class WiiKeytar : Keytar
     {
         /// <summary>
@@ -196,18 +215,12 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // Keytar
-            InputSystem.RegisterLayout<WiiKeytar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x1BAD)
-                .WithCapability("productId", 0x3330)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<WiiKeytar,
+                WiiKeytar_ReportId, WiiKeytar_NoReportId>(0x1BAD, 0x2330);
 
             // MIDI Pro Adapter
-            InputSystem.RegisterLayout<WiiKeytar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x1BAD)
-                .WithCapability("productId", 0x3338)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<WiiKeytar,
+                WiiKeytar_ReportId, WiiKeytar_NoReportId>(0x1BAD, 0x2330);
         }
 
         /// <summary>

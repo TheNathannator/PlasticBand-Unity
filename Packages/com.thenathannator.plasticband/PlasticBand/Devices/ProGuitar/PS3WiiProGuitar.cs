@@ -16,11 +16,9 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for PS3 and Wii Pro Guitar devices.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3WiiProGuitarState : IInputStateTypeInfo
+    internal unsafe struct PS3WiiProGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
-
-        public byte reportId;
 
         [InputControl(name = "buttonWest", layout = "Button", bit = 0, displayName = "Square")]
         [InputControl(name = "buttonSouth", layout = "Button", bit = 1, displayName = "Cross")]
@@ -89,14 +87,41 @@ namespace PlasticBand.Devices.LowLevel
 
         private fixed byte unused3[8];
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct PS3WiiProGuitarState_ReportId : IInputStateTypeInfo
+    {
+        public FourCC format => HidDefinitions.InputFormat;
+
+        public byte reportId;
+        public PS3WiiProGuitarState_NoReportId state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState_NoReportId), hideInUI = true)]
+    internal class PS3ProGuitar_NoReportId : PS3ProGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState_ReportId), hideInUI = true)]
+    internal class PS3ProGuitar_ReportId : PS3ProGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState_NoReportId), hideInUI = true)]
+    internal class WiiProGuitar_NoReportId : WiiProGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState_ReportId), hideInUI = true)]
+    internal class WiiProGuitar_ReportId : WiiProGuitar { }
 }
 
 namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3WiiProGuitarState_ReportId;
+#else
+    using DefaultState = PS3WiiProGuitarState_NoReportId;
+#endif
+
     /// <summary>
     /// A PS3 Pro Guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState), displayName = "PlayStation 3 Rock Band Pro Guitar")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Pro Guitar")]
     public class PS3ProGuitar : ProGuitar
     {
         /// <summary>
@@ -116,32 +141,20 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // Mustang
-            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x2430)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3ProGuitar,
+                PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2430);
 
             // MIDI Pro Adapter (Mustang)
-            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x2438)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3ProGuitar,
+                PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2438);
 
             // Squire
-            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x2530)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3ProGuitar,
+                PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2530);
 
             // MIDI Pro Adapter (Squire)
-            InputSystem.RegisterLayout<PS3ProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x2538)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3ProGuitar,
+                PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2538);
         }
 
         /// <summary>
@@ -177,7 +190,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A Wii Pro Guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState), displayName = "Wii Rock Band Pro Guitar")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Pro Guitar")]
     public class WiiProGuitar : ProGuitar
     {
         /// <summary>
@@ -197,32 +210,20 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // Mustang
-            InputSystem.RegisterLayout<WiiProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x1BAD)
-                .WithCapability("productId", 0x3430)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<WiiProGuitar,
+                WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3430);
 
             // MIDI Pro Adapter (Mustang)
-            InputSystem.RegisterLayout<WiiProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x1BAD)
-                .WithCapability("productId", 0x3438)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<WiiProGuitar,
+                WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3438);
 
             // Squire
-            InputSystem.RegisterLayout<WiiProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x1BAD)
-                .WithCapability("productId", 0x3530)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<WiiProGuitar,
+                WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3530);
 
             // MIDI Pro Adapter (Squire)
-            InputSystem.RegisterLayout<WiiProGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x1BAD)
-                .WithCapability("productId", 0x3538)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<WiiProGuitar,
+                WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3538);
         }
 
         /// <summary>

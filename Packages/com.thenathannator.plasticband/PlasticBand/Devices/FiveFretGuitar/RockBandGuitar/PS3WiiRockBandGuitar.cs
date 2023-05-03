@@ -16,11 +16,9 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for PS3 and Wii Rock Band guitars.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3WiiRockBandGuitarState : IInputStateTypeInfo
+    internal unsafe struct PS3WiiRockBandGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
-
-        public byte reportId;
 
         [InputControl(name = "blueFret", layout = "Button", bit = 0)]
         [InputControl(name = "greenFret", layout = "Button", bit = 1)]
@@ -63,14 +61,41 @@ namespace PlasticBand.Devices.LowLevel
 
         public fixed byte unused2[21];
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct PS3WiiRockBandGuitarState_ReportId : IInputStateTypeInfo
+    {
+        public FourCC format => HidDefinitions.InputFormat;
+
+        public byte reportId;
+        public PS3WiiRockBandGuitarState_NoReportId state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_NoReportId), hideInUI = true)]
+    internal class PS3RockBandGuitar_NoReportId : PS3RockBandGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_ReportId), hideInUI = true)]
+    internal class PS3RockBandGuitar_ReportId : PS3RockBandGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_NoReportId), hideInUI = true)]
+    internal class WiiRockBandGuitar_NoReportId : WiiRockBandGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_ReportId), hideInUI = true)]
+    internal class WiiRockBandGuitar_ReportId : WiiRockBandGuitar { }
 }
 
 namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3WiiRockBandGuitarState_ReportId;
+#else
+    using DefaultState = PS3WiiRockBandGuitarState_NoReportId;
+#endif
+
     /// <summary>
     /// A PS3 Rock Band guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState), displayName = "PlayStation 3 Rock Band Guitar")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Guitar")]
     public class PS3RockBandGuitar : RockBandGuitar
     {
         /// <summary>
@@ -89,11 +114,8 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<PS3RockBandGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x0200)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3RockBandGuitar,
+                PS3RockBandGuitar_ReportId, PS3RockBandGuitar_NoReportId>(0x12BA, 0x0200);
         }
 
         /// <summary>
@@ -129,7 +151,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A Wii Rock Band guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState), displayName = "Wii Rock Band Guitar")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Guitar")]
     public class WiiRockBandGuitar : RockBandGuitar
     {
         /// <summary>
@@ -149,18 +171,12 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // RB1 guitars
-            InputSystem.RegisterLayout<WiiRockBandGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x1BAD)
-                .WithCapability("productId", 0x0004)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<WiiRockBandGuitar,
+                WiiRockBandGuitar_ReportId, WiiRockBandGuitar_NoReportId>(0x1BAD, 0x0004);
 
             // RB2 and later
-            InputSystem.RegisterLayout<WiiRockBandGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x1BAD)
-                .WithCapability("productId", 0x3010)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<WiiRockBandGuitar,
+                WiiRockBandGuitar_ReportId, WiiRockBandGuitar_NoReportId>(0x1BAD, 0x3010);
         }
 
         /// <summary>

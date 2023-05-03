@@ -16,11 +16,10 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for PS4 GHL devices.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS4SixFretGuitarState : IInputStateTypeInfo
+    internal unsafe struct PS4SixFretGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
 
-        public byte reportId;
         public byte unused1;
 
         [InputControl(name = "strumUp", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x7F,maxValue=0,nullValue=0x80")]
@@ -56,14 +55,35 @@ namespace PlasticBand.Devices.LowLevel
 
         public fixed byte unused2[57];
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct PS4SixFretGuitarState_ReportId : IInputStateTypeInfo
+    {
+        public FourCC format => HidDefinitions.InputFormat;
+
+        public byte reportId;
+        public PS4SixFretGuitarState_NoReportId state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS4SixFretGuitarState_NoReportId), hideInUI = true)]
+    internal class PS4SixFretGuitar_NoReportId : PS4SixFretGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS4SixFretGuitarState_ReportId), hideInUI = true)]
+    internal class PS4SixFretGuitar_ReportId : PS4SixFretGuitar { }
 }
 
 namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS4SixFretGuitarState_ReportId;
+#else
+    using DefaultState = PS4SixFretGuitarState_NoReportId;
+#endif
+
     /// <summary>
     /// A PS4 GHL guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS4SixFretGuitarState), displayName = "PlayStation 4 Guitar Hero Live Guitar")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 4 Guitar Hero Live Guitar")]
     public class PS4SixFretGuitar : PokedSixFretGuitar
     {
         /// <summary>
@@ -82,11 +102,8 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<PS4SixFretGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x1430)
-                .WithCapability("productId", 0x07BB)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS4SixFretGuitar,
+                PS4SixFretGuitar_ReportId, PS4SixFretGuitar_NoReportId>(0x1430, 0x07BB);
         }
 
         /// <summary>

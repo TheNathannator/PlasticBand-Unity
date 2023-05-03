@@ -19,6 +19,8 @@ Dates are relative to UTC.
 ### Changed
 
 - Changed a bunch of device layout names for clarity. For example, instead of `Harmonix Guitar for PlayStation(R)3`, it's now labelled `PlayStation 3 Rock Band Guitar`.
+- Report IDs on HID device layouts are now detected automatically instead of being hardcoded into the layout.
+  - This ensures everything works correctly on all platforms, and accounts for cases where a report ID may be present where one isn't expected. (Wish the native backend would account for this automatically on all platforms, but this works too.)
 
 ## [0.2.1] - 2023/14/04
 

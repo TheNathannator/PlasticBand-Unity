@@ -16,11 +16,9 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for PS3 Guitar Hero guitars.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3GuitarHeroGuitarState : IInputStateTypeInfo
+    internal unsafe struct PS3GuitarHeroGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
-
-        public byte reportId;
 
         [InputControl(name = "yellowFret", layout = "Button", bit = 0)]
         [InputControl(name = "greenFret", layout = "Button", bit = 1)]
@@ -74,14 +72,35 @@ namespace PlasticBand.Devices.LowLevel
 
         public short unused3;
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct PS3GuitarHeroGuitarState_ReportId : IInputStateTypeInfo
+    {
+        public FourCC format => HidDefinitions.InputFormat;
+
+        public byte reportId;
+        public PS3GuitarHeroGuitarState_NoReportId state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_NoReportId), hideInUI = true)]
+    internal class PS3GuitarHeroGuitar_NoReportId : PS3GuitarHeroGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_ReportId), hideInUI = true)]
+    internal class PS3GuitarHeroGuitar_ReportId : PS3GuitarHeroGuitar { }
 }
 
 namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3GuitarHeroGuitarState_ReportId;
+#else
+    using DefaultState = PS3GuitarHeroGuitarState_NoReportId;
+#endif
+
     /// <summary>
     /// A PS3 Guitar Hero guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState), displayName = "PlayStation 3 Guitar Hero Guitar")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Guitar Hero Guitar")]
     public class PS3GuitarHeroGuitar : GuitarHeroGuitar
     {
         /// <summary>
@@ -101,18 +120,12 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // PS3 guitars
-            InputSystem.RegisterLayout<PS3GuitarHeroGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x0100)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar,
+                PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar_NoReportId>(0x12BA, 0x0100);
 
             // World Tour PC guitar
-            InputSystem.RegisterLayout<PS3GuitarHeroGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x1430)
-                .WithCapability("productId", 0x474C)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar,
+                PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar_NoReportId>(0x1430, 0x474C);
         }
 
         /// <summary>

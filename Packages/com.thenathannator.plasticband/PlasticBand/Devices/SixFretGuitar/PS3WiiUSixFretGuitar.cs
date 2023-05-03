@@ -16,11 +16,9 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for PS3/Wii U GHL devices.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3WiiUSixFretGuitarState : IInputStateTypeInfo
+    internal unsafe struct PS3WiiUSixFretGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
-
-        public byte reportId;
 
         [InputControl(name = "white1", layout = "Button", bit = 0)]
         [InputControl(name = "black1", layout = "Button", bit = 1)]
@@ -64,14 +62,35 @@ namespace PlasticBand.Devices.LowLevel
 
         public fixed short unused4[3];
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct PS3WiiUSixFretGuitarState_ReportId : IInputStateTypeInfo
+    {
+        public FourCC format => HidDefinitions.InputFormat;
+
+        public byte reportId;
+        public PS3WiiUSixFretGuitarState_NoReportId state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState_NoReportId), hideInUI = true)]
+    internal class PS3WiiUSixFretGuitar_NoReportId : PS3WiiUSixFretGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState_ReportId), hideInUI = true)]
+    internal class PS3WiiUSixFretGuitar_ReportId : PS3WiiUSixFretGuitar { }
 }
 
 namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3WiiUSixFretGuitarState_ReportId;
+#else
+    using DefaultState = PS3WiiUSixFretGuitarState_NoReportId;
+#endif
+
     /// <summary>
     /// A PS3/Wii U GHL guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState), displayName = "PS3/Wii U Guitar Hero Live Guitar")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PS3/Wii U Guitar Hero Live Guitar")]
     public class PS3WiiUSixFretGuitar : PokedSixFretGuitar
     {
         /// <summary>
@@ -90,11 +109,8 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<PS3WiiUSixFretGuitar>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x074B)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3WiiUSixFretGuitar,
+                PS3WiiUSixFretGuitar_ReportId, PS3WiiUSixFretGuitar_NoReportId>(0x12BA, 0x074B);
         }
 
         /// <summary>

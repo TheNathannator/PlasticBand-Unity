@@ -16,11 +16,9 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for PS4 Rock Band drumkits.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS4FourLaneDrumkitState : IInputStateTypeInfo
+    internal unsafe struct PS4FourLaneDrumkitState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
-
-        public byte reportId;
 
         private fixed byte unused1[4];
 
@@ -81,14 +79,35 @@ namespace PlasticBand.Devices.LowLevel
 
         private fixed byte unused3[28];
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct PS4FourLaneDrumkitState_ReportId : IInputStateTypeInfo
+    {
+        public FourCC format => HidDefinitions.InputFormat;
+
+        public byte reportId;
+        public PS4FourLaneDrumkitState_NoReportId state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS4FourLaneDrumkitState_NoReportId), hideInUI = true)]
+    internal class PS4FourLaneDrumkit_NoReportId : PS4FourLaneDrumkit { }
+
+    [InputControlLayout(stateType = typeof(PS4FourLaneDrumkitState_ReportId), hideInUI = true)]
+    internal class PS4FourLaneDrumkit_ReportId : PS4FourLaneDrumkit { }
 }
 
 namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS4FourLaneDrumkitState_ReportId;
+#else
+    using DefaultState = PS4FourLaneDrumkitState_NoReportId;
+#endif
+
     /// <summary>
     /// A PS4 Rock Band drumkit.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS4FourLaneDrumkitState), displayName = "PlayStation 4 Rock Band Drumkit")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 4 Rock Band Drumkit")]
     public class PS4FourLaneDrumkit : FourLaneDrumkit
     {
         /// <summary>
@@ -108,19 +127,13 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // MadCatz
-            InputSystem.RegisterLayout<PS4FourLaneDrumkit>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x0738)
-                .WithCapability("productId", 0x8262)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS4FourLaneDrumkit,
+                PS4FourLaneDrumkit_ReportId, PS4FourLaneDrumkit_NoReportId>(0x0738, 0x8262);
 
             // PDP
             // Product ID is not known yet
-            // InputSystem.RegisterLayout<PS4FourLaneDrumkit>(matches: new InputDeviceMatcher()
-            //     .WithInterface(HidDefinitions.InterfaceName)
-            //     .WithCapability("vendorId", 0x0E6F)
-            //     .WithCapability("productId", 0x0173)
-            // );
+            // HidReportIdLayoutFinder.RegisterLayout<PS4FourLaneDrumkit,
+            //     PS4FourLaneDrumkit_ReportId, PS4FourLaneDrumkit_NoReportId>(0x0E6F, 0x0173);
         }
 
         /// <summary>

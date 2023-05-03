@@ -16,7 +16,7 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for PS3 DJ Hero turntables.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3TurntableState : IInputStateTypeInfo
+    internal unsafe struct PS3TurntableState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
 
@@ -68,14 +68,35 @@ namespace PlasticBand.Devices.LowLevel
 
         public short unused3;
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct PS3TurntableState_ReportId : IInputStateTypeInfo
+    {
+        public FourCC format => HidDefinitions.InputFormat;
+
+        public byte reportId;
+        public PS3TurntableState_NoReportId state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS3TurntableState_NoReportId), hideInUI = true)]
+    internal class PS3Turntable_NoReportId : PS3Turntable { }
+
+    [InputControlLayout(stateType = typeof(PS3TurntableState_ReportId), hideInUI = true)]
+    internal class PS3Turntable_ReportId : PS3Turntable { }
 }
 
 namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3TurntableState_ReportId;
+#else
+    using DefaultState = PS3TurntableState_NoReportId;
+#endif
+
     /// <summary>
     /// A PS3 DJ Hero turntable.
     /// </summary>
-    [InputControlLayout(stateType = typeof(PS3TurntableState), displayName = "PlayStation 3 DJ Hero Turntable")]
+    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 DJ Hero Turntable")]
     public class PS3Turntable : Turntable
     {
         /// <summary>
@@ -94,11 +115,8 @@ namespace PlasticBand.Devices
         /// </summary>
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<PS3Turntable>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", 0x12BA)
-                .WithCapability("productId", 0x0140)
-            );
+            HidReportIdLayoutFinder.RegisterLayout<PS3Turntable,
+                PS3Turntable_ReportId, PS3Turntable_NoReportId>(0x12BA, 0x0140);
         }
 
         /// <summary>
