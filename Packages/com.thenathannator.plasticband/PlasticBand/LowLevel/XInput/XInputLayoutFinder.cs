@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -45,12 +44,17 @@ namespace PlasticBand.LowLevel
 #endif
 
         /// <summary>
-        /// Resolves the layout of an XInput device.
+        /// Determines whether or not a device matches an override entry.
         /// </summary>
-        private struct XInputLayoutOverride
+        internal delegate bool XInputOverrideDetermineMatch(XInputCapabilities capabilities, XInputGamepad state);
+
+        /// <summary>
+        /// Data used for overriding the layout of an XInput device.
+        /// </summary>
+        private class XInputLayoutOverride
         {
             public int subType;
-            public Func<XInputGamepad, bool> resolve;
+            public XInputOverrideDetermineMatch resolve;
             public InputDeviceMatcher matcher;
             public string layoutName;
         }
@@ -99,7 +103,7 @@ namespace PlasticBand.LowLevel
 #endif
 
             // Go through device matchers
-            XInputLayoutOverride? matchedEntry = null;
+            XInputLayoutOverride matchedEntry = null;
             float greatestMatch = 0f;
             foreach (var entry in overrides)
             {
@@ -117,12 +121,8 @@ namespace PlasticBand.LowLevel
             }
 
             // Use matched entry if available
-            if (matchedEntry.HasValue)
-            {
-                var entry = matchedEntry.GetValueOrDefault();
-                if (!string.IsNullOrEmpty(entry.layoutName))
-                    return entry.layoutName;
-            }
+            if (matchedEntry != null && !string.IsNullOrEmpty(matchedEntry.layoutName))
+                return matchedEntry.layoutName;
 
             // Use existing or default layout otherwise
             return DefaultLayoutIfNull(matchedLayout);
@@ -140,7 +140,7 @@ namespace PlasticBand.LowLevel
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
         /// <see cref="DeviceSubType"/>, with a layout resolver used to identify it.
         /// </summary>
-        internal static void RegisterLayout<TDevice>(DeviceSubType subType, Func<XInputGamepad, bool> resolveLayout,
+        internal static void RegisterLayout<TDevice>(DeviceSubType subType, XInputOverrideDetermineMatch resolveLayout,
             InputDeviceMatcher matcher = default)
             where TDevice : InputDevice
             => RegisterLayout<TDevice>((int)subType, resolveLayout, matcher);
@@ -149,7 +149,7 @@ namespace PlasticBand.LowLevel
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
         /// <see cref="XInputNonStandardSubType"/>, with a layout resolver used to identify it.
         /// </summary>
-        internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType, Func<XInputGamepad, bool> resolveLayout,
+        internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType, XInputOverrideDetermineMatch resolveLayout,
             InputDeviceMatcher matcher = default)
             where TDevice : InputDevice
             => RegisterLayout<TDevice>((int)subType, resolveLayout, matcher);
@@ -158,7 +158,7 @@ namespace PlasticBand.LowLevel
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
         /// subtype, with a layout resolver used to identify it.
         /// </summary>
-        internal static void RegisterLayout<TDevice>(int subType, Func<XInputGamepad, bool> resolveLayout,
+        internal static void RegisterLayout<TDevice>(int subType, XInputOverrideDetermineMatch resolveLayout,
             InputDeviceMatcher matcher = default)
             where TDevice : InputDevice
         {

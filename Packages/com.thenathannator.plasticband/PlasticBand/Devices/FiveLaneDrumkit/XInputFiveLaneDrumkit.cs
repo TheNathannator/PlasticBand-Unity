@@ -74,7 +74,7 @@ namespace PlasticBand.Devices
             // realistically that isn't likely to be held when powering on
             // May be some more specific capability data that also distinguishes them, but that probably isn't reliable
             XInputLayoutFinder.RegisterLayout<XInputFiveLaneDrumkit>(XInputController.DeviceSubType.DrumKit,
-                (state) => (state.buttons & (ushort)XInputGamepad.Button.LeftThumb) != 0);
+                (capabilities, state) => (state.buttons & (ushort)XInputGamepad.Button.LeftThumb) != 0);
         }
     }
 }
