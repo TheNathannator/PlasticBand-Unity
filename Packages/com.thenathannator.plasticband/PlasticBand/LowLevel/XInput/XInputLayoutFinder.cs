@@ -157,7 +157,12 @@ namespace PlasticBand.LowLevel
         }
 
         private static string DefaultLayoutIfNull(string matchedLayout)
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+            // XInputControllerWindows is only available when building for Windows
             => string.IsNullOrEmpty(matchedLayout) ? nameof(XInputControllerWindows) : null;
+#else
+            => null;
+#endif
 
         /// <summary>
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
