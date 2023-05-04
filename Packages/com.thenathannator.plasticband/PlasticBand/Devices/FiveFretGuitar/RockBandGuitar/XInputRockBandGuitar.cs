@@ -13,9 +13,6 @@ using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.Devices.LowLevel
 {
-    /// <summary>
-    /// The state format for XInput Rock Band guitars.
-    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputRockBandGuitarState : IInputStateTypeInfo
     {
@@ -80,9 +77,6 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<XInputRockBandGuitar> all => s_AllDevices;
         private static readonly List<XInputRockBandGuitar> s_AllDevices = new List<XInputRockBandGuitar>();
 
-        /// <summary>
-        /// Registers <see cref="RockBandGuitar"/> to the input system.
-        /// </summary>
         internal new static void Initialize()
         {
             XInputDeviceUtils.Register<XInputRockBandGuitar>(XInputController.DeviceSubType.Guitar);
@@ -97,18 +91,12 @@ namespace PlasticBand.Devices
             current = this;
         }
 
-        /// <summary>
-        /// Processes when this device is added to the system.
-        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
-        /// <summary>
-        /// Processes when this device is removed from the system.
-        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();

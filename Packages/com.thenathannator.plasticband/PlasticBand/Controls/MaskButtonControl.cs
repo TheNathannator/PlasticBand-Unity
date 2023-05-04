@@ -14,9 +14,6 @@ namespace PlasticBand.Controls
     /// </summary>
     public class MaskButtonControl : ButtonControl
     {
-        /// <summary>
-        /// Registers <see cref="MaskButtonControl"/> to the input system.
-        /// </summary>
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<MaskButtonControl>("MaskButton");
@@ -27,9 +24,6 @@ namespace PlasticBand.Controls
         /// </summary>
         public int mask;
 
-        /// <summary>
-        /// Creates a new <see cref="MaskButtonControl"/>.
-        /// </summary>
         public MaskButtonControl() : base()
         {
             m_StateBlock.format = InputStateBlock.FormatByte;
@@ -39,9 +33,6 @@ namespace PlasticBand.Controls
         int previousValue;
 #endif
 
-        /// <summary>
-        /// Finishes setup of the control.
-        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();

@@ -13,9 +13,6 @@ using UnityEngine;
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/General%20Notes.md#deciphering-pads-and-cymbals
 
 // TODO: Velocity
-// REVIEW/TODO: would using a stateful approach that tracks the previous buttons and
-// only acts on what's different work better with the hardware issues?
-// Issue with that is if someone wants to read from the previous state pointer...
 
 namespace PlasticBand.Controls
 {
@@ -24,9 +21,6 @@ namespace PlasticBand.Controls
     /// </summary>
     public class FourLanePadsControl : ButtonControl
     {
-        /// <summary>
-        /// Registers <see cref="FourLanePadsControl"/> to the input system.
-        /// </summary>
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<FourLanePadsControl>("FourLanePads");
@@ -101,9 +95,6 @@ namespace PlasticBand.Controls
         /// </summary>
         private bool m_HasFlags;
 
-        /// <summary>
-        /// Finishes setup of the control.
-        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();

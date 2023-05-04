@@ -12,9 +12,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices.LowLevel
 {
-    /// <summary>
-    /// The state format for PS3 and Wii 4-lane drumkits.
-    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3WiiFourLaneDrumkitState_NoReportId : IInputStateTypeInfo
     {
@@ -120,9 +117,6 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<PS3FourLaneDrumkit> all => s_AllDevices;
         private static readonly List<PS3FourLaneDrumkit> s_AllDevices = new List<PS3FourLaneDrumkit>();
 
-        /// <summary>
-        /// Registers <see cref="PS3FourLaneDrumkit"/> to the input system.
-        /// </summary>
         internal new static void Initialize()
         {
             // Drumkit
@@ -143,18 +137,12 @@ namespace PlasticBand.Devices
             current = this;
         }
 
-        /// <summary>
-        /// Processes when this device is added to the system.
-        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
-        /// <summary>
-        /// Processes when this device is removed from the system.
-        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();
@@ -181,9 +169,6 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<WiiFourLaneDrumkit> all => s_AllDevices;
         private static readonly List<WiiFourLaneDrumkit> s_AllDevices = new List<WiiFourLaneDrumkit>();
 
-        /// <summary>
-        /// Registers <see cref="WiiFourLaneDrumkit"/> to the input system.
-        /// </summary>
         internal new static void Initialize()
         {
             // RB1
@@ -208,18 +193,12 @@ namespace PlasticBand.Devices
             current = this;
         }
 
-        /// <summary>
-        /// Processes when this device is added to the system.
-        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
-        /// <summary>
-        /// Processes when this device is removed from the system.
-        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();

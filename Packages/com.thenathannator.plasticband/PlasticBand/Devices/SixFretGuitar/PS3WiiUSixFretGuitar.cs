@@ -12,9 +12,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices.LowLevel
 {
-    /// <summary>
-    /// The state format for PS3/Wii U GHL devices.
-    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3WiiUSixFretGuitarState_NoReportId : IInputStateTypeInfo
     {
@@ -104,9 +101,6 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<PS3WiiUSixFretGuitar> all => s_AllDevices;
         private static readonly List<PS3WiiUSixFretGuitar> s_AllDevices = new List<PS3WiiUSixFretGuitar>();
 
-        /// <summary>
-        /// Registers <see cref="PS3WiiUSixFretGuitar"/> to the input system.
-        /// </summary>
         internal new static void Initialize()
         {
             HidReportIdLayoutFinder.RegisterLayout<PS3WiiUSixFretGuitar,
@@ -122,18 +116,12 @@ namespace PlasticBand.Devices
             current = this;
         }
 
-        /// <summary>
-        /// Processes when this device is added to the system.
-        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
-        /// <summary>
-        /// Processes when this device is removed from the system.
-        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();
@@ -142,9 +130,7 @@ namespace PlasticBand.Devices
                 current = null;
         }
 
-        /// <summary>
-        /// Magic data to be sent periodically to unlock full input data.
-        /// </summary>
+        // Magic data to be sent periodically to unlock full input data
         private static PS3OutputCommand s_PokeCommand = new PS3OutputCommand(
             0x02, // TODO: Determine if this report ID is correct/necessary
             0x02,

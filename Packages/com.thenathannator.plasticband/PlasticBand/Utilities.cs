@@ -33,6 +33,9 @@ namespace PlasticBand
             return false;
         }
 
+        /// <summary>
+        /// Determines whether or not the button is pressed in the given state event.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsPressedInEvent(this ButtonControl control, InputEventPtr eventPtr)
             => control.HasValueChangeInEvent(eventPtr) && control.IsValueConsideredPressed(control.ReadValueFromEvent(eventPtr));

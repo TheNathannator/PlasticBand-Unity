@@ -9,14 +9,7 @@ namespace PlasticBand.LowLevel
     {
         public const string InterfaceName = "HID";
 
-        /// <summary>
-        /// The format for HID input reports.
-        /// </summary>
         public static readonly FourCC InputFormat = new FourCC('H', 'I', 'D');
-
-        /// <summary>
-        /// The format for HID output reports.
-        /// </summary>
         public static readonly FourCC OutputFormat = new FourCC('H', 'I', 'D', 'O');
     }
 }

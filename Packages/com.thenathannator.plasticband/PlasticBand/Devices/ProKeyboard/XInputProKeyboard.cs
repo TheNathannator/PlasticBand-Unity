@@ -11,9 +11,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices.LowLevel
 {
-    /// <summary>
-    /// The state format for XInput ProKeyboards.
-    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputProKeyboardState : IInputStateTypeInfo
     {
@@ -113,9 +110,6 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<XInputProKeyboard> all => s_AllDevices;
         private static readonly List<XInputProKeyboard> s_AllDevices = new List<XInputProKeyboard>();
 
-        /// <summary>
-        /// Registers <see cref="XInputProKeyboard"/> to the input system.
-        /// </summary>
         internal new static void Initialize()
         {
             XInputDeviceUtils.Register<XInputProKeyboard>(XInputNonStandardSubType.ProKeyboard);
@@ -130,18 +124,12 @@ namespace PlasticBand.Devices
             current = this;
         }
 
-        /// <summary>
-        /// Processes when this device is added to the system.
-        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
-        /// <summary>
-        /// Processes when this device is removed from the system.
-        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();

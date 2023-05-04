@@ -19,9 +19,6 @@ namespace PlasticBand.Controls
     /// </summary>
     public class GuitarHeroSliderControl : ButtonControl
     {
-        /// <summary>
-        /// Registers <see cref="GuitarHeroSliderControl"/> to the input system.
-        /// </summary>
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<GuitarHeroSliderControl>("GuitarHeroSlider");
@@ -72,13 +69,10 @@ namespace PlasticBand.Controls
         };
 
         /// <summary>
-        /// The pad flag to test to determine state.
+        /// The fret flag used to determine pressed state.
         /// </summary>
         private FiveFret m_FretToTest;
 
-        /// <summary>
-        /// Finishes setup of the control.
-        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();

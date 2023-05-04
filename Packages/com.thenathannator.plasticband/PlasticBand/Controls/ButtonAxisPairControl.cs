@@ -10,14 +10,10 @@ using UnityEngine;
 namespace PlasticBand.Controls
 {
     /// <summary>
-    /// A button that is considered pressed when either a given button bit or a given axis are active.<br/>
-    /// Place this control on the axis to use for the 
+    /// A button that is considered pressed when either a given button bit or a given axis are active.
     /// </summary>
     public class ButtonAxisPairControl : ButtonControl
     {
-        /// <summary>
-        /// Registers <see cref="ButtonAxisPairControl"/> to the input system.
-        /// </summary>
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<ButtonAxisPairControl>("ButtonAxisPair");
@@ -34,9 +30,6 @@ namespace PlasticBand.Controls
         float previousButtonValue;
 #endif
 
-        /// <summary>
-        /// Finishes setup of the control.
-        /// </summary>
         protected override void FinishSetup()
         {
             base.FinishSetup();

@@ -9,13 +9,9 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices.LowLevel
 {
-    /// <summary>
-    /// The state format for standard PS3 controllers.
-    /// Note that this most likely does not reflect the actual PS3 controller input state.
-    /// This is meant for use as a base for the states of other PS3 devices, which follow a common report structure.
-    /// </summary>
+    // For reference when creating layouts for PS3 devices
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct PS3Gamepad : IInputStateTypeInfo
+    internal struct PS3DeviceState : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
 

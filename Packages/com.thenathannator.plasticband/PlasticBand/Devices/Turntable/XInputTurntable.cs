@@ -12,9 +12,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices.LowLevel
 {
-    /// <summary>
-    /// The state format for XInput turntables.
-    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputTurntableState : IInputStateTypeInfo
     {
@@ -80,9 +77,6 @@ namespace PlasticBand.Devices
         public new static IReadOnlyList<XInputTurntable> all => s_AllDevices;
         private static readonly List<XInputTurntable> s_AllDevices = new List<XInputTurntable>();
 
-        /// <summary>
-        /// Registers <see cref="XInputTurntable"/> to the input system.
-        /// </summary>
         internal new static void Initialize()
         {
             XInputDeviceUtils.Register<XInputTurntable>((int)XInputNonStandardSubType.Turntable);
@@ -97,18 +91,12 @@ namespace PlasticBand.Devices
             current = this;
         }
 
-        /// <summary>
-        /// Processes when this device is added to the system.
-        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
-        /// <summary>
-        /// Processes when this device is removed from the system.
-        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();
@@ -117,7 +105,6 @@ namespace PlasticBand.Devices
                 current = null;
         }
 
-        /// <inheritdoc/>
         protected override void OnEuphoriaTick(float brightness)
         {
             // Handle force-disable value

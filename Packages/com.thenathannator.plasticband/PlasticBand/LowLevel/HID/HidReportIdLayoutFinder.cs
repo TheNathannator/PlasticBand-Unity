@@ -23,6 +23,9 @@ namespace PlasticBand.LowLevel
 {
     using static HID;
 
+    /// <summary>
+    /// Checks registered HID devices for the presence of a report ID, and picks a layout accordingly.
+    /// </summary>
     internal static class HidReportIdLayoutFinder
     {
         // Get built-in HID descriptor retrieval so we don't have to copy it
@@ -58,6 +61,11 @@ namespace PlasticBand.LowLevel
             return hasReportId ? layouts.reportId : layouts.noReportId;
         }
 
+        /// <summary>
+        /// Registers <typeparamref name="TBase"/> to the input system as an HID device with the specified vendor and
+        /// product IDs, and registers <typeparamref name="TReportId"/> and <typeparamref name="TNoReportId"/> as layouts
+        /// to use for when the device does or doesn't have a report ID, respectively.
+        /// </summary>
         internal static void RegisterLayout<TBase, TReportId, TNoReportId>(int vendorId, int productId)
             where TBase : InputDevice
             where TReportId : InputDevice

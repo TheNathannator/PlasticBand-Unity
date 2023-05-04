@@ -13,7 +13,7 @@ namespace PlasticBand.Devices.LowLevel
     internal unsafe struct PS3OutputCommand : IInputDeviceCommandInfo
     {
         /// <summary>
-        /// The size of this command.
+        /// The default report ID.
         /// </summary>
         internal const int kDefaultReportId = 0x00;
 

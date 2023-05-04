@@ -97,6 +97,7 @@ namespace PlasticBand.LowLevel
         public short leftMotor;
         public short rightMotor;
     }
+
     /// <summary>
     /// Capability info of an XInput device.
     /// </summary>
