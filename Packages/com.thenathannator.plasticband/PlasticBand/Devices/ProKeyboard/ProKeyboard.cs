@@ -8,242 +8,242 @@ using UnityEngine.InputSystem.LowLevel;
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// A Rock Band 3 keytar controller.
+    /// A Rock Band 3 Pro Keyboard controller (also referred to as a keyboard).
     /// </summary>
     [InputControlLayout(displayName = "Rock Band Pro Keyboard")]
-    public class Keytar : InputDevice
+    public class ProKeyboard : InputDevice
     {
         /// <summary>
-        /// The current <see cref="Keytar"/>.
+        /// The current <see cref="ProKeyboard"/>.
         /// </summary>
-        public static Keytar current { get; private set; }
+        public static ProKeyboard current { get; private set; }
 
         /// <summary>
-        /// A collection of all <see cref="Keytar"/>s currently connected to the system.
+        /// A collection of all <see cref="ProKeyboard"/>s currently connected to the system.
         /// </summary>
-        public new static IReadOnlyList<Keytar> all => s_AllDevices;
-        private static readonly List<Keytar> s_AllDevices = new List<Keytar>();
+        public new static IReadOnlyList<ProKeyboard> all => s_AllDevices;
+        private static readonly List<ProKeyboard> s_AllDevices = new List<ProKeyboard>();
 
         /// <summary>
-        /// Registers <see cref="Keytar"/> to the input system.
+        /// Registers <see cref="ProKeyboard"/> to the input system.
         /// </summary>
         internal static void Initialize()
         {
-            InputSystem.RegisterLayout<Keytar>();
+            InputSystem.RegisterLayout<ProKeyboard>();
         }
 
         /// <summary>
-        /// The keytar's d-pad.
+        /// The keyboard's d-pad.
         /// </summary>
         [InputControl(displayName = "D-Pad", usage = "Hatswitch")]
         public DpadControl dpad { get; private set; }
 
         /// <summary>
-        /// The bottom face button on the keytar.
+        /// The bottom face button on the keyboard.
         /// </summary>
         [InputControl(displayName = "Button South", usages = new[] { "PrimaryAction", "Submit" })]
         public ButtonControl buttonSouth { get; private set; }
 
         /// <summary>
-        /// The right face button on the keytar.
+        /// The right face button on the keyboard.
         /// </summary>
         [InputControl(displayName = "Button East", usages = new[] { "Back", "Cancel" })]
         public ButtonControl buttonEast { get; private set; }
 
         /// <summary>
-        /// The left face button on the keytar.
+        /// The left face button on the keyboard.
         /// </summary>
         [InputControl(displayName = "Button West")]
         public ButtonControl buttonWest { get; private set; }
 
         /// <summary>
-        /// The top face button on the keytar.
+        /// The top face button on the keyboard.
         /// </summary>
         [InputControl(displayName = "Button North")]
         public ButtonControl buttonNorth { get; private set; }
 
         /// <summary>
-        /// The Start button on the keytar.
+        /// The Start button on the keyboard.
         /// </summary>
         [InputControl(displayName = "Start", usage = "Menu")]
         public ButtonControl startButton { get; private set; }
 
         /// <summary>
-        /// The Select button on the keytar.
+        /// The Select button on the keyboard.
         /// </summary>
         [InputControl(displayName = "Select")]
         public ButtonControl selectButton { get; private set; }
 
         /// <summary>
-        /// The 1st (leftmost) key on the keytar (C-1).
+        /// The 1st (leftmost) key on the keyboard (C-1).
         /// </summary>
         [InputControl(displayName = "C-1")]
         public ButtonControl key1 { get; private set; }
 
         /// <summary>
-        /// The 2nd key on the keytar (C#/Db-1).
+        /// The 2nd key on the keyboard (C#/Db-1).
         /// </summary>
         [InputControl(displayName = "C#/Db-1")]
         public ButtonControl key2 { get; private set; }
 
         /// <summary>
-        /// The 3rd key on the keytar (D-1).
+        /// The 3rd key on the keyboard (D-1).
         /// </summary>
         [InputControl(displayName = "D-1")]
         public ButtonControl key3 { get; private set; }
 
         /// <summary>
-        /// The 4th key on the keytar (D#/Eb-1).
+        /// The 4th key on the keyboard (D#/Eb-1).
         /// </summary>
         [InputControl(displayName = "D#/Eb-1")]
         public ButtonControl key4 { get; private set; }
 
         /// <summary>
-        /// The 5th key on the keytar (E-1).
+        /// The 5th key on the keyboard (E-1).
         /// </summary>
         [InputControl(displayName = "E-1")]
         public ButtonControl key5 { get; private set; }
 
         /// <summary>
-        /// The 6th key on the keytar (F-1).
+        /// The 6th key on the keyboard (F-1).
         /// </summary>
         [InputControl(displayName = "F-1")]
         public ButtonControl key6 { get; private set; }
 
         /// <summary>
-        /// The 7th key on the keytar (F#/Gb-1).
+        /// The 7th key on the keyboard (F#/Gb-1).
         /// </summary>
         [InputControl(displayName = "F#/Gb-1")]
         public ButtonControl key7 { get; private set; }
 
         /// <summary>
-        /// The 8th key on the keytar (G-1).
+        /// The 8th key on the keyboard (G-1).
         /// </summary>
         [InputControl(displayName = "G-1")]
         public ButtonControl key8 { get; private set; }
 
         /// <summary>
-        /// The 9th key on the keytar (Gb/Ab-1).
+        /// The 9th key on the keyboard (Gb/Ab-1).
         /// </summary>
         [InputControl(displayName = "Gb/Ab-1")]
         public ButtonControl key9 { get; private set; }
 
         /// <summary>
-        /// The 10th key on the keytar (A-1).
+        /// The 10th key on the keyboard (A-1).
         /// </summary>
         [InputControl(displayName = "A-1")]
         public ButtonControl key10 { get; private set; }
 
         /// <summary>
-        /// The 11th key on the keytar (A#/Bb-1).
+        /// The 11th key on the keyboard (A#/Bb-1).
         /// </summary>
         [InputControl(displayName = "A#/Bb-1")]
         public ButtonControl key11 { get; private set; }
 
         /// <summary>
-        /// The 12th key on the keytar (B-1).
+        /// The 12th key on the keyboard (B-1).
         /// </summary>
         [InputControl(displayName = "B-1")]
         public ButtonControl key12 { get; private set; }
 
         /// <summary>
-        /// The 13th key on the keytar (C-2).
+        /// The 13th key on the keyboard (C-2).
         /// </summary>
         [InputControl(displayName = "C-2")]
         public ButtonControl key13 { get; private set; }
 
         /// <summary>
-        /// The 14th key on the keytar (C#/Db-2).
+        /// The 14th key on the keyboard (C#/Db-2).
         /// </summary>
         [InputControl(displayName = "C#/Db-2")]
         public ButtonControl key14 { get; private set; }
 
         /// <summary>
-        /// The 15th key on the keytar (D-2).
+        /// The 15th key on the keyboard (D-2).
         /// </summary>
         [InputControl(displayName = "D-2")]
         public ButtonControl key15 { get; private set; }
 
         /// <summary>
-        /// The 16th key on the keytar (D#/Eb-2).
+        /// The 16th key on the keyboard (D#/Eb-2).
         /// </summary>
         [InputControl(displayName = "D#/Eb-2")]
         public ButtonControl key16 { get; private set; }
 
         /// <summary>
-        /// The 17th key on the keytar (E-2).
+        /// The 17th key on the keyboard (E-2).
         /// </summary>
         [InputControl(displayName = "E-2")]
         public ButtonControl key17 { get; private set; }
 
         /// <summary>
-        /// The 18th key on the keytar (F-2).
+        /// The 18th key on the keyboard (F-2).
         /// </summary>
         [InputControl(displayName = "F-2")]
         public ButtonControl key18 { get; private set; }
 
         /// <summary>
-        /// The 19th key on the keytar (F#/Gb-2).
+        /// The 19th key on the keyboard (F#/Gb-2).
         /// </summary>
         [InputControl(displayName = "F#/Gb-2")]
         public ButtonControl key19 { get; private set; }
 
         /// <summary>
-        /// The 20th key on the keytar (G-2).
+        /// The 20th key on the keyboard (G-2).
         /// </summary>
         [InputControl(displayName = "G-2")]
         public ButtonControl key20 { get; private set; }
 
         /// <summary>
-        /// The 21st key on the keytar (Gb/Ab-2).
+        /// The 21st key on the keyboard (Gb/Ab-2).
         /// </summary>
         [InputControl(displayName = "Gb/Ab-2")]
         public ButtonControl key21 { get; private set; }
 
         /// <summary>
-        /// The 22nd key on the keytar (A-2).
+        /// The 22nd key on the keyboard (A-2).
         /// </summary>
         [InputControl(displayName = "A-2")]
         public ButtonControl key22 { get; private set; }
 
         /// <summary>
-        /// The 23rd key on the keytar (A#/Bb-2).
+        /// The 23rd key on the keyboard (A#/Bb-2).
         /// </summary>
         [InputControl(displayName = "A#/Bb-2")]
         public ButtonControl key23 { get; private set; }
 
         /// <summary>
-        /// The 24th key on the keytar (B-2).
+        /// The 24th key on the keyboard (B-2).
         /// </summary>
         [InputControl(displayName = "B-2")]
         public ButtonControl key24 { get; private set; }
 
         /// <summary>
-        /// The 25th (rightmost) key on the keytar (C-3).
+        /// The 25th (rightmost) key on the keyboard (C-3).
         /// </summary>
         [InputControl(displayName = "C-3")]
         public ButtonControl key25 { get; private set; }
 
         /// <summary>
-        /// The keytar's overdrive button.
+        /// The keyboard's overdrive button.
         /// </summary>
         [InputControl(displayName = "Overdrive")]
         public ButtonControl overdrive { get; private set; }
 
         /// <summary>
-        /// The digital pedal input on the keytar.
+        /// The digital pedal input on the keyboard.
         /// </summary>
         [InputControl(displayName = "Digital Pedal")]
         public ButtonControl digitalPedal { get; private set; }
 
         /// <summary>
-        /// The analog pedal input on the keytar.
+        /// The analog pedal input on the keyboard.
         /// </summary>
         [InputControl(displayName = "Analog Pedal")]
         public AxisControl analogPedal { get; private set; }
 
         /// <summary>
-        /// The touch strip on the keytar.
+        /// The touch strip on the keyboard.
         /// </summary>
         [InputControl(displayName = "Touch Strip")]
         public AxisControl touchStrip { get; private set; }
@@ -370,7 +370,7 @@ namespace PlasticBand.Devices
         }
 
         /// <summary>
-        /// Sets this device as the current <see cref="Keytar"/>.
+        /// Sets this device as the current <see cref="ProKeyboard"/>.
         /// </summary>
         public override void MakeCurrent()
         {

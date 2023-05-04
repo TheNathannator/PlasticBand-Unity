@@ -17,7 +17,7 @@ namespace PlasticBand.Devices.LowLevel
     /// The state format for XInput GHL guitars.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct XInputGuitarGHLState : IInputStateTypeInfo
+    internal unsafe struct XInputSixFretGuitarState : IInputStateTypeInfo
     {
         public FourCC format => XInputGamepad.Format;
 
@@ -60,29 +60,29 @@ namespace PlasticBand.Devices
     using XInputFlags = XInputController.DeviceFlags;
 
     /// <summary>
-    /// An XInput GHL guitar.
+    /// An XInput Guitar Hero Live guitar.
     /// </summary>
-    [InputControlLayout(stateType = typeof(XInputGuitarGHLState), displayName = "XInput Guitar Hero Live Guitar")]
-    public class XInputGuitarGHL : SixFretGuitar
+    [InputControlLayout(stateType = typeof(XInputSixFretGuitarState), displayName = "XInput Guitar Hero Live Guitar")]
+    public class XInputSixFretGuitar : SixFretGuitar
     {
         /// <summary>
-        /// The current <see cref="XInputGuitarGHL"/>.
+        /// The current <see cref="XInputSixFretGuitar"/>.
         /// </summary>
-        public static new XInputGuitarGHL current { get; private set; }
+        public static new XInputSixFretGuitar current { get; private set; }
 
         /// <summary>
-        /// A collection of all <see cref="XInputGuitarGHL"/>s currently connected to the system.
+        /// A collection of all <see cref="XInputSixFretGuitar"/>s currently connected to the system.
         /// </summary>
-        public new static IReadOnlyList<XInputGuitarGHL> all => s_AllDevices;
-        private static readonly List<XInputGuitarGHL> s_AllDevices = new List<XInputGuitarGHL>();
+        public new static IReadOnlyList<XInputSixFretGuitar> all => s_AllDevices;
+        private static readonly List<XInputSixFretGuitar> s_AllDevices = new List<XInputSixFretGuitar>();
 
         /// <summary>
-        /// Registers <see cref="XInputGuitarGHL"/> to the input system.
+        /// Registers <see cref="XInputSixFretGuitar"/> to the input system.
         /// </summary>
         internal new static void Initialize()
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            InputSystem.RegisterLayout<XInputGuitarGHL>(matches: new InputDeviceMatcher()
+            InputSystem.RegisterLayout<XInputSixFretGuitar>(matches: new InputDeviceMatcher()
                 .WithInterface(XInputOther.kInterfaceName)
                 // Annoyingly, GHL guitars do not have a unique subtype. So, we have to use some other information to identify them.
                 .WithCapability("subType", (int)XInputController.DeviceSubType.GuitarAlternate)
@@ -94,7 +94,7 @@ namespace PlasticBand.Devices
         }
 
         /// <summary>
-        /// Sets this device as the current <see cref="XInputGuitarGHL"/>.
+        /// Sets this device as the current <see cref="XInputSixFretGuitar"/>.
         /// </summary>
         public override void MakeCurrent()
         {

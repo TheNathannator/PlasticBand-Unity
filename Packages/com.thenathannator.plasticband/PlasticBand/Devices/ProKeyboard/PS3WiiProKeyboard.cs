@@ -8,15 +8,15 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
-// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Keytar/PS3%20and%20Wii.md
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/ProKeyboard/PS3%20and%20Wii.md
 
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
-    /// The state format for PS3 and Wii keytars.
+    /// The state format for PS3 and Wii ProKeyboards.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3WiiKeytarState_NoReportId : IInputStateTypeInfo
+    internal unsafe struct PS3WiiProKeyboardState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
 
@@ -102,68 +102,68 @@ namespace PlasticBand.Devices.LowLevel
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3WiiKeytarState_ReportId : IInputStateTypeInfo
+    internal unsafe struct PS3WiiProKeyboardState_ReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
-        public PS3WiiKeytarState_NoReportId state;
+        public PS3WiiProKeyboardState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiKeytarState_NoReportId), hideInUI = true)]
-    internal class PS3Keytar_NoReportId : PS3Keytar { }
+    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), hideInUI = true)]
+    internal class PS3ProKeyboard_NoReportId : PS3ProKeyboard { }
 
-    [InputControlLayout(stateType = typeof(PS3WiiKeytarState_ReportId), hideInUI = true)]
-    internal class PS3Keytar_ReportId : PS3Keytar { }
+    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_ReportId), hideInUI = true)]
+    internal class PS3ProKeyboard_ReportId : PS3ProKeyboard { }
 
-    [InputControlLayout(stateType = typeof(PS3WiiKeytarState_NoReportId), hideInUI = true)]
-    internal class WiiKeytar_NoReportId : WiiKeytar { }
+    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), hideInUI = true)]
+    internal class WiiProKeyboard_NoReportId : WiiProKeyboard { }
 
-    [InputControlLayout(stateType = typeof(PS3WiiKeytarState_ReportId), hideInUI = true)]
-    internal class WiiKeytar_ReportId : WiiKeytar { }
+    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_ReportId), hideInUI = true)]
+    internal class WiiProKeyboard_ReportId : WiiProKeyboard { }
 }
 
 namespace PlasticBand.Devices
 {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3WiiKeytarState_ReportId;
+    using DefaultState = PS3WiiProKeyboardState_ReportId;
 #else
-    using DefaultState = PS3WiiKeytarState_NoReportId;
+    using DefaultState = PS3WiiProKeyboardState_NoReportId;
 #endif
 
     /// <summary>
-    /// A PS3 keytar controller.
+    /// A PS3 Pro Keyboard.
     /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Pro Keyboard")]
-    public class PS3Keytar : Keytar
+    public class PS3ProKeyboard : ProKeyboard
     {
         /// <summary>
-        /// The current <see cref="PS3Keytar"/>.
+        /// The current <see cref="PS3ProKeyboard"/>.
         /// </summary>
-        public static new PS3Keytar current { get; private set; }
+        public static new PS3ProKeyboard current { get; private set; }
 
         /// <summary>
-        /// A collection of all <see cref="PS3Keytar"/>s currently connected to the system.
+        /// A collection of all <see cref="PS3ProKeyboard"/>s currently connected to the system.
         /// </summary>
-        public new static IReadOnlyList<PS3Keytar> all => s_AllDevices;
-        private static readonly List<PS3Keytar> s_AllDevices = new List<PS3Keytar>();
+        public new static IReadOnlyList<PS3ProKeyboard> all => s_AllDevices;
+        private static readonly List<PS3ProKeyboard> s_AllDevices = new List<PS3ProKeyboard>();
 
         /// <summary>
-        /// Registers <see cref="PS3Keytar"/> to the input system.
+        /// Registers <see cref="PS3ProKeyboard"/> to the input system.
         /// </summary>
         internal new static void Initialize()
         {
-            // Keytar
-            HidReportIdLayoutFinder.RegisterLayout<PS3Keytar,
-                PS3Keytar_ReportId, PS3Keytar_NoReportId>(0x12BA, 0x2330);
+            // ProKeyboard
+            HidReportIdLayoutFinder.RegisterLayout<PS3ProKeyboard,
+                PS3ProKeyboard_ReportId, PS3ProKeyboard_NoReportId>(0x12BA, 0x2330);
 
             // MIDI Pro Adapter
-            HidReportIdLayoutFinder.RegisterLayout<PS3Keytar,
-                PS3Keytar_ReportId, PS3Keytar_NoReportId>(0x12BA, 0x2338);
+            HidReportIdLayoutFinder.RegisterLayout<PS3ProKeyboard,
+                PS3ProKeyboard_ReportId, PS3ProKeyboard_NoReportId>(0x12BA, 0x2338);
         }
 
         /// <summary>
-        /// Sets this device as the current <see cref="PS3Keytar"/>.
+        /// Sets this device as the current <see cref="PS3ProKeyboard"/>.
         /// </summary>
         public override void MakeCurrent()
         {
@@ -193,38 +193,38 @@ namespace PlasticBand.Devices
     }
 
     /// <summary>
-    /// A Wii keytar controller.
+    /// A Wii Pro Keyboard.
     /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Pro Keyboard")]
-    public class WiiKeytar : Keytar
+    public class WiiProKeyboard : ProKeyboard
     {
         /// <summary>
-        /// The current <see cref="WiiKeytar"/>.
+        /// The current <see cref="WiiProKeyboard"/>.
         /// </summary>
-        public static new WiiKeytar current { get; private set; }
+        public static new WiiProKeyboard current { get; private set; }
 
         /// <summary>
-        /// A collection of all <see cref="WiiKeytar"/>s currently connected to the system.
+        /// A collection of all <see cref="WiiProKeyboard"/>s currently connected to the system.
         /// </summary>
-        public new static IReadOnlyList<WiiKeytar> all => s_AllDevices;
-        private static readonly List<WiiKeytar> s_AllDevices = new List<WiiKeytar>();
+        public new static IReadOnlyList<WiiProKeyboard> all => s_AllDevices;
+        private static readonly List<WiiProKeyboard> s_AllDevices = new List<WiiProKeyboard>();
 
         /// <summary>
-        /// Registers <see cref="WiiKeytar"/> to the input system.
+        /// Registers <see cref="WiiProKeyboard"/> to the input system.
         /// </summary>
         internal new static void Initialize()
         {
-            // Keytar
-            HidReportIdLayoutFinder.RegisterLayout<WiiKeytar,
-                WiiKeytar_ReportId, WiiKeytar_NoReportId>(0x1BAD, 0x2330);
+            // ProKeyboard
+            HidReportIdLayoutFinder.RegisterLayout<WiiProKeyboard,
+                WiiProKeyboard_ReportId, WiiProKeyboard_NoReportId>(0x1BAD, 0x2330);
 
             // MIDI Pro Adapter
-            HidReportIdLayoutFinder.RegisterLayout<WiiKeytar,
-                WiiKeytar_ReportId, WiiKeytar_NoReportId>(0x1BAD, 0x2330);
+            HidReportIdLayoutFinder.RegisterLayout<WiiProKeyboard,
+                WiiProKeyboard_ReportId, WiiProKeyboard_NoReportId>(0x1BAD, 0x2330);
         }
 
         /// <summary>
-        /// Sets this device as the current <see cref="WiiKeytar"/>.
+        /// Sets this device as the current <see cref="WiiProKeyboard"/>.
         /// </summary>
         public override void MakeCurrent()
         {

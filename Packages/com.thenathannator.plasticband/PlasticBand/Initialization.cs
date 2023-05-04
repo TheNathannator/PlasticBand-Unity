@@ -37,19 +37,19 @@ namespace PlasticBand
             // Guitar Hero guitars
             GuitarHeroSliderControl.Initialize();
             GuitarHeroGuitar.Initialize();
-            XInputGuitarAlternate.Initialize();
+            XInputGuitarHeroGuitar.Initialize();
             PS3GuitarHeroGuitar.Initialize();
 
             // Rock Band guitars
             RockBandGuitar.Initialize();
-            XInputGuitar.Initialize();
+            XInputRockBandGuitar.Initialize();
             PS3RockBandGuitar.Initialize();
             // PS4RockBandGuitar.Initialize(); // Temporarily disabled to avoid a crash bug
             WiiRockBandGuitar.Initialize();
 
             // 6-fret guitars
             SixFretGuitar.Initialize();
-            XInputGuitarGHL.Initialize();
+            XInputSixFretGuitar.Initialize();
             PS3WiiUSixFretGuitar.Initialize();
             // PS4SixFretGuitar.Initialize(); // Temporarily disabled to avoid a crash bug
 
@@ -77,11 +77,11 @@ namespace PlasticBand
             XInputTurntable.Initialize();
             PS3Turntable.Initialize();
 
-            // Keytars
-            Keytar.Initialize();
-            XInputKeytar.Initialize();
-            PS3Keytar.Initialize();
-            WiiKeytar.Initialize();
+            // Pro Keyboards
+            ProKeyboard.Initialize();
+            XInputProKeyboard.Initialize();
+            PS3ProKeyboard.Initialize();
+            WiiProKeyboard.Initialize();
 
             // Layout finders
             HidReportIdLayoutFinder.Initialize();

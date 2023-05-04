@@ -7,15 +7,15 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
-// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Keytar/Xbox%20360.md
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/ProKeyboard/Xbox%20360.md
 
 namespace PlasticBand.Devices.LowLevel
 {
     /// <summary>
-    /// The state format for XInput keytars.
+    /// The state format for XInput ProKeyboards.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct XInputKeytarState : IInputStateTypeInfo
+    internal unsafe struct XInputProKeyboardState : IInputStateTypeInfo
     {
         public FourCC format => XInputGamepad.Format;
 
@@ -82,7 +82,7 @@ namespace PlasticBand.Devices.LowLevel
         public byte velocity5;
 
         [InputControl(name = "overdrive", layout = "Button", bit = 7)]
-        // The touchstrip isn't available through XInput, but it has to be there for Keytar
+        // The touchstrip isn't available through XInput, but it has to be there for ProKeyboard
         // These bits are unused, so we place it here
         [InputControl(name = "touchStrip", layout = "Axis", format = "BIT", sizeInBits = 7)]
         public byte overdrive;
@@ -97,32 +97,32 @@ namespace PlasticBand.Devices.LowLevel
 namespace PlasticBand.Devices
 {
     /// <summary>
-    /// An XInput keytar controller.
+    /// An XInput Pro Keyboard.
     /// </summary>
-    [InputControlLayout(stateType = typeof(XInputKeytarState), displayName = "XInput Rock Band Pro Keyboard")]
-    public class XInputKeytar : Keytar
+    [InputControlLayout(stateType = typeof(XInputProKeyboardState), displayName = "XInput Rock Band Pro Keyboard")]
+    public class XInputProKeyboard : ProKeyboard
     {
         /// <summary>
-        /// The current <see cref="XInputKeytar"/>.
+        /// The current <see cref="XInputProKeyboard"/>.
         /// </summary>
-        public static new XInputKeytar current { get; private set; }
+        public static new XInputProKeyboard current { get; private set; }
 
         /// <summary>
-        /// A collection of all <see cref="XInputKeytar"/>s currently connected to the system.
+        /// A collection of all <see cref="XInputProKeyboard"/>s currently connected to the system.
         /// </summary>
-        public new static IReadOnlyList<XInputKeytar> all => s_AllDevices;
-        private static readonly List<XInputKeytar> s_AllDevices = new List<XInputKeytar>();
+        public new static IReadOnlyList<XInputProKeyboard> all => s_AllDevices;
+        private static readonly List<XInputProKeyboard> s_AllDevices = new List<XInputProKeyboard>();
 
         /// <summary>
-        /// Registers <see cref="XInputKeytar"/> to the input system.
+        /// Registers <see cref="XInputProKeyboard"/> to the input system.
         /// </summary>
         internal new static void Initialize()
         {
-            XInputDeviceUtils.Register<XInputKeytar>(XInputNonStandardSubType.Keytar);
+            XInputDeviceUtils.Register<XInputProKeyboard>(XInputNonStandardSubType.ProKeyboard);
         }
 
         /// <summary>
-        /// Sets this device as the current <see cref="XInputKeytar"/>.
+        /// Sets this device as the current <see cref="XInputProKeyboard"/>.
         /// </summary>
         public override void MakeCurrent()
         {

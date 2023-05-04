@@ -12,6 +12,17 @@ Dates are relative to UTC.
 
 - A number of convenience APIs have been added to each of the base device classes, including being able to retrieve controls such as guitar frets or keyboard keys by index or enum, and to get a mask of the state for each of those controls.
 
+### Changed
+
+- Several device classes have been renamed for clarity/correctness:
+  - `XInputGuitar` -> `XInputRockBandGuitar`
+  - `XInputGuitarAlternate` -> `XInputGuitarHeroGuitar`
+  - `XInputGuitarGHL` -> `XInputSixFretGuitar`
+  - `Keytar` -> `ProKeyboard`
+  - `XInputKeytar` -> `XInputProKeytar`
+  - `PS3Keytar` -> `PS3ProKeyboard`
+  - `WiiKeytar` -> `WiiProKeyboard`
+
 ## [0.2.3] - 2023/11/05
 
 ### Fixed
