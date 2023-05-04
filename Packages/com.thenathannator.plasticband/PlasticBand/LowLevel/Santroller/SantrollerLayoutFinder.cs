@@ -58,6 +58,16 @@ namespace PlasticBand.LowLevel
             InputSystem.onFindLayoutForDevice += FindSantrollerDeviceLayout;
         }
 
+        internal static SantrollerDeviceType GetDeviceType(ushort version)
+            => (SantrollerDeviceType)(version >> 8);
+
+        internal static SantrollerRhythmType GetRhythmType(ushort version)
+            => (SantrollerRhythmType)((version >> 4) & 0x0F);
+
+        // For reference
+        // internal static SantrollerConsoleType GetConsoleType(ushort version)
+        //     => (SantrollerConsoleType)(version & 0x0F);
+
         /// <summary>
         /// Determines the layout to use for the given device description.
         /// </summary>
@@ -74,16 +84,11 @@ namespace PlasticBand.LowLevel
                 return null;
 
             // Parse version
-            if (!short.TryParse(description.version, out var version))
+            if (!ushort.TryParse(description.version, out var version))
                 return null;
 
-            var major = version >> 8;
-            var minor = version >> 4 & 0x0f;
-            // var revision = version & 0x0f; // For reference
-
-            var deviceType = (SantrollerDeviceType)major;
-            var rhythmType = (SantrollerRhythmType)minor;
-            // var consoleType = (SantrollerConsoleType)revision; // For reference
+            var deviceType = GetDeviceType(version);
+            var rhythmType = GetRhythmType(version);
 
             // Check if the devicetype and rhythm type has an override registered
             if (s_LayoutOverrides.TryGetValue((deviceType, rhythmType), out var layout))
