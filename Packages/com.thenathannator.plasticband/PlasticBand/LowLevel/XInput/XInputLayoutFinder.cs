@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine.InputSystem;
@@ -67,11 +68,10 @@ namespace PlasticBand.LowLevel
         /// <summary>
         /// Initializes the layout resolver.
         /// </summary>
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void Initialize()
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             InputSystem.onFindLayoutForDevice += FindXInputDeviceLayout;
-#endif
         }
 
         /// <summary>
@@ -140,6 +140,7 @@ namespace PlasticBand.LowLevel
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
         /// <see cref="DeviceSubType"/>, with a layout resolver used to identify it.
         /// </summary>
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(DeviceSubType subType, XInputOverrideDetermineMatch resolveLayout,
             InputDeviceMatcher matcher = default)
             where TDevice : InputDevice
@@ -149,6 +150,7 @@ namespace PlasticBand.LowLevel
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
         /// <see cref="XInputNonStandardSubType"/>, with a layout resolver used to identify it.
         /// </summary>
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType, XInputOverrideDetermineMatch resolveLayout,
             InputDeviceMatcher matcher = default)
             where TDevice : InputDevice
@@ -158,6 +160,7 @@ namespace PlasticBand.LowLevel
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
         /// subtype, with a layout resolver used to identify it.
         /// </summary>
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(int subType, XInputOverrideDetermineMatch resolveLayout,
             InputDeviceMatcher matcher = default)
             where TDevice : InputDevice
@@ -179,6 +182,7 @@ namespace PlasticBand.LowLevel
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
         /// <see cref="DeviceSubType"/>.
         /// </summary>
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(DeviceSubType subType)
             where TDevice : InputDevice
             => RegisterLayout<TDevice>((int)subType);
@@ -187,6 +191,7 @@ namespace PlasticBand.LowLevel
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified
         /// <see cref="XInputNonStandardSubType"/>.
         /// </summary>
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType)
             where TDevice : InputDevice
             => RegisterLayout<TDevice>((int)subType);
@@ -194,12 +199,11 @@ namespace PlasticBand.LowLevel
         /// <summary>
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput device using the specified subtype.
         /// </summary>
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(int subType)
             where TDevice : InputDevice
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             InputSystem.RegisterLayout<TDevice>(matches: GetMatcher(subType));
-#endif
         }
 
         /// <summary>

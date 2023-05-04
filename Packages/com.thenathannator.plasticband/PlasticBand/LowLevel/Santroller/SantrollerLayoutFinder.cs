@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.InputSystem.Layouts;
@@ -116,6 +117,7 @@ namespace PlasticBand.LowLevel
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified
         /// <see cref="XInputController.DeviceSubType"/>.
         /// </summary>
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(XInputController.DeviceSubType subType)
             where TDevice : InputDevice
             => RegisterXInputLayout<TDevice>((int)subType);
@@ -124,6 +126,7 @@ namespace PlasticBand.LowLevel
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified
         /// <see cref="XInputNonStandardSubType"/>.
         /// </summary>
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(XInputNonStandardSubType subType)
             where TDevice : InputDevice
             => RegisterXInputLayout<TDevice>((int)subType);
@@ -131,23 +134,21 @@ namespace PlasticBand.LowLevel
         /// <summary>
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified subtype.
         /// </summary>
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(int subType)
             where TDevice : InputDevice
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType));
-#endif
         }
 
         /// <summary>
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified device type and rhythm type.
         /// </summary>
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(SantrollerDeviceType deviceType, SantrollerRhythmType rhythmType)
             where TDevice : InputDevice
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(deviceType, rhythmType));
-#endif
         }
 
         /// <summary>
