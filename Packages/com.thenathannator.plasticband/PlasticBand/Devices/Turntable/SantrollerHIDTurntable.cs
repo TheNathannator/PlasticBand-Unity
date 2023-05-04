@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 
 // PlasticBand reference doc:

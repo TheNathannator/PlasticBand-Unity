@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 
 // PlasticBand reference doc:
@@ -9,7 +8,7 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_ReportId), displayName = "Santroller HID Rock Band Drum Kit")]
+    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_ReportId), displayName = "Santroller HID Rock Band Drumkit")]
     internal class SantrollerHIDFourLaneDrumkit : FourLaneDrumkit
     {
         internal new static void Initialize()
