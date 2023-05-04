@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -81,31 +80,20 @@ namespace PlasticBand.LowLevel
             if (description.interfaceName != InterfaceName)
                 return null;
 
-            Debug.Log($"[XInputLayoutFinder] Received XInput device. Matched layout: {matchedLayout ?? "None"}, description:\n{description}");
-
             // Parse capabilities
             if (!Utilities.TryParseJson<XInputCapabilities>(description.capabilities, out var capabilities))
-            {
-                Debug.LogError($"[XInputLayoutFinder] Failed to parse device capabilities!");
                 return DefaultLayoutIfNull(matchedLayout);
-            }
 
             // Check if the subtype has an override registered
             var overrides = s_LayoutOverrides.Where((entry) => entry.subType == (int)capabilities.subType);
             if (!overrides.Any())
-            {
-                Debug.Log($"[XInputLayoutFinder] No overrides for subtype '{capabilities.subType}'");
                 return DefaultLayoutIfNull(matchedLayout);
-            }
 
             // Get device state
             XInputGamepad state = default;
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             if (XInputGetState(capabilities.userIndex, out var packet) != 0)
-            {
-                Debug.LogError($"[XInputLayoutFinder] Failed to get state for user index {capabilities.userIndex}!");
                 return DefaultLayoutIfNull(matchedLayout);
-            }
 
             state = packet.gamepad;
 #endif
@@ -115,19 +103,9 @@ namespace PlasticBand.LowLevel
             float greatestMatch = 0f;
             foreach (var entry in overrides)
             {
-                // Ignore invalid overrides
-                if (string.IsNullOrEmpty(entry.layoutName))
-                {
-                    Debug.LogWarning($"[XInputLayoutFinder] No layout found on override entry with matcher '{entry.matcher}'!");
+                // Ignore invalid overrides and non-matching resolvers
+                if (string.IsNullOrEmpty(entry.layoutName) && !entry.resolve(capabilities, state))
                     continue;
-                }
-
-                // Ignore non-matching resolvers
-                if (!entry.resolve(state))
-                {
-                    Debug.Log($"[XInputLayoutFinder] Override '{entry.layoutName}' does not match");
-                    continue;
-                }
 
                 // Keep track of the best match
                 float match = entry.matcher.MatchPercentage(description);
@@ -136,8 +114,6 @@ namespace PlasticBand.LowLevel
                     greatestMatch = match;
                     matchedEntry = entry;
                 }
-
-                Debug.Log($"[XInputLayoutFinder] Matcher for override '{entry.layoutName}': Score: {match}, properties: {entry.matcher}");
             }
 
             // Use matched entry if available
@@ -145,14 +121,10 @@ namespace PlasticBand.LowLevel
             {
                 var entry = matchedEntry.GetValueOrDefault();
                 if (!string.IsNullOrEmpty(entry.layoutName))
-                {
-                    Debug.Log($"[XInputLayoutFinder] Using layout '{entry.layoutName}'");
                     return entry.layoutName;
-                }
             }
 
             // Use existing or default layout otherwise
-            Debug.Log($"[XInputLayoutFinder] No overrides match.");
             return DefaultLayoutIfNull(matchedLayout);
         }
 
