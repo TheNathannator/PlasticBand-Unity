@@ -20,8 +20,6 @@ namespace PlasticBand.Devices.LowLevel
     {
         public FourCC format => HidDefinitions.InputFormat;
 
-        public byte reportId;
-
         [InputControl(name = "buttonWest", layout = "Button", bit = 0, displayName = "Square")]
         [InputControl(name = "buttonSouth", layout = "Button", bit = 1, displayName = "Cross")]
         [InputControl(name = "buttonEast", layout = "Button", bit = 2, displayName = "Circle")]
