@@ -36,6 +36,11 @@ namespace PlasticBand.Devices.LowLevel
 
         [InputControl(name = "kick1", layout = "Button", bit = 8)]
 
+        [InputControl(name = "buttonSouth", layout = "Button", bit = 12, displayName = "A")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = 13, displayName = "B")]
+        [InputControl(name = "buttonWest", layout = "Button", bit = 14, displayName = "X")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = 15, displayName = "Y")]
+
         [InputControl(name = "redPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
         [InputControl(name = "yellowPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
         [InputControl(name = "bluePad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]

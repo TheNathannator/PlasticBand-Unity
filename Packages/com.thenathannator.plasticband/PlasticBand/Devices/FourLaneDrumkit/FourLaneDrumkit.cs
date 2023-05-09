@@ -49,6 +49,30 @@ namespace PlasticBand.Devices
         public ButtonControl selectButton { get; private set; }
 
         /// <summary>
+        /// The bottom face button.
+        /// </summary>
+        [InputControl(displayName = "Button South", usages = new[] { "PrimaryAction", "Submit" })]
+        public ButtonControl buttonSouth { get; private set; }
+
+        /// <summary>
+        /// The right face button.
+        /// </summary>
+        [InputControl(displayName = "Button East", usages = new[] { "Back", "Cancel" })]
+        public ButtonControl buttonEast { get; private set; }
+
+        /// <summary>
+        /// The left face button.
+        /// </summary>
+        [InputControl(displayName = "Button West")]
+        public ButtonControl buttonWest { get; private set; }
+
+        /// <summary>
+        /// The top face button.
+        /// </summary>
+        [InputControl(displayName = "Button North")]
+        public ButtonControl buttonNorth { get; private set; }
+
+        /// <summary>
         /// The red pad on the drumkit.
         /// </summary>
         [InputControl(displayName = "Red Pad", usages = new[] { "Back", "Cancel" })]

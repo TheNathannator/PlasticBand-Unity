@@ -21,6 +21,11 @@ namespace PlasticBand.Devices.LowLevel
         const string kPadParameters = "redBit=2,yellowBit=3,blueBit=0,greenBit=1,padBit=10,cymbalBit=11";
         public FourCC format => HidDefinitions.InputFormat;
 
+        [InputControl(name = "buttonWest", layout = "Button", bit = 0, displayName = "Square")]
+        [InputControl(name = "buttonSouth", layout = "Button", bit = 1, displayName = "Cross")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = 2, displayName = "Circle")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = 3, displayName = "Triangle")]
+
         [InputControl(name = "kick1", layout = "Button", bit = 4)]
         [InputControl(name = "kick2", layout = "Button", bit = 5)]
 
