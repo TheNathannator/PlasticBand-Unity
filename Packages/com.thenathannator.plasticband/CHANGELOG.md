@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.2.3] - 2023/11/05
+
+### Fixed
+
+- Fixed PS3 turntables still having the hardcoded report ID.
+- Fixed 4-lane drumkits and RB solo frets not working correctly by removing a hardcoded offset in their layouts.
+
+### Added
+
+- Re-added face button controls to FourLaneDrumkit since those are no longer guaranteed to be handled by the pads.
+
 ## [0.2.2] - 2023/04/05
 
 ### Fixed
