@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
@@ -10,8 +9,14 @@ using UnityEngine.InputSystem.Utilities;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Turntable/PS3.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3TurntableState_ReportId;
+#else
+    using DefaultState = PS3TurntableState_NoReportId;
+#endif
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3TurntableState_NoReportId : IInputStateTypeInfo
     {
@@ -72,21 +77,6 @@ namespace PlasticBand.Devices.LowLevel
         public byte reportId;
         public PS3TurntableState_NoReportId state;
     }
-
-    [InputControlLayout(stateType = typeof(PS3TurntableState_NoReportId), hideInUI = true)]
-    internal class PS3Turntable_NoReportId : PS3Turntable { }
-
-    [InputControlLayout(stateType = typeof(PS3TurntableState_ReportId), hideInUI = true)]
-    internal class PS3Turntable_ReportId : PS3Turntable { }
-}
-
-namespace PlasticBand.Devices
-{
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3TurntableState_ReportId;
-#else
-    using DefaultState = PS3TurntableState_NoReportId;
-#endif
 
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 DJ Hero Turntable")]
     internal class PS3Turntable : Turntable
@@ -161,4 +151,10 @@ namespace PlasticBand.Devices
             this.ExecuteCommand(ref command);
         }
     }
+
+    [InputControlLayout(stateType = typeof(PS3TurntableState_NoReportId), hideInUI = true)]
+    internal class PS3Turntable_NoReportId : PS3Turntable { }
+
+    [InputControlLayout(stateType = typeof(PS3TurntableState_ReportId), hideInUI = true)]
+    internal class PS3Turntable_ReportId : PS3Turntable { }
 }

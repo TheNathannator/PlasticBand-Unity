@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
@@ -10,11 +9,8 @@ using UnityEngine.InputSystem.Utilities;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Other/Xbox%20360%20Rock%20Band%20Stage%20Kit.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
-    /// <summary>
-    /// The state format for XInput stage kits.
-    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputStageKitState : IInputStateTypeInfo
     {
@@ -37,10 +33,7 @@ namespace PlasticBand.Devices.LowLevel
 
         private fixed byte unused[10];
     }
-}
 
-namespace PlasticBand.Devices
-{
     [InputControlLayout(stateType = typeof(XInputStageKitState), displayName = "XInput Rock Band Stage Kit")]
     internal class XInputStageKit : StageKit
     {

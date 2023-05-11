@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -11,7 +9,7 @@ using UnityEngine.InputSystem.XInput;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Fret%20Guitar/Guitar%20Hero/Xbox%20360.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputGuitarHeroGuitarState : IInputStateTypeInfo
@@ -66,10 +64,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "accelX", layout = "Axis", noisy = true)]
         public short tilt;
     }
-}
 
-namespace PlasticBand.Devices
-{
     [InputControlLayout(stateType = typeof(XInputGuitarHeroGuitarState), displayName = "XInput Guitar Hero Guitar")]
     internal class XInputGuitarHeroGuitar : GuitarHeroGuitar
     {

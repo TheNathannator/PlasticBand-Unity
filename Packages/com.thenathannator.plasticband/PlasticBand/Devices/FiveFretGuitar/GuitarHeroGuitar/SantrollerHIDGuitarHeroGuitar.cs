@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -10,7 +8,7 @@ using UnityEngine.InputSystem.Utilities;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Fret%20Guitar/Guitar%20Hero/Santroller.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct SantrollerHIDGuitarHeroGuitarState : IInputStateTypeInfo
@@ -71,10 +69,7 @@ namespace PlasticBand.Devices.LowLevel
 
         public short unused3;
     }
-}
 
-namespace PlasticBand.Devices
-{
     [InputControlLayout(stateType = typeof(SantrollerHIDGuitarHeroGuitarState), displayName = "Santroller HID Guitar Hero Guitar")]
     internal class SantrollerHIDGuitarHeroGuitar : GuitarHeroGuitar
     {

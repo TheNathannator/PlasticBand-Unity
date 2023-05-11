@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -10,8 +8,14 @@ using UnityEngine.InputSystem.Utilities;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Fret%20Guitar/Rock%20Band/PS3%20and%20Wii.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3WiiRockBandGuitarState_ReportId;
+#else
+    using DefaultState = PS3WiiRockBandGuitarState_NoReportId;
+#endif
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3WiiRockBandGuitarState_NoReportId : IInputStateTypeInfo
     {
@@ -68,27 +72,6 @@ namespace PlasticBand.Devices.LowLevel
         public PS3WiiRockBandGuitarState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_NoReportId), hideInUI = true)]
-    internal class PS3RockBandGuitar_NoReportId : PS3RockBandGuitar { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_ReportId), hideInUI = true)]
-    internal class PS3RockBandGuitar_ReportId : PS3RockBandGuitar { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_NoReportId), hideInUI = true)]
-    internal class WiiRockBandGuitar_NoReportId : WiiRockBandGuitar { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_ReportId), hideInUI = true)]
-    internal class WiiRockBandGuitar_ReportId : WiiRockBandGuitar { }
-}
-
-namespace PlasticBand.Devices
-{
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3WiiRockBandGuitarState_ReportId;
-#else
-    using DefaultState = PS3WiiRockBandGuitarState_NoReportId;
-#endif
-
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Guitar")]
     internal class PS3RockBandGuitar : RockBandGuitar
     {
@@ -98,6 +81,12 @@ namespace PlasticBand.Devices
                 PS3RockBandGuitar_ReportId, PS3RockBandGuitar_NoReportId>(0x12BA, 0x0200);
         }
     }
+
+    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_NoReportId), hideInUI = true)]
+    internal class PS3RockBandGuitar_NoReportId : PS3RockBandGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_ReportId), hideInUI = true)]
+    internal class PS3RockBandGuitar_ReportId : PS3RockBandGuitar { }
 
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Guitar")]
     internal class WiiRockBandGuitar : RockBandGuitar
@@ -113,4 +102,10 @@ namespace PlasticBand.Devices
                 WiiRockBandGuitar_ReportId, WiiRockBandGuitar_NoReportId>(0x1BAD, 0x3010);
         }
     }
+
+    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_NoReportId), hideInUI = true)]
+    internal class WiiRockBandGuitar_NoReportId : WiiRockBandGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_ReportId), hideInUI = true)]
+    internal class WiiRockBandGuitar_ReportId : WiiRockBandGuitar { }
 }

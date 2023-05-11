@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
@@ -10,8 +9,14 @@ using UnityEngine.InputSystem.Utilities;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/6-Fret%20Guitar/PS4.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS4SixFretGuitarState_ReportId;
+#else
+    using DefaultState = PS4SixFretGuitarState_NoReportId;
+#endif
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS4SixFretGuitarState_NoReportId : IInputStateTypeInfo
     {
@@ -62,21 +67,6 @@ namespace PlasticBand.Devices.LowLevel
         public PS4SixFretGuitarState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(PS4SixFretGuitarState_NoReportId), hideInUI = true)]
-    internal class PS4SixFretGuitar_NoReportId : PS4SixFretGuitar { }
-
-    [InputControlLayout(stateType = typeof(PS4SixFretGuitarState_ReportId), hideInUI = true)]
-    internal class PS4SixFretGuitar_ReportId : PS4SixFretGuitar { }
-}
-
-namespace PlasticBand.Devices
-{
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS4SixFretGuitarState_ReportId;
-#else
-    using DefaultState = PS4SixFretGuitarState_NoReportId;
-#endif
-
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 4 Guitar Hero Live Guitar")]
     internal class PS4SixFretGuitar : PokedSixFretGuitar
     {
@@ -95,4 +85,10 @@ namespace PlasticBand.Devices
 
         protected override void OnPoke() => device.ExecuteCommand(ref s_PokeCommand);
     }
+
+    [InputControlLayout(stateType = typeof(PS4SixFretGuitarState_NoReportId), hideInUI = true)]
+    internal class PS4SixFretGuitar_NoReportId : PS4SixFretGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS4SixFretGuitarState_ReportId), hideInUI = true)]
+    internal class PS4SixFretGuitar_ReportId : PS4SixFretGuitar { }
 }

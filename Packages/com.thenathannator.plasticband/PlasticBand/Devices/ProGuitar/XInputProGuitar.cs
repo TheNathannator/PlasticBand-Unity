@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -10,7 +8,7 @@ using UnityEngine.InputSystem.Utilities;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Pro%20Guitar/Xbox%20360.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputProGuitarState : IInputStateTypeInfo
@@ -69,10 +67,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "velocity6", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
         public byte velocity6;
     }
-}
 
-namespace PlasticBand.Devices
-{
     [InputControlLayout(stateType = typeof(XInputProGuitarState), displayName = "XInput Rock Band Pro Guitar")]
     internal class XInputProGuitar : ProGuitar
     {

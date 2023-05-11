@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.XInput;
 
@@ -10,8 +7,6 @@ using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.Devices
 {
-    using XInputFlags = XInputController.DeviceFlags;
-
     [InputControlLayout(stateType = typeof(XInputSixFretGuitarState), displayName = "Santroller XInput Guitar Hero Live Guitar")]
     internal class SantrollerXInputSixFretGuitar : XInputSixFretGuitar
     {
@@ -21,7 +16,7 @@ namespace PlasticBand.Devices
             XInputLayoutFinder.RegisterLayout<XInputSixFretGuitar>(XInputController.DeviceSubType.GuitarAlternate,
                 // Strangely, they report the No Navigation flag. Most likely none of the other guitars report this information,
                 // so we check for it here.
-                (capabilities, state) => (capabilities.flags & XInputFlags.NoNavigation) != 0,
+                (capabilities, state) => (capabilities.flags & XInputController.DeviceFlags.NoNavigation) != 0,
                 SantrollerLayoutFinder.GetXInputMatcher((int)XInputController.DeviceSubType.GuitarAlternate));
         }
     }

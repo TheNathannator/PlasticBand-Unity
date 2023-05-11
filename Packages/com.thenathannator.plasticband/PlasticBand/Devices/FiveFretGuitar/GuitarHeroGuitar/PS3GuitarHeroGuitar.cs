@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -10,8 +8,14 @@ using UnityEngine.InputSystem.Utilities;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Fret%20Guitar/Guitar%20Hero/PS3.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3GuitarHeroGuitarState_ReportId;
+#else
+    using DefaultState = PS3GuitarHeroGuitarState_NoReportId;
+#endif
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3GuitarHeroGuitarState_NoReportId : IInputStateTypeInfo
     {
@@ -79,21 +83,6 @@ namespace PlasticBand.Devices.LowLevel
         public PS3GuitarHeroGuitarState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_NoReportId), hideInUI = true)]
-    internal class PS3GuitarHeroGuitar_NoReportId : PS3GuitarHeroGuitar { }
-
-    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_ReportId), hideInUI = true)]
-    internal class PS3GuitarHeroGuitar_ReportId : PS3GuitarHeroGuitar { }
-}
-
-namespace PlasticBand.Devices
-{
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3GuitarHeroGuitarState_ReportId;
-#else
-    using DefaultState = PS3GuitarHeroGuitarState_NoReportId;
-#endif
-
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Guitar Hero Guitar")]
     internal class PS3GuitarHeroGuitar : GuitarHeroGuitar
     {
@@ -108,4 +97,10 @@ namespace PlasticBand.Devices
                 PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar_NoReportId>(0x1430, 0x474C);
         }
     }
+
+    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_NoReportId), hideInUI = true)]
+    internal class PS3GuitarHeroGuitar_NoReportId : PS3GuitarHeroGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_ReportId), hideInUI = true)]
+    internal class PS3GuitarHeroGuitar_ReportId : PS3GuitarHeroGuitar { }
 }

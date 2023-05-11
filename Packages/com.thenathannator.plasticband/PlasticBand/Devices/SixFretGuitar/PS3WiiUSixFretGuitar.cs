@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
@@ -10,8 +9,14 @@ using UnityEngine.InputSystem.Utilities;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/6-Fret%20Guitar/PS3%20and%20Wii%20U.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3WiiUSixFretGuitarState_ReportId;
+#else
+    using DefaultState = PS3WiiUSixFretGuitarState_NoReportId;
+#endif
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3WiiUSixFretGuitarState_NoReportId : IInputStateTypeInfo
     {
@@ -69,21 +74,6 @@ namespace PlasticBand.Devices.LowLevel
         public PS3WiiUSixFretGuitarState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState_NoReportId), hideInUI = true)]
-    internal class PS3WiiUSixFretGuitar_NoReportId : PS3WiiUSixFretGuitar { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState_ReportId), hideInUI = true)]
-    internal class PS3WiiUSixFretGuitar_ReportId : PS3WiiUSixFretGuitar { }
-}
-
-namespace PlasticBand.Devices
-{
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3WiiUSixFretGuitarState_ReportId;
-#else
-    using DefaultState = PS3WiiUSixFretGuitarState_NoReportId;
-#endif
-
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PS3/Wii U Guitar Hero Live Guitar")]
     internal class PS3WiiUSixFretGuitar : PokedSixFretGuitar
     {
@@ -102,4 +92,10 @@ namespace PlasticBand.Devices
 
         protected override void OnPoke() => device.ExecuteCommand(ref s_PokeCommand);
     }
+
+    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState_NoReportId), hideInUI = true)]
+    internal class PS3WiiUSixFretGuitar_NoReportId : PS3WiiUSixFretGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState_ReportId), hideInUI = true)]
+    internal class PS3WiiUSixFretGuitar_ReportId : PS3WiiUSixFretGuitar { }
 }

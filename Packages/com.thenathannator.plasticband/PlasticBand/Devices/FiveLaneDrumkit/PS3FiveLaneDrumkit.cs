@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -10,8 +8,14 @@ using UnityEngine.InputSystem.Utilities;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Lane%20Drums/PS3.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3FiveLaneDrumkitState_ReportId;
+#else
+    using DefaultState = PS3FiveLaneDrumkitState_NoReportId;
+#endif
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3FiveLaneDrumkitState_NoReportId : IInputStateTypeInfo
     {
@@ -79,15 +83,6 @@ namespace PlasticBand.Devices.LowLevel
 
     [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState_ReportId), hideInUI = true)]
     internal class PS3FiveLaneDrumkit_ReportId : PS3FiveLaneDrumkit { }
-}
-
-namespace PlasticBand.Devices
-{
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3FiveLaneDrumkitState_ReportId;
-#else
-    using DefaultState = PS3FiveLaneDrumkitState_NoReportId;
-#endif
 
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Guitar Hero Drumkit")]
     internal class PS3FiveLaneDrumkit : FiveLaneDrumkit

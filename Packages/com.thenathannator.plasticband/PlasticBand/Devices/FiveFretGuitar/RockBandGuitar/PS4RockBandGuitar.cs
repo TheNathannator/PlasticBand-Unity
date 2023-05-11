@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -10,8 +8,14 @@ using UnityEngine.InputSystem.Utilities;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Fret%20Guitar/Rock%20Band/PS4.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS4RockBandGuitarState_ReportId;
+#else
+    using DefaultState = PS4RockBandGuitarState_NoReportId;
+#endif
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS4RockBandGuitarState_NoReportId : IInputStateTypeInfo
     {
@@ -73,21 +77,6 @@ namespace PlasticBand.Devices.LowLevel
         public PS4RockBandGuitarState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(PS4RockBandGuitarState_NoReportId), hideInUI = true)]
-    internal class PS4RockBandGuitar_NoReportId : PS4RockBandGuitar { }
-
-    [InputControlLayout(stateType = typeof(PS4RockBandGuitarState_ReportId), hideInUI = true)]
-    internal class PS4RockBandGuitar_ReportId : PS4RockBandGuitar { }
-}
-
-namespace PlasticBand.Devices
-{
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS4RockBandGuitarState_ReportId;
-#else
-    using DefaultState = PS4RockBandGuitarState_NoReportId;
-#endif
-
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 4 Rock Band Guitar")]
     internal class PS4RockBandGuitar : RockBandGuitar
     {
@@ -102,4 +91,10 @@ namespace PlasticBand.Devices
                 PS4RockBandGuitar_ReportId, PS4RockBandGuitar_NoReportId>(0x0E6F, 0x0173);
         }
     }
+
+    [InputControlLayout(stateType = typeof(PS4RockBandGuitarState_NoReportId), hideInUI = true)]
+    internal class PS4RockBandGuitar_NoReportId : PS4RockBandGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS4RockBandGuitarState_ReportId), hideInUI = true)]
+    internal class PS4RockBandGuitar_ReportId : PS4RockBandGuitar { }
 }

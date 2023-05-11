@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -10,8 +8,14 @@ using UnityEngine.InputSystem.Utilities;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/ProKeyboard/PS3%20and%20Wii.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+    using DefaultState = PS3WiiProKeyboardState_ReportId;
+#else
+    using DefaultState = PS3WiiProKeyboardState_NoReportId;
+#endif
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3WiiProKeyboardState_NoReportId : IInputStateTypeInfo
     {
@@ -107,27 +111,6 @@ namespace PlasticBand.Devices.LowLevel
         public PS3WiiProKeyboardState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), hideInUI = true)]
-    internal class PS3ProKeyboard_NoReportId : PS3ProKeyboard { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_ReportId), hideInUI = true)]
-    internal class PS3ProKeyboard_ReportId : PS3ProKeyboard { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), hideInUI = true)]
-    internal class WiiProKeyboard_NoReportId : WiiProKeyboard { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_ReportId), hideInUI = true)]
-    internal class WiiProKeyboard_ReportId : WiiProKeyboard { }
-}
-
-namespace PlasticBand.Devices
-{
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3WiiProKeyboardState_ReportId;
-#else
-    using DefaultState = PS3WiiProKeyboardState_NoReportId;
-#endif
-
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Pro Keyboard")]
     internal class PS3ProKeyboard : ProKeyboard
     {
@@ -143,6 +126,12 @@ namespace PlasticBand.Devices
         }
     }
 
+    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), hideInUI = true)]
+    internal class PS3ProKeyboard_NoReportId : PS3ProKeyboard { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_ReportId), hideInUI = true)]
+    internal class PS3ProKeyboard_ReportId : PS3ProKeyboard { }
+
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Pro Keyboard")]
     internal class WiiProKeyboard : ProKeyboard
     {
@@ -157,4 +146,10 @@ namespace PlasticBand.Devices
                 WiiProKeyboard_ReportId, WiiProKeyboard_NoReportId>(0x1BAD, 0x2330);
         }
     }
+
+    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), hideInUI = true)]
+    internal class WiiProKeyboard_NoReportId : WiiProKeyboard { }
+
+    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_ReportId), hideInUI = true)]
+    internal class WiiProKeyboard_ReportId : WiiProKeyboard { }
 }

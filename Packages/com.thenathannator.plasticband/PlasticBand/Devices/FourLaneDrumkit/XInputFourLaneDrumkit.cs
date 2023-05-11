@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -11,7 +9,7 @@ using UnityEngine.InputSystem.XInput;
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/Xbox%20360.md
 
-namespace PlasticBand.Devices.LowLevel
+namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XInputFourLaneDrumkitState : IInputStateTypeInfo
@@ -62,10 +60,7 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "greenVelocity", layout = "Axis", displayName = "Green Velocity")]
         public short greenVelocity;
     }
-}
 
-namespace PlasticBand.Devices
-{
     [InputControlLayout(stateType = typeof(XInputFourLaneDrumkitState), displayName = "XInput Rock Band Drumkit")]
     internal class XInputFourLaneDrumkit : FourLaneDrumkit
     {
