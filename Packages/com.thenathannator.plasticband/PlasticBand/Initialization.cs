@@ -80,6 +80,10 @@ namespace PlasticBand
             PS3ProKeyboard.Initialize();
             WiiProKeyboard.Initialize();
 
+            // Rock Band stage kit
+            StageKit.Initialize();
+            XInputStageKit.Initialize();
+
             // Layout finders
             HidReportIdLayoutFinder.Initialize();
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN

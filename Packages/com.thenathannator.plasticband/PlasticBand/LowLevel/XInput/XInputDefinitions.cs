@@ -144,6 +144,7 @@ namespace PlasticBand.LowLevel
     /// </summary>
     internal enum XInputNonStandardSubType
     {
+        StageKit = 9,
         ProKeyboard = 15,
         Turntable = 23,
         ProGuitar = 25,
