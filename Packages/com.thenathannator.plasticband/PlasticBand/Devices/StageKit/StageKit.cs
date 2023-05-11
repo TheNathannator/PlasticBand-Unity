@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using PlasticBand.Haptics;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -9,7 +10,7 @@ namespace PlasticBand.Devices
     /// A Rock Band stage kit.
     /// </summary>
     [InputControlLayout(displayName = "Rock Band Stage Kit")]
-    public class StageKit : InputDevice
+    public class StageKit : InputDevice, IStageKitHaptics
     {
         /// <summary>
         /// The current <see cref="StageKit"/>.
@@ -100,5 +101,105 @@ namespace PlasticBand.Devices
             if (current == this)
                 current = null;
         }
+
+        // Current haptics state
+        protected bool m_HapticsEnabled;
+        protected bool m_FogEnabled;
+        protected StageKitStrobeSpeed m_StrobeSpeed;
+        protected StageKitLed m_RedLeds;
+        protected StageKitLed m_YellowLeds;
+        protected StageKitLed m_BlueLeds;
+        protected StageKitLed m_GreenLeds;
+
+        /// <summary>
+        /// Resets the state of the stage kit without resetting the stored state.
+        /// </summary>
+        public void PauseHaptics()
+        {
+            m_HapticsEnabled = false;
+            SendReset();
+        }
+
+        /// <summary>
+        /// Restores the stored state of the stage kit.
+        /// </summary>
+        public void ResumeHaptics()
+        {
+            m_HapticsEnabled = true;
+            SendFog(m_FogEnabled);
+            SendStrobe(m_StrobeSpeed);
+            SendLeds(StageKitLedColor.Red, m_RedLeds);
+            SendLeds(StageKitLedColor.Yellow, m_YellowLeds);
+            SendLeds(StageKitLedColor.Blue, m_BlueLeds);
+            SendLeds(StageKitLedColor.Green, m_GreenLeds);
+        }
+
+        /// <summary>
+        /// Resets the state of the stage kit.
+        /// </summary>
+        public void ResetHaptics()
+        {
+            m_FogEnabled = false;
+            m_StrobeSpeed = StageKitStrobeSpeed.Off;
+            m_RedLeds = StageKitLed.None;
+            m_YellowLeds = StageKitLed.None;
+            m_BlueLeds = StageKitLed.None;
+            m_GreenLeds = StageKitLed.None;
+            SendReset();
+        }
+
+        /// <inheritdoc cref="IStageKitHaptics.SetFogMachine(bool)"/>
+        public void SetFogMachine(bool enabled)
+        {
+            m_FogEnabled = enabled;
+            if (m_HapticsEnabled)
+                SendFog(enabled);
+        }
+
+        /// <inheritdoc cref="IStageKitHaptics.SetStrobeSpeed(StageKitStrobeSpeed)"/>
+        public void SetStrobeSpeed(StageKitStrobeSpeed speed)
+        {
+            m_StrobeSpeed = speed;
+            if (m_HapticsEnabled)
+                SendStrobe(speed);
+        }
+
+        /// <inheritdoc cref="IStageKitHaptics.SetLeds(StageKitLedColor, StageKitLed)"/>
+        public void SetLeds(StageKitLedColor color, StageKitLed leds)
+        {
+            if ((color & StageKitLedColor.Red) != 0)
+                m_RedLeds = leds;
+            if ((color & StageKitLedColor.Yellow) != 0)
+                m_YellowLeds = leds;
+            if ((color & StageKitLedColor.Blue) != 0)
+                m_BlueLeds = leds;
+            if ((color & StageKitLedColor.Green) != 0)
+                m_GreenLeds = leds;
+
+            if (m_HapticsEnabled)
+                SendLeds(color, leds);
+        }
+
+        /// <inheritdoc cref="IStageKitHaptics.SetRedLeds(StageKitLed)"/>
+        public void SetRedLeds(StageKitLed leds)
+            => SetLeds(StageKitLedColor.Red, leds);
+
+        /// <inheritdoc cref="IStageKitHaptics.SetYellowLeds(StageKitLed)"/>
+        public void SetYellowLeds(StageKitLed leds)
+            => SetLeds(StageKitLedColor.Yellow, leds);
+
+        /// <inheritdoc cref="IStageKitHaptics.SetBlueLeds(StageKitLed)"/>
+        public void SetBlueLeds(StageKitLed leds)
+            => SetLeds(StageKitLedColor.Blue, leds);
+
+        /// <inheritdoc cref="IStageKitHaptics.SetGreenLeds(StageKitLed)"/>
+        public void SetGreenLeds(StageKitLed leds)
+            => SetLeds(StageKitLedColor.Green, leds);
+
+        // Virtual methods for the implementation details
+        protected virtual void SendFog(bool enabled) { }
+        protected virtual void SendStrobe(StageKitStrobeSpeed speed) { }
+        protected virtual void SendLeds(StageKitLedColor color, StageKitLed leds) { }
+        protected virtual void SendReset() { }
     }
 }

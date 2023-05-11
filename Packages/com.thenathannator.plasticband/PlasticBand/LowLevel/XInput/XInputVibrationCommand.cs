@@ -60,5 +60,15 @@ namespace PlasticBand.Devices.LowLevel
             leftMotorSpeed = (float)leftMotor / ushort.MaxValue;
             rightMotorSpeed = (float)rightMotor / ushort.MaxValue;
         }
+
+        /// <summary>
+        /// Creates a new <see cref="XInputVibrationCommand"/> with the given left and right motor speeds, as bytes.
+        /// </summary>
+        public XInputVibrationCommand(byte leftMotor, byte rightMotor)
+        {
+            baseCommand = new InputDeviceCommand(Type, kSize);
+            leftMotorSpeed = (float)leftMotor / byte.MaxValue;
+            rightMotorSpeed = (float)rightMotor / byte.MaxValue;
+        }
     }
 }
