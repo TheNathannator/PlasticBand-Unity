@@ -11,16 +11,17 @@ namespace PlasticBand.LowLevel
 {
     internal enum SantrollerDeviceType
     {
-        Gamepad = 1,
-        Wheel,
-        ArcadeStick,
-        FlightStick,
-        DancePad,
-        ArcadePad,
-        Guitar,
-        LiveGuitar,
-        Drums,
-        DjHeroTurntable
+        Gamepad = 0x01,
+        Wheel = 0x02,
+        ArcadeStick = 0x03,
+        FlightStick = 0x04,
+        DancePad = 0x05,
+        ArcadePad = 0x06,
+        Guitar = 0x07,
+        LiveGuitar = 0x08,
+        Drums = 0x09,
+        DjHeroTurntable = 0x10,
+        StageKit = 0x11,
     }
 
     internal enum SantrollerRhythmType
