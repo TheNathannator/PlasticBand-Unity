@@ -41,13 +41,13 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "buttonWest", layout = "Button", bit = 14, displayName = "X")]
         [InputControl(name = "buttonNorth", layout = "Button", bit = 15, displayName = "Y")]
 
-        [InputControl(name = "redPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "yellowPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "bluePad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "greenPad", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "yellowCymbal", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "blueCymbal", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "greenCymbal", layout = "FourLanePads", format = "USHT", offset = 0, bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "redPad", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "yellowPad", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "bluePad", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "greenPad", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "yellowCymbal", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "blueCymbal", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
+        [InputControl(name = "greenCymbal", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
         public ushort buttons;
 
         public fixed byte unused[2];

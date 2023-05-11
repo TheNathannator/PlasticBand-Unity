@@ -41,11 +41,11 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "selectButton", layout = "Button", bit = 12)]
         [InputControl(name = "startButton", layout = "Button", bit = 13)]
 
-        [InputControl(name = "soloGreen", layout = "MaskButton", format = "USHT", offset = 1, bit = 0, parameters = "mask=0x4020")]
-        [InputControl(name = "soloRed", layout = "MaskButton", format = "USHT", offset = 1, bit = 0, parameters = "mask=0x4040")]
-        [InputControl(name = "soloYellow", layout = "MaskButton", format = "USHT", offset = 1, bit = 0, parameters = "mask=0x4080")]
-        [InputControl(name = "soloBlue", layout = "MaskButton", format = "USHT", offset = 1, bit = 0, parameters = "mask=0x4010")]
-        [InputControl(name = "soloOrange", layout = "MaskButton", format = "USHT", offset = 1, bit = 0, parameters = "mask=0x4100")]
+        [InputControl(name = "soloGreen", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x4020")]
+        [InputControl(name = "soloRed", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x4040")]
+        [InputControl(name = "soloYellow", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x4080")]
+        [InputControl(name = "soloBlue", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x4010")]
+        [InputControl(name = "soloOrange", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x4100")]
         public ushort buttons1;
 
         [InputControl(name = "psButton", layout = "Button", bit = 0, displayName = "PlayStation")]
