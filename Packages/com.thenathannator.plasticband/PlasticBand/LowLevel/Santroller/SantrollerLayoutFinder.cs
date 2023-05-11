@@ -11,6 +11,8 @@ namespace PlasticBand.LowLevel
 {
     internal enum SantrollerDeviceType
     {
+        Unknown = 0,
+
         Gamepad = 0x01,
         Wheel = 0x02,
         ArcadeStick = 0x03,
@@ -26,12 +28,15 @@ namespace PlasticBand.LowLevel
 
     internal enum SantrollerRhythmType
     {
+        None = 0,
+
+        // Guitar/drumkit
         GuitarHero = 0,
-        RockBand
+        RockBand = 1,
     }
 
     /// <summary>
-    /// Performs layout fixups for Santroller devices that require state information to determine the true type.
+    /// Registers and resolves layouts for Santroller devices.
     /// </summary>
     internal static class SantrollerLayoutFinder
     {
@@ -44,6 +49,25 @@ namespace PlasticBand.LowLevel
         /// Product ID for Santroller devices.
         /// </summary>
         public const ushort ProductID = 0x2882;
+
+        /// <summary>
+        /// Lookup for the default device/rhythm type of an XInput subtype.
+        /// </summary>
+        private static readonly Dictionary<int, (SantrollerDeviceType type, SantrollerRhythmType rhythm)> s_XInputSubtypeToDeviceType
+            = new Dictionary<int, (SantrollerDeviceType type, SantrollerRhythmType rhythm)>()
+        {
+            { (int)XInputController.DeviceSubType.Gamepad,         (SantrollerDeviceType.Gamepad, SantrollerRhythmType.None) },
+            { (int)XInputController.DeviceSubType.Wheel,           (SantrollerDeviceType.Wheel, SantrollerRhythmType.None) },
+            { (int)XInputController.DeviceSubType.ArcadeStick,     (SantrollerDeviceType.ArcadeStick, SantrollerRhythmType.None) },
+            { (int)XInputController.DeviceSubType.FlightStick,     (SantrollerDeviceType.FlightStick, SantrollerRhythmType.None) },
+            { (int)XInputController.DeviceSubType.DancePad,        (SantrollerDeviceType.DancePad, SantrollerRhythmType.None) },
+            { (int)XInputController.DeviceSubType.ArcadePad,       (SantrollerDeviceType.ArcadePad, SantrollerRhythmType.None) },
+            { (int)XInputController.DeviceSubType.Guitar,          (SantrollerDeviceType.Guitar, SantrollerRhythmType.RockBand) },
+            { (int)XInputController.DeviceSubType.GuitarAlternate, (SantrollerDeviceType.Guitar, SantrollerRhythmType.GuitarHero) },
+            { (int)XInputController.DeviceSubType.DrumKit,         (SantrollerDeviceType.Drums, SantrollerRhythmType.RockBand) },
+            { (int)XInputNonStandardSubType.Turntable,             (SantrollerDeviceType.DjHeroTurntable, SantrollerRhythmType.None) },
+            { (int)XInputNonStandardSubType.StageKit,              (SantrollerDeviceType.StageKit, SantrollerRhythmType.None) },
+        };
 
         /// <summary>
         /// Registered layout resolvers for a given subtype.
@@ -65,10 +89,6 @@ namespace PlasticBand.LowLevel
         internal static SantrollerRhythmType GetRhythmType(ushort version)
             => (SantrollerRhythmType)((version >> 4) & 0x0F);
 
-        // For reference
-        // internal static SantrollerConsoleType GetConsoleType(ushort version)
-        //     => (SantrollerConsoleType)(version & 0x0F);
-
         /// <summary>
         /// Determines the layout to use for the given device description.
         /// </summary>
@@ -76,7 +96,7 @@ namespace PlasticBand.LowLevel
             InputDeviceExecuteCommandDelegate executeDeviceCommand)
         {
             // Ignore non-HID devices
-            if (description.interfaceName != "HID")
+            if (description.interfaceName != HidDefinitions.InterfaceName)
                 return null;
 
             // Parse HID descriptor
@@ -121,62 +141,53 @@ namespace PlasticBand.LowLevel
 
         /// <summary>
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified
-        /// <see cref="XInputController.DeviceSubType"/>.
+        /// <see cref="XInputController.DeviceSubType"/> and Santroller device/rhythm type.
         /// </summary>
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
-        internal static void RegisterXInputLayout<TDevice>(XInputController.DeviceSubType subType)
+        internal static void RegisterXInputLayout<TDevice>(XInputController.DeviceSubType subType,
+            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
+            SantrollerRhythmType rhythmType = SantrollerRhythmType.None)
             where TDevice : InputDevice
-            => RegisterXInputLayout<TDevice>((int)subType);
+            => RegisterXInputLayout<TDevice>((int)subType, deviceType, rhythmType);
 
         /// <summary>
         /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified
-        /// <see cref="XInputNonStandardSubType"/>.
+        /// <see cref="XInputNonStandardSubType"/> and Santroller device/rhythm type.
         /// </summary>
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
-        internal static void RegisterXInputLayout<TDevice>(XInputNonStandardSubType subType)
+        internal static void RegisterXInputLayout<TDevice>(XInputNonStandardSubType subType,
+            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
+            SantrollerRhythmType rhythmType = SantrollerRhythmType.None)
             where TDevice : InputDevice
-            => RegisterXInputLayout<TDevice>((int)subType);
+            => RegisterXInputLayout<TDevice>((int)subType, deviceType, rhythmType);
 
         /// <summary>
-        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified subtype.
+        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified
+        /// XInput subtype and Santroller device/rhythm type.
         /// </summary>
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
-        internal static void RegisterXInputLayout<TDevice>(int subType)
+        internal static void RegisterXInputLayout<TDevice>(int subType,
+            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
+            SantrollerRhythmType rhythmType = SantrollerRhythmType.None)
             where TDevice : InputDevice
         {
-            InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType));
+            InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType, deviceType, rhythmType));
         }
 
-        /// <summary>
-        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified device type and rhythm type.
-        /// </summary>
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
-        internal static void RegisterXInputLayout<TDevice>(SantrollerDeviceType deviceType, SantrollerRhythmType rhythmType)
-            where TDevice : InputDevice
-        {
-            InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(deviceType, rhythmType));
-        }
-
-        /// <summary>
-        /// Gets a matcher that matches XInput Santroller devices with the given subtype.
-        /// </summary>
-        internal static InputDeviceMatcher GetXInputMatcher(int subType)
-        {
-            return new InputDeviceMatcher()
-                .WithInterface(XInputLayoutFinder.InterfaceName)
-                .WithCapability("subType", subType)
-                .WithCapability("gamepad/leftStickX", (int)VendorID)
-                .WithCapability("gamepad/leftStickY", (int)ProductID);
-        }
-        
         /// <summary>
         /// Gets a matcher that matches XInput Santroller devices with the given device type and rhythm type.
         /// </summary>
-        internal static InputDeviceMatcher GetXInputMatcher(SantrollerDeviceType deviceType, SantrollerRhythmType rhythmType)
+        internal static InputDeviceMatcher GetXInputMatcher(int subType,
+            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
+            SantrollerRhythmType rhythmType = SantrollerRhythmType.None)
         {
+            if (deviceType == SantrollerDeviceType.Unknown)
+                (deviceType, rhythmType) = s_XInputSubtypeToDeviceType[subType];
             int revision = (((int)deviceType) << 8) | (((int)rhythmType) << 4);
+
             return new InputDeviceMatcher()
                 .WithInterface(XInputLayoutFinder.InterfaceName)
+                .WithCapability("subType", subType)
                 .WithCapability("gamepad/leftStickX", (int)VendorID)
                 .WithCapability("gamepad/leftStickY", (int)ProductID)
                 .WithCapability("gamepad/rightStickX", revision);
