@@ -89,50 +89,13 @@ namespace PlasticBand.Devices
     using DefaultState = PS3FiveLaneDrumkitState_NoReportId;
 #endif
 
-    /// <summary>
-    /// A PS3 5-lane drumkit.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Guitar Hero Drumkit")]
-    public class PS3FiveLaneDrumkit : FiveLaneDrumkit
+    internal class PS3FiveLaneDrumkit : FiveLaneDrumkit
     {
-        /// <summary>
-        /// The current <see cref="PS3FiveLaneDrumkit"/>.
-        /// </summary>
-        public static new PS3FiveLaneDrumkit current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS3FiveLaneDrumkit"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS3FiveLaneDrumkit> all => s_AllDevices;
-        private static readonly List<PS3FiveLaneDrumkit> s_AllDevices = new List<PS3FiveLaneDrumkit>();
-
         internal new static void Initialize()
         {
             HidReportIdLayoutFinder.RegisterLayout<PS3FiveLaneDrumkit,
                 PS3FiveLaneDrumkit_ReportId, PS3FiveLaneDrumkit_NoReportId>(0x12BA, 0x0120);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS3FiveLaneDrumkit"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }

@@ -88,50 +88,13 @@ namespace PlasticBand.Devices
     using DefaultState = PS3TurntableState_NoReportId;
 #endif
 
-    /// <summary>
-    /// A PS3 DJ Hero turntable.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 DJ Hero Turntable")]
-    public class PS3Turntable : Turntable
+    internal class PS3Turntable : Turntable
     {
-        /// <summary>
-        /// The current <see cref="PS3Turntable"/>.
-        /// </summary>
-        public static new PS3Turntable current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS3Turntable"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS3Turntable> all => s_AllDevices;
-        private static readonly List<PS3Turntable> s_AllDevices = new List<PS3Turntable>();
-
         internal new static void Initialize()
         {
             HidReportIdLayoutFinder.RegisterLayout<PS3Turntable,
                 PS3Turntable_ReportId, PS3Turntable_NoReportId>(0x12BA, 0x0140);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS3Turntable"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
 
         /// <summary>

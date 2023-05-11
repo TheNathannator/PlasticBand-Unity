@@ -64,23 +64,9 @@ namespace PlasticBand.Devices.LowLevel
 
 namespace PlasticBand.Devices
 {
-    /// <summary>
-    /// An XInput 5-lane drumkit.
-    /// </summary>
     [InputControlLayout(stateType = typeof(XInputFiveLaneDrumkitState), displayName = "XInput Guitar Hero Drumkit")]
-    public class XInputFiveLaneDrumkit : FiveLaneDrumkit
+    internal class XInputFiveLaneDrumkit : FiveLaneDrumkit
     {
-        /// <summary>
-        /// The current <see cref="XInputFiveLaneDrumkit"/>.
-        /// </summary>
-        public static new XInputFiveLaneDrumkit current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="XInputFiveLaneDrumkit"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<XInputFiveLaneDrumkit> all => s_AllDevices;
-        private static readonly List<XInputFiveLaneDrumkit> s_AllDevices = new List<XInputFiveLaneDrumkit>();
-
         internal new static void Initialize()
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
@@ -96,29 +82,6 @@ namespace PlasticBand.Devices
                 return null;
             });
 #endif
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="XInputFiveLaneDrumkit"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }

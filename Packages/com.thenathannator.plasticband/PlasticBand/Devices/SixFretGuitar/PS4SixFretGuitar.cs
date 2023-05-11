@@ -77,50 +77,13 @@ namespace PlasticBand.Devices
     using DefaultState = PS4SixFretGuitarState_NoReportId;
 #endif
 
-    /// <summary>
-    /// A PS4 GHL guitar.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 4 Guitar Hero Live Guitar")]
-    public class PS4SixFretGuitar : PokedSixFretGuitar
+    internal class PS4SixFretGuitar : PokedSixFretGuitar
     {
-        /// <summary>
-        /// The current <see cref="PS4SixFretGuitar"/>.
-        /// </summary>
-        public static new PS4SixFretGuitar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS4SixFretGuitar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS4SixFretGuitar> all => s_AllDevices;
-        private static readonly List<PS4SixFretGuitar> s_AllDevices = new List<PS4SixFretGuitar>();
-
         internal new static void Initialize()
         {
             HidReportIdLayoutFinder.RegisterLayout<PS4SixFretGuitar,
                 PS4SixFretGuitar_ReportId, PS4SixFretGuitar_NoReportId>(0x1430, 0x07BB);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS4SixFretGuitar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
 
         // Magic data to be sent periodically to unlock full input data.

@@ -100,23 +100,9 @@ namespace PlasticBand.Devices
     using DefaultState = PS3WiiFourLaneDrumkitState_NoReportId;
 #endif
 
-    /// <summary>
-    /// A PS3 4-lane drumkit.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Drumkit")]
-    public class PS3FourLaneDrumkit : FourLaneDrumkit
+    internal class PS3FourLaneDrumkit : FourLaneDrumkit
     {
-        /// <summary>
-        /// The current <see cref="PS3FourLaneDrumkit"/>.
-        /// </summary>
-        public static new PS3FourLaneDrumkit current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS3FourLaneDrumkit"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS3FourLaneDrumkit> all => s_AllDevices;
-        private static readonly List<PS3FourLaneDrumkit> s_AllDevices = new List<PS3FourLaneDrumkit>();
-
         internal new static void Initialize()
         {
             // Drumkit
@@ -127,48 +113,11 @@ namespace PlasticBand.Devices
             HidReportIdLayoutFinder.RegisterLayout<PS3FourLaneDrumkit,
                 PS3FourLaneDrumkit_ReportId, PS3FourLaneDrumkit_NoReportId>(0x12BA, 0x0218);
         }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS3FourLaneDrumkit"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
-        }
     }
 
-    /// <summary>
-    /// A Wii 4-lane drumkit.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Drumkit")]
-    public class WiiFourLaneDrumkit : FourLaneDrumkit
+    internal class WiiFourLaneDrumkit : FourLaneDrumkit
     {
-        /// <summary>
-        /// The current <see cref="WiiFourLaneDrumkit"/>.
-        /// </summary>
-        public static new WiiFourLaneDrumkit current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="WiiFourLaneDrumkit"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<WiiFourLaneDrumkit> all => s_AllDevices;
-        private static readonly List<WiiFourLaneDrumkit> s_AllDevices = new List<WiiFourLaneDrumkit>();
-
         internal new static void Initialize()
         {
             // RB1
@@ -182,29 +131,6 @@ namespace PlasticBand.Devices
             // MIDI Pro Adapter
             HidReportIdLayoutFinder.RegisterLayout<WiiFourLaneDrumkit,
                 WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit_NoReportId>(0x1BAD, 0x3118);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="WiiFourLaneDrumkit"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }

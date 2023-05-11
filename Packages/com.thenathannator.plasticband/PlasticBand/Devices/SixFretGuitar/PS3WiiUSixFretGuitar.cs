@@ -84,50 +84,13 @@ namespace PlasticBand.Devices
     using DefaultState = PS3WiiUSixFretGuitarState_NoReportId;
 #endif
 
-    /// <summary>
-    /// A PS3/Wii U GHL guitar.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PS3/Wii U Guitar Hero Live Guitar")]
-    public class PS3WiiUSixFretGuitar : PokedSixFretGuitar
+    internal class PS3WiiUSixFretGuitar : PokedSixFretGuitar
     {
-        /// <summary>
-        /// The current <see cref="PS3WiiUSixFretGuitar"/>.
-        /// </summary>
-        public static new PS3WiiUSixFretGuitar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS3WiiUSixFretGuitar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS3WiiUSixFretGuitar> all => s_AllDevices;
-        private static readonly List<PS3WiiUSixFretGuitar> s_AllDevices = new List<PS3WiiUSixFretGuitar>();
-
         internal new static void Initialize()
         {
             HidReportIdLayoutFinder.RegisterLayout<PS3WiiUSixFretGuitar,
                 PS3WiiUSixFretGuitar_ReportId, PS3WiiUSixFretGuitar_NoReportId>(0x12BA, 0x074B);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS3WiiUSixFretGuitar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
 
         // Magic data to be sent periodically to unlock full input data

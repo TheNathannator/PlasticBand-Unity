@@ -128,23 +128,9 @@ namespace PlasticBand.Devices
     using DefaultState = PS3WiiProKeyboardState_NoReportId;
 #endif
 
-    /// <summary>
-    /// A PS3 Pro Keyboard.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Pro Keyboard")]
-    public class PS3ProKeyboard : ProKeyboard
+    internal class PS3ProKeyboard : ProKeyboard
     {
-        /// <summary>
-        /// The current <see cref="PS3ProKeyboard"/>.
-        /// </summary>
-        public static new PS3ProKeyboard current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS3ProKeyboard"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS3ProKeyboard> all => s_AllDevices;
-        private static readonly List<PS3ProKeyboard> s_AllDevices = new List<PS3ProKeyboard>();
-
         internal new static void Initialize()
         {
             // ProKeyboard
@@ -155,48 +141,11 @@ namespace PlasticBand.Devices
             HidReportIdLayoutFinder.RegisterLayout<PS3ProKeyboard,
                 PS3ProKeyboard_ReportId, PS3ProKeyboard_NoReportId>(0x12BA, 0x2338);
         }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS3ProKeyboard"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
-        }
     }
 
-    /// <summary>
-    /// A Wii Pro Keyboard.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Pro Keyboard")]
-    public class WiiProKeyboard : ProKeyboard
+    internal class WiiProKeyboard : ProKeyboard
     {
-        /// <summary>
-        /// The current <see cref="WiiProKeyboard"/>.
-        /// </summary>
-        public static new WiiProKeyboard current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="WiiProKeyboard"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<WiiProKeyboard> all => s_AllDevices;
-        private static readonly List<WiiProKeyboard> s_AllDevices = new List<WiiProKeyboard>();
-
         internal new static void Initialize()
         {
             // ProKeyboard
@@ -206,29 +155,6 @@ namespace PlasticBand.Devices
             // MIDI Pro Adapter
             HidReportIdLayoutFinder.RegisterLayout<WiiProKeyboard,
                 WiiProKeyboard_ReportId, WiiProKeyboard_NoReportId>(0x1BAD, 0x2330);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="WiiProKeyboard"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }

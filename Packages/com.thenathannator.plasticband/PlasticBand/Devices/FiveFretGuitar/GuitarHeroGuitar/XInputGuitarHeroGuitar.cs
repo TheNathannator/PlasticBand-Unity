@@ -70,49 +70,12 @@ namespace PlasticBand.Devices.LowLevel
 
 namespace PlasticBand.Devices
 {
-    /// <summary>
-    /// An XInput Guitar Hero guitar.
-    /// </summary>
     [InputControlLayout(stateType = typeof(XInputGuitarHeroGuitarState), displayName = "XInput Guitar Hero Guitar")]
-    public class XInputGuitarHeroGuitar : GuitarHeroGuitar
+    internal class XInputGuitarHeroGuitar : GuitarHeroGuitar
     {
-        /// <summary>
-        /// The current <see cref="XInputGuitarHeroGuitar"/>.
-        /// </summary>
-        public static new XInputGuitarHeroGuitar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="XInputGuitarHeroGuitar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<XInputGuitarHeroGuitar> all => s_AllDevices;
-        private static readonly List<XInputGuitarHeroGuitar> s_AllDevices = new List<XInputGuitarHeroGuitar>();
-
         internal new static void Initialize()
         {
             XInputDeviceUtils.Register<XInputGuitarHeroGuitar>(XInputController.DeviceSubType.GuitarAlternate);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="XInputGuitarHeroGuitar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }

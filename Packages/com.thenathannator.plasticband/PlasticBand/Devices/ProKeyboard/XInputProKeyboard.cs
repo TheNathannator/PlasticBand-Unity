@@ -93,49 +93,12 @@ namespace PlasticBand.Devices.LowLevel
 
 namespace PlasticBand.Devices
 {
-    /// <summary>
-    /// An XInput Pro Keyboard.
-    /// </summary>
     [InputControlLayout(stateType = typeof(XInputProKeyboardState), displayName = "XInput Rock Band Pro Keyboard")]
-    public class XInputProKeyboard : ProKeyboard
+    internal class XInputProKeyboard : ProKeyboard
     {
-        /// <summary>
-        /// The current <see cref="XInputProKeyboard"/>.
-        /// </summary>
-        public static new XInputProKeyboard current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="XInputProKeyboard"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<XInputProKeyboard> all => s_AllDevices;
-        private static readonly List<XInputProKeyboard> s_AllDevices = new List<XInputProKeyboard>();
-
         internal new static void Initialize()
         {
             XInputDeviceUtils.Register<XInputProKeyboard>(XInputNonStandardSubType.ProKeyboard);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="XInputProKeyboard"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }

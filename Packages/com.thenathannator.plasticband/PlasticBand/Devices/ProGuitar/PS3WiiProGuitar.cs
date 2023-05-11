@@ -115,23 +115,9 @@ namespace PlasticBand.Devices
     using DefaultState = PS3WiiProGuitarState_NoReportId;
 #endif
 
-    /// <summary>
-    /// A PS3 Pro Guitar.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Pro Guitar")]
-    public class PS3ProGuitar : ProGuitar
+    internal class PS3ProGuitar : ProGuitar
     {
-        /// <summary>
-        /// The current <see cref="PS3ProGuitar"/>.
-        /// </summary>
-        public static new PS3ProGuitar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS3ProGuitar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS3ProGuitar> all => s_AllDevices;
-        private static readonly List<PS3ProGuitar> s_AllDevices = new List<PS3ProGuitar>();
-
         internal new static void Initialize()
         {
             // Mustang
@@ -150,48 +136,11 @@ namespace PlasticBand.Devices
             HidReportIdLayoutFinder.RegisterLayout<PS3ProGuitar,
                 PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2538);
         }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS3ProGuitar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
-        }
     }
 
-    /// <summary>
-    /// A Wii Pro Guitar.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Pro Guitar")]
-    public class WiiProGuitar : ProGuitar
+    internal class WiiProGuitar : ProGuitar
     {
-        /// <summary>
-        /// The current <see cref="WiiProGuitar"/>.
-        /// </summary>
-        public static new WiiProGuitar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="WiiProGuitar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<WiiProGuitar> all => s_AllDevices;
-        private static readonly List<WiiProGuitar> s_AllDevices = new List<WiiProGuitar>();
-
         internal new static void Initialize()
         {
             // Mustang
@@ -209,29 +158,6 @@ namespace PlasticBand.Devices
             // MIDI Pro Adapter (Squire)
             HidReportIdLayoutFinder.RegisterLayout<WiiProGuitar,
                 WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3538);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="WiiProGuitar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }

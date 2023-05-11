@@ -56,23 +56,9 @@ namespace PlasticBand.Devices
 {
     using XInputFlags = XInputController.DeviceFlags;
 
-    /// <summary>
-    /// An XInput Guitar Hero Live guitar.
-    /// </summary>
     [InputControlLayout(stateType = typeof(XInputSixFretGuitarState), displayName = "XInput Guitar Hero Live Guitar")]
     public class XInputSixFretGuitar : SixFretGuitar
     {
-        /// <summary>
-        /// The current <see cref="XInputSixFretGuitar"/>.
-        /// </summary>
-        public static new XInputSixFretGuitar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="XInputSixFretGuitar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<XInputSixFretGuitar> all => s_AllDevices;
-        private static readonly List<XInputSixFretGuitar> s_AllDevices = new List<XInputSixFretGuitar>();
-
         internal new static void Initialize()
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
@@ -85,29 +71,6 @@ namespace PlasticBand.Devices
                 .WithCapability("flags", (int)(XInputFlags.VoiceSupported | XInputFlags.PluginModulesSupported | XInputFlags.NoNavigation)) // 28
             );
 #endif
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="XInputSixFretGuitar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }

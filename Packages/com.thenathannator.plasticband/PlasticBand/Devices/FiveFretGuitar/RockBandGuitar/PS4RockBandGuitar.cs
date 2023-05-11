@@ -88,23 +88,9 @@ namespace PlasticBand.Devices
     using DefaultState = PS4RockBandGuitarState_NoReportId;
 #endif
 
-    /// <summary>
-    /// A PS4 Rock Band guitar.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 4 Rock Band Guitar")]
-    public class PS4RockBandGuitar : RockBandGuitar
+    internal class PS4RockBandGuitar : RockBandGuitar
     {
-        /// <summary>
-        /// The current <see cref="PS4RockBandGuitar"/>.
-        /// </summary>
-        public static new PS4RockBandGuitar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS4RockBandGuitar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS4RockBandGuitar> all => s_AllDevices;
-        private static readonly List<PS4RockBandGuitar> s_AllDevices = new List<PS4RockBandGuitar>();
-
         internal new static void Initialize()
         {
             // Stratocaster
@@ -114,29 +100,6 @@ namespace PlasticBand.Devices
             // Jaguar
             HidReportIdLayoutFinder.RegisterLayout<PS4RockBandGuitar,
                 PS4RockBandGuitar_ReportId, PS4RockBandGuitar_NoReportId>(0x0E6F, 0x0173);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS4RockBandGuitar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }

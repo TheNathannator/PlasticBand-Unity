@@ -14,14 +14,7 @@ Dates are relative to UTC.
 
 ### Changed
 
-- Several device classes have been renamed for clarity/correctness:
-  - `XInputGuitar` -> `XInputRockBandGuitar`
-  - `XInputGuitarAlternate` -> `XInputGuitarHeroGuitar`
-  - `XInputGuitarGHL` -> `XInputSixFretGuitar`
-  - `Keytar` -> `ProKeyboard`
-  - `XInputKeytar` -> `XInputProKeytar`
-  - `PS3Keytar` -> `PS3ProKeyboard`
-  - `WiiKeytar` -> `WiiProKeyboard`
+- The XInput/PS3/Wii (and other non-abstract) device classes have been made internal, as they are effectively only implementation details. There's no benefit to using them over the corresponding abstract type, and hopefully there never will be.
 
 ## [0.2.3] - 2023/11/05
 

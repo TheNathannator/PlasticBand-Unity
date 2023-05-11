@@ -94,23 +94,9 @@ namespace PlasticBand.Devices
     using DefaultState = PS3GuitarHeroGuitarState_NoReportId;
 #endif
 
-    /// <summary>
-    /// A PS3 Guitar Hero guitar.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Guitar Hero Guitar")]
-    public class PS3GuitarHeroGuitar : GuitarHeroGuitar
+    internal class PS3GuitarHeroGuitar : GuitarHeroGuitar
     {
-        /// <summary>
-        /// The current <see cref="PS3GuitarHeroGuitar"/>.
-        /// </summary>
-        public static new PS3GuitarHeroGuitar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS3GuitarHeroGuitar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS3GuitarHeroGuitar> all => s_AllDevices;
-        private static readonly List<PS3GuitarHeroGuitar> s_AllDevices = new List<PS3GuitarHeroGuitar>();
-
         internal new static void Initialize()
         {
             // PS3 guitars
@@ -120,29 +106,6 @@ namespace PlasticBand.Devices
             // World Tour PC guitar
             HidReportIdLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar,
                 PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar_NoReportId>(0x1430, 0x474C);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS3GuitarHeroGuitar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }

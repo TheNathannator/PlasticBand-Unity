@@ -41,11 +41,8 @@ namespace PlasticBand.Devices.LowLevel
 
 namespace PlasticBand.Devices
 {
-    /// <summary>
-    /// An XInput Rock Band stage kit.
-    /// </summary>
     [InputControlLayout(stateType = typeof(XInputStageKitState), displayName = "XInput Rock Band Stage Kit")]
-    public class XInputStageKit : StageKit
+    internal class XInputStageKit : StageKit
     {
         private enum ReportId : byte
         {
@@ -66,52 +63,9 @@ namespace PlasticBand.Devices
             Reset = 0xFF
         }
 
-        /// <summary>
-        /// The current <see cref="XInputStageKit"/>.
-        /// </summary>
-        public static new XInputStageKit current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="XInputStageKit"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<XInputStageKit> all => s_AllDevices;
-        private static readonly List<XInputStageKit> s_AllDevices = new List<XInputStageKit>();
-
-        /// <summary>
-        /// Registers <see cref="XInputStageKit"/> to the input system.
-        /// </summary>
         internal static new void Initialize()
         {
             XInputDeviceUtils.Register<XInputStageKit>(XInputNonStandardSubType.StageKit);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="XInputStageKit"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        /// <summary>
-        /// Processes when this device is added to the system.
-        /// </summary>
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        /// <summary>
-        /// Processes when this device is removed from the system.
-        /// </summary>
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
 
         protected override void SendFog(bool enabled)

@@ -92,23 +92,9 @@ namespace PlasticBand.Devices
     using DefaultState = PS4FourLaneDrumkitState_NoReportId;
 #endif
 
-    /// <summary>
-    /// A PS4 Rock Band drumkit.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 4 Rock Band Drumkit")]
-    public class PS4FourLaneDrumkit : FourLaneDrumkit
+    internal class PS4FourLaneDrumkit : FourLaneDrumkit
     {
-        /// <summary>
-        /// The current <see cref="PS4FourLaneDrumkit"/>.
-        /// </summary>
-        public static new PS4FourLaneDrumkit current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS4FourLaneDrumkit"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS4FourLaneDrumkit> all => s_AllDevices;
-        private static readonly List<PS4FourLaneDrumkit> s_AllDevices = new List<PS4FourLaneDrumkit>();
-
         internal new static void Initialize()
         {
             // MadCatz
@@ -119,29 +105,6 @@ namespace PlasticBand.Devices
             // Product ID is not known yet
             // HidReportIdLayoutFinder.RegisterLayout<PS4FourLaneDrumkit,
             //     PS4FourLaneDrumkit_ReportId, PS4FourLaneDrumkit_NoReportId>(0x0E6F, 0x0173);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS4FourLaneDrumkit"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }

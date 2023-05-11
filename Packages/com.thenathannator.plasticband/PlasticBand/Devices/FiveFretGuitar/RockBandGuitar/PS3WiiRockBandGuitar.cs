@@ -89,70 +89,19 @@ namespace PlasticBand.Devices
     using DefaultState = PS3WiiRockBandGuitarState_NoReportId;
 #endif
 
-    /// <summary>
-    /// A PS3 Rock Band guitar.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Guitar")]
-    public class PS3RockBandGuitar : RockBandGuitar
+    internal class PS3RockBandGuitar : RockBandGuitar
     {
-        /// <summary>
-        /// The current <see cref="PS3RockBandGuitar"/>.
-        /// </summary>
-        public static new PS3RockBandGuitar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="PS3RockBandGuitar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<PS3RockBandGuitar> all => s_AllDevices;
-        private static readonly List<PS3RockBandGuitar> s_AllDevices = new List<PS3RockBandGuitar>();
-
         internal new static void Initialize()
         {
             HidReportIdLayoutFinder.RegisterLayout<PS3RockBandGuitar,
                 PS3RockBandGuitar_ReportId, PS3RockBandGuitar_NoReportId>(0x12BA, 0x0200);
         }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="PS3RockBandGuitar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
-        }
     }
 
-    /// <summary>
-    /// A Wii Rock Band guitar.
-    /// </summary>
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Guitar")]
-    public class WiiRockBandGuitar : RockBandGuitar
+    internal class WiiRockBandGuitar : RockBandGuitar
     {
-        /// <summary>
-        /// The current <see cref="WiiRockBandGuitar"/>.
-        /// </summary>
-        public static new WiiRockBandGuitar current { get; private set; }
-
-        /// <summary>
-        /// A collection of all <see cref="WiiRockBandGuitar"/>s currently connected to the system.
-        /// </summary>
-        public new static IReadOnlyList<WiiRockBandGuitar> all => s_AllDevices;
-        private static readonly List<WiiRockBandGuitar> s_AllDevices = new List<WiiRockBandGuitar>();
-
         internal new static void Initialize()
         {
             // RB1 guitars
@@ -162,29 +111,6 @@ namespace PlasticBand.Devices
             // RB2 and later
             HidReportIdLayoutFinder.RegisterLayout<WiiRockBandGuitar,
                 WiiRockBandGuitar_ReportId, WiiRockBandGuitar_NoReportId>(0x1BAD, 0x3010);
-        }
-
-        /// <summary>
-        /// Sets this device as the current <see cref="WiiRockBandGuitar"/>.
-        /// </summary>
-        public override void MakeCurrent()
-        {
-            base.MakeCurrent();
-            current = this;
-        }
-
-        protected override void OnAdded()
-        {
-            base.OnAdded();
-            s_AllDevices.Add(this);
-        }
-
-        protected override void OnRemoved()
-        {
-            base.OnRemoved();
-            s_AllDevices.Remove(this);
-            if (current == this)
-                current = null;
         }
     }
 }
