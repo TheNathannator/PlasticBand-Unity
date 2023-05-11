@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.InputSystem.Layouts;
@@ -40,6 +41,10 @@ namespace PlasticBand.LowLevel
     /// </summary>
     internal static class SantrollerLayoutFinder
     {
+        // Dummy device to ensure the HID layout finder doesn't get to Santroller devices
+        // first and make the layout finding process ignore any layouts we might provide for them
+        private class SantrollerHidDevice : InputDevice { }
+
         /// <summary>
         /// Vendor ID for Santroller devices.
         /// </summary>
@@ -49,6 +54,12 @@ namespace PlasticBand.LowLevel
         /// Product ID for Santroller devices.
         /// </summary>
         public const ushort ProductID = 0x2882;
+
+        // Fall back to regular HID layout finder for devices without explicit layouts
+        private static readonly InputDeviceFindControlLayoutDelegate s_HidLayoutFinder = (InputDeviceFindControlLayoutDelegate)typeof(HID)
+            .GetMethod("OnFindLayoutForDevice", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static, null, new Type[]
+                { typeof(InputDeviceDescription).MakeByRefType(), typeof(string), typeof(InputDeviceExecuteCommandDelegate) }, null)
+            .CreateDelegate(typeof(InputDeviceFindControlLayoutDelegate));
 
         /// <summary>
         /// Lookup for the default device/rhythm type of an XInput subtype.
@@ -70,9 +81,9 @@ namespace PlasticBand.LowLevel
         };
 
         /// <summary>
-        /// Registered layout resolvers for a given subtype.
+        /// Registered layouts for HID santroller devices.
         /// </summary>
-        private static readonly Dictionary<(SantrollerDeviceType, SantrollerRhythmType?), string> s_LayoutOverrides
+        private static readonly Dictionary<(SantrollerDeviceType, SantrollerRhythmType?), string> s_AvailableHidLayouts
             = new Dictionary<(SantrollerDeviceType, SantrollerRhythmType?), string>();
 
         /// <summary>
@@ -80,6 +91,14 @@ namespace PlasticBand.LowLevel
         /// </summary>
         internal static void Initialize()
         {
+            // Register dummy device
+            InputSystem.RegisterLayout<SantrollerHidDevice>(matches: new InputDeviceMatcher()
+                .WithInterface(HidDefinitions.InterfaceName)
+                .WithCapability("vendorId", (int)VendorID)
+                .WithCapability("productId", (int)ProductID)
+            );
+
+            // Register layout finder
             InputSystem.onFindLayoutForDevice += FindSantrollerDeviceLayout;
         }
 
@@ -99,9 +118,8 @@ namespace PlasticBand.LowLevel
             if (description.interfaceName != HidDefinitions.InterfaceName)
                 return null;
 
-            // Parse HID descriptor
-            HID.HIDDeviceDescriptor descriptor = HID.HIDDeviceDescriptor.FromJson(description.capabilities);
-            if (descriptor.vendorId != VendorID && descriptor.productId != ProductID)
+            // If another layout resolver got to the device first, there's nothing we can do
+            if (!string.IsNullOrEmpty(matchedLayout) && matchedLayout != nameof(SantrollerHidDevice))
                 return null;
 
             // Parse version
@@ -112,14 +130,15 @@ namespace PlasticBand.LowLevel
             var rhythmType = GetRhythmType(version);
 
             // Check if the devicetype and rhythm type has an override registered
-            if (s_LayoutOverrides.TryGetValue((deviceType, rhythmType), out var layout))
+            if (s_AvailableHidLayouts.TryGetValue((deviceType, rhythmType), out var layout))
                 return layout;
 
             // A lot of devices are rhythm type independent, so also match on just the device type
-            if (s_LayoutOverrides.TryGetValue((deviceType, null), out layout))
+            if (s_AvailableHidLayouts.TryGetValue((deviceType, null), out layout))
                 return layout;
 
-            return null;
+            // We don't have a specific layout registered, fall back to the regular HID layout resolver
+            return s_HidLayoutFinder(ref description, null, executeDeviceCommand);
         }
 
         /// <summary>
@@ -133,10 +152,10 @@ namespace PlasticBand.LowLevel
             InputSystem.RegisterLayout<TDevice>();
 
             // Ensure no resolver is registered yet
-            if (s_LayoutOverrides.ContainsKey((deviceType, rhythmType)))
+            if (s_AvailableHidLayouts.ContainsKey((deviceType, rhythmType)))
                 throw new ArgumentException($"Device type {deviceType}:{(rhythmType != null ? rhythmType.ToString() : "All")} is already registered!");
 
-            s_LayoutOverrides.Add((deviceType, rhythmType), typeof(TDevice).Name);
+            s_AvailableHidLayouts.Add((deviceType, rhythmType), typeof(TDevice).Name);
         }
 
         /// <summary>
