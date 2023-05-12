@@ -24,6 +24,13 @@ namespace PlasticBand.Controls
             InputSystem.RegisterLayout<GuitarHeroSliderControl>("GuitarHeroSlider");
         }
 
+        // For conciseness
+        private const FiveFret G = FiveFret.Green;
+        private const FiveFret R = FiveFret.Red;
+        private const FiveFret Y = FiveFret.Yellow;
+        private const FiveFret B = FiveFret.Blue;
+        private const FiveFret O = FiveFret.Orange;
+
         /// <summary>
         /// Lookup for possible values for the slider bar.
         /// </summary>
@@ -35,37 +42,37 @@ namespace PlasticBand.Controls
 
             // GH5 guitars
             { 0x00, FiveFret.None },
-            { 0x95, FiveFret.Green },
-            { 0xB0, FiveFret.Green | FiveFret.Red },
-            { 0xCD,                  FiveFret.Red },
-            { 0xE5, FiveFret.Green | FiveFret.Red | FiveFret.Yellow },
-            { 0xE6,                  FiveFret.Red | FiveFret.Yellow },
-            { 0x19, FiveFret.Green |                FiveFret.Yellow },
-            { 0x1A,                                 FiveFret.Yellow },
-            { 0x2C, FiveFret.Green | FiveFret.Red | FiveFret.Yellow | FiveFret.Blue },
-            { 0x2D, FiveFret.Green |                FiveFret.Yellow | FiveFret.Blue },
-            { 0x2E,                  FiveFret.Red | FiveFret.Yellow | FiveFret.Blue },
-            { 0x2F,                                 FiveFret.Yellow | FiveFret.Blue },
-            { 0x46, FiveFret.Green | FiveFret.Red |                   FiveFret.Blue },
-            { 0x47, FiveFret.Green |                                  FiveFret.Blue },
-            { 0x48,                  FiveFret.Red |                   FiveFret.Blue },
-            { 0x49,                                                   FiveFret.Blue },
-            { 0x5F, FiveFret.Green | FiveFret.Red | FiveFret.Yellow | FiveFret.Blue | FiveFret.Orange },
-            { 0x60, FiveFret.Green | FiveFret.Red |                   FiveFret.Blue | FiveFret.Orange },
-            { 0x61, FiveFret.Green |                FiveFret.Yellow | FiveFret.Blue | FiveFret.Orange },
-            { 0x62, FiveFret.Green |                                  FiveFret.Blue | FiveFret.Orange },
-            { 0x63,                  FiveFret.Red | FiveFret.Yellow | FiveFret.Blue | FiveFret.Orange },
-            { 0x64,                  FiveFret.Red |                   FiveFret.Blue | FiveFret.Orange },
-            { 0x65,                                 FiveFret.Yellow | FiveFret.Blue | FiveFret.Orange },
-            { 0x66,                                                   FiveFret.Blue | FiveFret.Orange },
-            { 0x78, FiveFret.Green | FiveFret.Red | FiveFret.Yellow |                 FiveFret.Orange },
-            { 0x79, FiveFret.Green | FiveFret.Red |                                   FiveFret.Orange },
-            { 0x7A, FiveFret.Green |                FiveFret.Yellow |                 FiveFret.Orange },
-            { 0x7B, FiveFret.Green |                                                  FiveFret.Orange },
-            { 0x7C,                  FiveFret.Red | FiveFret.Yellow |                 FiveFret.Orange },
-            { 0x7D,                  FiveFret.Red |                                   FiveFret.Orange },
-            { 0x7E,                                 FiveFret.Yellow |                 FiveFret.Orange },
-            { 0x7F,                                                                   FiveFret.Orange }
+            { 0x95, G },
+            { 0xB0, G | R },
+            { 0xCD,     R },
+            { 0xE5, G | R | Y },
+            { 0xE6,     R | Y },
+            { 0x19, G |     Y },
+            { 0x1A,         Y },
+            { 0x2C, G | R | Y | B },
+            { 0x2D, G |     Y | B },
+            { 0x2E,     R | Y | B },
+            { 0x2F,         Y | B },
+            { 0x46, G | R |     B },
+            { 0x47, G |         B },
+            { 0x48,     R |     B },
+            { 0x49,             B },
+            { 0x5F, G | R | Y | B | O },
+            { 0x60, G | R |     B | O },
+            { 0x61, G |     Y | B | O },
+            { 0x62, G |         B | O },
+            { 0x63,     R | Y | B | O },
+            { 0x64,     R |     B | O },
+            { 0x65,         Y | B | O },
+            { 0x66,             B | O },
+            { 0x78, G | R | Y |     O },
+            { 0x79, G | R |         O },
+            { 0x7A, G |     Y |     O },
+            { 0x7B, G |             O },
+            { 0x7C,     R | Y |     O },
+            { 0x7D,     R |         O },
+            { 0x7E,         Y |     O },
+            { 0x7F,                 O }
         };
 
         /// <summary>
