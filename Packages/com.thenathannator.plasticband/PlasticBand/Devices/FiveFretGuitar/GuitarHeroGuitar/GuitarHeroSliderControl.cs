@@ -32,14 +32,46 @@ namespace PlasticBand.Controls
         private const FiveFret O = FiveFret.Orange;
 
         /// <summary>
-        /// Lookup for possible values for the slider bar.
+        /// Lookup for possible values for the World Tour slider bar.
         /// </summary>
-        private static readonly Dictionary<byte, FiveFret> s_SliderLookup = new Dictionary<byte, FiveFret>()
+        private static readonly Dictionary<byte, FiveFret> s_WTSliderLookup = new Dictionary<byte, FiveFret>()
         {
-            // TODO: This might not support World Tour guitars yet.
-            // If the values the Wii World Tour guitar reports (https://wiibrew.org/wiki/Wiimote/Extension_Controllers/Guitar_Hero_(Wii)_Guitars)
-            // are the same as on Xbox 360 and PS3, there'll need to be additional logic to determine which guitars are World Tour and which are GH5.
+            { 0x7B, FiveFret.None },
+            { 0x7C, FiveFret.None },
+            { 0x7D, FiveFret.None },
+            { 0x20, G },
+            { 0x21, G },
+            { 0x22, G },
+            { 0x39, G | R },
+            { 0x3A, G | R },
+            { 0x3B, G | R },
+            { 0x51,     R },
+            { 0x52,     R },
+            { 0x53,     R },
+            { 0x67,     R | Y },
+            { 0x68,     R | Y },
+            { 0x69,     R | Y },
+            { 0x6A,     R | Y },
+            { 0x95,         Y },
+            { 0x96,         Y },
+            { 0x97,         Y },
+            { 0xA7,         Y | B },
+            { 0xA8,         Y | B },
+            { 0xBD,             B },
+            { 0xBE,             B },
+            { 0xBF,             B },
+            { 0xD4,             B | O },
+            { 0xD5,             B | O },
+            { 0xD6,             B | O },
+            { 0xFB,                 O },
+            { 0xFC,                 O }
+        };
 
+        /// <summary>
+        /// Lookup for possible values for the GH5 slider bar.
+        /// </summary>
+        private static readonly Dictionary<byte, FiveFret> s_GH5SliderLookup = new Dictionary<byte, FiveFret>()
+        {
             // GH5 guitars
             { 0x00, FiveFret.None },
             { 0x95, G },
@@ -74,6 +106,11 @@ namespace PlasticBand.Controls
             { 0x7E,         Y |     O },
             { 0x7F,                 O }
         };
+
+        /// <summary>
+        /// The lookup used to determine what slider segments are being pressed.
+        /// </summary>
+        private Dictionary<byte, FiveFret> m_SliderLookup;
 
         /// <summary>
         /// The fret flag used to determine pressed state.
@@ -115,7 +152,24 @@ namespace PlasticBand.Controls
             // (with some states this only applies when viewed as negative in hexadecimal,
             // but the lookup uses the non-signed version since that works fine)
             byte rawValue = unchecked((byte)stateBlock.ReadInt(statePtr));
-            if (!s_SliderLookup.TryGetValue(rawValue, out var flags))
+
+            // Determine slider type if needed
+            if (m_SliderLookup == null)
+            {
+                // Find the lookup where the current value is neutral
+                // May be inaccurate in the case someone's noodling on the slider while waiting around during startup
+                // or while connecting their guitar, but the cases where the WT is neutral and the GH5 is not are
+                // pretty difficult to get on accident lol
+                if (s_WTSliderLookup.TryGetValue(rawValue, out var flags2) && flags2 == FiveFret.None)
+                    m_SliderLookup = s_WTSliderLookup;
+                else if (s_GH5SliderLookup.TryGetValue(rawValue, out flags2) && flags2 == FiveFret.None)
+                    m_SliderLookup = s_GH5SliderLookup;
+                else
+                    // No lookup is neutral, wait for the slider to be in a neutral state
+                    return 0f;
+            }
+
+            if (!m_SliderLookup.TryGetValue(rawValue, out var flags))
             {
 #if PLASTICBAND_DEBUG_CONTROLS
                 if (rawValue != m_previousValue)
