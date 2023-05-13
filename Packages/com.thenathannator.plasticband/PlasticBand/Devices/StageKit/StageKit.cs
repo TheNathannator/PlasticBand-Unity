@@ -73,6 +73,21 @@ namespace PlasticBand.Devices
         [InputControl(displayName = "Select")]
         public ButtonControl selectButton { get; private set; }
 
+        protected override void FinishSetup()
+        {
+            base.FinishSetup();
+
+            dpad = GetChildControl<DpadControl>(nameof(dpad));
+
+            buttonSouth = GetChildControl<ButtonControl>(nameof(buttonSouth));
+            buttonEast = GetChildControl<ButtonControl>(nameof(buttonEast));
+            buttonWest = GetChildControl<ButtonControl>(nameof(buttonWest));
+            buttonNorth = GetChildControl<ButtonControl>(nameof(buttonNorth));
+
+            startButton = GetChildControl<ButtonControl>(nameof(startButton));
+            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
+        }
+
         /// <summary>
         /// Sets this device as the current <see cref="StageKit"/>.
         /// </summary>
