@@ -54,20 +54,26 @@ namespace PlasticBand.Devices.LowLevel
         public fixed byte data[kDataSize];
 
         /// <summary>
+        /// Creates a new <see cref="PS3OutputCommand"/> with the specified output type.
+        /// </summary>
+        public PS3OutputCommand(byte type)
+        {
+            baseCommand = new InputDeviceCommand(HidDefinitions.OutputFormat, kSize);
+
+            reportId = kDefaultReportId;
+            outputType = type;
+        }
+
+        /// <summary>
         /// Creates a new <see cref="PS3OutputCommand"/> with the specified output type and data.
         /// </summary>
-        public PS3OutputCommand(byte type, byte[] data)
+        public PS3OutputCommand(byte type, byte[] data) : this(type)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
             if (data.Length != kDataSize)
                 throw new ArgumentException($"Data size is wrong! Expected {kDataSize}, got {data.Length}", nameof(data));
-
-            baseCommand = new InputDeviceCommand(HidDefinitions.OutputFormat, kSize);
-
-            reportId = kDefaultReportId;
-            outputType = type;
 
             for (int i = 0; i < data.Length; i++)
             {

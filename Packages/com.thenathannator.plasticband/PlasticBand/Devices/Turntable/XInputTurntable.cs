@@ -1,5 +1,5 @@
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
+using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -64,14 +64,10 @@ namespace PlasticBand.Devices
             XInputLayoutFinder.RegisterLayout<XInputTurntable>(XInputNonStandardSubType.Turntable);
         }
 
-        protected override void OnEuphoriaTick(float brightness)
+        protected override void FinishSetup()
         {
-            // Handle force-disable value
-            if (brightness < 0)
-                brightness = 0;
-
-            var command = new XInputVibrationCommand(0, brightness);
-            this.ExecuteCommand(ref command);
+            base.FinishSetup();
+            m_Haptics = new XInputTurntableHaptics(this);
         }
     }
 }

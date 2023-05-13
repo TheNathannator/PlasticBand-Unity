@@ -1,5 +1,4 @@
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Layouts;
@@ -37,81 +36,15 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(XInputStageKitState), displayName = "XInput Rock Band Stage Kit")]
     internal class XInputStageKit : StageKit
     {
-        private enum ReportId : byte
-        {
-            FogOn = 0x01,
-            FogOff = 0x02,
-
-            StrobeSlow = 0x03,
-            StrobeMedium = 0x04,
-            StrobeFast = 0x05,
-            StrobeFastest = 0x06,
-            StrobeOff = 0x07,
-
-            BlueLeds = 0x20,
-            GreenLeds = 0x40,
-            YellowLeds = 0x60,
-            RedLeds = 0x80,
-
-            Reset = 0xFF
-        }
-
         internal static new void Initialize()
         {
             XInputLayoutFinder.RegisterLayout<XInputStageKit>(XInputNonStandardSubType.StageKit);
         }
 
-        protected override void SendFog(bool enabled)
+        protected override void FinishSetup()
         {
-            var command = new XInputVibrationCommand(0, (byte)(enabled ? ReportId.FogOn : ReportId.FogOff));
-            this.ExecuteCommand(ref command);
-        }
-
-        protected override void SendStrobe(StageKitStrobeSpeed speed)
-        {
-            ReportId id;
-            switch (speed)
-            {
-                default: id = ReportId.StrobeOff; break;
-                case StageKitStrobeSpeed.Slow: id = ReportId.StrobeSlow; break;
-                case StageKitStrobeSpeed.Medium: id = ReportId.StrobeMedium; break;
-                case StageKitStrobeSpeed.Fast: id = ReportId.StrobeFast; break;
-                case StageKitStrobeSpeed.Fastest: id = ReportId.StrobeFastest; break;
-            }
-
-            var command = new XInputVibrationCommand(0, (byte)id);
-            this.ExecuteCommand(ref command);
-        }
-
-        protected override void SendLeds(StageKitLedColor color, StageKitLed leds)
-        {
-            // StageKitLedColor is a bitmask, so multiple colors can be set at once
-            if ((color & StageKitLedColor.Red) != 0)
-            {
-                var command = new XInputVibrationCommand((byte)leds, (byte)ReportId.RedLeds);
-                this.ExecuteCommand(ref command);
-            }
-            if ((color & StageKitLedColor.Yellow) != 0)
-            {
-                var command = new XInputVibrationCommand((byte)leds, (byte)ReportId.YellowLeds);
-                this.ExecuteCommand(ref command);
-            }
-            if ((color & StageKitLedColor.Blue) != 0)
-            {
-                var command = new XInputVibrationCommand((byte)leds, (byte)ReportId.BlueLeds);
-                this.ExecuteCommand(ref command);
-            }
-            if ((color & StageKitLedColor.Green) != 0)
-            {
-                var command = new XInputVibrationCommand((byte)leds, (byte)ReportId.GreenLeds);
-                this.ExecuteCommand(ref command);
-            }
-        }
-
-        protected override void SendReset()
-        {
-            var command = new XInputVibrationCommand(0, (byte)ReportId.Reset);
-            this.ExecuteCommand(ref command);
+            base.FinishSetup();
+            m_Haptics = new XInputStageKitHaptics(this);
         }
     }
 }

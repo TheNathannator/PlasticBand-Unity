@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
+using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -68,7 +69,7 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 4 Guitar Hero Live Guitar")]
-    internal class PS4SixFretGuitar : PokedSixFretGuitar
+    internal class PS4SixFretGuitar : SixFretGuitar, IInputUpdateCallbackReceiver
     {
         internal new static void Initialize()
         {
@@ -83,7 +84,15 @@ namespace PlasticBand.Devices
             new byte[PS3OutputCommand.kDataSize] { 0x08, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00 }
         );
 
-        protected override void OnPoke() => device.ExecuteCommand(ref s_PokeCommand);
+        protected override void FinishSetup()
+        {
+            base.FinishSetup();
+            m_Poker = new SixFretPoker<PS3OutputCommand>(this, s_PokeCommand);
+        }
+
+        private SixFretPoker<PS3OutputCommand> m_Poker;
+
+        void IInputUpdateCallbackReceiver.OnUpdate() => m_Poker.OnUpdate();
     }
 
     [InputControlLayout(stateType = typeof(PS4SixFretGuitarState_NoReportId), hideInUI = true)]

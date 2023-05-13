@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using PlasticBand.Haptics;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 
@@ -316,104 +316,20 @@ namespace PlasticBand.Devices
                 current = null;
         }
 
-        // Timer used for the euphoria effect
-        private readonly Stopwatch m_EuphoriaTimer = new Stopwatch();
+        private protected TurntableHaptics m_Haptics;
 
-        // Period length of the euphoria timer
-        internal const int kEuphoriaPeriod = 3000;
-        // Provided for convenience
-        internal const int kEuphoriaPeriodHalf = kEuphoriaPeriod / 2;
+        /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
+        public virtual void PauseHaptics() => m_Haptics?.PauseHaptics();
 
-        // Value to force the euphoria light to be disabled
-        internal const float kEuphoriaForceDisable = -1;
+        /// <inheritdoc cref="IHaptics.ResumeHaptics()"/>
+        public virtual void ResumeHaptics() => m_Haptics?.ResumeHaptics();
 
-        // States for pausing/resuming haptics
-        protected bool m_euphoriaEnabled;
-        protected bool m_euphoriaPaused;
-
-        void IInputUpdateCallbackReceiver.OnUpdate()
-        {
-            // Handle state changes
-            if (!m_EuphoriaTimer.IsRunning)
-            {
-                if (!m_euphoriaPaused && m_euphoriaEnabled)
-                {
-                    m_EuphoriaTimer.Start();
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else if (m_euphoriaPaused || !m_euphoriaEnabled)
-            {
-                m_EuphoriaTimer.Reset();
-                OnEuphoriaTick(kEuphoriaForceDisable);
-                return;
-            }
-
-            long elapsed = m_EuphoriaTimer.ElapsedMilliseconds;
-            // End of euphoria period
-            if (elapsed >= kEuphoriaPeriod)
-            {
-                OnEuphoriaTick(0);
-                m_EuphoriaTimer.Restart();
-            }
-            // First half of euphoria period
-            // Brightness increases gradually
-            else if (elapsed < kEuphoriaPeriodHalf)
-            {
-                float brightness = (float)elapsed / kEuphoriaPeriodHalf;
-                OnEuphoriaTick(brightness);
-            }
-            // Second half of euphoria period
-            // Brightness decreases gradually
-            else
-            {
-                elapsed -= kEuphoriaPeriodHalf;
-                float brightness = 1f - ((float)elapsed / kEuphoriaPeriodHalf);
-                OnEuphoriaTick(brightness);
-            }
-        }
-
-        /// <summary>
-        /// Handles euphoria effect processing.
-        /// </summary>
-        protected virtual void OnEuphoriaTick(float brightness) { }
+        /// <inheritdoc cref="IHaptics.ResetHaptics()"/>
+        public virtual void ResetHaptics() => m_Haptics?.ResetHaptics();
 
         /// <inheritdoc cref="ITurntableHaptics.SetEuphoriaBlink(bool)"/>
-        public void SetEuphoriaBlink(bool enable)
-        {
-            m_euphoriaEnabled = enable;
-        }
+        public void SetEuphoriaBlink(bool enable) => m_Haptics?.SetEuphoriaBlink(enable);
 
-        /// <summary>
-        /// Temporarily disables the euphoria effect if it is enabled.
-        /// </summary>
-        /// <remarks>
-        /// Note that this only preserves whether or not it was enabled,
-        /// as not all turntables support specifying an exact brightness.
-        /// </remarks>
-        public void PauseHaptics()
-        {
-            m_euphoriaPaused = true;
-        }
-
-        /// <summary>
-        /// Restores the euphoria effect's state.
-        /// </summary>
-        public void ResumeHaptics()
-        {
-            m_euphoriaPaused = false;
-        }
-
-        /// <summary>
-        /// Resets the euphoria effect.
-        /// </summary>
-        public void ResetHaptics()
-        {
-            m_euphoriaEnabled = false;
-            m_euphoriaPaused = false;
-        }
+        void IInputUpdateCallbackReceiver.OnUpdate() => m_Haptics?.OnUpdate();
     }
 }

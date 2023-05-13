@@ -1,5 +1,5 @@
 using System.Runtime.InteropServices;
-using PlasticBand.Devices.LowLevel;
+using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -87,68 +87,10 @@ namespace PlasticBand.Devices
                 PS3Turntable_ReportId, PS3Turntable_NoReportId>(0x12BA, 0x0140);
         }
 
-        /// <summary>
-        /// Enables the euphoria light on the turntable.
-        /// </summary>
-        private static readonly PS3OutputCommand s_EuphoriaOnCommand = new PS3OutputCommand(
-            0x91,
-            new byte[PS3OutputCommand.kDataSize] { 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00 }
-        );
-
-        /// <summary>
-        /// Disables the euphoria light on the turntable.
-        /// </summary>
-        private static readonly PS3OutputCommand s_EuphoriaOffCommand = new PS3OutputCommand(
-            0x91,
-            new byte[PS3OutputCommand.kDataSize] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
-        );
-
-        /// <summary>
-        /// The previous brightness of the euphoria effect.
-        /// Used for determining direction.
-        /// </summary>
-        private float m_PreviousBrightness = -1;
-
-        /// <summary>
-        /// The current direction of the euphoria effect.
-        /// </summary>
-        /// <remarks>
-        /// true == up, false == down.
-        /// </remarks>
-        private bool m_Direction;
-
-        protected override void OnEuphoriaTick(float brightness)
+        protected override void FinishSetup()
         {
-            PS3OutputCommand command;
-            // Force-disable
-            if (brightness < 0)
-            {
-                m_Direction = false;
-                command = s_EuphoriaOffCommand;
-            }
-            // Enable at the start of an increase
-            else if ((brightness > m_PreviousBrightness) && !m_Direction)
-            {
-                m_Direction = true;
-                command = s_EuphoriaOnCommand;
-            }
-            // Disable at the start of a decrease
-            else if ((brightness < m_PreviousBrightness) && m_Direction)
-            {
-                m_Direction = false;
-                command = s_EuphoriaOffCommand;
-            }
-            // Direction hasn't changed, don't send the same one multiple times
-            else
-            {
-                m_PreviousBrightness = brightness;
-                return;
-            }
-
-            m_PreviousBrightness = brightness;
-
-            // Send command
-            this.ExecuteCommand(ref command);
+            base.FinishSetup();
+            m_Haptics = new PS3TurntableHaptics(this);
         }
     }
 
