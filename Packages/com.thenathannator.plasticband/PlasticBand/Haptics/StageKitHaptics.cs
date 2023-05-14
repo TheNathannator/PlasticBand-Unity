@@ -7,7 +7,7 @@ namespace PlasticBand.Haptics
     /// <summary>
     /// Handles haptics for Rock Band stage kits.
     /// </summary>
-    internal abstract class StageKitHaptics
+    internal abstract class StageKitHaptics : IStageKitHaptics
     {
         protected enum StageKitCommandId : byte
         {

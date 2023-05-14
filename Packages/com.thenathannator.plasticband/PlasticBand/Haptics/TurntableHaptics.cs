@@ -9,7 +9,7 @@ namespace PlasticBand.Haptics
     /// <summary>
     /// Handles haptics for DJ Hero turntables.
     /// </summary>
-    internal abstract class TurntableHaptics
+    internal abstract class TurntableHaptics : ITurntableHaptics
     {
         private const long kEuphoriaPeriod = 3000;
         private const long kEuphoriaPeriodHalf = kEuphoriaPeriod / 2;

@@ -7,7 +7,7 @@ namespace PlasticBand.Haptics
     /// <summary>
     /// Handles haptics for Santroller devices.
     /// </summary>
-    internal abstract class SantrollerHaptics : StageKitHaptics
+    internal abstract class SantrollerHaptics : StageKitHaptics, ISantrollerHaptics
     {
         protected enum SantrollerCommandId : byte
         {
