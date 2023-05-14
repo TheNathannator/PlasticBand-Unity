@@ -224,9 +224,7 @@ namespace PlasticBand.Devices
             ghtvButton = GetChildControl<ButtonControl>(nameof(ghtvButton));
         }
 
-        /// <summary>
-        /// Sets this device as the current <see cref="SixFretGuitar"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public override void MakeCurrent()
         {
             base.MakeCurrent();

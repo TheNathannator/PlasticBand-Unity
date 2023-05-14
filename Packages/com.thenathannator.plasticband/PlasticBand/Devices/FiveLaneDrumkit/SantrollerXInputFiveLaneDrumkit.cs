@@ -4,9 +4,6 @@ using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.XInput;
 
-// PlasticBand reference doc:
-// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Lane%20Drums/Xbox%20360.md
-
 namespace PlasticBand.Devices
 {
     [InputControlLayout(stateType = typeof(XInputFiveLaneDrumkitState), displayName = "Santroller XInput Guitar Hero Drumkit")]

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
-// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Other/Xbox%20360%20Rock%20Band%20Stage%20Kit.md
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Other/Stage%20Kit/Xbox%20360.md
 
 namespace PlasticBand.Devices
 {

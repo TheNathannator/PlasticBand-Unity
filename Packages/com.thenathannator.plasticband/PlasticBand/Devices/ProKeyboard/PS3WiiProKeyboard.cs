@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
-// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/ProKeyboard/PS3%20and%20Wii.md
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Pro%20Keyboard/PS3%20and%20Wii.md
 
 namespace PlasticBand.Devices
 {

@@ -363,9 +363,7 @@ namespace PlasticBand.Devices
             touchStrip = GetChildControl<AxisControl>(nameof(touchStrip));
         }
 
-        /// <summary>
-        /// Sets this device as the current <see cref="ProKeyboard"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public override void MakeCurrent()
         {
             base.MakeCurrent();

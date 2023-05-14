@@ -45,14 +45,7 @@ namespace PlasticBand.LowLevel
         // first and make the layout finding process ignore any layouts we might provide for them
         private class SantrollerHidDevice : InputDevice { }
 
-        /// <summary>
-        /// Vendor ID for Santroller devices.
-        /// </summary>
         public const ushort VendorID = 0x1209;
-
-        /// <summary>
-        /// Product ID for Santroller devices.
-        /// </summary>
         public const ushort ProductID = 0x2882;
 
         // Fall back to regular HID layout finder for devices without explicit layouts
@@ -61,9 +54,7 @@ namespace PlasticBand.LowLevel
                 { typeof(InputDeviceDescription).MakeByRefType(), typeof(string), typeof(InputDeviceExecuteCommandDelegate) }, null)
             .CreateDelegate(typeof(InputDeviceFindControlLayoutDelegate));
 
-        /// <summary>
-        /// Lookup for the default device/rhythm type of an XInput subtype.
-        /// </summary>
+        // Default device/rhythm types for XInput subtypes
         private static readonly Dictionary<int, (SantrollerDeviceType type, SantrollerRhythmType rhythm)> s_XInputSubtypeToDeviceType
             = new Dictionary<int, (SantrollerDeviceType type, SantrollerRhythmType rhythm)>()
         {
@@ -80,15 +71,10 @@ namespace PlasticBand.LowLevel
             { (int)XInputNonStandardSubType.StageKit,              (SantrollerDeviceType.StageKit, SantrollerRhythmType.None) },
         };
 
-        /// <summary>
-        /// Registered layouts for HID santroller devices.
-        /// </summary>
+        // Registered layouts
         private static readonly Dictionary<(SantrollerDeviceType, SantrollerRhythmType?), string> s_AvailableHidLayouts
             = new Dictionary<(SantrollerDeviceType, SantrollerRhythmType?), string>();
 
-        /// <summary>
-        /// Initializes the layout resolver.
-        /// </summary>
         internal static void Initialize()
         {
             // Register dummy device
@@ -108,9 +94,6 @@ namespace PlasticBand.LowLevel
         internal static SantrollerRhythmType GetRhythmType(ushort version)
             => (SantrollerRhythmType)((version >> 4) & 0x0F);
 
-        /// <summary>
-        /// Determines the layout to use for the given device description.
-        /// </summary>
         private static string FindSantrollerDeviceLayout(ref InputDeviceDescription description, string matchedLayout,
             InputDeviceExecuteCommandDelegate executeDeviceCommand)
         {
@@ -141,10 +124,6 @@ namespace PlasticBand.LowLevel
             return s_HidLayoutFinder(ref description, null, executeDeviceCommand);
         }
 
-        /// <summary>
-        /// Registers <typeparamref name="TDevice"/> to the input system as an HID Santroller device using the specified
-        /// <see cref="SantrollerDeviceType"/> and <see cref="SantrollerRhythmType"/>.
-        /// </summary>
         internal static void RegisterHIDLayout<TDevice>(SantrollerDeviceType deviceType, SantrollerRhythmType? rhythmType = null)
             where TDevice : InputDevice
         {
@@ -158,10 +137,6 @@ namespace PlasticBand.LowLevel
             s_AvailableHidLayouts.Add((deviceType, rhythmType), typeof(TDevice).Name);
         }
 
-        /// <summary>
-        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified
-        /// <see cref="XInputController.DeviceSubType"/> and Santroller device/rhythm type.
-        /// </summary>
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(XInputController.DeviceSubType subType,
             SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
@@ -169,10 +144,6 @@ namespace PlasticBand.LowLevel
             where TDevice : InputDevice
             => RegisterXInputLayout<TDevice>((int)subType, deviceType, rhythmType);
 
-        /// <summary>
-        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified
-        /// <see cref="XInputNonStandardSubType"/> and Santroller device/rhythm type.
-        /// </summary>
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(XInputNonStandardSubType subType,
             SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
@@ -180,10 +151,6 @@ namespace PlasticBand.LowLevel
             where TDevice : InputDevice
             => RegisterXInputLayout<TDevice>((int)subType, deviceType, rhythmType);
 
-        /// <summary>
-        /// Registers <typeparamref name="TDevice"/> to the input system as an XInput Santroller device using the specified
-        /// XInput subtype and Santroller device/rhythm type.
-        /// </summary>
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(int subType,
             SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
@@ -193,9 +160,6 @@ namespace PlasticBand.LowLevel
             InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType, deviceType, rhythmType));
         }
 
-        /// <summary>
-        /// Gets a matcher that matches XInput Santroller devices with the given device type and rhythm type.
-        /// </summary>
         internal static InputDeviceMatcher GetXInputMatcher(int subType,
             SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
             SantrollerRhythmType rhythmType = SantrollerRhythmType.None)

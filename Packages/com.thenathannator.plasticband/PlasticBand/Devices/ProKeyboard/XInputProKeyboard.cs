@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
-// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/ProKeyboard/Xbox%20360.md
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Pro%20Keyboard/Xbox%20360.md
 
 namespace PlasticBand.Devices
 {

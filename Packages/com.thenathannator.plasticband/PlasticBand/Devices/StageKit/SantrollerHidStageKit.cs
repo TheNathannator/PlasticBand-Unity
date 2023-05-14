@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
-// TODO
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Other/Stage%20Kit/Santroller.md
 
 namespace PlasticBand.Devices
 {

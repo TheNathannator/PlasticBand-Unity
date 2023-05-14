@@ -266,9 +266,7 @@ namespace PlasticBand.Devices
             whammy = GetChildControl<AxisControl>(nameof(whammy));
         }
 
-        /// <summary>
-        /// Sets this device as the current <see cref="ProGuitar"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public override void MakeCurrent()
         {
             base.MakeCurrent();

@@ -3,9 +3,6 @@ using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
 
-// PlasticBand reference doc:
-// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/PS3%20and%20Wii.md
-
 namespace PlasticBand.Devices
 {
     [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_ReportId), displayName = "Santroller HID Rock Band Drumkit")]

@@ -207,9 +207,7 @@ namespace PlasticBand.Devices
             selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
         }
 
-        /// <summary>
-        /// Sets this device as the current <see cref="FiveFretGuitar"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public override void MakeCurrent()
         {
             base.MakeCurrent();

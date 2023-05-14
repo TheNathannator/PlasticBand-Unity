@@ -31,9 +31,7 @@ namespace PlasticBand.Controls
         private const FiveFret B = FiveFret.Blue;
         private const FiveFret O = FiveFret.Orange;
 
-        /// <summary>
-        /// Lookup for possible values for the World Tour slider bar.
-        /// </summary>
+        // Possible values for the World Tour slider bar
         private static readonly Dictionary<byte, FiveFret> s_WTSliderLookup = new Dictionary<byte, FiveFret>()
         {
             { 0x7B, FiveFret.None },
@@ -67,9 +65,7 @@ namespace PlasticBand.Controls
             { 0xFC,                 O }
         };
 
-        /// <summary>
-        /// Lookup for possible values for the GH5 slider bar.
-        /// </summary>
+        // Possible values for the GH5 slider bar
         private static readonly Dictionary<byte, FiveFret> s_GH5SliderLookup = new Dictionary<byte, FiveFret>()
         {
             // GH5 guitars
@@ -107,14 +103,7 @@ namespace PlasticBand.Controls
             { 0x7F,                 O }
         };
 
-        /// <summary>
-        /// The lookup used to determine what slider segments are being pressed.
-        /// </summary>
         private Dictionary<byte, FiveFret> m_SliderLookup;
-
-        /// <summary>
-        /// The fret flag used to determine pressed state.
-        /// </summary>
         private FiveFret m_FretToTest;
 
         protected override void FinishSetup()
@@ -142,9 +131,7 @@ namespace PlasticBand.Controls
         byte m_previousValue;
 #endif
 
-        /// <summary>
-        /// Reads the value of this control from a given state pointer.
-        /// </summary>
+        /// <inheritdoc/>
         public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
         {
             // Read only the bottom byte

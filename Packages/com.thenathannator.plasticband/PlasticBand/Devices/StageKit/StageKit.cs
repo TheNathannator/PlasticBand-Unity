@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using PlasticBand.Haptics;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
@@ -88,27 +89,19 @@ namespace PlasticBand.Devices
             selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
         }
 
-        /// <summary>
-        /// Sets this device as the current <see cref="StageKit"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public override void MakeCurrent()
         {
             base.MakeCurrent();
             current = this;
         }
 
-        /// <summary>
-        /// Processes when this device is added to the system.
-        /// </summary>
         protected override void OnAdded()
         {
             base.OnAdded();
             s_AllDevices.Add(this);
         }
 
-        /// <summary>
-        /// Processes when this device is removed from the system.
-        /// </summary>
         protected override void OnRemoved()
         {
             base.OnRemoved();
@@ -119,19 +112,13 @@ namespace PlasticBand.Devices
 
         private protected StageKitHaptics m_Haptics;
 
-        /// <summary>
-        /// Resets the state of the stage kit without resetting the stored state.
-        /// </summary>
+        /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
         public virtual void PauseHaptics() => m_Haptics?.PauseHaptics();
 
-        /// <summary>
-        /// Restores the stored state of the stage kit.
-        /// </summary>
+        /// <inheritdoc cref="IHaptics.ResumeHaptics()"/>
         public virtual void ResumeHaptics() => m_Haptics?.ResumeHaptics();
 
-        /// <summary>
-        /// Resets the state of the stage kit.
-        /// </summary>
+        /// <inheritdoc cref="IHaptics.ResetHaptics()"/>
         public virtual void ResetHaptics() => m_Haptics?.ResetHaptics();
 
         /// <inheritdoc cref="IStageKitHaptics.SetFogMachine(bool)"/>

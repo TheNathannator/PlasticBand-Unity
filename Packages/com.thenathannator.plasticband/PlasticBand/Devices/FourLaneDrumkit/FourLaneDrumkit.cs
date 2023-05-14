@@ -247,9 +247,7 @@ namespace PlasticBand.Devices
             kick2 = GetChildControl<ButtonControl>(nameof(kick2));
         }
 
-        /// <summary>
-        /// Sets this device as the current <see cref="FourLaneDrumkit"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public override void MakeCurrent()
         {
             base.MakeCurrent();

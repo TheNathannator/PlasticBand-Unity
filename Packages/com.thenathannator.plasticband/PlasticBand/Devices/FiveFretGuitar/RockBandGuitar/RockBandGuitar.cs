@@ -173,9 +173,7 @@ namespace PlasticBand.Devices
             pickupSwitch = GetChildControl<AxisControl>(nameof(pickupSwitch));
         }
 
-        /// <summary>
-        /// Sets this device as the current <see cref="RockBandGuitar"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public override void MakeCurrent()
         {
             base.MakeCurrent();

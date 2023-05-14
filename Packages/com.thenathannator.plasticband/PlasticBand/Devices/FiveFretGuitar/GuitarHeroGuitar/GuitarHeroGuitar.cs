@@ -176,9 +176,7 @@ namespace PlasticBand.Devices
             accelZ = GetChildControl<AxisControl>(nameof(accelZ));
         }
 
-        /// <summary>
-        /// Sets this device as the current <see cref="GuitarHeroGuitar"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public override void MakeCurrent()
         {
             base.MakeCurrent();

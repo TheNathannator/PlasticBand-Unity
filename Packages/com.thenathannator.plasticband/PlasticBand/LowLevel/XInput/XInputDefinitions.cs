@@ -10,9 +10,6 @@ namespace PlasticBand.LowLevel
 {
     using static XInputController;
 
-    /// <summary>
-    /// The standard XInput report format.
-    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct XInputGamepad : IInputStateTypeInfo
     {
@@ -89,22 +86,14 @@ namespace PlasticBand.LowLevel
         public short rightStickY;
     }
 
-    /// <summary>
-    /// The standard XInput vibration format.
-    /// </summary>
     internal struct XInputVibration
     {
         public short leftMotor;
         public short rightMotor;
     }
 
-    /// <summary>
-    /// Capability info of an XInput device.
-    /// </summary>
-    /// <remarks>
-    /// This doesn't match the actual XINPUT_CAPABILITIES,
+    // This doesn't match the actual XINPUT_CAPABILITIES,
     /// rather it's the format reported by Unity for the device capabilities JSON.
-    /// </remarks>
     internal struct XInputCapabilities
     {
         public int userIndex;
@@ -139,9 +128,6 @@ namespace PlasticBand.LowLevel
     }
     */
 
-    /// <summary>
-    /// Non-standard XInput subtypes.
-    /// </summary>
     internal enum XInputNonStandardSubType
     {
         StageKit = 9,

@@ -80,19 +80,8 @@ namespace PlasticBand.Controls
         /// </remarks>
         public int cymbalBit;
 
-        /// <summary>
-        /// The d-pad control of the parent device.
-        /// </summary>
         private DpadControl m_Dpad;
-
-        /// <summary>
-        /// The pad flag to test to determine state.
-        /// </summary>
         private FourLanePad m_PadToTest;
-
-        /// <summary>
-        /// Indicates whether or not the pad/cymbal flags have been detected.
-        /// </summary>
         private bool m_HasFlags;
 
         protected override void FinishSetup()
@@ -143,9 +132,7 @@ namespace PlasticBand.Controls
         StringBuilder m_MessageBuilder = new StringBuilder();
 #endif
 
-        /// <summary>
-        /// Reads the value of this control from a given state pointer.
-        /// </summary>
+        /// <inheritdoc/>
         public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
         {
             // Read button bits

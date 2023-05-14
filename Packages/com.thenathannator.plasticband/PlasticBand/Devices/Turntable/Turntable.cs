@@ -293,9 +293,7 @@ namespace PlasticBand.Devices
             crossFader = GetChildControl<AxisControl>(nameof(crossFader));
         }
 
-        /// <summary>
-        /// Sets this device as the current <see cref="Turntable"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public override void MakeCurrent()
         {
             base.MakeCurrent();
