@@ -11,7 +11,7 @@ namespace PlasticBand.Devices
     /// Bitmask of possible fret values on a 6-fret guitar.
     /// </summary>
     [Flags]
-    public enum SixFretGuitarFret
+    public enum SixFret
     {
         None = 0,
         Black1 = 0x01,
@@ -156,16 +156,16 @@ namespace PlasticBand.Devices
         /// <summary>
         /// Retrieves a fret control by enum value.
         /// </summary>
-        public ButtonControl GetFret(SixFretGuitarFret fret)
+        public ButtonControl GetFret(SixFret fret)
         {
             switch (fret)
             {
-                case SixFretGuitarFret.Black1: return black1;
-                case SixFretGuitarFret.Black2: return black2;
-                case SixFretGuitarFret.Black3: return black3;
-                case SixFretGuitarFret.White1: return white1;
-                case SixFretGuitarFret.White2: return white2;
-                case SixFretGuitarFret.White3: return white3;
+                case SixFret.Black1: return black1;
+                case SixFret.Black2: return black2;
+                case SixFret.Black3: return black3;
+                case SixFret.White1: return white1;
+                case SixFret.White2: return white2;
+                case SixFret.White3: return white3;
                 default: throw new ArgumentException($"Could not determine the fret to retrieve! Value: '{fret}'", nameof(fret));
             }
         }
@@ -173,30 +173,30 @@ namespace PlasticBand.Devices
         /// <summary>
         /// Retrives a bitmask of the current fret states.
         /// </summary>
-        public SixFretGuitarFret GetFretMask()
+        public SixFret GetFretMask()
         {
-            var mask = SixFretGuitarFret.None;
-            if (black1.isPressed) mask |= SixFretGuitarFret.Black1;
-            if (black2.isPressed) mask |= SixFretGuitarFret.Black2;
-            if (black3.isPressed) mask |= SixFretGuitarFret.Black3;
-            if (white1.isPressed) mask |= SixFretGuitarFret.White1;
-            if (white2.isPressed) mask |= SixFretGuitarFret.White2;
-            if (white3.isPressed) mask |= SixFretGuitarFret.White3;
+            var mask = SixFret.None;
+            if (black1.isPressed) mask |= SixFret.Black1;
+            if (black2.isPressed) mask |= SixFret.Black2;
+            if (black3.isPressed) mask |= SixFret.Black3;
+            if (white1.isPressed) mask |= SixFret.White1;
+            if (white2.isPressed) mask |= SixFret.White2;
+            if (white3.isPressed) mask |= SixFret.White3;
             return mask;
         }
 
         /// <summary>
         /// Retrives a bitmask of the current fret states.
         /// </summary>
-        public SixFretGuitarFret GetFretMask(InputEventPtr eventPtr)
+        public SixFret GetFretMask(InputEventPtr eventPtr)
         {
-            var mask = SixFretGuitarFret.None;
-            if (black1.IsPressedInEvent(eventPtr)) mask |= SixFretGuitarFret.Black1;
-            if (black2.IsPressedInEvent(eventPtr)) mask |= SixFretGuitarFret.Black2;
-            if (black3.IsPressedInEvent(eventPtr)) mask |= SixFretGuitarFret.Black3;
-            if (white1.IsPressedInEvent(eventPtr)) mask |= SixFretGuitarFret.White1;
-            if (white2.IsPressedInEvent(eventPtr)) mask |= SixFretGuitarFret.White2;
-            if (white3.IsPressedInEvent(eventPtr)) mask |= SixFretGuitarFret.White3;
+            var mask = SixFret.None;
+            if (black1.IsPressedInEvent(eventPtr)) mask |= SixFret.Black1;
+            if (black2.IsPressedInEvent(eventPtr)) mask |= SixFret.Black2;
+            if (black3.IsPressedInEvent(eventPtr)) mask |= SixFret.Black3;
+            if (white1.IsPressedInEvent(eventPtr)) mask |= SixFret.White1;
+            if (white2.IsPressedInEvent(eventPtr)) mask |= SixFret.White2;
+            if (white3.IsPressedInEvent(eventPtr)) mask |= SixFret.White3;
             return mask;
         }
 
