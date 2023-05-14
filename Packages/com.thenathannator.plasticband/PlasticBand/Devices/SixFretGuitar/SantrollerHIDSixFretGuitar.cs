@@ -60,7 +60,7 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(SantrollerHIDSixFretGuitarState), displayName = "Santroller HID Guitar Hero Live Guitar")]
-    internal class SantrollerHIDSixFretGuitar : SixFretGuitar, ISantrollerHaptics
+    internal class SantrollerHIDSixFretGuitar : SixFretGuitar, ISantrollerSixFretGuitarHaptics
     {
         internal new static void Initialize()
         {
@@ -70,10 +70,10 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Haptics = new HidSantrollerHaptics(this);
+            m_Haptics = new SantrollerSixFretGuitarHaptics(this);
         }
 
-        private SantrollerHaptics m_Haptics;
+        private SantrollerSixFretGuitarHaptics m_Haptics;
 
         /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
         public void PauseHaptics() => m_Haptics.PauseHaptics();
@@ -116,5 +116,11 @@ namespace PlasticBand.Devices
 
         /// <inheritdoc cref="ISantrollerHaptics.SetSolo(bool)"/>
         public void SetSolo(bool enabled) => m_Haptics.SetSolo(enabled);
+
+        /// <inheritdoc cref="ISantrollerSixFretGuitarHaptics.SetNoteLights(SixFret, bool)"/>
+        public void SetNoteLights(SixFret frets, bool enabled) => m_Haptics.SetNoteLights(frets, enabled);
+
+        /// <inheritdoc cref="ISantrollerSixFretGuitarHaptics.SetOpenNoteLight(bool)"/>
+        public void SetOpenNoteLight(bool enabled) => m_Haptics.SetOpenNoteLight(enabled);
     }
 }

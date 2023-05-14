@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Layouts;
 namespace PlasticBand.Devices
 {
     [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_ReportId), displayName = "Santroller HID Rock Band Drumkit")]
-    internal class SantrollerHIDFourLaneDrumkit : FourLaneDrumkit, ISantrollerHaptics
+    internal class SantrollerHIDFourLaneDrumkit : FourLaneDrumkit, ISantrollerFourLaneDrumkitHaptics
     {
         internal new static void Initialize()
         {
@@ -17,10 +17,10 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Haptics = new HidSantrollerHaptics(this);
+            m_Haptics = new SantrollerFourLaneDrumkitHaptics(this);
         }
 
-        private SantrollerHaptics m_Haptics;
+        private SantrollerFourLaneDrumkitHaptics m_Haptics;
 
         /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
         public void PauseHaptics() => m_Haptics.PauseHaptics();
@@ -63,5 +63,8 @@ namespace PlasticBand.Devices
 
         /// <inheritdoc cref="ISantrollerHaptics.SetSolo(bool)"/>
         public void SetSolo(bool enabled) => m_Haptics.SetSolo(enabled);
+
+        /// <inheritdoc cref="ISantrollerFourLaneDrumkitHaptics.SetNoteLights(FourLanePad, bool)"/>
+        public void SetNoteLights(FourLanePad pads, bool enabled) => m_Haptics.SetNoteLights(pads, enabled);
     }
 }

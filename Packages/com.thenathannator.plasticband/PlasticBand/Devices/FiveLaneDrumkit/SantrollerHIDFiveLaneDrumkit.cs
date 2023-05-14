@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Layouts;
 namespace PlasticBand.Devices
 {
     [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState_ReportId), displayName = "Santroller HID Guitar Hero Drumkit")]
-    internal class SantrollerHIDFiveLaneDrumkit : FiveLaneDrumkit, ISantrollerHaptics
+    internal class SantrollerHIDFiveLaneDrumkit : FiveLaneDrumkit, ISantrollerFiveLaneDrumkitHaptics
     {
         internal new static void Initialize()
         {
@@ -17,10 +17,10 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Haptics = new HidSantrollerHaptics(this);
+            m_Haptics = new SantrollerFiveLaneDrumkitHaptics(this);
         }
 
-        private SantrollerHaptics m_Haptics;
+        private SantrollerFiveLaneDrumkitHaptics m_Haptics;
 
         /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
         public void PauseHaptics() => m_Haptics.PauseHaptics();
@@ -63,5 +63,8 @@ namespace PlasticBand.Devices
 
         /// <inheritdoc cref="ISantrollerHaptics.SetSolo(bool)"/>
         public void SetSolo(bool enabled) => m_Haptics.SetSolo(enabled);
+
+        /// <inheritdoc cref="ISantrollerFiveLaneDrumkitHaptics.SetNoteLights(FiveLanePad, bool)"/>
+        public void SetNoteLights(FiveLanePad pads, bool enabled) => m_Haptics.SetNoteLights(pads, enabled);
     }
 }

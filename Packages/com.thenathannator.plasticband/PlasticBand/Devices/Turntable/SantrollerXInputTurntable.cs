@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.Layouts;
 namespace PlasticBand.Devices
 {
     [InputControlLayout(stateType = typeof(XInputTurntableState), displayName = "Santroller XInput Turntable")]
-    internal class SantrollerXInputTurntable : XInputTurntable, ISantrollerHaptics
+    internal class SantrollerXInputTurntable : XInputTurntable, ISantrollerTurntableHaptics
     {
         internal new static void Initialize()
         {
@@ -19,10 +19,10 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Haptics = new XInputSantrollerHaptics(this);
+            m_Haptics = new SantrollerTurntableHaptics(this);
         }
 
-        private new SantrollerHaptics m_Haptics;
+        private new SantrollerTurntableHaptics m_Haptics;
 
         /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
         public new void PauseHaptics()
@@ -77,5 +77,14 @@ namespace PlasticBand.Devices
 
         /// <inheritdoc cref="ISantrollerHaptics.SetSolo(bool)"/>
         public void SetSolo(bool enabled) => m_Haptics.SetSolo(enabled);
+
+        /// <inheritdoc cref="ISantrollerTurntableHaptics.SetNoteLights(TurntableButton, TurntableButton, bool)"/>
+        public void SetNoteLights(TurntableButton left, TurntableButton right, bool enabled) => m_Haptics.SetNoteLights(left, right, enabled);
+
+        /// <inheritdoc cref="ISantrollerTurntableHaptics.SetScratchLights(bool, bool)"/>
+        public void SetScratchLights(bool left, bool right) => m_Haptics.SetScratchLights(left, right);
+
+        /// <inheritdoc cref="ISantrollerTurntableHaptics.SetEuphoriaBrightness(float)"/>
+        public void SetEuphoriaBrightness(float brightness) => m_Haptics.SetEuphoriaBrightness(brightness);
     }
 }

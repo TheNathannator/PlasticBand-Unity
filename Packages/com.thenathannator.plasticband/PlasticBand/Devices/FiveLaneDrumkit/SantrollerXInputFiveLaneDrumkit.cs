@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.XInput;
 namespace PlasticBand.Devices
 {
     [InputControlLayout(stateType = typeof(XInputFiveLaneDrumkitState), displayName = "Santroller XInput Guitar Hero Drumkit")]
-    internal class SantrollerXInputFiveLaneDrumkit : XInputFiveLaneDrumkit, ISantrollerHaptics
+    internal class SantrollerXInputFiveLaneDrumkit : XInputFiveLaneDrumkit, ISantrollerFiveLaneDrumkitHaptics
     {
         internal new static void Initialize()
         {
@@ -18,10 +18,10 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Haptics = new XInputSantrollerHaptics(this);
+            m_Haptics = new SantrollerFiveLaneDrumkitHaptics(this);
         }
 
-        private SantrollerHaptics m_Haptics;
+        private SantrollerFiveLaneDrumkitHaptics m_Haptics;
 
         /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
         public void PauseHaptics() => m_Haptics.PauseHaptics();
@@ -64,5 +64,8 @@ namespace PlasticBand.Devices
 
         /// <inheritdoc cref="ISantrollerHaptics.SetSolo(bool)"/>
         public void SetSolo(bool enabled) => m_Haptics.SetSolo(enabled);
+
+        /// <inheritdoc cref="ISantrollerFiveLaneDrumkitHaptics.SetNoteLights(FiveLanePad, bool)"/>
+        public void SetNoteLights(FiveLanePad pads, bool enabled) => m_Haptics.SetNoteLights(pads, enabled);
     }
 }
