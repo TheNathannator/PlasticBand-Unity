@@ -1,4 +1,5 @@
-using PlasticBand.Devices.LowLevel;
+using System;
+using PlasticBand.LowLevel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,7 @@ namespace PlasticBand.Haptics
     /// <summary>
     /// Handles haptics for Santroller devices.
     /// </summary>
-    internal abstract class SantrollerHaptics : StageKitHaptics, ISantrollerHaptics
+    internal class SantrollerHaptics : StageKitHaptics, ISantrollerHaptics
     {
         protected enum SantrollerCommandId : byte
         {
@@ -17,6 +18,8 @@ namespace PlasticBand.Haptics
             SoloActive = 0x0B
         }
 
+        private readonly ISantrollerHapticsSender m_Sender;
+
         private float m_StarPowerFill;
         private bool m_StarPowerActive;
         private uint m_Multiplier = 1;
@@ -24,6 +27,12 @@ namespace PlasticBand.Haptics
 
         public SantrollerHaptics(InputDevice device) : base(device)
         {
+            switch (device.description.interfaceName)
+            {
+                case HidDefinitions.InterfaceName: m_Sender = new HidSantrollerHapticsSender(); break;
+                case XInputLayoutFinder.InterfaceName: m_Sender = new XInputSantrollerHapticsSender(); break;
+                default: throw new ArgumentException($"Unsupported interface type '{device.description.interfaceName}'!", nameof(device));
+            }
         }
 
         protected override void OnHapticsResumed()
@@ -38,7 +47,6 @@ namespace PlasticBand.Haptics
         protected override void OnHapticsReset()
         {
             base.OnHapticsReset();
-            m_HapticsEnabled = true;
             m_StarPowerFill = 0f;
             m_StarPowerActive = false;
             m_Multiplier = 1;
@@ -99,36 +107,13 @@ namespace PlasticBand.Haptics
             SendCommand(SantrollerCommandId.SoloActive, (byte)(enabled ? 1 : 0));
         }
 
-        public void SendCommand(byte commandId, byte parameter = 0)
+        protected void SendCommand(byte commandId, byte parameter = 0)
             => SendCommand(m_Device, commandId, parameter);
 
-        protected void SendCommand(SantrollerCommandId commandId, byte parameter = 0)
-            => SendCommand(m_Device, (byte)commandId, parameter);
-    }
-
-    internal class XInputSantrollerHaptics : SantrollerHaptics
-    {
-        public XInputSantrollerHaptics(InputDevice device) : base(device)
-        { }
+        private void SendCommand(SantrollerCommandId commandId, byte parameter = 0)
+            => SendCommand((byte)commandId, parameter);
 
         protected override void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
-        {
-            var command = new XInputVibrationCommand(parameter, commandId);
-            device.ExecuteCommand(ref command);
-        }
-    }
-
-    internal class HidSantrollerHaptics : SantrollerHaptics
-    {
-        public HidSantrollerHaptics(InputDevice device) : base(device)
-        { }
-
-        protected unsafe override void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
-        {
-            var command = new PS3OutputCommand(0x5A);
-            command.data[0] = parameter;
-            command.data[1] = commandId;
-            device.ExecuteCommand(ref command);
-        }
+            => m_Sender.SendCommand(device, commandId, parameter);
     }
 }
