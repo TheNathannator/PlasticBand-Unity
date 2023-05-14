@@ -6,14 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
-## Unreleased
+## [0.3.0] - 2023/14/05
 
 ### Added
 
 - A number of convenience APIs have been added to each of the base device classes, including being able to retrieve controls such as guitar frets or keyboard keys by index or enum, and to get a mask of the state for each of those controls.
 - The Rock Band stage kit is now supported, and can be controlled using the `IStageKitHaptics` haptics interface.
-- [sanjay900](https://github.com/sanjay900)'s Santroller devices are now supported.
-  - Output reports (e.g. LED support) are not implemented yet, this will be done later.
+- [sanjay900](https://github.com/sanjay900)'s Santroller devices are now supported, including their various LED haptics. ([GH-3](https://github.com/TheNathannator/PlasticBand-Unity/pull/3) & [GH-4](https://github.com/TheNathannator/PlasticBand-Unity/pull/4), plus a bunch of work done afterwards)
 - The slider bars on World Tour guitars are now (hopefully) supported.
   - I'm currently unable to completely verify this works, needs more verification.
 
