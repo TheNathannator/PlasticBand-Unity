@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.3.1] - 2023/23/05
+
+### Fixed
+
+- Some initialization issues when entering Play mode in the editor have been fixed.
+- Fixed XInput layout overrides not being evaluated correctly due to a small logic error.
+- Temporarily disabled Santroller HID device layouts to avoid the same crash bug as with the PS4 instrument layouts on Windows.
+
 ## [0.3.0] - 2023/14/05
 
 ### Added
