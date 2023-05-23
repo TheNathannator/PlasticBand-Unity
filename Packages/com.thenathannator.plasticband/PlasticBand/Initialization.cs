@@ -21,9 +21,17 @@ namespace PlasticBand
         }
 #endif
 
+#if !UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+#endif
         internal static void Initialize()
         {
+
+            // Layout finders
+            HidReportIdLayoutFinder.Initialize();
+            XInputLayoutFinder.Initialize();
+            SantrollerLayoutFinder.Initialize();
+
             // General controls
             ButtonAxisPairControl.Initialize();
             MaskButtonControl.Initialize();
@@ -95,11 +103,6 @@ namespace PlasticBand
             // Rock Band stage kit
             StageKit.Initialize();
             XInputStageKit.Initialize();
-
-            // Layout finders
-            HidReportIdLayoutFinder.Initialize();
-            XInputLayoutFinder.Initialize();
-            SantrollerLayoutFinder.Initialize();
         }
     }
 }

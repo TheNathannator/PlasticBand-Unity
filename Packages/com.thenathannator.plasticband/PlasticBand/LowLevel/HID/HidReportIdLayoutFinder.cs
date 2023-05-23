@@ -40,6 +40,10 @@ namespace PlasticBand.LowLevel
 
         internal static void Initialize()
         {
+            // Ensure no layouts have persisted across a domain reload
+            s_AvailableLayouts.Clear();
+
+            // Register layout finder
             InputSystem.onFindLayoutForDevice += FindDeviceLayout;
         }
 

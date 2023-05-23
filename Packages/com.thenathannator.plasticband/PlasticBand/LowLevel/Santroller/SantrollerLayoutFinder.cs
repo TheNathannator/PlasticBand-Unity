@@ -8,6 +8,8 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.XInput;
 
+using Debug = UnityEngine.Debug;
+
 namespace PlasticBand.LowLevel
 {
     internal enum SantrollerDeviceType
@@ -84,6 +86,9 @@ namespace PlasticBand.LowLevel
                 .WithCapability("productId", (int)ProductID)
             );
 
+            // Ensure no layouts have persisted across a domain reload
+            s_AvailableHidLayouts.Clear();
+
             // Register layout finder
             InputSystem.onFindLayoutForDevice += FindSantrollerDeviceLayout;
         }
@@ -132,7 +137,10 @@ namespace PlasticBand.LowLevel
 
             // Ensure no resolver is registered yet
             if (s_AvailableHidLayouts.ContainsKey((deviceType, rhythmType)))
-                throw new ArgumentException($"Device type {deviceType}:{(rhythmType != null ? rhythmType.ToString() : "All")} is already registered!");
+            {
+                Debug.LogError($"Device type {deviceType}:{(rhythmType != null ? rhythmType.ToString() : "All")} is already registered!");
+                return;
+            }
 
             s_AvailableHidLayouts.Add((deviceType, rhythmType), typeof(TDevice).Name);
         }

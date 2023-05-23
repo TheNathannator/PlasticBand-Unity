@@ -51,6 +51,10 @@ namespace PlasticBand.LowLevel
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void Initialize()
         {
+            // Ensure no layouts have persisted across a domain reload
+            s_LayoutOverrides.Clear();
+
+            // Register layout finder
             InputSystem.onFindLayoutForDevice += FindXInputDeviceLayout;
         }
 
