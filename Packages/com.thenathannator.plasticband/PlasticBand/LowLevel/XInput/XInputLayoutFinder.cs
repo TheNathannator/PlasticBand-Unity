@@ -89,7 +89,7 @@ namespace PlasticBand.LowLevel
             foreach (var entry in overrides)
             {
                 // Ignore invalid overrides and non-matching resolvers
-                if (string.IsNullOrEmpty(entry.layoutName) && !entry.resolve(capabilities, state))
+                if (string.IsNullOrEmpty(entry.layoutName) || !entry.resolve(capabilities, state))
                     continue;
 
                 // Keep track of the best match
