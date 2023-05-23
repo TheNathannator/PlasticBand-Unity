@@ -7,6 +7,8 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.XInput;
 
+using Debug = UnityEngine.Debug;
+
 namespace PlasticBand.LowLevel
 {
     using static XInputController;
@@ -39,14 +41,14 @@ namespace PlasticBand.LowLevel
         internal delegate bool XInputOverrideDetermineMatch(XInputCapabilities capabilities, XInputGamepad state);
         private class XInputLayoutOverride
         {
-            public int subType;
             public XInputOverrideDetermineMatch resolve;
             public InputDeviceMatcher matcher;
             public string layoutName;
         }
 
         // Registered layout resolvers
-        private static readonly List<XInputLayoutOverride> s_LayoutOverrides = new List<XInputLayoutOverride>();
+        private static readonly Dictionary<int, List<XInputLayoutOverride>> s_LayoutOverrides
+            = new Dictionary<int, List<XInputLayoutOverride>>();
 
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void Initialize()
@@ -69,9 +71,8 @@ namespace PlasticBand.LowLevel
             if (!Utilities.TryParseJson<XInputCapabilities>(description.capabilities, out var capabilities))
                 return DefaultLayoutIfNull(matchedLayout);
 
-            // Check if the subtype has an override registered
-            var overrides = s_LayoutOverrides.Where((entry) => entry.subType == (int)capabilities.subType);
-            if (!overrides.Any())
+            // Check if the subtype has any overrides registered
+            if (!s_LayoutOverrides.TryGetValue((int)capabilities.subType, out var overrides))
                 return DefaultLayoutIfNull(matchedLayout);
 
             // Get device state
@@ -137,13 +138,26 @@ namespace PlasticBand.LowLevel
             // Register to the input system
             InputSystem.RegisterLayout<TDevice>();
 
-            // Add to override list
-            s_LayoutOverrides.Add(new XInputLayoutOverride()
+            // Ensure no override is registered yet
+            if (!s_LayoutOverrides.TryGetValue(subType, out var overrides))
             {
-                subType = subType,
+                overrides = new List<XInputLayoutOverride>();
+                s_LayoutOverrides.Add(subType, overrides);
+            }
+
+            string layoutName = typeof(TDevice).Name;
+            if (overrides.Any((entry) => entry.matcher == matcher))
+            {
+                Debug.LogError($"Matcher {matcher} is already registered for subtype {subType}!");
+                return;
+            }
+
+            // Add to override list
+            overrides.Add(new XInputLayoutOverride()
+            {
                 resolve = resolveLayout,
                 matcher = matcher.empty ? GetMatcher(subType) : matcher,
-                layoutName = typeof(TDevice).Name
+                layoutName = layoutName
             });
         }
 
