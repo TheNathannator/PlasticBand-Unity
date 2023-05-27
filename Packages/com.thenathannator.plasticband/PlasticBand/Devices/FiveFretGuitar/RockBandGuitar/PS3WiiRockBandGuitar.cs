@@ -77,7 +77,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            HidReportIdLayoutFinder.RegisterLayout<PS3RockBandGuitar,
+            HidLayoutFinder.RegisterLayout<PS3RockBandGuitar,
                 PS3RockBandGuitar_ReportId, PS3RockBandGuitar_NoReportId>(0x12BA, 0x0200);
         }
     }
@@ -94,11 +94,11 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // RB1 guitars
-            HidReportIdLayoutFinder.RegisterLayout<WiiRockBandGuitar,
+            HidLayoutFinder.RegisterLayout<WiiRockBandGuitar,
                 WiiRockBandGuitar_ReportId, WiiRockBandGuitar_NoReportId>(0x1BAD, 0x0004);
 
             // RB2 and later
-            HidReportIdLayoutFinder.RegisterLayout<WiiRockBandGuitar,
+            HidLayoutFinder.RegisterLayout<WiiRockBandGuitar,
                 WiiRockBandGuitar_ReportId, WiiRockBandGuitar_NoReportId>(0x1BAD, 0x3010);
         }
     }

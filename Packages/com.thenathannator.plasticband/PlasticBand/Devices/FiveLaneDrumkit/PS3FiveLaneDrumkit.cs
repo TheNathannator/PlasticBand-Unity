@@ -89,7 +89,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            HidReportIdLayoutFinder.RegisterLayout<PS3FiveLaneDrumkit,
+            HidLayoutFinder.RegisterLayout<PS3FiveLaneDrumkit,
                 PS3FiveLaneDrumkit_ReportId, PS3FiveLaneDrumkit_NoReportId>(0x12BA, 0x0120);
         }
     }

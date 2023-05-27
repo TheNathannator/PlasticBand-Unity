@@ -83,7 +83,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            HidReportIdLayoutFinder.RegisterLayout<PS3Turntable,
+            HidLayoutFinder.RegisterLayout<PS3Turntable,
                 PS3Turntable_ReportId, PS3Turntable_NoReportId>(0x12BA, 0x0140);
         }
 

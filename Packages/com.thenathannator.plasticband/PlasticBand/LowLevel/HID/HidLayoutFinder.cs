@@ -26,7 +26,7 @@ namespace PlasticBand.LowLevel
     /// <summary>
     /// Checks registered HID devices for the presence of a report ID, and picks a layout accordingly.
     /// </summary>
-    internal static class HidReportIdLayoutFinder
+    internal static class HidLayoutFinder
     {
         // Get built-in HID descriptor retrieval so we don't have to copy it
         private unsafe delegate HIDDeviceDescriptor HID_ReadHIDDeviceDescriptor(ref InputDeviceDescription deviceDescription,

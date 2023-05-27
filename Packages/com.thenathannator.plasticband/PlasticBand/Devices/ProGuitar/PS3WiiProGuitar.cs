@@ -104,19 +104,19 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // Mustang
-            HidReportIdLayoutFinder.RegisterLayout<PS3ProGuitar,
+            HidLayoutFinder.RegisterLayout<PS3ProGuitar,
                 PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2430);
 
             // MIDI Pro Adapter (Mustang)
-            HidReportIdLayoutFinder.RegisterLayout<PS3ProGuitar,
+            HidLayoutFinder.RegisterLayout<PS3ProGuitar,
                 PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2438);
 
             // Squire
-            HidReportIdLayoutFinder.RegisterLayout<PS3ProGuitar,
+            HidLayoutFinder.RegisterLayout<PS3ProGuitar,
                 PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2530);
 
             // MIDI Pro Adapter (Squire)
-            HidReportIdLayoutFinder.RegisterLayout<PS3ProGuitar,
+            HidLayoutFinder.RegisterLayout<PS3ProGuitar,
                 PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2538);
         }
     }
@@ -133,19 +133,19 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // Mustang
-            HidReportIdLayoutFinder.RegisterLayout<WiiProGuitar,
+            HidLayoutFinder.RegisterLayout<WiiProGuitar,
                 WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3430);
 
             // MIDI Pro Adapter (Mustang)
-            HidReportIdLayoutFinder.RegisterLayout<WiiProGuitar,
+            HidLayoutFinder.RegisterLayout<WiiProGuitar,
                 WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3438);
 
             // Squire
-            HidReportIdLayoutFinder.RegisterLayout<WiiProGuitar,
+            HidLayoutFinder.RegisterLayout<WiiProGuitar,
                 WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3530);
 
             // MIDI Pro Adapter (Squire)
-            HidReportIdLayoutFinder.RegisterLayout<WiiProGuitar,
+            HidLayoutFinder.RegisterLayout<WiiProGuitar,
                 WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3538);
         }
     }

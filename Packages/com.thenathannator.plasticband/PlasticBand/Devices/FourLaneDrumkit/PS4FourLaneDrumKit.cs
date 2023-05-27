@@ -87,7 +87,7 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // MadCatz
-            HidReportIdLayoutFinder.RegisterLayout<PS4FourLaneDrumkit,
+            HidLayoutFinder.RegisterLayout<PS4FourLaneDrumkit,
                 PS4FourLaneDrumkit_ReportId, PS4FourLaneDrumkit_NoReportId>(0x0738, 0x8262);
 
             // PDP

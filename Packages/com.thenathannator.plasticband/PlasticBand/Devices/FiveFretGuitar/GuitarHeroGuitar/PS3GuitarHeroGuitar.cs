@@ -89,11 +89,11 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // PS3 guitars
-            HidReportIdLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar,
+            HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar,
                 PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar_NoReportId>(0x12BA, 0x0100);
 
             // World Tour PC guitar
-            HidReportIdLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar,
+            HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar,
                 PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar_NoReportId>(0x1430, 0x474C);
         }
     }

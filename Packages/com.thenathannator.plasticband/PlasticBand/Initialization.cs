@@ -27,7 +27,7 @@ namespace PlasticBand
         internal static void Initialize()
         {
             // Layout finders
-            HidReportIdLayoutFinder.Initialize();
+            HidLayoutFinder.Initialize();
             XInputLayoutFinder.Initialize();
             // SantrollerLayoutFinder.Initialize(); // Temporarily disabled to avoid a crash bug
             // this time it's not even related to the devices this is supposed to support lol

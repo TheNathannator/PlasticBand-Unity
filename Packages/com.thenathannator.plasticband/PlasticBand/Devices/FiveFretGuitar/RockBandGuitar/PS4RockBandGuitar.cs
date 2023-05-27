@@ -83,11 +83,11 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // Stratocaster
-            HidReportIdLayoutFinder.RegisterLayout<PS4RockBandGuitar,
+            HidLayoutFinder.RegisterLayout<PS4RockBandGuitar,
                 PS4RockBandGuitar_ReportId, PS4RockBandGuitar_NoReportId>(0x0738, 0x8261);
 
             // Jaguar
-            HidReportIdLayoutFinder.RegisterLayout<PS4RockBandGuitar,
+            HidLayoutFinder.RegisterLayout<PS4RockBandGuitar,
                 PS4RockBandGuitar_ReportId, PS4RockBandGuitar_NoReportId>(0x0E6F, 0x0173);
         }
     }

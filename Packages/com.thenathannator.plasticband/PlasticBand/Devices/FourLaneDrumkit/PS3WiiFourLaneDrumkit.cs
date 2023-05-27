@@ -89,11 +89,11 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // Drumkit
-            HidReportIdLayoutFinder.RegisterLayout<PS3FourLaneDrumkit,
+            HidLayoutFinder.RegisterLayout<PS3FourLaneDrumkit,
                 PS3FourLaneDrumkit_ReportId, PS3FourLaneDrumkit_NoReportId>(0x12BA, 0x0210);
 
             // MIDI Pro Adapter
-            HidReportIdLayoutFinder.RegisterLayout<PS3FourLaneDrumkit,
+            HidLayoutFinder.RegisterLayout<PS3FourLaneDrumkit,
                 PS3FourLaneDrumkit_ReportId, PS3FourLaneDrumkit_NoReportId>(0x12BA, 0x0218);
         }
     }
@@ -110,15 +110,15 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // RB1
-            HidReportIdLayoutFinder.RegisterLayout<WiiFourLaneDrumkit,
+            HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit,
                 WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit_NoReportId>(0x1BAD, 0x0005);
 
             // RB2 and later
-            HidReportIdLayoutFinder.RegisterLayout<WiiFourLaneDrumkit,
+            HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit,
                 WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit_NoReportId>(0x1BAD, 0x3110);
 
             // MIDI Pro Adapter
-            HidReportIdLayoutFinder.RegisterLayout<WiiFourLaneDrumkit,
+            HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit,
                 WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit_NoReportId>(0x1BAD, 0x3118);
         }
     }

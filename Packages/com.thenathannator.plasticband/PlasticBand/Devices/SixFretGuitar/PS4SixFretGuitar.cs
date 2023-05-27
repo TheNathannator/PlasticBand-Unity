@@ -73,7 +73,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            HidReportIdLayoutFinder.RegisterLayout<PS4SixFretGuitar,
+            HidLayoutFinder.RegisterLayout<PS4SixFretGuitar,
                 PS4SixFretGuitar_ReportId, PS4SixFretGuitar_NoReportId>(0x1430, 0x07BB);
         }
 

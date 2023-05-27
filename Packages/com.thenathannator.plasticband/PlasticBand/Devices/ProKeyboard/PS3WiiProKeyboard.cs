@@ -117,11 +117,11 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // ProKeyboard
-            HidReportIdLayoutFinder.RegisterLayout<PS3ProKeyboard,
+            HidLayoutFinder.RegisterLayout<PS3ProKeyboard,
                 PS3ProKeyboard_ReportId, PS3ProKeyboard_NoReportId>(0x12BA, 0x2330);
 
             // MIDI Pro Adapter
-            HidReportIdLayoutFinder.RegisterLayout<PS3ProKeyboard,
+            HidLayoutFinder.RegisterLayout<PS3ProKeyboard,
                 PS3ProKeyboard_ReportId, PS3ProKeyboard_NoReportId>(0x12BA, 0x2338);
         }
     }
@@ -138,11 +138,11 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // ProKeyboard
-            HidReportIdLayoutFinder.RegisterLayout<WiiProKeyboard,
+            HidLayoutFinder.RegisterLayout<WiiProKeyboard,
                 WiiProKeyboard_ReportId, WiiProKeyboard_NoReportId>(0x1BAD, 0x2330);
 
             // MIDI Pro Adapter
-            HidReportIdLayoutFinder.RegisterLayout<WiiProKeyboard,
+            HidLayoutFinder.RegisterLayout<WiiProKeyboard,
                 WiiProKeyboard_ReportId, WiiProKeyboard_NoReportId>(0x1BAD, 0x2330);
         }
     }
