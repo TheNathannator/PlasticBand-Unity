@@ -10,12 +10,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS4RockBandGuitarState_ReportId;
-#else
-    using DefaultState = PS4RockBandGuitarState_NoReportId;
-#endif
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS4RockBandGuitarState_NoReportId : IInputStateTypeInfo
     {
@@ -77,24 +71,19 @@ namespace PlasticBand.Devices
         public PS4RockBandGuitarState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 4 Rock Band Guitar")]
+    [InputControlLayout(stateType = typeof(PS4RockBandGuitarState_ReportId), displayName = "PlayStation 4 Rock Band Guitar")]
     internal class PS4RockBandGuitar : RockBandGuitar
     {
         internal new static void Initialize()
         {
             // Stratocaster
-            HidLayoutFinder.RegisterLayout<PS4RockBandGuitar,
-                PS4RockBandGuitar_ReportId, PS4RockBandGuitar_NoReportId>(0x0738, 0x8261);
+            HidLayoutFinder.RegisterLayout<PS4RockBandGuitar, PS4RockBandGuitar_NoReportId>(0x0738, 0x8261, reportIdDefault: true);
 
             // Jaguar
-            HidLayoutFinder.RegisterLayout<PS4RockBandGuitar,
-                PS4RockBandGuitar_ReportId, PS4RockBandGuitar_NoReportId>(0x0E6F, 0x0173);
+            HidLayoutFinder.RegisterLayout<PS4RockBandGuitar, PS4RockBandGuitar_NoReportId>(0x0E6F, 0x0173, reportIdDefault: true);
         }
     }
 
     [InputControlLayout(stateType = typeof(PS4RockBandGuitarState_NoReportId), hideInUI = true)]
     internal class PS4RockBandGuitar_NoReportId : PS4RockBandGuitar { }
-
-    [InputControlLayout(stateType = typeof(PS4RockBandGuitarState_ReportId), hideInUI = true)]
-    internal class PS4RockBandGuitar_ReportId : PS4RockBandGuitar { }
 }

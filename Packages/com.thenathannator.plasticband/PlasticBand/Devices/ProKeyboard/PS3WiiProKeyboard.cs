@@ -10,12 +10,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3WiiProKeyboardState_ReportId;
-#else
-    using DefaultState = PS3WiiProKeyboardState_NoReportId;
-#endif
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3WiiProKeyboardState_NoReportId : IInputStateTypeInfo
     {
@@ -111,44 +105,34 @@ namespace PlasticBand.Devices
         public PS3WiiProKeyboardState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Pro Keyboard")]
+    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), displayName = "PlayStation 3 Rock Band Pro Keyboard")]
     internal class PS3ProKeyboard : ProKeyboard
     {
         internal new static void Initialize()
         {
             // ProKeyboard
-            HidLayoutFinder.RegisterLayout<PS3ProKeyboard,
-                PS3ProKeyboard_ReportId, PS3ProKeyboard_NoReportId>(0x12BA, 0x2330);
+            HidLayoutFinder.RegisterLayout<PS3ProKeyboard_ReportId, PS3ProKeyboard>(0x12BA, 0x2330);
 
             // MIDI Pro Adapter
-            HidLayoutFinder.RegisterLayout<PS3ProKeyboard,
-                PS3ProKeyboard_ReportId, PS3ProKeyboard_NoReportId>(0x12BA, 0x2338);
+            HidLayoutFinder.RegisterLayout<PS3ProKeyboard_ReportId, PS3ProKeyboard>(0x12BA, 0x2338);
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), hideInUI = true)]
-    internal class PS3ProKeyboard_NoReportId : PS3ProKeyboard { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_ReportId), hideInUI = true)]
-    internal class PS3ProKeyboard_ReportId : PS3ProKeyboard { }
-
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Pro Keyboard")]
+    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), displayName = "Wii Rock Band Pro Keyboard")]
     internal class WiiProKeyboard : ProKeyboard
     {
         internal new static void Initialize()
         {
             // ProKeyboard
-            HidLayoutFinder.RegisterLayout<WiiProKeyboard,
-                WiiProKeyboard_ReportId, WiiProKeyboard_NoReportId>(0x1BAD, 0x2330);
+            HidLayoutFinder.RegisterLayout<WiiProKeyboard_ReportId, WiiProKeyboard>(0x1BAD, 0x2330);
 
             // MIDI Pro Adapter
-            HidLayoutFinder.RegisterLayout<WiiProKeyboard,
-                WiiProKeyboard_ReportId, WiiProKeyboard_NoReportId>(0x1BAD, 0x2330);
+            HidLayoutFinder.RegisterLayout<WiiProKeyboard_ReportId, WiiProKeyboard>(0x1BAD, 0x2330);
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), hideInUI = true)]
-    internal class WiiProKeyboard_NoReportId : WiiProKeyboard { }
+    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_ReportId), hideInUI = true)]
+    internal class PS3ProKeyboard_ReportId : PS3ProKeyboard { }
 
     [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_ReportId), hideInUI = true)]
     internal class WiiProKeyboard_ReportId : WiiProKeyboard { }

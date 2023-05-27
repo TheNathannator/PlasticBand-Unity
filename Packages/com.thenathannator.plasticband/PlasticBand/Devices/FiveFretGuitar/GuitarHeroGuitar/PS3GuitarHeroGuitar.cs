@@ -10,12 +10,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3GuitarHeroGuitarState_ReportId;
-#else
-    using DefaultState = PS3GuitarHeroGuitarState_NoReportId;
-#endif
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3GuitarHeroGuitarState_NoReportId : IInputStateTypeInfo
     {
@@ -83,23 +77,18 @@ namespace PlasticBand.Devices
         public PS3GuitarHeroGuitarState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Guitar Hero Guitar")]
+    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_NoReportId), displayName = "PlayStation 3 Guitar Hero Guitar")]
     internal class PS3GuitarHeroGuitar : GuitarHeroGuitar
     {
         internal new static void Initialize()
         {
             // PS3 guitars
-            HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar,
-                PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar_NoReportId>(0x12BA, 0x0100);
+            HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar>(0x12BA, 0x0100);
 
             // World Tour PC guitar
-            HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar,
-                PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar_NoReportId>(0x1430, 0x474C);
+            HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar>(0x1430, 0x474C);
         }
     }
-
-    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_NoReportId), hideInUI = true)]
-    internal class PS3GuitarHeroGuitar_NoReportId : PS3GuitarHeroGuitar { }
 
     [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_ReportId), hideInUI = true)]
     internal class PS3GuitarHeroGuitar_ReportId : PS3GuitarHeroGuitar { }

@@ -10,12 +10,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3WiiProGuitarState_ReportId;
-#else
-    using DefaultState = PS3WiiProGuitarState_NoReportId;
-#endif
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3WiiProGuitarState_NoReportId : IInputStateTypeInfo
     {
@@ -98,60 +92,46 @@ namespace PlasticBand.Devices
         public PS3WiiProGuitarState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Pro Guitar")]
+    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState_NoReportId), displayName = "PlayStation 3 Rock Band Pro Guitar")]
     internal class PS3ProGuitar : ProGuitar
     {
         internal new static void Initialize()
         {
             // Mustang
-            HidLayoutFinder.RegisterLayout<PS3ProGuitar,
-                PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2430);
+            HidLayoutFinder.RegisterLayout<PS3ProGuitar_ReportId, PS3ProGuitar>(0x12BA, 0x2430);
 
             // MIDI Pro Adapter (Mustang)
-            HidLayoutFinder.RegisterLayout<PS3ProGuitar,
-                PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2438);
+            HidLayoutFinder.RegisterLayout<PS3ProGuitar_ReportId, PS3ProGuitar>(0x12BA, 0x2438);
 
             // Squire
-            HidLayoutFinder.RegisterLayout<PS3ProGuitar,
-                PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2530);
+            HidLayoutFinder.RegisterLayout<PS3ProGuitar_ReportId, PS3ProGuitar>(0x12BA, 0x2530);
 
             // MIDI Pro Adapter (Squire)
-            HidLayoutFinder.RegisterLayout<PS3ProGuitar,
-                PS3ProGuitar_ReportId, PS3ProGuitar_NoReportId>(0x12BA, 0x2538);
+            HidLayoutFinder.RegisterLayout<PS3ProGuitar_ReportId, PS3ProGuitar>(0x12BA, 0x2538);
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState_NoReportId), hideInUI = true)]
-    internal class PS3ProGuitar_NoReportId : PS3ProGuitar { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState_ReportId), hideInUI = true)]
-    internal class PS3ProGuitar_ReportId : PS3ProGuitar { }
-
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Pro Guitar")]
+    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState_NoReportId), displayName = "Wii Rock Band Pro Guitar")]
     internal class WiiProGuitar : ProGuitar
     {
         internal new static void Initialize()
         {
             // Mustang
-            HidLayoutFinder.RegisterLayout<WiiProGuitar,
-                WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3430);
+            HidLayoutFinder.RegisterLayout<WiiProGuitar_ReportId, WiiProGuitar>(0x1BAD, 0x3430);
 
             // MIDI Pro Adapter (Mustang)
-            HidLayoutFinder.RegisterLayout<WiiProGuitar,
-                WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3438);
+            HidLayoutFinder.RegisterLayout<WiiProGuitar_ReportId, WiiProGuitar>(0x1BAD, 0x3438);
 
             // Squire
-            HidLayoutFinder.RegisterLayout<WiiProGuitar,
-                WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3530);
+            HidLayoutFinder.RegisterLayout<WiiProGuitar_ReportId, WiiProGuitar>(0x1BAD, 0x3530);
 
             // MIDI Pro Adapter (Squire)
-            HidLayoutFinder.RegisterLayout<WiiProGuitar,
-                WiiProGuitar_ReportId, WiiProGuitar_NoReportId>(0x1BAD, 0x3538);
+            HidLayoutFinder.RegisterLayout<WiiProGuitar_ReportId, WiiProGuitar>(0x1BAD, 0x3538);
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState_NoReportId), hideInUI = true)]
-    internal class WiiProGuitar_NoReportId : WiiProGuitar { }
+    [InputControlLayout(stateType = typeof(PS3WiiProGuitarState_ReportId), hideInUI = true)]
+    internal class PS3ProGuitar_ReportId : PS3ProGuitar { }
 
     [InputControlLayout(stateType = typeof(PS3WiiProGuitarState_ReportId), hideInUI = true)]
     internal class WiiProGuitar_ReportId : WiiProGuitar { }

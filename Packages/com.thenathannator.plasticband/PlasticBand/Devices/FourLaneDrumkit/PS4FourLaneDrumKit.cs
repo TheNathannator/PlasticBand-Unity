@@ -10,12 +10,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS4FourLaneDrumkitState_ReportId;
-#else
-    using DefaultState = PS4FourLaneDrumkitState_NoReportId;
-#endif
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS4FourLaneDrumkitState_NoReportId : IInputStateTypeInfo
     {
@@ -81,25 +75,20 @@ namespace PlasticBand.Devices
         public PS4FourLaneDrumkitState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 4 Rock Band Drumkit")]
+    [InputControlLayout(stateType = typeof(PS4FourLaneDrumkitState_ReportId), displayName = "PlayStation 4 Rock Band Drumkit")]
     internal class PS4FourLaneDrumkit : FourLaneDrumkit
     {
         internal new static void Initialize()
         {
             // MadCatz
-            HidLayoutFinder.RegisterLayout<PS4FourLaneDrumkit,
-                PS4FourLaneDrumkit_ReportId, PS4FourLaneDrumkit_NoReportId>(0x0738, 0x8262);
+            HidLayoutFinder.RegisterLayout<PS4FourLaneDrumkit, PS4FourLaneDrumkit_NoReportId>(0x0738, 0x8262, reportIdDefault: true);
 
             // PDP
             // Product ID is not known yet
-            // HidReportIdLayoutFinder.RegisterLayout<PS4FourLaneDrumkit,
-            //     PS4FourLaneDrumkit_ReportId, PS4FourLaneDrumkit_NoReportId>(0x0E6F, 0x0173);
+            // HidLayoutFinder.RegisterLayout<PS4FourLaneDrumkit, PS4FourLaneDrumkit_NoReportId>(0x0E6F, 0x0173, preferReportId: true);
         }
     }
 
     [InputControlLayout(stateType = typeof(PS4FourLaneDrumkitState_NoReportId), hideInUI = true)]
     internal class PS4FourLaneDrumkit_NoReportId : PS4FourLaneDrumkit { }
-
-    [InputControlLayout(stateType = typeof(PS4FourLaneDrumkitState_ReportId), hideInUI = true)]
-    internal class PS4FourLaneDrumkit_ReportId : PS4FourLaneDrumkit { }
 }

@@ -10,12 +10,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3WiiFourLaneDrumkitState_ReportId;
-#else
-    using DefaultState = PS3WiiFourLaneDrumkitState_NoReportId;
-#endif
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3WiiFourLaneDrumkitState_NoReportId : IInputStateTypeInfo
     {
@@ -83,48 +77,37 @@ namespace PlasticBand.Devices
         public PS3WiiFourLaneDrumkitState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Rock Band Drumkit")]
+    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_NoReportId), displayName = "PlayStation 3 Rock Band Drumkit")]
     internal class PS3FourLaneDrumkit : FourLaneDrumkit
     {
         internal new static void Initialize()
         {
             // Drumkit
-            HidLayoutFinder.RegisterLayout<PS3FourLaneDrumkit,
-                PS3FourLaneDrumkit_ReportId, PS3FourLaneDrumkit_NoReportId>(0x12BA, 0x0210);
+            HidLayoutFinder.RegisterLayout<PS3FourLaneDrumkit_ReportId, PS3FourLaneDrumkit>(0x12BA, 0x0210);
 
             // MIDI Pro Adapter
-            HidLayoutFinder.RegisterLayout<PS3FourLaneDrumkit,
-                PS3FourLaneDrumkit_ReportId, PS3FourLaneDrumkit_NoReportId>(0x12BA, 0x0218);
+            HidLayoutFinder.RegisterLayout<PS3FourLaneDrumkit_ReportId, PS3FourLaneDrumkit>(0x12BA, 0x0218);
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_NoReportId), hideInUI = true)]
-    internal class PS3FourLaneDrumkit_NoReportId : PS3FourLaneDrumkit { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_ReportId), hideInUI = true)]
-    internal class PS3FourLaneDrumkit_ReportId : PS3FourLaneDrumkit { }
-
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "Wii Rock Band Drumkit")]
+    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_NoReportId), displayName = "Wii Rock Band Drumkit")]
     internal class WiiFourLaneDrumkit : FourLaneDrumkit
     {
         internal new static void Initialize()
         {
             // RB1
-            HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit,
-                WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit_NoReportId>(0x1BAD, 0x0005);
+            HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit>(0x1BAD, 0x0005);
 
             // RB2 and later
-            HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit,
-                WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit_NoReportId>(0x1BAD, 0x3110);
+            HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit>(0x1BAD, 0x3110);
 
             // MIDI Pro Adapter
-            HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit,
-                WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit_NoReportId>(0x1BAD, 0x3118);
+            HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit>(0x1BAD, 0x3118);
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_NoReportId), hideInUI = true)]
-    internal class WiiFourLaneDrumkit_NoReportId : WiiFourLaneDrumkit { }
+    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_ReportId), hideInUI = true)]
+    internal class PS3FourLaneDrumkit_ReportId : PS3FourLaneDrumkit { }
 
     [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_ReportId), hideInUI = true)]
     internal class WiiFourLaneDrumkit_ReportId : WiiFourLaneDrumkit { }

@@ -11,12 +11,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3TurntableState_ReportId;
-#else
-    using DefaultState = PS3TurntableState_NoReportId;
-#endif
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3TurntableState_NoReportId : IInputStateTypeInfo
     {
@@ -78,13 +72,12 @@ namespace PlasticBand.Devices
         public PS3TurntableState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 DJ Hero Turntable")]
+    [InputControlLayout(stateType = typeof(PS3TurntableState_NoReportId), displayName = "PlayStation 3 DJ Hero Turntable")]
     internal class PS3Turntable : Turntable
     {
         internal new static void Initialize()
         {
-            HidLayoutFinder.RegisterLayout<PS3Turntable,
-                PS3Turntable_ReportId, PS3Turntable_NoReportId>(0x12BA, 0x0140);
+            HidLayoutFinder.RegisterLayout<PS3Turntable_ReportId, PS3Turntable>(0x12BA, 0x0140);
         }
 
         protected override void FinishSetup()
@@ -93,9 +86,6 @@ namespace PlasticBand.Devices
             m_Haptics = new PS3TurntableHaptics(this);
         }
     }
-
-    [InputControlLayout(stateType = typeof(PS3TurntableState_NoReportId), hideInUI = true)]
-    internal class PS3Turntable_NoReportId : PS3Turntable { }
 
     [InputControlLayout(stateType = typeof(PS3TurntableState_ReportId), hideInUI = true)]
     internal class PS3Turntable_ReportId : PS3Turntable { }

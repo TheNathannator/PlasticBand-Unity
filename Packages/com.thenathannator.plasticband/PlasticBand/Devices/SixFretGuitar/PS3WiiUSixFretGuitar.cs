@@ -12,12 +12,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3WiiUSixFretGuitarState_ReportId;
-#else
-    using DefaultState = PS3WiiUSixFretGuitarState_NoReportId;
-#endif
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3WiiUSixFretGuitarState_NoReportId : IInputStateTypeInfo
     {
@@ -75,13 +69,12 @@ namespace PlasticBand.Devices
         public PS3WiiUSixFretGuitarState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PS3/Wii U Guitar Hero Live Guitar")]
+    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState_NoReportId), displayName = "PS3/Wii U Guitar Hero Live Guitar")]
     internal class PS3WiiUSixFretGuitar : SixFretGuitar, IInputUpdateCallbackReceiver
     {
         internal new static void Initialize()
         {
-            HidLayoutFinder.RegisterLayout<PS3WiiUSixFretGuitar,
-                PS3WiiUSixFretGuitar_ReportId, PS3WiiUSixFretGuitar_NoReportId>(0x12BA, 0x074B);
+            HidLayoutFinder.RegisterLayout<PS3WiiUSixFretGuitar_ReportId, PS3WiiUSixFretGuitar>(0x12BA, 0x074B);
         }
 
         // Magic data to be sent periodically to unlock full input data
@@ -101,9 +94,6 @@ namespace PlasticBand.Devices
 
         void IInputUpdateCallbackReceiver.OnUpdate() => m_Poker.OnUpdate();
     }
-
-    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState_NoReportId), hideInUI = true)]
-    internal class PS3WiiUSixFretGuitar_NoReportId : PS3WiiUSixFretGuitar { }
 
     [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState_ReportId), hideInUI = true)]
     internal class PS3WiiUSixFretGuitar_ReportId : PS3WiiUSixFretGuitar { }

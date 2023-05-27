@@ -65,24 +65,29 @@ namespace PlasticBand.LowLevel
             return hasReportId ? layouts.reportId : layouts.noReportId;
         }
 
-        internal static void RegisterLayout<TBase, TReportId, TNoReportId>(int vendorId, int productId)
-            where TBase : InputDevice
+        internal static void RegisterLayout<TReportId, TNoReportId>(int vendorId, int productId, bool reportIdDefault = false)
             where TReportId : InputDevice
             where TNoReportId : InputDevice
         {
-            // Register matcher
-            InputSystem.RegisterLayout<TBase>(matches: new InputDeviceMatcher()
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+            var TDefault = typeof(TReportId);
+#else
+            var TDefault = reportIdDefault ? typeof(TReportId) : typeof(TNoReportId);
+#endif
+
+            // Register default layout
+            InputSystem.RegisterLayout(TDefault, matches: new InputDeviceMatcher()
                 .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", vendorId)
                 .WithCapability("productId", productId)
             );
 
             // Register report ID/no report ID variants
-            if (!s_AvailableLayouts.ContainsKey(typeof(TBase).Name))
+            if (!s_AvailableLayouts.ContainsKey(TDefault.Name))
             {
                 InputSystem.RegisterLayout<TReportId>();
                 InputSystem.RegisterLayout<TNoReportId>();
-                s_AvailableLayouts.Add(typeof(TBase).Name, (typeof(TReportId).Name, typeof(TNoReportId).Name));
+                s_AvailableLayouts.Add(TDefault.Name, (typeof(TReportId).Name, typeof(TNoReportId).Name));
             }
         }
     }

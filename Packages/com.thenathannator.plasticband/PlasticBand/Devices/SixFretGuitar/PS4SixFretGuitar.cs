@@ -12,12 +12,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS4SixFretGuitarState_ReportId;
-#else
-    using DefaultState = PS4SixFretGuitarState_NoReportId;
-#endif
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS4SixFretGuitarState_NoReportId : IInputStateTypeInfo
     {
@@ -68,13 +62,12 @@ namespace PlasticBand.Devices
         public PS4SixFretGuitarState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 4 Guitar Hero Live Guitar")]
+    [InputControlLayout(stateType = typeof(PS4SixFretGuitarState_ReportId), displayName = "PlayStation 4 Guitar Hero Live Guitar")]
     internal class PS4SixFretGuitar : SixFretGuitar, IInputUpdateCallbackReceiver
     {
         internal new static void Initialize()
         {
-            HidLayoutFinder.RegisterLayout<PS4SixFretGuitar,
-                PS4SixFretGuitar_ReportId, PS4SixFretGuitar_NoReportId>(0x1430, 0x07BB);
+            HidLayoutFinder.RegisterLayout<PS4SixFretGuitar, PS4SixFretGuitar_NoReportId>(0x1430, 0x07BB, reportIdDefault: true);
         }
 
         // Magic data to be sent periodically to unlock full input data.
@@ -97,7 +90,4 @@ namespace PlasticBand.Devices
 
     [InputControlLayout(stateType = typeof(PS4SixFretGuitarState_NoReportId), hideInUI = true)]
     internal class PS4SixFretGuitar_NoReportId : PS4SixFretGuitar { }
-
-    [InputControlLayout(stateType = typeof(PS4SixFretGuitarState_ReportId), hideInUI = true)]
-    internal class PS4SixFretGuitar_ReportId : PS4SixFretGuitar { }
 }

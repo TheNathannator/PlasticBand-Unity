@@ -10,12 +10,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
-    using DefaultState = PS3FiveLaneDrumkitState_ReportId;
-#else
-    using DefaultState = PS3FiveLaneDrumkitState_NoReportId;
-#endif
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS3FiveLaneDrumkitState_NoReportId : IInputStateTypeInfo
     {
@@ -78,19 +72,15 @@ namespace PlasticBand.Devices
         public PS3FiveLaneDrumkitState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState_NoReportId), hideInUI = true)]
-    internal class PS3FiveLaneDrumkit_NoReportId : PS3FiveLaneDrumkit { }
-
-    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState_ReportId), hideInUI = true)]
-    internal class PS3FiveLaneDrumkit_ReportId : PS3FiveLaneDrumkit { }
-
-    [InputControlLayout(stateType = typeof(DefaultState), displayName = "PlayStation 3 Guitar Hero Drumkit")]
+    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState_NoReportId), displayName = "PlayStation 3 Guitar Hero Drumkit")]
     internal class PS3FiveLaneDrumkit : FiveLaneDrumkit
     {
         internal new static void Initialize()
         {
-            HidLayoutFinder.RegisterLayout<PS3FiveLaneDrumkit,
-                PS3FiveLaneDrumkit_ReportId, PS3FiveLaneDrumkit_NoReportId>(0x12BA, 0x0120);
+            HidLayoutFinder.RegisterLayout<PS3FiveLaneDrumkit_ReportId, PS3FiveLaneDrumkit>(0x12BA, 0x0120);
         }
     }
+
+    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState_ReportId), hideInUI = true)]
+    internal class PS3FiveLaneDrumkit_ReportId : PS3FiveLaneDrumkit { }
 }
