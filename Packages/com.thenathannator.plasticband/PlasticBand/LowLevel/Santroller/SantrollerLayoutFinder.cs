@@ -67,7 +67,7 @@ namespace PlasticBand.LowLevel
         internal static SantrollerRhythmType GetRhythmType(ushort version)
             => (SantrollerRhythmType)((version >> 4) & 0x0F);
 
-        internal static int GetRevisionValue(SantrollerDeviceType deviceType, SantrollerRhythmType rhythmType, int consoleType)
+        internal static int GetRevisionValue(SantrollerDeviceType deviceType, SantrollerRhythmType rhythmType, int consoleType = 0)
             => (((int)deviceType & 0xFF) << 8) | (((int)rhythmType & 0x0F) << 4) | (consoleType & 0x0F);
 
         internal static void RegisterHIDLayout<TDevice>(SantrollerDeviceType deviceType,
@@ -116,13 +116,11 @@ namespace PlasticBand.LowLevel
         {
             if (deviceType == SantrollerDeviceType.Unknown)
                 (deviceType, rhythmType) = s_XInputSubtypeToDeviceType[subType];
-            int revision = (((int)deviceType) << 8) | (((int)rhythmType) << 4);
+            int revision = GetRevisionValue(deviceType, rhythmType);
 
-            return new InputDeviceMatcher()
-                .WithInterface(XInputLayoutFinder.InterfaceName)
-                .WithCapability("subType", subType)
-                .WithCapability("gamepad/leftStickX", (int)VendorID)
-                .WithCapability("gamepad/leftStickY", (int)ProductID)
+            return XInputLayoutFinder.GetMatcher(subType)
+                .WithCapability("gamepad/leftStickX", VendorID)
+                .WithCapability("gamepad/leftStickY", ProductID)
                 .WithCapability("gamepad/rightStickX", revision);
         }
     }
