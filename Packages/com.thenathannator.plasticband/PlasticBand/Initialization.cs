@@ -49,7 +49,7 @@ namespace PlasticBand
             RockBandGuitar.Initialize();
             XInputRockBandGuitar.Initialize();
             PS3RockBandGuitar.Initialize();
-            // PS4RockBandGuitar.Initialize(); // Temporarily disabled to avoid a crash bug
+            PS4RockBandGuitar.Initialize();
             WiiRockBandGuitar.Initialize();
             SantrollerHIDRockBandGuitar.Initialize();
             SantrollerXInputRockBandGuitar.Initialize();
@@ -58,7 +58,7 @@ namespace PlasticBand
             SixFretGuitar.Initialize();
             XInputSixFretGuitar.Initialize();
             PS3WiiUSixFretGuitar.Initialize();
-            // PS4SixFretGuitar.Initialize(); // Temporarily disabled to avoid a crash bug
+            PS4SixFretGuitar.Initialize();
             SantrollerHIDSixFretGuitar.Initialize();
             SantrollerXInputSixFretGuitar.Initialize();
 
@@ -73,7 +73,7 @@ namespace PlasticBand
             FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
             PS3FourLaneDrumkit.Initialize();
-            // PS4FourLaneDrumkit.Initialize(); // Temporarily disabled to avoid a crash bug
+            PS4FourLaneDrumkit.Initialize();
             WiiFourLaneDrumkit.Initialize();
             SantrollerHIDFourLaneDrumkit.Initialize();
             SantrollerXInputFourLaneDrumkit.Initialize();
