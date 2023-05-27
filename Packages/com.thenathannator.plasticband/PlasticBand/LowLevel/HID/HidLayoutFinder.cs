@@ -65,6 +65,12 @@ namespace PlasticBand.LowLevel
             return hasReportId ? layouts.reportId : layouts.noReportId;
         }
 
+        internal static void RegisterLayout<TDevice>(int vendorId, int productId)
+            where TDevice : InputDevice
+        {
+            InputSystem.RegisterLayout<TDevice>(matches: GetMatcher(vendorId, productId));
+        }
+
         internal static void RegisterLayout<TReportId, TNoReportId>(int vendorId, int productId, bool reportIdDefault = false)
             where TReportId : InputDevice
             where TNoReportId : InputDevice
@@ -76,11 +82,7 @@ namespace PlasticBand.LowLevel
 #endif
 
             // Register default layout
-            InputSystem.RegisterLayout(TDefault, matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", vendorId)
-                .WithCapability("productId", productId)
-            );
+            InputSystem.RegisterLayout(TDefault, matches: GetMatcher(vendorId, productId));
 
             // Register report ID/no report ID variants
             if (!s_AvailableLayouts.ContainsKey(TDefault.Name))
@@ -89,6 +91,17 @@ namespace PlasticBand.LowLevel
                 InputSystem.RegisterLayout<TNoReportId>();
                 s_AvailableLayouts.Add(TDefault.Name, (typeof(TReportId).Name, typeof(TNoReportId).Name));
             }
+        }
+
+        internal static InputDeviceMatcher GetMatcher(int vendorId, int productId,
+            int usagePage = (int)UsagePage.GenericDesktop, int usage = (int)GenericDesktop.Gamepad)
+        {
+            return new InputDeviceMatcher()
+                .WithInterface(HidDefinitions.InterfaceName)
+                .WithCapability("vendorId", vendorId)
+                .WithCapability("productId", productId)
+                .WithCapability("usagePage", usagePage)
+                .WithCapability("usage", usage);
         }
     }
 }

@@ -80,11 +80,7 @@ namespace PlasticBand.LowLevel
         internal static void Initialize()
         {
             // Register dummy device
-            InputSystem.RegisterLayout<SantrollerHidDevice>(matches: new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
-                .WithCapability("vendorId", (int)VendorID)
-                .WithCapability("productId", (int)ProductID)
-            );
+            InputSystem.RegisterLayout<SantrollerHidDevice>(matches: GetHidMatcher());
 
             // Ensure no layouts have persisted across a domain reload
             s_AvailableHidLayouts.Clear();
@@ -166,6 +162,11 @@ namespace PlasticBand.LowLevel
             where TDevice : InputDevice
         {
             InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType, deviceType, rhythmType));
+        }
+
+        internal static InputDeviceMatcher GetHidMatcher()
+        {
+            return HidLayoutFinder.GetMatcher(VendorID, ProductID);
         }
 
         internal static InputDeviceMatcher GetXInputMatcher(int subType,
