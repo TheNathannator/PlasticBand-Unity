@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.3.2] - 2023/27/05
+
+### Changed
+
+- All HID device layouts are now matched against their proper usages in addition to their vendor/product IDs.
+  - This avoids the crash that PS4 and Santroller layouts were causing on Windows.
+- PS4 and Santroller device layouts have been re-enabled now that they no longer crash Unity.
+- Reworked Santroller HID device layouts to no longer use a layout finder, instead they register multiple matchers for each variation.
+  - This will allow the proper layout to persist across editor domain reloads, rather than reverting to the fallback that was previously used for the layout finder.
+
 ## [0.3.1] - 2023/23/05
 
 ### Fixed
