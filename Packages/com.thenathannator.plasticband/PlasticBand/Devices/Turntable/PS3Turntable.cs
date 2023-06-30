@@ -55,9 +55,9 @@ namespace PlasticBand.Devices
         [InputControl(name = "rightTableGreen", layout = "Button", bit = 0)]
         [InputControl(name = "rightTableRed", layout = "Button", bit = 1)]
         [InputControl(name = "rightTableBlue", layout = "Button", bit = 2)]
-        [InputControl(name = "leftTableGreen", layout = "Button", bit = 3)]
-        [InputControl(name = "leftTableRed", layout = "Button", bit = 4)]
-        [InputControl(name = "leftTableBlue", layout = "Button", bit = 5)]
+        [InputControl(name = "leftTableGreen", layout = "Button", bit = 4)]
+        [InputControl(name = "leftTableRed", layout = "Button", bit = 5)]
+        [InputControl(name = "leftTableBlue", layout = "Button", bit = 6)]
         public short tableButtons;
 
         public short unused3;

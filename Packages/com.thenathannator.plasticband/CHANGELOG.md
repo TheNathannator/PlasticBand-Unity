@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## Unreleased
+
+### Fixed
+
+- The left platter buttons on PS3 turntables should now register correctly, they were off by 1 bit lol
+
 ## [0.3.2] - 2023/27/05
 
 ### Changed
