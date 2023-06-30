@@ -55,8 +55,7 @@ namespace PlasticBand.Devices
         public byte tilt;
 
         // TODO: The position of this is assumed because RockBandGuitar requires it, needs verification
-        // TODO: Define specific ranges for each of the notches if necessary
-        [InputControl(name = "pickupSwitch", layout = "Axis")]
+        [InputControl(name = "pickupSwitch", layout = "RockBandPickupSwitch")]
         public byte pickupSwitch;
 
         private fixed byte unused2[68];

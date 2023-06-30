@@ -46,6 +46,7 @@ namespace PlasticBand
             SantrollerXInputGuitarHeroGuitar.Initialize();
 
             // Rock Band guitars
+            RockBandPickupSwitchControl.Initialize();
             RockBandGuitar.Initialize();
             XInputRockBandGuitar.Initialize();
             PS3RockBandGuitar.Initialize();

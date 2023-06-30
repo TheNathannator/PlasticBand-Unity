@@ -64,7 +64,12 @@ namespace PlasticBand.Devices
         /// The pickup switch on the guitar.
         /// </summary>
         [InputControl(displayName = "Pickup Switch")]
-        public AxisControl pickupSwitch { get; private set; }
+        public IntegerControl pickupSwitch { get; private set; }
+
+        /// <summary>
+        /// The number of notches on the pickup switch.
+        /// </summary>
+        public const int PickupNotchCount = 5;
 
         /// <summary>
         /// The number of frets available on the guitar.
@@ -170,7 +175,7 @@ namespace PlasticBand.Devices
             soloBlue = GetChildControl<ButtonControl>(nameof(soloBlue));
             soloOrange = GetChildControl<ButtonControl>(nameof(soloOrange));
 
-            pickupSwitch = GetChildControl<AxisControl>(nameof(pickupSwitch));
+            pickupSwitch = GetChildControl<IntegerControl>(nameof(pickupSwitch));
         }
 
         /// <inheritdoc/>

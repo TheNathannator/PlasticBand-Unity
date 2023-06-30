@@ -8,6 +8,11 @@ Dates are relative to UTC.
 
 ## Unreleased
 
+### Changed
+
+- The pickup switch on Xbox 360/PS3/Wii Rock Band guitars is now properly supported. It is now exposed as an integer control instead of an axis, ranging from 0 to 4 for each of the 5 notches on the guitar.
+  - The pickup switch on PS4 guitars is not confirmed to be supported, it has to be defined somewhere in the input layout for things to work so I've had to guess where it is for now lol
+
 ### Fixed
 
 - The left platter buttons on PS3 turntables should now register correctly, they were off by 1 bit lol
