@@ -48,10 +48,9 @@ namespace PlasticBand.Controls
             if (rawValue == 0x7F)
                 return m_PreviousNotch;
 
-            // PS3/Wii RB guitars use discrete steps for the notches, while Xbox 360 is directly analog.
-            // Both of them roughly line up though, so they can both be handled the same here.
-            // See the reference doc linked above for more details.
-            int notch = Math.Min(rawValue / 50, kNotchCount - 1);
+            // Determine which notch is currently selected
+            // See the reference doc linked above for more details
+            int notch = Math.Min(rawValue / (byte.MaxValue / 5), kNotchCount - 1);
             m_PreviousNotch = notch;
 
 #if PLASTICBAND_DEBUG_CONTROLS
