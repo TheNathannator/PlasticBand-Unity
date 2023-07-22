@@ -11,7 +11,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3WiiProKeyboardState_NoReportId : IInputStateTypeInfo
+    internal unsafe struct PS3ProKeyboardState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
 
@@ -97,15 +97,15 @@ namespace PlasticBand.Devices
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3WiiProKeyboardState_ReportId : IInputStateTypeInfo
+    internal unsafe struct PS3ProKeyboardState_ReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
-        public PS3WiiProKeyboardState_NoReportId state;
+        public PS3ProKeyboardState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), displayName = "PlayStation 3 Rock Band Pro Keyboard")]
+    [InputControlLayout(stateType = typeof(PS3ProKeyboardState_NoReportId), displayName = "PlayStation 3 Rock Band Pro Keyboard")]
     internal class PS3ProKeyboard : ProKeyboard
     {
         internal new static void Initialize()
@@ -118,22 +118,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_NoReportId), displayName = "Wii Rock Band Pro Keyboard")]
-    internal class WiiProKeyboard : ProKeyboard
-    {
-        internal new static void Initialize()
-        {
-            // ProKeyboard
-            HidLayoutFinder.RegisterLayout<WiiProKeyboard_ReportId, WiiProKeyboard>(0x1BAD, 0x2330);
-
-            // MIDI Pro Adapter
-            HidLayoutFinder.RegisterLayout<WiiProKeyboard_ReportId, WiiProKeyboard>(0x1BAD, 0x2330);
-        }
-    }
-
-    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_ReportId), hideInUI = true)]
+    [InputControlLayout(stateType = typeof(PS3ProKeyboardState_ReportId), hideInUI = true)]
     internal class PS3ProKeyboard_ReportId : PS3ProKeyboard { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiProKeyboardState_ReportId), hideInUI = true)]
-    internal class WiiProKeyboard_ReportId : WiiProKeyboard { }
 }

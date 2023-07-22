@@ -11,7 +11,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3WiiRockBandGuitarState_NoReportId : IInputStateTypeInfo
+    internal unsafe struct PS3RockBandGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
 
@@ -57,15 +57,15 @@ namespace PlasticBand.Devices
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3WiiRockBandGuitarState_ReportId : IInputStateTypeInfo
+    internal unsafe struct PS3RockBandGuitarState_ReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
-        public PS3WiiRockBandGuitarState_NoReportId state;
+        public PS3RockBandGuitarState_NoReportId state;
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_NoReportId), displayName = "PlayStation 3 Rock Band Guitar")]
+    [InputControlLayout(stateType = typeof(PS3RockBandGuitarState_NoReportId), displayName = "PlayStation 3 Rock Band Guitar")]
     internal class PS3RockBandGuitar : RockBandGuitar
     {
         internal new static void Initialize()
@@ -74,22 +74,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_NoReportId), displayName = "Wii Rock Band Guitar")]
-    internal class WiiRockBandGuitar : RockBandGuitar
-    {
-        internal new static void Initialize()
-        {
-            // RB1 guitars
-            HidLayoutFinder.RegisterLayout<WiiRockBandGuitar_ReportId, WiiRockBandGuitar>(0x1BAD, 0x0004);
-
-            // RB2 and later
-            HidLayoutFinder.RegisterLayout<WiiRockBandGuitar_ReportId, WiiRockBandGuitar>(0x1BAD, 0x3010);
-        }
-    }
-
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_ReportId), hideInUI = true)]
+    [InputControlLayout(stateType = typeof(PS3RockBandGuitarState_ReportId), hideInUI = true)]
     internal class PS3RockBandGuitar_ReportId : PS3RockBandGuitar { }
-
-    [InputControlLayout(stateType = typeof(PS3WiiRockBandGuitarState_ReportId), hideInUI = true)]
-    internal class WiiRockBandGuitar_ReportId : WiiRockBandGuitar { }
 }
