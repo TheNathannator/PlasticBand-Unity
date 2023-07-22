@@ -10,7 +10,8 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputStageKit>(XInputNonStandardSubType.StageKit);
+            SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputStageKit>(
+                XInputNonStandardSubType.StageKit, SantrollerDeviceType.StageKit);
         }
 
         protected override void FinishSetup()

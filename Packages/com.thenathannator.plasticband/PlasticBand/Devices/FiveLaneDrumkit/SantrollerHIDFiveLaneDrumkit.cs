@@ -19,6 +19,7 @@ namespace PlasticBand.Devices
     internal unsafe struct SantrollerFiveLaneDrumkitState : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
+
         public byte reportId;
 
         [InputControl(name = "greenPad", layout = "Button", bit = 0)]

@@ -19,6 +19,7 @@ namespace PlasticBand.Devices
     internal unsafe struct SantrollerHIDTurntableState : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
+
         public byte reportId;
 
         [InputControl(name = "buttonSouth", layout = "Button", bit = 0, displayName = "Cross")]

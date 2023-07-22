@@ -28,24 +28,11 @@ namespace PlasticBand.LowLevel
         public const int VendorID = 0x1209;
         public const int ProductID = 0x2882;
 
-        // Default device/rhythm types for XInput subtypes
-        private static readonly Dictionary<int, SantrollerDeviceType> s_XInputSubtypeToDeviceType
-            = new Dictionary<int, SantrollerDeviceType>()
-        {
-            { (int)XInputController.DeviceSubType.Gamepad,         SantrollerDeviceType.Gamepad },
-            { (int)XInputController.DeviceSubType.DancePad,        SantrollerDeviceType.DancePad },
-            { (int)XInputController.DeviceSubType.Guitar,          SantrollerDeviceType.RockBandGuitar },
-            { (int)XInputController.DeviceSubType.GuitarAlternate, SantrollerDeviceType.GuitarHeroGuitar },
-            { (int)XInputController.DeviceSubType.DrumKit,         SantrollerDeviceType.RockBandDrums },
-            { (int)XInputNonStandardSubType.Turntable,             SantrollerDeviceType.DjHeroTurntable },
-            { (int)XInputNonStandardSubType.StageKit,              SantrollerDeviceType.StageKit },
-        };
-
         internal static SantrollerDeviceType GetDeviceType(ushort version)
             => (SantrollerDeviceType)(version >> 8);
 
         internal static int GetRevisionValue(SantrollerDeviceType deviceType)
-            => (((int)deviceType & 0xFF) << 8);
+            => ((int)deviceType & 0xFF) << 8;
 
         internal static void RegisterHIDLayout<TDevice>(SantrollerDeviceType deviceType)
             where TDevice : InputDevice
@@ -55,19 +42,19 @@ namespace PlasticBand.LowLevel
 
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(XInputController.DeviceSubType subType,
-            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown)
+            SantrollerDeviceType deviceType)
             where TDevice : InputDevice
             => RegisterXInputLayout<TDevice>((int)subType, deviceType);
 
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(XInputNonStandardSubType subType,
-            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown)
+            SantrollerDeviceType deviceType)
             where TDevice : InputDevice
             => RegisterXInputLayout<TDevice>((int)subType, deviceType);
 
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(int subType,
-            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown)
+            SantrollerDeviceType deviceType)
             where TDevice : InputDevice
         {
             InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType, deviceType));
@@ -80,10 +67,8 @@ namespace PlasticBand.LowLevel
         }
 
         internal static InputDeviceMatcher GetXInputMatcher(int subType,
-            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown)
+            SantrollerDeviceType deviceType)
         {
-            if (deviceType == SantrollerDeviceType.Unknown)
-                deviceType = s_XInputSubtypeToDeviceType[subType];
             int revision = GetRevisionValue(deviceType);
 
             return XInputLayoutFinder.GetMatcher(subType)

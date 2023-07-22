@@ -17,8 +17,9 @@ namespace PlasticBand.Devices
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct SantrollerFourLaneDrumkitState : IInputStateTypeInfo
     {
-        public byte reportId;
         public FourCC format => HidDefinitions.InputFormat;
+
+        public byte reportId;
 
         [InputControl(name = "buttonWest", layout = "Button", bit = 0)]
         [InputControl(name = "buttonSouth", layout = "Button", bit = 1)]

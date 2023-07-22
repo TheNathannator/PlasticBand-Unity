@@ -13,7 +13,8 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputTurntable>(XInputNonStandardSubType.Turntable);
+            SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputTurntable>(
+                XInputNonStandardSubType.Turntable, SantrollerDeviceType.DjHeroTurntable);
         }
 
         protected override void FinishSetup()

@@ -11,8 +11,8 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputFourLaneDrumkit>(XInputController.DeviceSubType.DrumKit,
-                SantrollerDeviceType.RockBandDrums);
+            SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputFourLaneDrumkit>(
+                XInputController.DeviceSubType.DrumKit, SantrollerDeviceType.RockBandDrums);
         }
 
         protected override void FinishSetup()
