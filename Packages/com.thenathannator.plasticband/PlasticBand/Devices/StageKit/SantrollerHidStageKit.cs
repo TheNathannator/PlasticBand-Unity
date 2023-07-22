@@ -36,7 +36,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
         public byte dpad;
 
-        public fixed byte unused3[24];
+        public fixed byte padding[16];
     }
 
     [InputControlLayout(stateType = typeof(SantrollerHidStageKitState), displayName = "Santroller HID Stage Kit")]
