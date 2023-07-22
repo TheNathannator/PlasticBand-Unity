@@ -4,7 +4,7 @@ using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
 
 // PlasticBand reference doc:
-// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Turntable/PS3.md
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Turntable/Santroller.md
 
 namespace PlasticBand.Devices
 {
