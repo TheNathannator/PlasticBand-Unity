@@ -1,7 +1,11 @@
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Utilities;
+using System.Runtime.InteropServices;
 
 
 // PlasticBand reference doc:
@@ -65,7 +69,7 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDFiveLaneDrumkit>(
-                SantrollerDeviceType.Drums, SantrollerRhythmType.GuitarHero);
+                SantrollerDeviceType.GuitarHeroDrums);
         }
 
         protected override void FinishSetup()

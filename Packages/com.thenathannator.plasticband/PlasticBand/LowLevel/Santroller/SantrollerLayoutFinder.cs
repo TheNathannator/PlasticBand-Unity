@@ -9,27 +9,15 @@ namespace PlasticBand.LowLevel
     internal enum SantrollerDeviceType
     {
         Unknown = 0,
-
         Gamepad = 0x01,
-        Wheel = 0x02,
-        ArcadeStick = 0x03,
-        FlightStick = 0x04,
-        DancePad = 0x05,
-        ArcadePad = 0x06,
-        Guitar = 0x07,
-        LiveGuitar = 0x08,
-        Drums = 0x09,
-        DjHeroTurntable = 0x10,
-        StageKit = 0x11,
-    }
-
-    internal enum SantrollerRhythmType
-    {
-        None = 0,
-
-        // Guitar/drumkit
-        GuitarHero = 0,
-        RockBand = 1,
+        DancePad = 0x02,
+        GuitarHeroGuitar = 0x03,
+        RockBandGuitar = 0x04,
+        GuitarHeroDrums = 0x05,
+        RockBandDrums = 0x06,
+        LiveGuitar = 0x07,
+        DjHeroTurntable = 0x08,
+        StageKit = 0x09
     }
 
     /// <summary>
@@ -40,83 +28,63 @@ namespace PlasticBand.LowLevel
         public const int VendorID = 0x1209;
         public const int ProductID = 0x2882;
 
-        // Binary-coded decimal does not use 0xA-0xF
-        private const int kBcdDigitMin = 0;
-        private const int kBcdDigitMax = 9;
-
         // Default device/rhythm types for XInput subtypes
-        private static readonly Dictionary<int, (SantrollerDeviceType type, SantrollerRhythmType rhythm)> s_XInputSubtypeToDeviceType
-            = new Dictionary<int, (SantrollerDeviceType, SantrollerRhythmType)>()
+        private static readonly Dictionary<int, SantrollerDeviceType> s_XInputSubtypeToDeviceType
+            = new Dictionary<int, SantrollerDeviceType>()
         {
-            { (int)XInputController.DeviceSubType.Gamepad,         (SantrollerDeviceType.Gamepad, SantrollerRhythmType.None) },
-            { (int)XInputController.DeviceSubType.Wheel,           (SantrollerDeviceType.Wheel, SantrollerRhythmType.None) },
-            { (int)XInputController.DeviceSubType.ArcadeStick,     (SantrollerDeviceType.ArcadeStick, SantrollerRhythmType.None) },
-            { (int)XInputController.DeviceSubType.FlightStick,     (SantrollerDeviceType.FlightStick, SantrollerRhythmType.None) },
-            { (int)XInputController.DeviceSubType.DancePad,        (SantrollerDeviceType.DancePad, SantrollerRhythmType.None) },
-            { (int)XInputController.DeviceSubType.ArcadePad,       (SantrollerDeviceType.ArcadePad, SantrollerRhythmType.None) },
-            { (int)XInputController.DeviceSubType.Guitar,          (SantrollerDeviceType.Guitar, SantrollerRhythmType.RockBand) },
-            { (int)XInputController.DeviceSubType.GuitarAlternate, (SantrollerDeviceType.Guitar, SantrollerRhythmType.GuitarHero) },
-            { (int)XInputController.DeviceSubType.DrumKit,         (SantrollerDeviceType.Drums, SantrollerRhythmType.RockBand) },
-            { (int)XInputNonStandardSubType.Turntable,             (SantrollerDeviceType.DjHeroTurntable, SantrollerRhythmType.None) },
-            { (int)XInputNonStandardSubType.StageKit,              (SantrollerDeviceType.StageKit, SantrollerRhythmType.None) },
+            { (int)XInputController.DeviceSubType.Gamepad,         SantrollerDeviceType.Gamepad },
+            { (int)XInputController.DeviceSubType.DancePad,        SantrollerDeviceType.DancePad },
+            { (int)XInputController.DeviceSubType.Guitar,          SantrollerDeviceType.RockBandGuitar },
+            { (int)XInputController.DeviceSubType.GuitarAlternate, SantrollerDeviceType.GuitarHeroGuitar },
+            { (int)XInputController.DeviceSubType.DrumKit,         SantrollerDeviceType.RockBandDrums },
+            { (int)XInputNonStandardSubType.Turntable,             SantrollerDeviceType.DjHeroTurntable },
+            { (int)XInputNonStandardSubType.StageKit,              SantrollerDeviceType.StageKit },
         };
 
         internal static SantrollerDeviceType GetDeviceType(ushort version)
             => (SantrollerDeviceType)(version >> 8);
 
-        internal static SantrollerRhythmType GetRhythmType(ushort version)
-            => (SantrollerRhythmType)((version >> 4) & 0x0F);
+        internal static int GetRevisionValue(SantrollerDeviceType deviceType)
+            => (((int)deviceType & 0xFF) << 8);
 
-        internal static int GetRevisionValue(SantrollerDeviceType deviceType, SantrollerRhythmType rhythmType, int consoleType = 0)
-            => (((int)deviceType & 0xFF) << 8) | (((int)rhythmType & 0x0F) << 4) | (consoleType & 0x0F);
-
-        internal static void RegisterHIDLayout<TDevice>(SantrollerDeviceType deviceType,
-            SantrollerRhythmType rhythmType = SantrollerRhythmType.None)
+        internal static void RegisterHIDLayout<TDevice>(SantrollerDeviceType deviceType)
             where TDevice : InputDevice
         {
-            // Register one matcher for every console type
-            for (int i = kBcdDigitMin; i <= kBcdDigitMax; i++)
-                InputSystem.RegisterLayout<TDevice>(matches: GetHidMatcher(deviceType, rhythmType, i));
+            InputSystem.RegisterLayout<TDevice>(matches: GetHidMatcher(deviceType));
         }
 
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(XInputController.DeviceSubType subType,
-            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
-            SantrollerRhythmType rhythmType = SantrollerRhythmType.None)
+            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown)
             where TDevice : InputDevice
-            => RegisterXInputLayout<TDevice>((int)subType, deviceType, rhythmType);
+            => RegisterXInputLayout<TDevice>((int)subType, deviceType);
 
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(XInputNonStandardSubType subType,
-            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
-            SantrollerRhythmType rhythmType = SantrollerRhythmType.None)
+            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown)
             where TDevice : InputDevice
-            => RegisterXInputLayout<TDevice>((int)subType, deviceType, rhythmType);
+            => RegisterXInputLayout<TDevice>((int)subType, deviceType);
 
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(int subType,
-            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
-            SantrollerRhythmType rhythmType = SantrollerRhythmType.None)
+            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown)
             where TDevice : InputDevice
         {
-            InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType, deviceType, rhythmType));
+            InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType, deviceType));
         }
 
-        internal static InputDeviceMatcher GetHidMatcher(SantrollerDeviceType deviceType,
-            SantrollerRhythmType rhythmType = SantrollerRhythmType.None,
-            int consoleType = 0)
+        internal static InputDeviceMatcher GetHidMatcher(SantrollerDeviceType deviceType)
         {
             return HidLayoutFinder.GetMatcher(VendorID, ProductID)
-                .WithVersion(GetRevisionValue(deviceType, rhythmType, consoleType).ToString());
+                .WithVersion(GetRevisionValue(deviceType).ToString());
         }
 
         internal static InputDeviceMatcher GetXInputMatcher(int subType,
-            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown,
-            SantrollerRhythmType rhythmType = SantrollerRhythmType.None)
+            SantrollerDeviceType deviceType = SantrollerDeviceType.Unknown)
         {
             if (deviceType == SantrollerDeviceType.Unknown)
-                (deviceType, rhythmType) = s_XInputSubtypeToDeviceType[subType];
-            int revision = GetRevisionValue(deviceType, rhythmType);
+                deviceType = s_XInputSubtypeToDeviceType[subType];
+            int revision = GetRevisionValue(deviceType);
 
             return XInputLayoutFinder.GetMatcher(subType)
                 .WithCapability("gamepad/leftStickX", VendorID)

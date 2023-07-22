@@ -1,7 +1,11 @@
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Utilities;
+using System.Runtime.InteropServices;
 
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Turntable/Santroller.md
