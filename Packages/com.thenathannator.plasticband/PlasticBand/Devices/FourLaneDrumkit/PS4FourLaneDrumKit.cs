@@ -35,7 +35,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "startButton", layout = "Button", bit = 13)]
         public ushort buttons1;
 
-        [InputControl(name = "psButton", layout = "Button", bit = 0, displayName = "PlayStation")]
+        [InputControl(name = "systemButton", layout = "Button", bit = 0, displayName = "PlayStation")]
         public byte buttons2;
 
         private fixed byte unused2[35];

@@ -27,7 +27,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "selectButton", layout = "Button", bit = 8)]
         [InputControl(name = "startButton", layout = "Button", bit = 9)]
 
-        [InputControl(name = "psButton", layout = "Button", bit = 12, displayName = "PlayStation")]
+        [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "PlayStation")]
 
         [InputControl(name = "redPad", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
         [InputControl(name = "yellowPad", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]

@@ -31,7 +31,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "startButton", layout = "Button", bit = 7)]
         [InputControl(name = "ghtvButton", layout = "Button", bit = 8)]
 
-        [InputControl(name = "syncButton", layout = "Button", bit = 9, displayName = "D-pad Center")]
+        [InputControl(name = "systemButton", layout = "Button", bit = 9, displayName = "D-pad Center")]
         public ushort buttons;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 15)]

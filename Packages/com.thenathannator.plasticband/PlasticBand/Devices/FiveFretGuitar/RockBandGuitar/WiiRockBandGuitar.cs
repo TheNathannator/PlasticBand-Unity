@@ -15,7 +15,7 @@ namespace PlasticBand.Devices
     {
         public FourCC format => HidDefinitions.InputFormat;
 
-        [InputControl(name = "psButton", layout = "Button", bit = 12, displayName = "System")]
+        [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "System")]
         public PS3RockBandGuitarState_NoReportId state;
     }
 
