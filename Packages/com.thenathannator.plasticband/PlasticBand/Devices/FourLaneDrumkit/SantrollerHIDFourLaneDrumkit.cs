@@ -5,7 +5,69 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(PS3WiiFourLaneDrumkitState_ReportId), displayName = "Santroller HID Rock Band Drumkit")]
+    /// <summary>
+    /// The state format for Santroller HID Rock Band Drum Kits.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct SantrollerFourLaneDrumkitState : IInputStateTypeInfo
+    {
+        public byte reportId;
+        public FourCC format => HidDefinitions.InputFormat;
+
+        [InputControl(name = "buttonWest", layout = "Button", bit = 0)]
+        [InputControl(name = "buttonSouth", layout = "Button", bit = 1)]
+        [InputControl(name = "buttonEast", layout = "Button", bit = 2)]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = 3)]
+
+        [InputControl(name = "kick1", layout = "Button", bit = 4)]
+        [InputControl(name = "kick2", layout = "Button", bit = 5)]
+
+        [InputControl(name = "redPad", layout = "Button", bit = 6)]
+        [InputControl(name = "yellowPad", layout = "Button", bit = 7)]
+        [InputControl(name = "bluePad", layout = "Button", bit = 8)]
+        [InputControl(name = "greenPad", layout = "Button", bit = 9)]
+        [InputControl(name = "yellowCymbal", layout = "Button", bit = 10)]
+        [InputControl(name = "blueCymbal", layout = "Button", bit = 11)]
+        [InputControl(name = "greenCymbal", layout = "Button", bit = 12)]
+
+        [InputControl(name = "selectButton", layout = "Button", bit = 13)]
+        [InputControl(name = "startButton", layout = "Button", bit = 14)]
+        [InputControl(name = "systemButton", layout = "Button", bit = 15)]
+        public ushort buttons;
+
+        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
+        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7", displayName = "Up")]
+        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
+        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5", displayName = "Down")]
+        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
+        public byte dpad;
+
+        [InputControl(name = "greenVelocity", layout = "Axis", displayName = "Green Pad Velocity")]
+        public byte greenVelocity;
+
+        [InputControl(name = "redVelocity", layout = "Axis", displayName = "Red Pad Velocity")]
+        public byte redVelocity;
+
+        [InputControl(name = "yellowVelocity", layout = "Axis", displayName = "Yellow Pad Velocity")]
+        public byte yellowVelocity;
+
+        [InputControl(name = "blueVelocity", layout = "Axis", displayName = "Blue Pad Velocity")]
+        public byte blueVelocity;
+
+        [InputControl(name = "greenCymbalVelocity", layout = "Axis", displayName = "Green Cymbal Velocity")]
+        public byte greenCymbalVelocity;
+        
+        [InputControl(name = "yellowCymbalVelocity", layout = "Axis", displayName = "Yellow Cymbal Velocity")]
+        public byte yellowCymbalVelocity;
+
+        [InputControl(name = "blueCymbalVelocity", layout = "Axis", displayName = "Blue Cymbal Velocity")]
+        public byte blueCymbalVelocity;
+    }
+
+    /// <summary>
+    /// A Santroller HID Rock Band Drum Kit.
+    /// </summary>
+    [InputControlLayout(stateType = typeof(SantrollerFourLaneDrumkitState), displayName = "Santroller HID Rock Band Drumkit")]
     internal class SantrollerHIDFourLaneDrumkit : FourLaneDrumkit, ISantrollerFourLaneDrumkitHaptics
     {
         internal new static void Initialize()

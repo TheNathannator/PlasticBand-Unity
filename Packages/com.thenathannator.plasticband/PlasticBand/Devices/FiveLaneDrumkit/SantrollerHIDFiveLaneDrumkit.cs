@@ -5,7 +5,58 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitState_ReportId), displayName = "Santroller HID Guitar Hero Drumkit")]
+    /// <summary>
+    /// The state format for Santroller HID Guitar Hero Drum Kits.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct SantrollerFiveLaneDrumkitState : IInputStateTypeInfo
+    {
+        public FourCC format => HidDefinitions.InputFormat;
+        public byte reportId;
+
+        [InputControl(name = "greenPad", layout = "Button", bit = 0)]
+        [InputControl(name = "redPad", layout = "Button", bit = 1)]
+        [InputControl(name = "yellowCymbal", layout = "Button", bit = 2)]
+        [InputControl(name = "bluePad", layout = "Button", bit = 3)]
+        [InputControl(name = "orangeCymbal", layout = "Button", bit = 4)]
+
+        [InputControl(name = "kick", layout = "Button", bit = 5)]
+
+        [InputControl(name = "selectButton", layout = "Button", bit = 6)]
+        [InputControl(name = "startButton", layout = "Button", bit = 7)]
+        [InputControl(name = "systemButton", layout = "Button", bit = 8)]
+        public ushort buttons;
+
+        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
+        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7", displayName = "Up")]
+        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
+        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5", displayName = "Down")]
+        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
+        public byte dpad;
+
+        [InputControl(name = "greenVelocity", layout = "Axis", displayName = "Green Velocity")]
+        public byte greenVelocity;
+
+        [InputControl(name = "redVelocity", layout = "Axis", displayName = "Red Velocity")]
+        public byte redVelocity;
+
+        [InputControl(name = "yellowVelocity", layout = "Axis", displayName = "Yellow Velocity")]
+        public byte yellowVelocity;
+
+        [InputControl(name = "blueVelocity", layout = "Axis", displayName = "Blue Velocity")]
+        public byte blueVelocity;
+
+        [InputControl(name = "orangeVelocity", layout = "Axis", displayName = "Orange Velocity")]
+        public byte orangeVelocity;
+
+        [InputControl(name = "kickVelocity", layout = "Axis", displayName = "Kick Velocity")]
+        public byte kickVelocity;
+    }
+
+    /// <summary>
+    /// A Santroller HID Guitar Hero Drum Kit.
+    /// </summary>
+    [InputControlLayout(stateType = typeof(SantrollerFiveLaneDrumkitState), displayName = "Santroller HID Guitar Hero Drumkit")]
     internal class SantrollerHIDFiveLaneDrumkit : FiveLaneDrumkit, ISantrollerFiveLaneDrumkitHaptics
     {
         internal new static void Initialize()

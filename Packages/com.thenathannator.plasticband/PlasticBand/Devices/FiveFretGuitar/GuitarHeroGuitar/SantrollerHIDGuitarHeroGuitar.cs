@@ -19,18 +19,18 @@ namespace PlasticBand.Devices
 
         public byte reportId;
 
-        [InputControl(name = "yellowFret", layout = "Button", bit = 0)]
-        [InputControl(name = "greenFret", layout = "Button", bit = 1)]
-        [InputControl(name = "redFret", layout = "Button", bit = 2)]
+        [InputControl(name = "greenFret", layout = "Button", bit = 0)]
+        [InputControl(name = "redFret", layout = "Button", bit = 1)]
+        [InputControl(name = "yellowFret", layout = "Button", bit = 2)]
         [InputControl(name = "blueFret", layout = "Button", bit = 3)]
 
         [InputControl(name = "orangeFret", layout = "Button", bit = 4)]
         [InputControl(name = "spPedal", layout = "Button", bit = 5)]
 
-        [InputControl(name = "selectButton", layout = "Button", bit = 8)]
-        [InputControl(name = "startButton", layout = "Button", bit = 9)]
+        [InputControl(name = "selectButton", layout = "Button", bit = 6)]
+        [InputControl(name = "startButton", layout = "Button", bit = 7)]
 
-        [InputControl(name = "psButton", layout = "Button", bit = 12, displayName = "PlayStation")]
+        [InputControl(name = "systemButton", layout = "Button", bit = 8)]
         public ushort buttons;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 0x1F)]
@@ -43,11 +43,6 @@ namespace PlasticBand.Devices
         [InputControl(name = "strumDown", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, defaultState = 0x1F, parameters = "minValue=3,maxValue=5,nullValue=0x1F")]
         public byte dpad;
 
-        [InputControl(name = "tilt", layout = "Axis")]
-        public byte tilt;
-
-        public byte unused1;
-
         [InputControl(name = "whammy", layout = "Axis")]
         public byte whammy;
 
@@ -58,18 +53,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "touchOrange", layout = "GuitarHeroSlider", format = "BYTE")]
         public byte slider;
 
-        public fixed byte unused2[12];
-
-        [InputControl(name = "accelX", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public short accelX;
-
-        [InputControl(name = "accelZ", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public short accelZ;
-
-        [InputControl(name = "accelY", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public short accelY;
-
-        public short unused3;
+        [InputControl(name = "tilt", layout = "Axis")]
+        public byte tilt;
     }
 
     [InputControlLayout(stateType = typeof(SantrollerHIDGuitarHeroGuitarState), displayName = "Santroller HID Guitar Hero Guitar")]

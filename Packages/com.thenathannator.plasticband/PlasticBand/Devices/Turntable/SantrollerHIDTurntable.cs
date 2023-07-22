@@ -8,7 +8,59 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(PS3TurntableState_ReportId), displayName = "Santroller HID Turntable")]
+    /// <summary>
+    /// The state format for Santroller HID DJ Hero Turntables.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct SantrollerHIDTurntableState : IInputStateTypeInfo
+    {
+        public FourCC format => HidDefinitions.InputFormat;
+        public byte reportId;
+
+        [InputControl(name = "buttonSouth", layout = "Button", bit = 0, displayName = "Cross")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = 1, displayName = "Circle")]
+        [InputControl(name = "buttonWest", layout = "Button", bit = 2, displayName = "Square")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = 3, displayName = "Triangle / Euphoria")]
+
+        [InputControl(name = "euphoria", layout = "Button", bit = 3, displayName = "Euphoria")]
+
+        [InputControl(name = "selectButton", layout = "Button", bit = 4)]
+        [InputControl(name = "startButton", layout = "Button", bit = 5)]
+        [InputControl(name = "systemButton", layout = "Button", bit = 6)]
+
+        [InputControl(name = "rightTableGreen", layout = "Button", bit = 7)]
+        [InputControl(name = "rightTableRed", layout = "Button", bit = 8)]
+        [InputControl(name = "rightTableBlue", layout = "Button", bit = 9)]
+
+        [InputControl(name = "leftTableGreen", layout = "Button", bit = 10)]
+        [InputControl(name = "leftTableRed", layout = "Button", bit = 11)]
+        [InputControl(name = "leftTableBlue", layout = "Button", bit = 12)]
+        public ushort buttons;
+
+        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 15)]
+        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=15,wrapAtValue=7", displayName = "Up/Strum Up")]
+        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
+        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5", displayName = "Down/Strum Down")]
+        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
+        public byte dpad;
+
+        [InputControl(name = "leftTableVelocity", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        public byte leftTableVelocity;
+
+        [InputControl(name = "rightTableVelocity", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        public byte rightTableVelocity;
+
+        [InputControl(name = "effectsDial", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        public byte effectsDial;
+
+        [InputControl(name = "crossFader", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        public byte crossFader;
+    }
+
+    /// <summary>
+    /// A Santroller HID Turntable.
+    /// </summary>
+    [InputControlLayout(stateType = typeof(SantrollerHIDTurntableState), displayName = "Santroller HID Turntable")]
     internal class SantrollerHIDTurntable : PS3Turntable, ISantrollerTurntableHaptics
     {
         internal new static void Initialize()
