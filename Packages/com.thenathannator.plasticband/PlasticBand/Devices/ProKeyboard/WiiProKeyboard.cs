@@ -33,11 +33,11 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // ProKeyboard
-            HidLayoutFinder.RegisterLayout<WiiProKeyboard_ReportId, WiiProKeyboard>(0x1BAD, 0x2330);
+            // Keyboard
+            HidLayoutFinder.RegisterLayout<WiiProKeyboard_ReportId, WiiProKeyboard>(0x1BAD, 0x3330);
 
             // MIDI Pro Adapter
-            HidLayoutFinder.RegisterLayout<WiiProKeyboard_ReportId, WiiProKeyboard>(0x1BAD, 0x2330);
+            HidLayoutFinder.RegisterLayout<WiiProKeyboard_ReportId, WiiProKeyboard>(0x1BAD, 0x3338);
         }
     }
 

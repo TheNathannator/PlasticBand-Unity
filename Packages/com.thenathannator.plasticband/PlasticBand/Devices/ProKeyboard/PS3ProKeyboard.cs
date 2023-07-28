@@ -110,7 +110,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // ProKeyboard
+            // Keyboard
             HidLayoutFinder.RegisterLayout<PS3ProKeyboard_ReportId, PS3ProKeyboard>(0x12BA, 0x2330);
 
             // MIDI Pro Adapter
