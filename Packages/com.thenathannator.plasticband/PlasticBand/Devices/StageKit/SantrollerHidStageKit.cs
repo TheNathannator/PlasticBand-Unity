@@ -25,7 +25,7 @@ namespace PlasticBand.Devices
 
         [InputControl(name = "selectButton", layout = "Button", bit = 4)]
         [InputControl(name = "startButton", layout = "Button", bit = 5)]
-        [InputControl(name = "systemButton", layout = "Button", bit = 6)]
+        [InputControl(name = "systemButton", layout = "Button", bit = 6, displayName = "System")]
         public ushort buttons;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]

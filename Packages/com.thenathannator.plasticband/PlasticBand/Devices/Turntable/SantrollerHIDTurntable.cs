@@ -31,7 +31,7 @@ namespace PlasticBand.Devices
 
         [InputControl(name = "selectButton", layout = "Button", bit = 4)]
         [InputControl(name = "startButton", layout = "Button", bit = 5)]
-        [InputControl(name = "systemButton", layout = "Button", bit = 6)]
+        [InputControl(name = "systemButton", layout = "Button", bit = 6, displayName = "System")]
 
         [InputControl(name = "rightTableGreen", layout = "Button", bit = 7)]
         [InputControl(name = "rightTableRed", layout = "Button", bit = 8)]
