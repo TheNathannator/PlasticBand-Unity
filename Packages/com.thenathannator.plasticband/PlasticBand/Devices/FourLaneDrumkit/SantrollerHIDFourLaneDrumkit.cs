@@ -21,21 +21,22 @@ namespace PlasticBand.Devices
 
         public byte reportId;
 
-        [InputControl(name = "buttonWest", layout = "Button", bit = 0)]
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 1)]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 2)]
+        [InputControl(name = "buttonSouth", layout = "Button", bit = 0)]
+        [InputControl(name = "buttonEast", layout = "Button", bit = 1)]
+        [InputControl(name = "buttonWest", layout = "Button", bit = 2)]
         [InputControl(name = "buttonNorth", layout = "Button", bit = 3)]
 
-        [InputControl(name = "kick1", layout = "Button", bit = 4)]
-        [InputControl(name = "kick2", layout = "Button", bit = 5)]
+        [InputControl(name = "greenPad", layout = "Button", bit = 4)]
+        [InputControl(name = "redPad", layout = "Button", bit = 5)]
+        [InputControl(name = "yellowPad", layout = "Button", bit = 6)]
+        [InputControl(name = "bluePad", layout = "Button", bit = 7)]
 
-        [InputControl(name = "redPad", layout = "Button", bit = 6)]
-        [InputControl(name = "yellowPad", layout = "Button", bit = 7)]
-        [InputControl(name = "bluePad", layout = "Button", bit = 8)]
-        [InputControl(name = "greenPad", layout = "Button", bit = 9)]
-        [InputControl(name = "yellowCymbal", layout = "Button", bit = 10)]
-        [InputControl(name = "blueCymbal", layout = "Button", bit = 11)]
-        [InputControl(name = "greenCymbal", layout = "Button", bit = 12)]
+        [InputControl(name = "greenCymbal", layout = "Button", bit = 8)]
+        [InputControl(name = "yellowCymbal", layout = "Button", bit = 9)]
+        [InputControl(name = "blueCymbal", layout = "Button", bit = 10)]
+
+        [InputControl(name = "kick1", layout = "Button", bit = 11)]
+        [InputControl(name = "kick2", layout = "Button", bit = 12)]
 
         [InputControl(name = "selectButton", layout = "Button", bit = 13)]
         [InputControl(name = "startButton", layout = "Button", bit = 14)]

@@ -18,15 +18,14 @@ namespace PlasticBand.Devices
 
         public byte reportId;
 
-        [InputControl(name = "buttonWest", layout = "Button", bit = 0, displayName = "Square")]
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 1, displayName = "Cross")]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 2, displayName = "Circle")]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 3, displayName = "Triangle")]
+        [InputControl(name = "buttonSouth", layout = "Button", bit = 0)]
+        [InputControl(name = "buttonEast", layout = "Button", bit = 1)]
+        [InputControl(name = "buttonWest", layout = "Button", bit = 2)]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = 3)]
 
-        [InputControl(name = "selectButton", layout = "Button", bit = 8, displayName = "Select")]
-        [InputControl(name = "startButton", layout = "Button", bit = 9)]
-
-        [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "System")]
+        [InputControl(name = "selectButton", layout = "Button", bit = 4)]
+        [InputControl(name = "startButton", layout = "Button", bit = 5)]
+        [InputControl(name = "systemButton", layout = "Button", bit = 6)]
         public ushort buttons;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
@@ -35,8 +34,6 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
         public byte dpad;
-
-        public fixed byte padding[16];
     }
 
     [InputControlLayout(stateType = typeof(SantrollerHidStageKitState), displayName = "Santroller HID Stage Kit")]
