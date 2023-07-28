@@ -6,16 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
-## Unreleased
+## [0.3.3] - 2023/28/07
+
+### Added
+
+- Preliminary support for the XInput `GuitarBass` subtype has been added. Unsure if it has different input features compared to a regular Rock Band guitar, confirmation needed.
 
 ### Changed
 
 - The pickup switch on Xbox 360/PS3/Wii Rock Band guitars is now properly supported. It is now exposed as an integer control instead of an axis, ranging from 0 to 4 for each of the 5 notches on the guitar.
   - The pickup switch on PS4 guitars is not confirmed to be supported, it has to be defined somewhere in the input layout for things to work so I've had to guess where it is for now lol
+- Santroller device support has been updated to support the latest version of the HID reports.
+- The control name for the PS button on PS3 instruments has been updated to be more generic (`psButton` -> `systemButton`).
+- The instrument button on Wii Rock Band instruments now has the correct display name, rather than appearing as the PS button.
 
 ### Fixed
 
 - The left platter buttons on PS3 turntables should now register correctly, they were off by 1 bit lol
+- Wii RB3 Pro Keyboards should now register correctly, they were registered under the PS3 keyboard's hardware IDs on accident.
 
 ## [0.3.2] - 2023/27/05
 
