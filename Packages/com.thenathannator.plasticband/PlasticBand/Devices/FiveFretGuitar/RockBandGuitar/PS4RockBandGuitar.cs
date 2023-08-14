@@ -10,12 +10,10 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 77)]
+    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 77)]
     internal unsafe struct PS4RockBandGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
-
-        private fixed byte unused1[4];
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
         [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7")]
@@ -41,22 +39,27 @@ namespace PlasticBand.Devices
         [InputControl(name = "soloYellow", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x4080")]
         [InputControl(name = "soloBlue", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x4010")]
         [InputControl(name = "soloOrange", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x4100")]
+
+        [FieldOffset(4)]
         public ushort buttons1;
 
         [InputControl(name = "systemButton", layout = "Button", bit = 0, displayName = "PlayStation")]
+        [FieldOffset(6)]
         public byte buttons2;
+
+        [InputControl(name = "pickupSwitch", layout = "Integer")]
+        [FieldOffset(43)]
+        public byte pickupSwitch;
 
         // TODO: Normalization
         [InputControl(name = "whammy", layout = "Axis")]
+        [FieldOffset(44)]
         public byte whammy;
 
         // TODO: Normalization
         [InputControl(name = "tilt", layout = "Axis")]
+        [FieldOffset(45)]
         public byte tilt;
-
-        // TODO: The position of this is assumed because RockBandGuitar requires it, needs verification
-        [InputControl(name = "pickupSwitch", layout = "RockBandPickupSwitch")]
-        public byte pickupSwitch;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
