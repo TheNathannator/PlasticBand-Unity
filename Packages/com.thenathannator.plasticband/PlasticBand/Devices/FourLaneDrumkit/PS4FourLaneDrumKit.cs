@@ -10,12 +10,10 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 77)]
     internal unsafe struct PS4FourLaneDrumkitState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
-
-        private fixed byte unused1[4];
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
         [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7")]
@@ -33,37 +31,43 @@ namespace PlasticBand.Devices
 
         [InputControl(name = "selectButton", layout = "Button", bit = 12)]
         [InputControl(name = "startButton", layout = "Button", bit = 13)]
+
+        [FieldOffset(4)]
         public ushort buttons1;
 
         [InputControl(name = "systemButton", layout = "Button", bit = 0, displayName = "PlayStation")]
+        [FieldOffset(6)]
         public byte buttons2;
-
-        private fixed byte unused2[35];
 
         // TODO: Currently these just act like buttons, when velocity support is implemented for the other drumkits
         // this needs to be adjusted to match how those will then behave
         [InputControl(name = "redPad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
+        [FieldOffset(42)]
         public byte redPadVelocity;
 
         [InputControl(name = "bluePad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
+        [FieldOffset(43)]
         public byte bluePadVelocity;
 
         [InputControl(name = "yellowPad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
+        [FieldOffset(44)]
         public byte yellowPadVelocity;
 
         [InputControl(name = "greenPad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
+        [FieldOffset(45)]
         public byte greenPadVelocity;
 
         [InputControl(name = "yellowCymbal", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
+        [FieldOffset(46)]
         public byte yellowCymbalVelocity;
 
         [InputControl(name = "blueCymbal", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
+        [FieldOffset(47)]
         public byte blueCymbalVelocity;
 
         [InputControl(name = "greenCymbal", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
+        [FieldOffset(48)]
         public byte greenCymbalVelocity;
-
-        private fixed byte unused3[28];
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

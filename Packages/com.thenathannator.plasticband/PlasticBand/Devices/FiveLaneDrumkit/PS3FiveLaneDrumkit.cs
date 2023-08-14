@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 27)]
     internal unsafe struct PS3FiveLaneDrumkitState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
@@ -59,8 +59,6 @@ namespace PlasticBand.Devices
 
         [InputControl(name = "orangeVelocity", layout = "Axis", displayName = "Orange Velocity")]
         public byte orangeVelocity;
-
-        public fixed byte unused3[10];
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

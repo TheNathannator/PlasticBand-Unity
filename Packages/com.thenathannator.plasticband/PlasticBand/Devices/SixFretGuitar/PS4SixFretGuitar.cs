@@ -12,7 +12,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 63)]
     internal unsafe struct PS4SixFretGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
@@ -49,8 +49,6 @@ namespace PlasticBand.Devices
 
         [InputControl(name = "dpadCenter", layout = "Button", bit = 0)]
         public byte button2;
-
-        public fixed byte unused2[57];
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

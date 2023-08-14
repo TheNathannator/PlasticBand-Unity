@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 27)]
     internal unsafe struct PS3ProKeyboardState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
@@ -92,8 +92,6 @@ namespace PlasticBand.Devices
 
         [InputControl(name = "touchStrip", layout = "Axis", format = "BIT", sizeInBits = 7)]
         public byte touchStrip;
-
-        private fixed byte unused2[11];
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

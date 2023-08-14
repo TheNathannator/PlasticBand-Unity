@@ -12,7 +12,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Explicit, Pack = 1)]
     internal unsafe struct PS3WiiUSixFretGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
@@ -30,6 +30,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "ghtvButton", layout = "Button", bit = 10)]
 
         [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "D-pad Center")]
+
+        [FieldOffset(0)]
         public ushort buttons;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 15)]
@@ -37,27 +39,24 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
         [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
-        public byte dpad;
 
-        public byte unused1;
+        [FieldOffset(2)]
+        public byte dpad;
 
         [InputControl(name = "strumUp", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x7F,maxValue=0,nullValue=0x80")]
         [InputControl(name = "strumDown", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x81,maxValue=0xFF,nullValue=0x80")]
+        [FieldOffset(4)]
         public byte strumBar;
-
-        public byte unused2;
 
         // TODO: See if any normalization is needed
         [InputControl(name = "whammy", layout = "Axis")]
+        [FieldOffset(6)]
         public byte whammy;
-
-        public fixed byte unused3[12];
 
         // TODO: See if any additional normalization is needed
         [InputControl(name = "tilt", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [FieldOffset(19)]
         public short tilt;
-
-        public fixed short unused4[3];
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

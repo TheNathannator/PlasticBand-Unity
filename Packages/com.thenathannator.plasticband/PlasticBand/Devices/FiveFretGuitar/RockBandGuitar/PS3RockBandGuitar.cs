@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 27)]
     internal unsafe struct PS3RockBandGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
@@ -52,8 +52,6 @@ namespace PlasticBand.Devices
 
         [InputControl(name = "pickupSwitch", layout = "RockBandPickupSwitch")]
         public byte pickupSwitch;
-
-        public fixed byte unused2[21];
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

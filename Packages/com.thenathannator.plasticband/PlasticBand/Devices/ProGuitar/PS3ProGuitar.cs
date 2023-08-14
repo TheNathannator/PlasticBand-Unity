@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 27)]
     internal unsafe struct PS3ProGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
@@ -79,8 +79,6 @@ namespace PlasticBand.Devices
 
         [InputControl(name = "spPedal", layout = "Button", bit = 7)]
         public byte pedal;
-
-        private fixed byte unused3[8];
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

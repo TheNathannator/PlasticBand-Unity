@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 27)]
     internal unsafe struct PS3GuitarHeroGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
@@ -27,6 +27,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "startButton", layout = "Button", bit = 9)]
 
         [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "PlayStation")]
+
+        [FieldOffset(0)]
         public ushort buttons;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 0x1F)]
@@ -37,11 +39,12 @@ namespace PlasticBand.Devices
 
         [InputControl(name = "strumUp", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, defaultState = 0x1F, parameters = "minValue=7,maxValue=1,nullValue=0x1F,wrapAtValue=7")]
         [InputControl(name = "strumDown", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, defaultState = 0x1F, parameters = "minValue=3,maxValue=5,nullValue=0x1F")]
+
+        [FieldOffset(2)]
         public byte dpad;
 
-        public fixed byte unused1[2];
-
         [InputControl(name = "whammy", layout = "Axis")]
+        [FieldOffset(5)]
         public byte whammy;
 
         [InputControl(name = "touchGreen", layout = "GuitarHeroSlider", format = "BYTE")]
@@ -49,23 +52,24 @@ namespace PlasticBand.Devices
         [InputControl(name = "touchYellow", layout = "GuitarHeroSlider", format = "BYTE")]
         [InputControl(name = "touchBlue", layout = "GuitarHeroSlider", format = "BYTE")]
         [InputControl(name = "touchOrange", layout = "GuitarHeroSlider", format = "BYTE")]
-        public byte slider;
 
-        public fixed byte unused2[12];
+        [FieldOffset(6)]
+        public byte slider;
 
         // This was the previous version of the control, left this here in case it's still needed
         // [InputControl(name = "tilt", layout = "DiscreteButton", noisy = true, parameters = "minValue=0x0185,maxValue=0x01F7,nullValue=0x0184")]
         [InputControl(name = "tilt", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         [InputControl(name = "accelX", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [FieldOffset(19)]
         public short tilt;
 
         [InputControl(name = "accelZ", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [FieldOffset(21)]
         public short accelZ;
 
         [InputControl(name = "accelY", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [FieldOffset(23)]
         public short accelY;
-
-        public short unused3;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

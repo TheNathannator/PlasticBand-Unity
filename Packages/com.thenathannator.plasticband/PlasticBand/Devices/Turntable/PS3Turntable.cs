@@ -11,7 +11,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 27)]
     internal unsafe struct PS3TurntableState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;
@@ -27,6 +27,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "startButton", layout = "Button", bit = 9)]
 
         [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "PlayStation")]
+
+        [FieldOffset(0)]
         public ushort buttons;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 15)]
@@ -34,22 +36,24 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
         [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5", displayName = "Down/Strum Down")]
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
+
+        [FieldOffset(2)]
         public byte dpad;
 
-        public fixed byte unused1[2];
-
         [InputControl(name = "leftTableVelocity", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [FieldOffset(5)]
         public byte leftTableVelocity;
 
         [InputControl(name = "rightTableVelocity", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [FieldOffset(6)]
         public byte rightTableVelocity;
 
-        public fixed byte unused2[12];
-
         [InputControl(name = "effectsDial", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [FieldOffset(19)]
         public short effectsDial;
 
         [InputControl(name = "crossFader", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [FieldOffset(21)]
         public short crossFader;
 
         [InputControl(name = "rightTableGreen", layout = "Button", bit = 0)]
@@ -58,9 +62,9 @@ namespace PlasticBand.Devices
         [InputControl(name = "leftTableGreen", layout = "Button", bit = 4)]
         [InputControl(name = "leftTableRed", layout = "Button", bit = 5)]
         [InputControl(name = "leftTableBlue", layout = "Button", bit = 6)]
-        public short tableButtons;
 
-        public short unused3;
+        [FieldOffset(23)]
+        public short tableButtons;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
