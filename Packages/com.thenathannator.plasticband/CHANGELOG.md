@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.3.4] - 2023/15/08
+
+### Fixed
+
+- Whammy and tilt on PS4 RB4 guitars has been fixed, and the pickup switch is now implemented.
+- Xbox 360 turntables now instantiate correctly again, and are now properly scaled up.
+
 ## [0.3.3] - 2023/28/07
 
 ### Added
