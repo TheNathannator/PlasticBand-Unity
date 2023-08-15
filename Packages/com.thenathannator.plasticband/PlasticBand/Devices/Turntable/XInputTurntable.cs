@@ -43,10 +43,10 @@ namespace PlasticBand.Devices
         [InputControl(name = "rightTableBlue", layout = "Button", bit = 2)]
         public byte rightTableButtons;
 
-        [InputControl(name = "leftTableVelocity", layout = "Axis", noisy = true, parameters = "minValue=-64,maxValue=64")]
+        [InputControl(name = "leftTableVelocity", layout = "Axis", format = "SBYT", noisy = true, processors = "axisDeadzone(min=0.01, max=0.25)")]
         public short leftTableVelocity;
 
-        [InputControl(name = "rightTableVelocity", layout = "Axis", noisy = true, parameters = "minValue=-64,maxValue=64")]
+        [InputControl(name = "rightTableVelocity", layout = "Axis", format = "SBYT", noisy = true, processors = "axisDeadzone(min=0.01, max=0.25)")]
         public short rightTableVelocity;
 
         [InputControl(name = "effectsDial", layout = "Axis")]
