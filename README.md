@@ -89,7 +89,6 @@ Devices to support:
   - [ ] Xbox One
   - [x] PS2/PS3
   - [x] PS4
-    - [ ] PDP drumkit product ID
   - [x] Wii
 - Guitar Hero Kits
   - All:
