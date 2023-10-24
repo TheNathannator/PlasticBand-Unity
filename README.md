@@ -117,8 +117,6 @@ Devices to support:
   - [x] Xbox 360
   - [x] PS3
   - [x] Wii
-- All Rock Band devices:
-  - [ ] Wii devices currently have the display name for the big instrument icon button set to PlayStation, when it should ideally be something else. The only problem is that, to my knowledge at least, setting a separate display name will require duplicating the whole state layout struct, which will make maintenance more difficult.
 
 ## License
 
