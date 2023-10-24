@@ -38,6 +38,6 @@ namespace PlasticBand
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsPressedInEvent(this ButtonControl control, InputEventPtr eventPtr)
-            => control.HasValueChangeInEvent(eventPtr) && control.IsValueConsideredPressed(control.ReadValueFromEvent(eventPtr));
+            => control.ReadValueFromEvent(eventPtr, out float value) && control.IsValueConsideredPressed(value);
     }
 }
