@@ -17,13 +17,10 @@ namespace PlasticBand.Devices
         public FourCC format => XInputGamepad.Format;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", bit = 0, sizeInBits = 4)]
-        [InputControl(name = "dpad/up", bit = 0)]
-        [InputControl(name = "dpad/down", bit = 1)]
+        [InputControl(name = "dpad/up", bit = 0, alias = "strumUp")]
+        [InputControl(name = "dpad/down", bit = 1, alias = "strumDown")]
         [InputControl(name = "dpad/left", bit = 2)]
         [InputControl(name = "dpad/right", bit = 3)]
-
-        [InputControl(name = "strumUp", bit = 0)]
-        [InputControl(name = "strumDown", bit = 1)]
 
         [InputControl(name = "startButton", layout = "Button", bit = 4)]
         [InputControl(name = "selectButton", layout = "Button", bit = 5, displayName = "Back")]
@@ -59,9 +56,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "whammy", layout = "Axis", defaultState = short.MinValue, parameters = "normalize=true,normalizeMin=-1,normalizeMax=1,normalizeZero=-1")]
         public short whammy;
 
-        [InputControl(name = "tilt", layout = "Axis", noisy = true)]
         // parameters = "normalize=true,normalizeMin=-0.85,normalizeMax=1,normalizeZero=0,clamp=2,clampMin=-1,clampMax=1"
-        [InputControl(name = "accelX", layout = "Axis", noisy = true)]
+        [InputControl(name = "tilt", layout = "Axis", noisy = true)]
         public short tilt;
     }
 

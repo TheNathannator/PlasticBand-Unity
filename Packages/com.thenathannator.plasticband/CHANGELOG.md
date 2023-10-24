@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [Unreleased]
+
+### Fixed
+
+- Various control conflicts/duplicate controls on 5-fret guitars have been fixed. Some of the properties on the device classes may still result in duplicate inputs relative to each other, but in these cases both properties will now refer to the same control instance instead of two separate controls. Interactive rebinding will also now work correctly, whereas before these duplicate controls were causing issues.
+
 ## [0.3.4] - 2023/15/08
 
 ### Fixed

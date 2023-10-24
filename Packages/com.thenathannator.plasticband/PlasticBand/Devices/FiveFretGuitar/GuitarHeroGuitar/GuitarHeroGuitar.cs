@@ -67,12 +67,12 @@ namespace PlasticBand.Devices
         public ButtonControl touchOrange { get; private set; }
 
         /// <summary>
-        /// The X-axis of the guitar's accelerometer.
+        /// The X-axis of the guitar's accelerometer; equivalent to regular tilt.
         /// </summary>
         /// <remarks>
         /// Positive is when the guitar is pointed up, negative is when the guitar is pointed down.
         /// </remarks>
-        [InputControl(displayName = "Accelerometer X", noisy = true)]
+        [InputControl(name = nameof(tilt), displayName = "Tilt/Accelerometer X", noisy = true, alias = "accelX")]
         public AxisControl accelX { get; private set; }
 
         /// <summary>
