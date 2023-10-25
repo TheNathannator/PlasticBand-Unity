@@ -4,23 +4,27 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
-namespace PlasticBand.Devices
+namespace PlasticBand.LowLevel
 {
+    internal delegate TToState TranslateStateHandler<TFromState, TToState>(ref TFromState fromState)
+        where TFromState : unmanaged, IInputStateTypeInfo
+        where TToState : unmanaged, IInputStateTypeInfo;
+
     /// <summary>
     /// Translates a device's state from its original format (<typeparamref name="TFromState"/>)
     /// to another (<typeparamref name="TToState"/>).
     /// </summary>
-    internal abstract class StateTranslator<TFromState, TToState>
+    internal static unsafe class StateTranslator<TFromState, TToState>
         where TFromState : unmanaged, IInputStateTypeInfo
         where TToState : unmanaged, IInputStateTypeInfo
     {
-        private static FourCC s_FromStateFormat = default(TFromState).format;
-        private static FourCC s_ToStateFormat = default(TToState).format;
+        public static readonly FourCC FromStateFormat = default(TFromState).format;
+        public static readonly FourCC ToStateFormat = default(TToState).format;
 
-        public unsafe void VerifyDevice(InputDevice device)
+        public static void VerifyDevice(InputDevice device)
         {
-            if (device.stateBlock.format != s_ToStateFormat)
-                throw new NotSupportedException($"State format must be {s_ToStateFormat} ({typeof(TToState).Name})!");
+            if (device.stateBlock.format != ToStateFormat)
+                throw new NotSupportedException($"State format must be {ToStateFormat} ({typeof(TToState).Name})!");
 
             if (device.stateBlock.sizeInBits / 8 < sizeof(TToState))
                 throw new NotSupportedException($"State block is too small to accomodate reports translated into {typeof(TToState).Name}!");
@@ -29,73 +33,45 @@ namespace PlasticBand.Devices
                 throw new NotSupportedException($"Raw state size is too small for its input events to accomodate reports translated into {typeof(TToState).Name}!");
         }
 
-        protected abstract unsafe TToState TranslateState(ref TFromState fromState);
-
-        public unsafe bool UpdateState(InputDevice device, InputEventPtr eventPtr)
+        public static bool UpdateState(InputDevice device, InputEventPtr eventPtr,
+            TranslateStateHandler<TFromState, TToState> translator)
         {
-            // Only take state events
             if (eventPtr.type != StateEvent.Type)
                 return false;
 
-            var statePtr = StateEvent.From(eventPtr);
-            if (statePtr->stateFormat == s_ToStateFormat)
-                // This event has already been handled, skip everything else
+            var stateEvent = StateEvent.From(eventPtr);
+            // Skip if this event has already been handled
+            if (stateEvent->stateFormat == ToStateFormat)
                 return true;
 
-            // Read state data
-            if (statePtr->stateSizeInBytes < sizeof(TToState) || !statePtr->TryReadState(out TFromState fromState))
+            // Ensure the format matches and the buffer is big enough for each state type
+            if (stateEvent->stateFormat != FromStateFormat ||
+                stateEvent->stateSizeInBytes < sizeof(TFromState) || stateEvent->stateSizeInBytes < sizeof(TToState))
                 return false;
 
-            UpdateStateUnchecked(device, statePtr, ref fromState);
-            return true;
-        }
-
-        public unsafe bool UpdateState(InputDevice device, StateEvent* statePtr, ref TFromState fromState)
-        {
-            if (statePtr == null)
-                return false;
-
-            if (statePtr->stateFormat == s_ToStateFormat)
-                // This event has already been handled, skip everything else
-                return true;
-
-            UpdateStateUnchecked(device, statePtr, ref fromState);
-            return true;
-        }
-
-        private unsafe void UpdateStateUnchecked(InputDevice device, StateEvent* statePtr, ref TFromState fromState)
-        {
-            // Translate state data
-            var translated = TranslateState(ref fromState);
-            UnsafeUtility.CopyStructureToPtr(ref translated, statePtr->state);
+            // Read and translate state data
+            // Yes, this works! It's exactly what Unsafe.AsRef does under the hood
+            ref TFromState fromState = ref *(TFromState*)stateEvent->state;
+            var translated = translator(ref fromState);
+            UnsafeUtility.CopyStructureToPtr(ref translated, stateEvent->state);
 
             // Update underlying state buffers
             // We don't need to worry about the final state event buffer being greater than
             // the state block size, as any extra state data is simply ignored
-            var eventPtr = statePtr->ToEventPtr();
             InputState.Change(device, eventPtr);
             eventPtr.handled = true;
+
+            return true;
         }
 
         // This method is used pretty much only for compatibility with 'InputSystem.onEvent', as otherwise
         // our state transformations aren't applied.
         // Using 'InputState.onChange' for global device state update notifications is recommended instead,
         // as it doesn't circumvent the normal handling of input events, including IInputStateCallbackReceiver.OnStateEvent.
-        public bool GetStateOffsetForEvent(InputDevice device, InputControl control, InputEventPtr eventPtr, ref uint offset)
+        public static bool GetStateOffsetForEvent(InputDevice device, InputControl control, InputEventPtr eventPtr,
+            ref uint offset, TranslateStateHandler<TFromState, TToState> translator)
         {
-            if (control.device != device || !UpdateState(device, eventPtr))
-                return false;
-
-            // No offset is required, all of our controls will be reading
-            // relative to the start of the device's state block
-            offset = 0;
-            return true;
-        }
-
-        public unsafe bool GetStateOffsetForEvent(InputDevice device, InputControl control, StateEvent* statePtr,
-            ref TFromState fromState, ref uint offset)
-        {
-            if (control.device != device || !UpdateState(device, statePtr, ref fromState))
+            if (control.device != device || !UpdateState(device, eventPtr, translator))
                 return false;
 
             // No offset is required, all of our controls will be reading
