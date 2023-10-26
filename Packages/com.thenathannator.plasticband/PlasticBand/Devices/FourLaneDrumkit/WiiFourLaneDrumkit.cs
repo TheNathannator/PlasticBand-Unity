@@ -11,25 +11,21 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct WiiFourLaneDrumkitState_NoReportId : IInputStateTypeInfo
+    internal struct WiiFourLaneDrumkitLayout : IInputStateTypeInfo
     {
-        public FourCC format => HidDefinitions.InputFormat;
+        public FourCC format => TranslatedFourLaneState.Format;
 
-        [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "System")]
-        public PS3FourLaneDrumkitState_NoReportId state;
+        [InputControl(name = "buttonSouth", layout = "Button", bit = (int)TranslatedFourLaneButton.South, displayName = "A")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = (int)TranslatedFourLaneButton.East, displayName = "B")]
+        [InputControl(name = "buttonWest", layout = "Button", bit = (int)TranslatedFourLaneButton.West, displayName = "1")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = (int)TranslatedFourLaneButton.North, displayName = "2")]
+
+        [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedFourLaneButton.System, displayName = "System")]
+        public TranslatedFourLaneState state;
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct WiiFourLaneDrumkitState_ReportId : IInputStateTypeInfo
-    {
-        public FourCC format => HidDefinitions.InputFormat;
-
-        public byte reportId;
-        public WiiFourLaneDrumkitState_NoReportId state;
-    }
-
-    [InputControlLayout(stateType = typeof(WiiFourLaneDrumkitState_NoReportId), displayName = "Wii Rock Band Drumkit")]
-    internal class WiiFourLaneDrumkit : FourLaneDrumkit
+    [InputControlLayout(stateType = typeof(WiiFourLaneDrumkitLayout), displayName = "Wii Rock Band Drumkit")]
+    internal class WiiFourLaneDrumkit : TranslatingFourLaneDrumkit_Flags<PS3WiiFourLaneDrumkitState_NoReportId>
     {
         internal new static void Initialize()
         {
@@ -44,6 +40,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(WiiFourLaneDrumkitState_ReportId), hideInUI = true)]
-    internal class WiiFourLaneDrumkit_ReportId : WiiFourLaneDrumkit { }
+    [InputControlLayout(stateType = typeof(WiiFourLaneDrumkitLayout), hideInUI = true)]
+    internal class WiiFourLaneDrumkit_ReportId : TranslatingFourLaneDrumkit_Flags<PS3WiiFourLaneDrumkitState_ReportId> { }
 }

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(XInputFourLaneDrumkitState), displayName = "Santroller XInput Rock Band Drumkit")]
+    [InputControlLayout(stateType = typeof(XInputFourLaneDrumkitLayout), displayName = "Santroller XInput Rock Band Drumkit")]
     internal class SantrollerXInputFourLaneDrumkit : XInputFourLaneDrumkit, ISantrollerFourLaneDrumkitHaptics
     {
         internal new static void Initialize()

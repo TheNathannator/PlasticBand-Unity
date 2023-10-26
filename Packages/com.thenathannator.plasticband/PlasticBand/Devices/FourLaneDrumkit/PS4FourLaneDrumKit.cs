@@ -1,8 +1,6 @@
 using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
@@ -11,76 +9,99 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 77)]
-    internal unsafe struct PS4FourLaneDrumkitState_NoReportId : IInputStateTypeInfo
+    internal struct PS4FourLaneDrumkitState_NoReportId : IFourLaneDrumkitState_Distinct
     {
         public FourCC format => HidDefinitions.InputFormat;
-
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
-        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7")]
-        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
-        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
-        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
-
-        [InputControl(name = "buttonWest", layout = "Button", bit = 4, displayName = "Square")]
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 5, displayName = "Cross")]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 6, displayName = "Circle")]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 7, displayName = "Triangle")]
-
-        [InputControl(name = "kick1", layout = "Button", bit = 8)]
-        [InputControl(name = "kick2", layout = "Button", bit = 9)]
-
-        [InputControl(name = "selectButton", layout = "Button", bit = 12)]
-        [InputControl(name = "startButton", layout = "Button", bit = 13)]
 
         [FieldOffset(4)]
         public ushort buttons1;
 
-        [InputControl(name = "systemButton", layout = "Button", bit = 0, displayName = "PlayStation")]
         [FieldOffset(6)]
         public byte buttons2;
 
-        // TODO: Currently these just act like buttons, when velocity support is implemented for the other drumkits
-        // this needs to be adjusted to match how those will then behave
-        [InputControl(name = "redPad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
         [FieldOffset(42)]
-        public byte redPadVelocity;
+        public byte redPad;
 
-        [InputControl(name = "bluePad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
         [FieldOffset(43)]
-        public byte bluePadVelocity;
+        public byte bluePad;
 
-        [InputControl(name = "yellowPad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
         [FieldOffset(44)]
-        public byte yellowPadVelocity;
+        public byte yellowPad;
 
-        [InputControl(name = "greenPad", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
         [FieldOffset(45)]
-        public byte greenPadVelocity;
+        public byte greenPad;
 
-        [InputControl(name = "yellowCymbal", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
         [FieldOffset(46)]
-        public byte yellowCymbalVelocity;
+        public byte yellowCymbal;
 
-        [InputControl(name = "blueCymbal", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
         [FieldOffset(47)]
-        public byte blueCymbalVelocity;
+        public byte blueCymbal;
 
-        [InputControl(name = "greenCymbal", layout = "DiscreteButton", parameters = "minValue=1, maxValue=255")]
         [FieldOffset(48)]
-        public byte greenCymbalVelocity;
+        public byte greenCymbal;
+
+        public bool west => (buttons1 & 0x0010) != 0;
+        public bool south => (buttons1 & 0x0020) != 0;
+        public bool east => (buttons1 & 0x0040) != 0;
+        public bool north => (buttons1 & 0x0080) != 0;
+
+        public bool kick1 => (buttons1 & 0x0100) != 0;
+        public bool kick2 => (buttons1 & 0x0200) != 0;
+
+        public bool select => (buttons1 & 0x1000) != 0;
+        public bool start => (buttons1 & 0x2000) != 0;
+        public bool system => (buttons2 & 0x01) != 0;
+
+        public bool dpadUp => (buttons1 & 0x0F) == 7 || (buttons1 & 0x0F) <= 1;
+        public bool dpadRight => (buttons1 & 0x0F) >= 1 && (buttons1 & 0x0F) <= 3;
+        public bool dpadDown => (buttons1 & 0x0F) >= 3 && (buttons1 & 0x0F) <= 5;
+        public bool dpadLeft => (buttons1 & 0x0F) >= 5 && (buttons1 & 0x0F) <= 7;
+
+        byte IFourLaneDrumkitState_Distinct.redPad => redPad;
+        byte IFourLaneDrumkitState_Distinct.yellowPad => yellowPad;
+        byte IFourLaneDrumkitState_Distinct.bluePad => bluePad;
+        byte IFourLaneDrumkitState_Distinct.greenPad => greenPad;
+        byte IFourLaneDrumkitState_Distinct.yellowCymbal => yellowCymbal;
+        byte IFourLaneDrumkitState_Distinct.blueCymbal => blueCymbal;
+        byte IFourLaneDrumkitState_Distinct.greenCymbal => greenCymbal;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS4FourLaneDrumkitState_ReportId : IInputStateTypeInfo
+    internal unsafe struct PS4FourLaneDrumkitState_ReportId : IFourLaneDrumkitState_Distinct
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
         public PS4FourLaneDrumkitState_NoReportId state;
+
+        public bool south => state.south;
+        public bool east => state.east;
+        public bool west => state.west;
+        public bool north => state.north;
+
+        public bool dpadUp => state.dpadUp;
+        public bool dpadDown => state.dpadDown;
+        public bool dpadLeft => state.dpadLeft;
+        public bool dpadRight => state.dpadRight;
+
+        public bool start => state.start;
+        public bool select => state.select;
+        public bool system => state.system;
+
+        public byte redPad => state.redPad;
+        public byte yellowPad => state.yellowPad;
+        public byte bluePad => state.bluePad;
+        public byte greenPad => state.greenPad;
+        public byte yellowCymbal => state.yellowCymbal;
+        public byte blueCymbal => state.blueCymbal;
+        public byte greenCymbal => state.greenCymbal;
+
+        public bool kick1 => state.kick1;
+        public bool kick2 => state.kick2;
     }
 
-    [InputControlLayout(stateType = typeof(PS4FourLaneDrumkitState_ReportId), displayName = "PlayStation 4 Rock Band Drumkit")]
-    internal class PS4FourLaneDrumkit : FourLaneDrumkit
+    [InputControlLayout(stateType = typeof(PSFourLaneDrumkitLayout), displayName = "PlayStation 4 Rock Band Drumkit")]
+    internal class PS4FourLaneDrumkit : TranslatingFourLaneDrumkit_Distinct<PS4FourLaneDrumkitState_NoReportId>
     {
         internal new static void Initialize()
         {
@@ -92,6 +113,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS4FourLaneDrumkitState_NoReportId), hideInUI = true)]
-    internal class PS4FourLaneDrumkit_NoReportId : PS4FourLaneDrumkit { }
+    [InputControlLayout(stateType = typeof(PSFourLaneDrumkitLayout), hideInUI = true)]
+    internal class PS4FourLaneDrumkit_NoReportId : TranslatingFourLaneDrumkit_Distinct<PS4FourLaneDrumkitState_ReportId> { }
 }

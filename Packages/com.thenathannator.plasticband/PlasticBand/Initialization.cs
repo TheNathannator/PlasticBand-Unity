@@ -70,7 +70,6 @@ namespace PlasticBand
             WiiProGuitar.Initialize();
 
             // 4-lane drumkits
-            FourLanePadsControl.Initialize();
             FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
             PS3FourLaneDrumkit.Initialize();

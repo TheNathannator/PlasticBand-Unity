@@ -92,42 +92,53 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The red pad on the drumkit.
         /// </summary>
+        /// <remarks>
+        /// This is an analog button control ranging from 0 to 1, where 0 is no hit and 1 is the hardest hit.<br/>
+        /// The <c>pressPoint</c> property is set so that it is always considered pressed regardless of velocity,
+        /// so no special considerations need to be taken into account if velocity is not used.
+        /// </remarks>
         [InputControl(displayName = "Red Pad", usages = new[] { "Back", "Cancel" })]
         public ButtonControl redPad { get; private set; }
 
         /// <summary>
         /// The yellow pad on the drumkit.
         /// </summary>
+        /// <inheritdoc cref="redPad"/>
         [InputControl(displayName = "Yellow Pad")]
         public ButtonControl yellowPad { get; private set; }
 
         /// <summary>
         /// The blue pad on the drumkit.
         /// </summary>
+        /// <inheritdoc cref="redPad"/>
         [InputControl(displayName = "Blue Pad")]
         public ButtonControl bluePad { get; private set; }
 
         /// <summary>
         /// The green pad on the drumkit.
         /// </summary>
+        /// <inheritdoc cref="redPad"/>
         [InputControl(displayName = "Green Pad", usages = new[] { "PrimaryAction", "Submit" })]
         public ButtonControl greenPad { get; private set; }
 
         /// <summary>
         /// The yellow cymbal on the drumkit.
         /// </summary>
+        /// <inheritdoc cref="redPad"/>
         [InputControl(displayName = "Yellow Cymbal")]
         public ButtonControl yellowCymbal { get; private set; }
 
         /// <summary>
         /// The blue cymbal on the drumkit.
         /// </summary>
+        /// <inheritdoc cref="redPad"/>
         [InputControl(displayName = "Blue Cymbal")]
         public ButtonControl blueCymbal { get; private set; }
 
         /// <summary>
         /// The green cymbal on the drumkit.
         /// </summary>
+        /// <inheritdoc cref="redPad"/>
         [InputControl(displayName = "Green Cymbal", usages = new[] { "PrimaryAction", "Submit" })]
         public ButtonControl greenCymbal { get; private set; }
 

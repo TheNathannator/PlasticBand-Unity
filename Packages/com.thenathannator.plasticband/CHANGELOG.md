@@ -10,7 +10,11 @@ Dates are relative to UTC.
 
 ### Fixed
 
-- Various control conflicts/duplicate controls on 5-fret guitars have been fixed. Some of the properties on the device classes may still result in duplicate inputs relative to each other, but in these cases both properties will now refer to the same control instance instead of two separate controls. Interactive rebinding will also now work correctly, whereas before these duplicate controls were causing issues.
+- Various control conflicts/duplicate controls on the device layouts have been fixed. Some of the properties on the device classes may still result in duplicate inputs relative to each other, but in these cases both properties will now refer to the same control instance instead of two separate controls. Interactive rebinding will also now work correctly, whereas before these duplicate controls were causing issues.
+
+### Added
+
+- Velocity support for drumkits has now been added! No new controls have been added for this, instead the existing button controls for the pads and cymbals have been made analog. They have also been configured so that any velocity will register as a press, so no special handling will need to be done if you don't care about velocity, so long as things are done relative to the press point (i.e. via `isPressed` or `IsValueConsideredPressed`).
 
 ## [0.3.4] - 2023/15/08
 

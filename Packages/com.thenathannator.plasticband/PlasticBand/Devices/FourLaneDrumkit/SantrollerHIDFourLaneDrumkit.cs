@@ -3,7 +3,6 @@ using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 using System.Runtime.InteropServices;
 
@@ -15,73 +14,67 @@ namespace PlasticBand.Devices
     /// The state format for Santroller HID Rock Band Drum Kits.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct SantrollerFourLaneDrumkitState : IInputStateTypeInfo
+    internal unsafe struct SantrollerFourLaneDrumkitState : IFourLaneDrumkitState_Flags
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
 
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 0)]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 1)]
-        [InputControl(name = "buttonWest", layout = "Button", bit = 2)]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 3)]
-
-        [InputControl(name = "greenPad", layout = "Button", bit = 4)]
-        [InputControl(name = "redPad", layout = "Button", bit = 5)]
-        [InputControl(name = "yellowPad", layout = "Button", bit = 6)]
-        [InputControl(name = "bluePad", layout = "Button", bit = 7)]
-
-        [InputControl(name = "greenCymbal", layout = "Button", bit = 8)]
-        [InputControl(name = "yellowCymbal", layout = "Button", bit = 9)]
-        [InputControl(name = "blueCymbal", layout = "Button", bit = 10)]
-
-        [InputControl(name = "kick1", layout = "Button", bit = 11)]
-        [InputControl(name = "kick2", layout = "Button", bit = 12)]
-
-        [InputControl(name = "selectButton", layout = "Button", bit = 13)]
-        [InputControl(name = "startButton", layout = "Button", bit = 14)]
-        [InputControl(name = "systemButton", layout = "Button", bit = 15, displayName = "System")]
         public ushort buttons;
-
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
-        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7", displayName = "Up")]
-        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
-        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5", displayName = "Down")]
-        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
         public byte dpad;
 
-        [InputControl(name = "greenVelocity", layout = "Axis", displayName = "Green Pad Velocity")]
-        public byte greenVelocity;
-
-        [InputControl(name = "redVelocity", layout = "Axis", displayName = "Red Pad Velocity")]
-        public byte redVelocity;
-
-        [InputControl(name = "yellowVelocity", layout = "Axis", displayName = "Yellow Pad Velocity")]
-        public byte yellowVelocity;
-
-        [InputControl(name = "blueVelocity", layout = "Axis", displayName = "Blue Pad Velocity")]
-        public byte blueVelocity;
-
-        [InputControl(name = "greenCymbalVelocity", layout = "Axis", displayName = "Green Cymbal Velocity")]
+        public byte greenPadVelocity;
+        public byte redPadVelocity;
+        public byte yellowPadVelocity;
+        public byte bluePadVelocity;
         public byte greenCymbalVelocity;
-        
-        [InputControl(name = "yellowCymbalVelocity", layout = "Axis", displayName = "Yellow Cymbal Velocity")]
         public byte yellowCymbalVelocity;
-
-        [InputControl(name = "blueCymbalVelocity", layout = "Axis", displayName = "Blue Cymbal Velocity")]
         public byte blueCymbalVelocity;
+
+        public bool south => (buttons & 0x0001) != 0;
+        public bool east => (buttons & 0x0002) != 0;
+        public bool west => (buttons & 0x0004) != 0;
+        public bool north => (buttons & 0x0008) != 0;
+
+        public bool red => east;
+        public bool yellow => north;
+        public bool blue => west;
+        public bool green => south;
+
+        public bool pad => (buttons & 0x0010) != 0;
+        public bool cymbal => (buttons & 0x0020) != 0;
+
+        public bool kick1 => (buttons & 0x0040) != 0;
+        public bool kick2 => (buttons & 0x0080) != 0;
+
+        public bool dpadUp => dpad == 7 || dpad <= 1;
+        public bool dpadRight => dpad >= 1 && dpad <= 3;
+        public bool dpadDown => dpad >= 3 && dpad <= 5;
+        public bool dpadLeft => dpad >= 5 && dpad <= 7;
+
+        public bool select => (buttons & 0x0100) != 0;
+        public bool start => (buttons & 0x0200) != 0;
+        public bool system => (buttons & 0x0400) != 0;
+
+        byte IFourLaneDrumkitState_Flags.redPadVelocity => redPadVelocity;
+        byte IFourLaneDrumkitState_Flags.yellowPadVelocity => yellowPadVelocity;
+        byte IFourLaneDrumkitState_Flags.bluePadVelocity => bluePadVelocity;
+        byte IFourLaneDrumkitState_Flags.greenPadVelocity => greenPadVelocity;
+        byte IFourLaneDrumkitState_Flags.yellowCymbalVelocity => yellowCymbalVelocity;
+        byte IFourLaneDrumkitState_Flags.blueCymbalVelocity => blueCymbalVelocity;
+        byte IFourLaneDrumkitState_Flags.greenCymbalVelocity => greenCymbalVelocity;
     }
 
     /// <summary>
     /// A Santroller HID Rock Band Drum Kit.
     /// </summary>
-    [InputControlLayout(stateType = typeof(SantrollerFourLaneDrumkitState), displayName = "Santroller HID Rock Band Drumkit")]
-    internal class SantrollerHIDFourLaneDrumkit : FourLaneDrumkit, ISantrollerFourLaneDrumkitHaptics
+    [InputControlLayout(stateType = typeof(TranslatedFourLaneState), displayName = "Santroller HID Rock Band Drumkit")]
+    internal class SantrollerHIDFourLaneDrumkit : TranslatingFourLaneDrumkit_Flags<SantrollerFourLaneDrumkitState>,
+        ISantrollerFourLaneDrumkitHaptics
     {
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDFourLaneDrumkit>(
-                SantrollerDeviceType.GuitarHeroDrums);
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDFourLaneDrumkit>(SantrollerDeviceType.GuitarHeroDrums);
         }
 
         protected override void FinishSetup()

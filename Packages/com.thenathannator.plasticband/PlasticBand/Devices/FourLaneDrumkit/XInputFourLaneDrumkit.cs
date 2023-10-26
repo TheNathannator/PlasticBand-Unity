@@ -12,57 +12,70 @@ using UnityEngine.InputSystem.XInput;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct XInputFourLaneDrumkitState : IInputStateTypeInfo
+    internal struct XInputFourLaneDrumkitState : IFourLaneDrumkitState_Flags
     {
-        const string kPadParameters = "redBit=13,yellowBit=15,blueBit=14,greenBit=12,padBit=7,cymbalBit=9";
         public FourCC format => XInputGamepad.Format;
 
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", bit = 0, sizeInBits = 4)]
-        // TODO: D-pad up/down should be ignored when hitting yellow or blue cymbal, but
-        // it needs to be ignored without interfering with pad detection
-        [InputControl(name = "dpad/up", bit = 0)]
-        [InputControl(name = "dpad/down", bit = 1)]
-        [InputControl(name = "dpad/left", bit = 2)]
-        [InputControl(name = "dpad/right", bit = 3)]
+        public XInputGamepad.Button buttons;
 
-        [InputControl(name = "startButton", layout = "Button", bit = 4)]
-        [InputControl(name = "selectButton", layout = "Button", bit = 5, displayName = "Back")]
-        [InputControl(name = "kick2", layout = "Button", bit = 6)]
+        private unsafe fixed byte unused[2];
 
-        [InputControl(name = "kick1", layout = "Button", bit = 8)]
-
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 12, displayName = "A")]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 13, displayName = "B")]
-        [InputControl(name = "buttonWest", layout = "Button", bit = 14, displayName = "X")]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 15, displayName = "Y")]
-
-        [InputControl(name = "redPad", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "yellowPad", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "bluePad", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "greenPad", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "yellowCymbal", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "blueCymbal", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
-        [InputControl(name = "greenCymbal", layout = "FourLanePads", format = "USHT", bit = 0, parameters = kPadParameters)]
-        public ushort buttons;
-
-        public fixed byte unused[2];
-
-        // TODO: More proper velocity mappings
-        [InputControl(name = "redVelocity", layout = "Axis", displayName = "Red Velocity")]
         public short redVelocity;
-
-        [InputControl(name = "yellowVelocity", layout = "Axis", displayName = "Yellow Velocity")]
         public short yellowVelocity;
-
-        [InputControl(name = "blueVelocity", layout = "Axis", displayName = "Blue Velocity")]
         public short blueVelocity;
-
-        [InputControl(name = "greenVelocity", layout = "Axis", displayName = "Green Velocity")]
         public short greenVelocity;
+
+        public bool south => (buttons & XInputGamepad.Button.A) != 0;
+        public bool east => (buttons & XInputGamepad.Button.B) != 0;
+        public bool west => (buttons & XInputGamepad.Button.X) != 0;
+        public bool north => (buttons & XInputGamepad.Button.Y) != 0;
+
+        public bool red => east;
+        public bool yellow => north;
+        public bool blue => west;
+        public bool green => south;
+
+        public bool kick1 => (buttons & XInputGamepad.Button.LeftShoulder) != 0;
+        public bool kick2 => (buttons & XInputGamepad.Button.LeftThumb) != 0;
+
+        public bool start => (buttons & XInputGamepad.Button.Start) != 0;
+        public bool select => (buttons & XInputGamepad.Button.Back) != 0;
+        public bool system => (buttons & XInputGamepad.Button.Guide) != 0;
+
+        public bool pad => (buttons & XInputGamepad.Button.RightThumb) != 0;
+        public bool cymbal => (buttons & XInputGamepad.Button.RightShoulder) != 0;
+
+        public bool dpadUp => (buttons & XInputGamepad.Button.DpadUp) != 0;
+        public bool dpadDown => (buttons & XInputGamepad.Button.DpadDown) != 0;
+        public bool dpadLeft => (buttons & XInputGamepad.Button.DpadLeft) != 0;
+        public bool dpadRight => (buttons & XInputGamepad.Button.DpadRight) != 0;
+
+        public byte redPadVelocity => (byte)((~redVelocity & 0x7FFF) >> 7);
+        public byte yellowPadVelocity => (byte)((~yellowVelocity & 0x7FFF) >> 7);
+        public byte bluePadVelocity => (byte)((~blueVelocity & 0x7FFF) >> 7);
+        public byte greenPadVelocity => (byte)((~greenVelocity & 0x7FFF) >> 7);
+        public byte yellowCymbalVelocity => (byte)((~yellowVelocity & 0x7FFF) >> 7);
+        public byte blueCymbalVelocity => (byte)((~blueVelocity & 0x7FFF) >> 7);
+        public byte greenCymbalVelocity => (byte)((~greenVelocity & 0x7FFF) >> 7);
     }
 
-    [InputControlLayout(stateType = typeof(XInputFourLaneDrumkitState), displayName = "XInput Rock Band Drumkit")]
-    internal class XInputFourLaneDrumkit : FourLaneDrumkit
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal struct XInputFourLaneDrumkitLayout : IInputStateTypeInfo
+    {
+        public FourCC format => TranslatedFourLaneState.Format;
+
+        [InputControl(name = "buttonSouth", layout = "Button", bit = (int)TranslatedFourLaneButton.South, displayName = "A")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = (int)TranslatedFourLaneButton.East, displayName = "B")]
+        [InputControl(name = "buttonWest", layout = "Button", bit = (int)TranslatedFourLaneButton.West, displayName = "X")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = (int)TranslatedFourLaneButton.North, displayName = "Y")]
+
+        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedFourLaneButton.Select, displayName = "Back")]
+        [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedFourLaneButton.System, displayName = "Guide")]
+        public TranslatedFourLaneState state;
+    }
+
+    [InputControlLayout(stateType = typeof(XInputFourLaneDrumkitLayout), displayName = "XInput Rock Band Drumkit")]
+    internal class XInputFourLaneDrumkit : TranslatingFourLaneDrumkit_Flags<XInputFourLaneDrumkitState>
     {
         internal new static void Initialize()
         {
