@@ -10,31 +10,31 @@ namespace PlasticBand.LowLevel
 {
     using static XInputController;
 
+    [Flags]
+    public enum XInputButton : ushort
+    {
+        DpadUp = 0x0001,
+        DpadDown = 0x0002,
+        DpadLeft = 0x0004,
+        DpadRight = 0x0008,
+        Start = 0x0010,
+        Back = 0x0020,
+        LeftThumb = 0x0040,
+        RightThumb = 0x0080,
+        LeftShoulder = 0x0100,
+        RightShoulder = 0x0200,
+        Guide = 0x0400,
+        A = 0x1000,
+        B = 0x2000,
+        X = 0x4000,
+        Y = 0x8000
+    }
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct XInputGamepad : IInputStateTypeInfo
     {
         public static readonly FourCC Format = new FourCC('X', 'I', 'N', 'P');
         public FourCC format => Format;
-
-        [Flags]
-        public enum Button : ushort
-        {
-            DpadUp = 0x0001,
-            DpadDown = 0x0002,
-            DpadLeft = 0x0004,
-            DpadRight = 0x0008,
-            Start = 0x0010,
-            Back = 0x0020,
-            LeftThumb = 0x0040,
-            RightThumb = 0x0080,
-            LeftShoulder = 0x0100,
-            RightShoulder = 0x0200,
-            Guide = 0x0400,
-            A = 0x1000,
-            B = 0x2000,
-            X = 0x4000,
-            Y = 0x8000
-        }
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, bit = 0, displayName = "D-Pad", usage = "Hatswitch")]
         [InputControl(name = "dpad/up", bit = 0)]

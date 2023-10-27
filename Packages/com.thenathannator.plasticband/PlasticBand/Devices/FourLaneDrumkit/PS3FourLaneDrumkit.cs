@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -15,8 +16,8 @@ namespace PlasticBand.Devices
     {
         public FourCC format => HidDefinitions.InputFormat;
 
-        public ushort buttons;
-        public byte dpad;
+        public PS3Button buttons;
+        public HidDpad dpad;
 
         private unsafe fixed byte unused2[8];
 
@@ -28,30 +29,30 @@ namespace PlasticBand.Devices
         public byte greenVelocity;
         public byte blueVelocity;
 
-        public bool west => (buttons & 0x0001) != 0;
-        public bool south => (buttons & 0x0002) != 0;
-        public bool east => (buttons & 0x0004) != 0;
-        public bool north => (buttons & 0x0008) != 0;
+        public bool west => (buttons & PS3Button.Square) != 0;
+        public bool south => (buttons & PS3Button.Cross) != 0;
+        public bool east => (buttons & PS3Button.Circle) != 0;
+        public bool north => (buttons & PS3Button.Triangle) != 0;
 
         public bool red => east;
         public bool yellow => north;
         public bool blue => west;
         public bool green => south;
 
-        public bool kick1 => (buttons & 0x0010) != 0;
-        public bool kick2 => (buttons & 0x0020) != 0;
+        public bool kick1 => (buttons & PS3Button.L2) != 0;
+        public bool kick2 => (buttons & PS3Button.R2) != 0;
 
-        public bool select => (buttons & 0x0100) != 0;
-        public bool start => (buttons & 0x0200) != 0;
-        public bool system => (buttons & 0x1000) != 0;
+        public bool select => (buttons & PS3Button.Select) != 0;
+        public bool start => (buttons & PS3Button.Start) != 0;
+        public bool system => (buttons & PS3Button.PlayStation) != 0;
 
-        public bool pad => (buttons & 0x0400) != 0;
-        public bool cymbal => (buttons & 0x0800) != 0;
+        public bool pad => (buttons & PS3Button.L3) != 0;
+        public bool cymbal => (buttons & PS3Button.R3) != 0;
 
-        public bool dpadUp => dpad == 7 || dpad <= 1;
-        public bool dpadRight => dpad >= 1 && dpad <= 3;
-        public bool dpadDown => dpad >= 3 && dpad <= 5;
-        public bool dpadLeft => dpad >= 5 && dpad <= 7;
+        public bool dpadUp => dpad.IsUp();
+        public bool dpadRight => dpad.IsRight();
+        public bool dpadDown => dpad.IsDown();
+        public bool dpadLeft => dpad.IsLeft();
 
         public byte redPadVelocity => redVelocity;
         public byte yellowPadVelocity => yellowVelocity;

@@ -52,10 +52,10 @@ namespace PlasticBand.Devices
         public bool start => (buttons1 & 0x2000) != 0;
         public bool system => (buttons2 & 0x01) != 0;
 
-        public bool dpadUp => (buttons1 & 0x0F) == 7 || (buttons1 & 0x0F) <= 1;
-        public bool dpadRight => (buttons1 & 0x0F) >= 1 && (buttons1 & 0x0F) <= 3;
-        public bool dpadDown => (buttons1 & 0x0F) >= 3 && (buttons1 & 0x0F) <= 5;
-        public bool dpadLeft => (buttons1 & 0x0F) >= 5 && (buttons1 & 0x0F) <= 7;
+        public bool dpadUp => ((HidDpad)(buttons1 & 0x0F)).IsUp();
+        public bool dpadRight => ((HidDpad)(buttons1 & 0x0F)).IsRight();
+        public bool dpadDown => ((HidDpad)(buttons1 & 0x0F)).IsDown();
+        public bool dpadLeft => ((HidDpad)(buttons1 & 0x0F)).IsLeft();
 
         byte IFourLaneDrumkitState_Distinct.redPad => redPad;
         byte IFourLaneDrumkitState_Distinct.yellowPad => yellowPad;

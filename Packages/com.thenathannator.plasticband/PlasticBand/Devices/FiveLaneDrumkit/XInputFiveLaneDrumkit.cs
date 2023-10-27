@@ -15,7 +15,7 @@ namespace PlasticBand.Devices
     {
         public FourCC format => XInputGamepad.Format;
 
-        public XInputGamepad.Button buttons;
+        public XInputButton buttons;
 
         private unsafe fixed byte unused[4];
 
@@ -29,26 +29,26 @@ namespace PlasticBand.Devices
         public byte orangeVelocity;
         public byte kickVelocity;
 
-        public bool south => (buttons & XInputGamepad.Button.A) != 0;
-        public bool east => (buttons & XInputGamepad.Button.B) != 0;
-        public bool west => (buttons & XInputGamepad.Button.X) != 0;
-        public bool north => (buttons & XInputGamepad.Button.Y) != 0;
+        public bool south => (buttons & XInputButton.A) != 0;
+        public bool east => (buttons & XInputButton.B) != 0;
+        public bool west => (buttons & XInputButton.X) != 0;
+        public bool north => (buttons & XInputButton.Y) != 0;
 
         public bool red => east;
         public bool yellow => north;
         public bool blue => west;
         public bool green => south;
-        public bool orange => (buttons & XInputGamepad.Button.RightShoulder) != 0;
-        public bool kick => (buttons & XInputGamepad.Button.LeftShoulder) != 0;
+        public bool orange => (buttons & XInputButton.RightShoulder) != 0;
+        public bool kick => (buttons & XInputButton.LeftShoulder) != 0;
 
-        public bool start => (buttons & XInputGamepad.Button.Start) != 0;
-        public bool select => (buttons & XInputGamepad.Button.Back) != 0;
-        public bool system => (buttons & XInputGamepad.Button.Guide) != 0;
+        public bool start => (buttons & XInputButton.Start) != 0;
+        public bool select => (buttons & XInputButton.Back) != 0;
+        public bool system => (buttons & XInputButton.Guide) != 0;
 
-        public bool dpadUp => (buttons & XInputGamepad.Button.DpadUp) != 0;
-        public bool dpadDown => (buttons & XInputGamepad.Button.DpadDown) != 0;
-        public bool dpadLeft => (buttons & XInputGamepad.Button.DpadLeft) != 0;
-        public bool dpadRight => (buttons & XInputGamepad.Button.DpadRight) != 0;
+        public bool dpadUp => (buttons & XInputButton.DpadUp) != 0;
+        public bool dpadDown => (buttons & XInputButton.DpadDown) != 0;
+        public bool dpadLeft => (buttons & XInputButton.DpadLeft) != 0;
+        public bool dpadRight => (buttons & XInputButton.DpadRight) != 0;
 
         byte IFiveLaneDrumkitState.redVelocity => redVelocity;
         byte IFiveLaneDrumkitState.yellowVelocity => yellowVelocity;
@@ -83,7 +83,7 @@ namespace PlasticBand.Devices
             // realistically that isn't likely to be held when powering on
             // May be some more specific capability data that also distinguishes them, but that probably isn't reliable
             XInputLayoutFinder.RegisterLayout<XInputFiveLaneDrumkit>(XInputController.DeviceSubType.DrumKit,
-                (capabilities, state) => (state.buttons & (ushort)XInputGamepad.Button.LeftThumb) != 0);
+                (capabilities, state) => (state.buttons & (ushort)XInputButton.LeftThumb) != 0);
         }
     }
 }

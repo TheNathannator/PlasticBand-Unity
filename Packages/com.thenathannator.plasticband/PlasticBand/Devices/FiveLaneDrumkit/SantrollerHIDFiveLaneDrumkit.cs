@@ -23,7 +23,7 @@ namespace PlasticBand.Devices
         public byte reportId;
 
         public ushort buttons;
-        public byte dpad;
+        public HidDpad dpad;
 
         public byte greenVelocity;
         public byte redVelocity;
@@ -48,10 +48,10 @@ namespace PlasticBand.Devices
         public bool start => (buttons & 0x0080) != 0;
         public bool system => (buttons & 0x0100) != 0;
 
-        public bool dpadUp => dpad == 7 || dpad <= 1;
-        public bool dpadRight => dpad >= 1 && dpad <= 3;
-        public bool dpadDown => dpad >= 3 && dpad <= 5;
-        public bool dpadLeft => dpad >= 5 && dpad <= 7;
+        public bool dpadUp => dpad.IsUp();
+        public bool dpadRight => dpad.IsRight();
+        public bool dpadDown => dpad.IsDown();
+        public bool dpadLeft => dpad.IsLeft();
 
         byte IFiveLaneDrumkitState.redVelocity => redVelocity;
         byte IFiveLaneDrumkitState.yellowVelocity => yellowVelocity;

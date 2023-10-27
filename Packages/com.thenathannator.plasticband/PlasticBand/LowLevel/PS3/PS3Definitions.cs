@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Layouts;
@@ -9,6 +10,26 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices.LowLevel
 {
+    [Flags]
+    public enum PS3Button
+    {
+        None = 0,
+
+        Square = 0x0001,
+        Cross = 0x0002,
+        Circle = 0x0004,
+        Triangle = 0x0008,
+        L2 = 0x0010,
+        R2 = 0x0020,
+        L1 = 0x0040,
+        R1 = 0x0080,
+        Select = 0x0100,
+        Start = 0x0200,
+        L3 = 0x0400,
+        R3 = 0x0800,
+        PlayStation = 0x1000,
+    }
+
     // For reference when creating layouts for PS3 devices
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct PS3DeviceState : IInputStateTypeInfo
