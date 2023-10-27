@@ -1,6 +1,5 @@
 using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -12,55 +11,70 @@ using UnityEngine.InputSystem.XInput;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct XInputFiveLaneDrumkitState : IInputStateTypeInfo
+    internal struct XInputFiveLaneDrumkitState : IFiveLaneDrumkitState
     {
         public FourCC format => XInputGamepad.Format;
 
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", bit = 0, sizeInBits = 4)]
-        [InputControl(name = "dpad/up", bit = 0)]
-        [InputControl(name = "dpad/down", bit = 1)]
-        [InputControl(name = "dpad/left", bit = 2)]
-        [InputControl(name = "dpad/right", bit = 3)]
+        public XInputGamepad.Button buttons;
 
-        [InputControl(name = "startButton", layout = "Button", bit = 4)]
-        [InputControl(name = "selectButton", layout = "Button", bit = 5, displayName = "Back")]
-
-        [InputControl(name = "kick", layout = "Button", bit = 8)]
-        [InputControl(name = "orangeCymbal", layout = "Button", bit = 9)]
-
-        [InputControl(name = "greenPad", layout = "Button", bit = 12)]
-        [InputControl(name = "redPad", layout = "Button", bit = 13)]
-        [InputControl(name = "bluePad", layout = "Button", bit = 14)]
-        [InputControl(name = "yellowCymbal", layout = "Button", bit = 15)]
-        public ushort buttons;
-
-        public fixed byte unused[4];
+        private unsafe fixed byte unused[4];
 
         // TODO:
         // - Hardware verification
         // - Input ranges have yet to be determined
-        // - Try and pair velocity with pads directly
-        [InputControl(name = "greenVelocity", layout = "Axis", displayName = "Green Velocity")]
         public byte greenVelocity;
-
-        [InputControl(name = "redVelocity", layout = "Axis", displayName = "Red Velocity")]
         public byte redVelocity;
-
-        [InputControl(name = "yellowVelocity", layout = "Axis", displayName = "Yellow Velocity")]
         public byte yellowVelocity;
-
-        [InputControl(name = "blueVelocity", layout = "Axis", displayName = "Blue Velocity")]
         public byte blueVelocity;
-
-        [InputControl(name = "orangeVelocity", layout = "Axis", displayName = "Orange Velocity")]
         public byte orangeVelocity;
-
-        [InputControl(name = "kickVelocity", layout = "Axis", displayName = "Kick Velocity")]
         public byte kickVelocity;
+
+        public bool south => (buttons & XInputGamepad.Button.A) != 0;
+        public bool east => (buttons & XInputGamepad.Button.B) != 0;
+        public bool west => (buttons & XInputGamepad.Button.X) != 0;
+        public bool north => (buttons & XInputGamepad.Button.Y) != 0;
+
+        public bool red => east;
+        public bool yellow => north;
+        public bool blue => west;
+        public bool green => south;
+        public bool orange => (buttons & XInputGamepad.Button.RightShoulder) != 0;
+        public bool kick => (buttons & XInputGamepad.Button.LeftShoulder) != 0;
+
+        public bool start => (buttons & XInputGamepad.Button.Start) != 0;
+        public bool select => (buttons & XInputGamepad.Button.Back) != 0;
+        public bool system => (buttons & XInputGamepad.Button.Guide) != 0;
+
+        public bool dpadUp => (buttons & XInputGamepad.Button.DpadUp) != 0;
+        public bool dpadDown => (buttons & XInputGamepad.Button.DpadDown) != 0;
+        public bool dpadLeft => (buttons & XInputGamepad.Button.DpadLeft) != 0;
+        public bool dpadRight => (buttons & XInputGamepad.Button.DpadRight) != 0;
+
+        byte IFiveLaneDrumkitState.redVelocity => redVelocity;
+        byte IFiveLaneDrumkitState.yellowVelocity => yellowVelocity;
+        byte IFiveLaneDrumkitState.blueVelocity => blueVelocity;
+        byte IFiveLaneDrumkitState.orangeVelocity => orangeVelocity;
+        byte IFiveLaneDrumkitState.greenVelocity => greenVelocity;
+        byte IFiveLaneDrumkitState.kickVelocity => kickVelocity;
     }
 
-    [InputControlLayout(stateType = typeof(XInputFiveLaneDrumkitState), displayName = "XInput Guitar Hero Drumkit")]
-    internal class XInputFiveLaneDrumkit : FiveLaneDrumkit
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal struct XInputFiveLaneDrumkitLayout : IInputStateTypeInfo
+    {
+        public FourCC format => TranslatedFiveLaneState.Format;
+
+        [InputControl(name = "buttonSouth", layout = "Button", bit = (int)TranslatedFiveLaneButton.South, displayName = "A")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = (int)TranslatedFiveLaneButton.East, displayName = "B")]
+        [InputControl(name = "buttonWest", layout = "Button", bit = (int)TranslatedFiveLaneButton.West, displayName = "X")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = (int)TranslatedFiveLaneButton.North, displayName = "Y")]
+
+        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedFiveLaneButton.Select, displayName = "Back")]
+        [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedFiveLaneButton.System, displayName = "Guide")]
+        public TranslatedFiveLaneState state;
+    }
+
+    [InputControlLayout(stateType = typeof(XInputFiveLaneDrumkitLayout), displayName = "XInput Guitar Hero Drumkit")]
+    internal class XInputFiveLaneDrumkit : TranslatingFiveLaneDrumkit<XInputFiveLaneDrumkitState>
     {
         internal new static void Initialize()
         {
