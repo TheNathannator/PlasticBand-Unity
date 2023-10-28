@@ -64,7 +64,7 @@ namespace PlasticBand.Devices
     /// <summary>
     /// A Santroller HID Guitar Hero Drum Kit.
     /// </summary>
-    [InputControlLayout(stateType = typeof(TranslatedFourLaneState), displayName = "Santroller HID Guitar Hero Drumkit")]
+    [InputControlLayout(stateType = typeof(TranslatedFiveLaneState), displayName = "Santroller HID Guitar Hero Drumkit")]
     internal class SantrollerHIDFiveLaneDrumkit : TranslatingFiveLaneDrumkit<SantrollerFiveLaneDrumkitState>,
         ISantrollerFiveLaneDrumkitHaptics
     {
