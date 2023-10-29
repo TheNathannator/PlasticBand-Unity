@@ -15,6 +15,15 @@ Dates are relative to UTC.
 ### Added
 
 - Velocity support for drumkits has now been added! No new controls have been added for this, instead the existing button controls for the pads and cymbals have been made analog. They have also been configured so that any velocity will register as a press, so no special handling will need to be done if you don't care about velocity, so long as things are done relative to the press point (i.e. via `isPressed` or `IsValueConsideredPressed`).
+- Support for the emulated 5-fret flags on Pro Guitars has been expanded to include the solo frets as well, along with additional convenience methods for the emulated frets in general.
+- The pedal port on Pro Guitars is now supported as well, at least the digital portion of it. Unsure if it supports analog pedals like the Pro Keyboard does.
+
+### Changed
+
+- Pro Guitar whammy has been removed, as it is not an actual control that those guitars have.
+- Pro Guitar string velocity is no longer reported directly, as from what I know it is not very reliable and can be confusing to work with if you haven't had experience with them before. Now, only whether or not a strum has occurred is reported; due to how this is determined, the value only lasts for a single frame and must be reset at the end of the frame.
+- The custom control types used internally are now `internal` instead of `public`, as these are meant more as implementation details rather than concrete custom control types.
+- `XInputSixFretGuitar` is now `internal` as is intended; it was unintentionally left public when all of the implementation device classes were made internal.
 
 ## [0.3.4] - 2023/15/08
 
