@@ -11,25 +11,21 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct WiiProGuitarState_NoReportId : IInputStateTypeInfo
+    internal struct WiiProGuitarLayout : IInputStateTypeInfo
     {
-        public FourCC format => HidDefinitions.InputFormat;
+        public FourCC format => TranslatedProGuitarState.Format;
 
-        [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "System")]
-        public PS3ProGuitarState_NoReportId state;
+        [InputControl(name = "buttonSouth", layout = "Button", bit = (int)TranslatedProGuitarButton.South, displayName = "A")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = (int)TranslatedProGuitarButton.East, displayName = "B")]
+        [InputControl(name = "buttonWest", layout = "Button", bit = (int)TranslatedProGuitarButton.West, displayName = "1")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = (int)TranslatedProGuitarButton.North, displayName = "2")]
+
+        [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedProGuitarButton.System, displayName = "System")]
+        public TranslatedProGuitarState state;
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct WiiProGuitarState_ReportId : IInputStateTypeInfo
-    {
-        public FourCC format => HidDefinitions.InputFormat;
-
-        public byte reportId;
-        public WiiProGuitarState_NoReportId state;
-    }
-
-    [InputControlLayout(stateType = typeof(WiiProGuitarState_NoReportId), displayName = "Wii Rock Band Pro Guitar")]
-    internal class WiiProGuitar : ProGuitar
+    [InputControlLayout(stateType = typeof(WiiProGuitarLayout), displayName = "Wii Rock Band Pro Guitar")]
+    internal class WiiProGuitar : TranslatingProGuitar<PS3WiiProGuitarState_NoReportId>
     {
         internal new static void Initialize()
         {
@@ -47,6 +43,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(WiiProGuitarState_ReportId), hideInUI = true)]
-    internal class WiiProGuitar_ReportId : WiiProGuitar { }
+    [InputControlLayout(stateType = typeof(WiiProGuitarLayout), hideInUI = true)]
+    internal class WiiProGuitar_ReportId : TranslatingProGuitar<PS3WiiProGuitarState_ReportId> { }
 }

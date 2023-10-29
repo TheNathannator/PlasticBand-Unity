@@ -1,6 +1,5 @@
 using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -11,64 +10,74 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct XInputProGuitarState : IInputStateTypeInfo
+    internal unsafe struct XInputProGuitarState : IProGuitarState
     {
         public FourCC format => XInputGamepad.Format;
 
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", bit = 0, sizeInBits = 4)]
-        [InputControl(name = "dpad/up", bit = 0)]
-        [InputControl(name = "dpad/down", bit = 1)]
-        [InputControl(name = "dpad/left", bit = 2)]
-        [InputControl(name = "dpad/right", bit = 3)]
+        public XInputButton buttons;
 
-        [InputControl(name = "startButton", layout = "Button", bit = 4)]
-        [InputControl(name = "selectButton", layout = "Button", bit = 5, displayName = "Back")]
+        private readonly ushort m_Frets1;
+        private readonly ushort m_Frets2;
 
-        // Tilt doesn't seem to be available through XInput, but it has to be there for ProGuitar
-        // Dummying it out as a button here, just about all the axis bits are taken already
-        [InputControl(name = "tilt", layout = "Button", bit = 8)]
+        private readonly byte m_Velocity1;
+        private readonly byte m_Velocity2;
+        private readonly byte m_Velocity3;
+        private readonly byte m_Velocity4;
+        private readonly byte m_Velocity5;
+        private readonly byte m_Velocity6;
 
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 12, displayName = "A")]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 13, displayName = "B")]
-        [InputControl(name = "buttonWest", layout = "Button", bit = 14, displayName = "X")]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 15, displayName = "Y")]
-        public ushort buttons;
+        public bool south => (buttons & XInputButton.A) != 0;
+        public bool east => (buttons & XInputButton.B) != 0;
+        public bool west => (buttons & XInputButton.X) != 0;
+        public bool north => (buttons & XInputButton.Y) != 0;
 
-        [InputControl(name = "fret1", layout = "Integer", format = "BIT", bit = 0,  sizeInBits = 5)]
-        [InputControl(name = "fret2", layout = "Integer", format = "BIT", bit = 5,  sizeInBits = 5)]
-        [InputControl(name = "fret3", layout = "Integer", format = "BIT", bit = 10, sizeInBits = 5)]
-        public ushort frets1;
+        public bool dpadUp => (buttons & XInputButton.DpadUp) != 0;
+        public bool dpadDown => (buttons & XInputButton.DpadDown) != 0;
+        public bool dpadLeft => (buttons & XInputButton.DpadLeft) != 0;
+        public bool dpadRight => (buttons & XInputButton.DpadRight) != 0;
 
-        [InputControl(name = "fret4", layout = "Integer", format = "BIT", bit = 0,  sizeInBits = 5)]
-        [InputControl(name = "fret5", layout = "Integer", format = "BIT", bit = 5,  sizeInBits = 5)]
-        [InputControl(name = "fret6", layout = "Integer", format = "BIT", bit = 10, sizeInBits = 5)]
-        public ushort frets2;
+        public bool start => (buttons & XInputButton.Start) != 0;
+        public bool select => (buttons & XInputButton.Back) != 0;
+        public bool system => (buttons & XInputButton.Guide) != 0;
 
-        [InputControl(name = "velocity1", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        [InputControl(name = "greenFret", layout = "Button", bit = 7)]
-        public byte velocity1;
+        public bool green => (m_Velocity1 & 0x80) != 0;
+        public bool red => (m_Velocity2 & 0x80) != 0;
+        public bool yellow => (m_Velocity3 & 0x80) != 0;
+        public bool blue => (m_Velocity4 & 0x80) != 0;
+        public bool orange => (m_Velocity5 & 0x80) != 0;
+        public bool solo => (m_Frets2 & 0x8000) != 0;
 
-        [InputControl(name = "velocity2", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        [InputControl(name = "redFret", layout = "Button", bit = 7)]
-        public byte velocity2;
+        public ushort frets1 => (ushort)(m_Frets1 & 0x7FFF);
+        public ushort frets2 => (ushort)(m_Frets2 & 0x7FFF);
 
-        [InputControl(name = "velocity3", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        [InputControl(name = "yellowFret", layout = "Button", bit = 7)]
-        public byte velocity3;
+        public byte velocity1 => (byte)(m_Velocity1 & 0x7F);
+        public byte velocity2 => (byte)(m_Velocity2 & 0x7F);
+        public byte velocity3 => (byte)(m_Velocity3 & 0x7F);
+        public byte velocity4 => (byte)(m_Velocity4 & 0x7F);
+        public byte velocity5 => (byte)(m_Velocity5 & 0x7F);
+        public byte velocity6 => (byte)(m_Velocity6 & 0x7F);
 
-        [InputControl(name = "velocity4", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        [InputControl(name = "blueFret", layout = "Button", bit = 7)]
-        public byte velocity4;
-
-        [InputControl(name = "velocity5", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        [InputControl(name = "orangeFret", layout = "Button", bit = 7)]
-        public byte velocity5;
-
-        [InputControl(name = "velocity6", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        public byte velocity6;
+        // These inputs are not exposed in XInput unfortunately
+        public bool tilt => false;
+        public bool digitalPedal => false;
     }
 
-    [InputControlLayout(stateType = typeof(XInputProGuitarState), displayName = "XInput Rock Band Pro Guitar")]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal struct XInputProGuitarLayout : IInputStateTypeInfo
+    {
+        public FourCC format => TranslatedProGuitarState.Format;
+
+        [InputControl(name = "buttonSouth", layout = "Button", bit = (int)TranslatedProGuitarButton.South, displayName = "A")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = (int)TranslatedProGuitarButton.East, displayName = "B")]
+        [InputControl(name = "buttonWest", layout = "Button", bit = (int)TranslatedProGuitarButton.West, displayName = "X")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = (int)TranslatedProGuitarButton.North, displayName = "Y")]
+
+        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedProGuitarButton.Select, displayName = "Back")]
+        [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedProGuitarButton.System, displayName = "Guide")]
+        public TranslatedProGuitarState state;
+    }
+
+    [InputControlLayout(stateType = typeof(XInputProGuitarLayout), displayName = "XInput Rock Band Pro Guitar")]
     internal class XInputProGuitar : ProGuitar
     {
         internal new static void Initialize()

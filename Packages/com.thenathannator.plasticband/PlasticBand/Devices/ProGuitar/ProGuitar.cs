@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
-
-// TODO: Solo GRYBO frets
-// Not implemented right now because:
-// 1. it's not known where the solo fret flag is for Xbox 360 Pro guitars
-// 2. it's gonna be a pain to put them together
+using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
@@ -114,38 +110,38 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The velocity of the guitar's 1st string.
         /// </summary>
-        [InputControl(displayName = "String 1 Velocity")]
-        public AxisControl velocity1 { get; private set; }
+        [InputControl(displayName = "String 1 Strum")]
+        public ButtonControl strum1 { get; private set; }
 
         /// <summary>
         /// The velocity of the guitar's 2nd string.
         /// </summary>
-        [InputControl(displayName = "String 2 Velocity")]
-        public AxisControl velocity2 { get; private set; }
+        [InputControl(displayName = "String 2 Strum")]
+        public ButtonControl strum2 { get; private set; }
 
         /// <summary>
         /// The velocity of the guitar's 3rd string.
         /// </summary>
-        [InputControl(displayName = "String 3 Velocity")]
-        public AxisControl velocity3 { get; private set; }
+        [InputControl(displayName = "String 3 Strum")]
+        public ButtonControl strum3 { get; private set; }
 
         /// <summary>
         /// The velocity of the guitar's 4th string.
         /// </summary>
-        [InputControl(displayName = "String 4 Velocity")]
-        public AxisControl velocity4 { get; private set; }
+        [InputControl(displayName = "String 4 Strum")]
+        public ButtonControl strum4 { get; private set; }
 
         /// <summary>
         /// The velocity of the guitar's 5th string.
         /// </summary>
-        [InputControl(displayName = "String 5 Velocity")]
-        public AxisControl velocity5 { get; private set; }
+        [InputControl(displayName = "String 5 Strum")]
+        public ButtonControl strum5 { get; private set; }
 
         /// <summary>
         /// The velocity of the guitar's 6th string.
         /// </summary>
-        [InputControl(displayName = "String 6 Velocity")]
-        public AxisControl velocity6 { get; private set; }
+        [InputControl(displayName = "String 6 Strum")]
+        public ButtonControl strum6 { get; private set; }
 
         /// <summary>
         /// The emulated green fret input on the guitar.
@@ -178,16 +174,54 @@ namespace PlasticBand.Devices
         public ButtonControl orangeFret { get; private set; }
 
         /// <summary>
+        /// The emulated green solo fret input on the guitar.
+        /// </summary>
+        [InputControl(displayName = "Solo Green Fret")]
+        public ButtonControl soloGreen { get; private set; }
+
+        /// <summary>
+        /// The emulated red solo fret input on the guitar.
+        /// </summary>
+        [InputControl(displayName = "Solo Red Fret")]
+        public ButtonControl soloRed { get; private set; }
+
+        /// <summary>
+        /// The emulated yellow solo fret input on the guitar.
+        /// </summary>
+        [InputControl(displayName = "Solo Yellow Fret")]
+        public ButtonControl soloYellow { get; private set; }
+
+        /// <summary>
+        /// The emulated blue solo fret input on the guitar.
+        /// </summary>
+        [InputControl(displayName = "Solo Blue Fret")]
+        public ButtonControl soloBlue { get; private set; }
+
+        /// <summary>
+        /// The emulated orange solo fret input on the guitar.
+        /// </summary>
+        [InputControl(displayName = "Solo Orange Fret")]
+        public ButtonControl soloOrange { get; private set; }
+
+        /// <summary>
         /// The guitar's tilt orientation.
         /// </summary>
+        /// <remarks>
+        /// Not supported on Xbox 360 guitars unfortunately,
+        /// as they do not report the necessary data through XInput alone.
+        /// </remarks>
         [InputControl(displayName = "Tilt", noisy = true)]
         public AxisControl tilt { get; private set; }
 
         /// <summary>
-        /// The guitar's whammy bar.
+        /// The digital pedal input on the guitar.
         /// </summary>
-        [InputControl(displayName = "Whammy")]
-        public AxisControl whammy { get; private set; }
+        /// <remarks>
+        /// Not supported on Xbox 360 guitars unfortunately,
+        /// as they do not report the necessary data through XInput alone.
+        /// </remarks>
+        [InputControl(displayName = "Digital Pedal")]
+        public ButtonControl digitalPedal { get; private set; }
 
         /// <summary>
         /// The number of strings available on the guitar.
@@ -195,9 +229,19 @@ namespace PlasticBand.Devices
         public const int StringCount = 6;
 
         /// <summary>
+        /// The number of emulated 5-fret frets available on the guitar.
+        /// </summary>
+        public const int EmulatedFretCount = 5;
+
+        /// <summary>
+        /// The number of emulated 5-fret solo frets available on the guitar.
+        /// </summary>
+        public const int EmulatedSoloFretCount = 5;
+
+        /// <summary>
         /// Retrieves a fret control by index.
         /// </summary>
-        public IntegerControl GetFret(int index)
+        public IntegerControl GetStringFret(int index)
         {
             switch (index)
             {
@@ -212,20 +256,170 @@ namespace PlasticBand.Devices
         }
 
         /// <summary>
-        /// Retrieves a velocity control by index.
+        /// Retrieves a strum control by index.
         /// </summary>
-        public AxisControl GetVelocity(int index)
+        public ButtonControl GetStringStrum(int index)
         {
             switch (index)
             {
-                case 0: return velocity1;
-                case 1: return velocity2;
-                case 2: return velocity3;
-                case 3: return velocity4;
-                case 4: return velocity5;
-                case 5: return velocity6;
+                case 0: return strum1;
+                case 1: return strum2;
+                case 2: return strum3;
+                case 3: return strum4;
+                case 4: return strum5;
+                case 5: return strum6;
                 default: throw new ArgumentOutOfRangeException(nameof(index));
             }
+        }
+
+        /// <summary>
+        /// Retrieves an emulated fret control by index.<br/>
+        /// 0 = green, 4 = orange.
+        /// </summary>
+        public ButtonControl GetEmulatedFret(int index)
+        {
+            switch (index)
+            {
+                case 0: return greenFret;
+                case 1: return redFret;
+                case 2: return yellowFret;
+                case 3: return blueFret;
+                case 4: return orangeFret;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves an emulated fret control by enum value.
+        /// </summary>
+        public ButtonControl GetEmulatedFret(FiveFret fret)
+        {
+            switch (fret)
+            {
+                case FiveFret.Green: return greenFret;
+                case FiveFret.Red: return redFret;
+                case FiveFret.Yellow: return yellowFret;
+                case FiveFret.Blue: return blueFret;
+                case FiveFret.Orange: return orangeFret;
+                default: throw new ArgumentException($"Invalid fret value {fret}!", nameof(fret));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves an emulated solo fret control by index.<br/>
+        /// 0 = green, 4 = orange.
+        /// </summary>
+        public ButtonControl GetEmulatedSoloFret(int index)
+        {
+            switch (index)
+            {
+                case 0: return soloGreen;
+                case 1: return soloRed;
+                case 2: return soloYellow;
+                case 3: return soloBlue;
+                case 4: return soloOrange;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+
+        /// <summary>
+        /// Retrieves an emulated solo fret control by enum value.
+        /// </summary>
+        public ButtonControl GetEmulatedSoloFret(FiveFret fret)
+        {
+            switch (fret)
+            {
+                case FiveFret.Green: return soloGreen;
+                case FiveFret.Red: return soloRed;
+                case FiveFret.Yellow: return soloYellow;
+                case FiveFret.Blue: return soloBlue;
+                case FiveFret.Orange: return soloOrange;
+                default: throw new ArgumentException($"Invalid fret value {fret}!", nameof(fret));
+            }
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current emulated fret states.
+        /// </summary>
+        public FiveFret GetEmulatedFretMask()
+        {
+            var mask = FiveFret.None;
+            if (greenFret.isPressed) mask |= FiveFret.Green;
+            if (redFret.isPressed) mask |= FiveFret.Red;
+            if (yellowFret.isPressed) mask |= FiveFret.Yellow;
+            if (blueFret.isPressed) mask |= FiveFret.Blue;
+            if (orangeFret.isPressed) mask |= FiveFret.Orange;
+            return mask;
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the emulated fret states in the given state event.
+        /// </summary>
+        public FiveFret GetEmulatedFretMask(InputEventPtr eventPtr)
+        {
+            var mask = FiveFret.None;
+            if (greenFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Green;
+            if (redFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Red;
+            if (yellowFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Yellow;
+            if (blueFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Blue;
+            if (orangeFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Orange;
+            return mask;
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current emulated solo fret states.
+        /// </summary>
+        public FiveFret GetEmulatedSoloFretMask()
+        {
+            var mask = FiveFret.None;
+            if (soloGreen.isPressed) mask |= FiveFret.Green;
+            if (soloRed.isPressed) mask |= FiveFret.Red;
+            if (soloYellow.isPressed) mask |= FiveFret.Yellow;
+            if (soloBlue.isPressed) mask |= FiveFret.Blue;
+            if (soloOrange.isPressed) mask |= FiveFret.Orange;
+            return mask;
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the emulated solo fret states in the given state event.
+        /// </summary>
+        public FiveFret GetEmulatedSoloFretMask(InputEventPtr eventPtr)
+        {
+            var mask = FiveFret.None;
+            if (soloGreen.IsPressedInEvent(eventPtr)) mask |= FiveFret.Green;
+            if (soloRed.IsPressedInEvent(eventPtr)) mask |= FiveFret.Red;
+            if (soloYellow.IsPressedInEvent(eventPtr)) mask |= FiveFret.Yellow;
+            if (soloBlue.IsPressedInEvent(eventPtr)) mask |= FiveFret.Blue;
+            if (soloOrange.IsPressedInEvent(eventPtr)) mask |= FiveFret.Orange;
+            return mask;
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the current emulated fret states, excluding the solo frets.
+        /// </summary>
+        public FiveFret GetEmulatedFretMaskExcludingSolo()
+        {
+            var mask = FiveFret.None;
+            if (greenFret.isPressed) mask |= FiveFret.Green;
+            if (redFret.isPressed) mask |= FiveFret.Red;
+            if (yellowFret.isPressed) mask |= FiveFret.Yellow;
+            if (blueFret.isPressed) mask |= FiveFret.Blue;
+            if (orangeFret.isPressed) mask |= FiveFret.Orange;
+            return mask & ~GetEmulatedSoloFretMask();
+        }
+
+        /// <summary>
+        /// Retrives a bitmask of the emulated fret states in the given state event, excluding the solo frets.
+        /// </summary>
+        public FiveFret GetEmulatedFretMaskExcludingSolo(InputEventPtr eventPtr)
+        {
+            var mask = FiveFret.None;
+            if (greenFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Green;
+            if (redFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Red;
+            if (yellowFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Yellow;
+            if (blueFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Blue;
+            if (orangeFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Orange;
+            return mask & ~GetEmulatedSoloFretMask(eventPtr);
         }
 
         protected override void FinishSetup()
@@ -249,12 +443,12 @@ namespace PlasticBand.Devices
             fret5 = GetChildControl<IntegerControl>(nameof(fret5));
             fret6 = GetChildControl<IntegerControl>(nameof(fret6));
 
-            velocity1 = GetChildControl<AxisControl>(nameof(velocity1));
-            velocity2 = GetChildControl<AxisControl>(nameof(velocity2));
-            velocity3 = GetChildControl<AxisControl>(nameof(velocity3));
-            velocity4 = GetChildControl<AxisControl>(nameof(velocity4));
-            velocity5 = GetChildControl<AxisControl>(nameof(velocity5));
-            velocity6 = GetChildControl<AxisControl>(nameof(velocity6));
+            strum1 = GetChildControl<ButtonControl>(nameof(strum1));
+            strum2 = GetChildControl<ButtonControl>(nameof(strum2));
+            strum3 = GetChildControl<ButtonControl>(nameof(strum3));
+            strum4 = GetChildControl<ButtonControl>(nameof(strum4));
+            strum5 = GetChildControl<ButtonControl>(nameof(strum5));
+            strum6 = GetChildControl<ButtonControl>(nameof(strum6));
 
             greenFret = GetChildControl<ButtonControl>(nameof(greenFret));
             redFret = GetChildControl<ButtonControl>(nameof(redFret));
@@ -262,8 +456,13 @@ namespace PlasticBand.Devices
             blueFret = GetChildControl<ButtonControl>(nameof(blueFret));
             orangeFret = GetChildControl<ButtonControl>(nameof(orangeFret));
 
+            soloGreen = GetChildControl<ButtonControl>(nameof(soloGreen));
+            soloRed = GetChildControl<ButtonControl>(nameof(soloRed));
+            soloYellow = GetChildControl<ButtonControl>(nameof(soloYellow));
+            soloBlue = GetChildControl<ButtonControl>(nameof(soloBlue));
+            soloOrange = GetChildControl<ButtonControl>(nameof(soloOrange));
+
             tilt = GetChildControl<AxisControl>(nameof(tilt));
-            whammy = GetChildControl<AxisControl>(nameof(whammy));
         }
 
         /// <inheritdoc/>

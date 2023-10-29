@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -11,87 +12,130 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 27)]
-    internal unsafe struct PS3ProGuitarState_NoReportId : IInputStateTypeInfo
+    internal unsafe struct PS3WiiProGuitarState_NoReportId : IProGuitarState
     {
         public FourCC format => HidDefinitions.InputFormat;
 
-        [InputControl(name = "buttonWest", layout = "Button", bit = 0, displayName = "Square")]
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 1, displayName = "Cross")]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 2, displayName = "Circle")]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 3, displayName = "Triangle")]
-
-        [InputControl(name = "selectButton", layout = "Button", bit = 8)]
-        [InputControl(name = "startButton", layout = "Button", bit = 9)]
-
-        [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "PlayStation")]
-        public ushort buttons;
-
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
-        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7")]
-        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
-        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
-        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
-        public byte dpad;
+        public PS3Button buttons;
+        public HidDpad dpad;
 
         private fixed byte unused1[2];
 
-        [InputControl(name = "fret1", layout = "Integer", format = "BIT", bit = 0,  sizeInBits = 5)]
-        [InputControl(name = "fret2", layout = "Integer", format = "BIT", bit = 5,  sizeInBits = 5)]
-        [InputControl(name = "fret3", layout = "Integer", format = "BIT", bit = 10, sizeInBits = 5)]
-        public ushort frets1;
+        private readonly ushort m_Frets1;
+        private readonly ushort m_Frets2;
 
-        [InputControl(name = "fret4", layout = "Integer", format = "BIT", bit = 0,  sizeInBits = 5)]
-        [InputControl(name = "fret5", layout = "Integer", format = "BIT", bit = 5,  sizeInBits = 5)]
-        [InputControl(name = "fret6", layout = "Integer", format = "BIT", bit = 10, sizeInBits = 5)]
-        [InputControl(name = "soloFlag", layout = "Button", bit = 15)] // TODO: Handle fret and solo flags directly like they are on standard RB guitars
-        public ushort frets2;
-
-        [InputControl(name = "velocity1", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        [InputControl(name = "greenFret", layout = "Button", bit = 7)]
-        public byte velocity1;
-
-        [InputControl(name = "velocity2", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        [InputControl(name = "redFret", layout = "Button", bit = 7)]
-        public byte velocity2;
-
-        [InputControl(name = "velocity3", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        [InputControl(name = "yellowFret", layout = "Button", bit = 7)]
-        public byte velocity3;
-
-        [InputControl(name = "velocity4", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        [InputControl(name = "blueFret", layout = "Button", bit = 7)]
-        public byte velocity4;
-
-        [InputControl(name = "velocity5", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        [InputControl(name = "orangeFret", layout = "Button", bit = 7)]
-        public byte velocity5;
-
-        [InputControl(name = "velocity6", layout = "Axis", format = "BIT", bit = 0, sizeInBits = 7)]
-        public byte velocity6;
+        private readonly byte m_Velocity1;
+        private readonly byte m_Velocity2;
+        private readonly byte m_Velocity3;
+        private readonly byte m_Velocity4;
+        private readonly byte m_Velocity5;
+        private readonly byte m_Velocity6;
 
         // TODO: Auto-calibration sensor support
-        public byte autoCal_Microphone; // NOTE: When the sensor isn't activated, this
-        public byte autoCal_Light; // and this just duplicate the tilt axis
+        private readonly byte m_AutoCal_Microphone; // NOTE: When the sensor isn't activated, this
+        private readonly byte m_AutoCal_Light; // and this just duplicate the tilt axis
 
-        // TODO: Needs verification
-        [InputControl(name = "tilt", layout = "DiscreteButton", noisy = true, parameters = "minValue=0x40,maxValue=0x7F,nullValue=0x40")]
-        public byte tilt;
+        private readonly byte m_Tilt;
 
-        [InputControl(name = "spPedal", layout = "Button", bit = 7)]
-        public byte pedal;
+        private readonly byte m_Pedal;
+
+        public bool west => (buttons & PS3Button.Square) != 0;
+        public bool south => (buttons & PS3Button.Cross) != 0;
+        public bool east => (buttons & PS3Button.Circle) != 0;
+        public bool north => (buttons & PS3Button.Triangle) != 0;
+
+        public bool select => (buttons & PS3Button.Select) != 0;
+        public bool start => (buttons & PS3Button.Start) != 0;
+        public bool system => (buttons & PS3Button.PlayStation) != 0;
+
+        public bool dpadUp => dpad.IsUp();
+        public bool dpadRight => dpad.IsRight();
+        public bool dpadDown => dpad.IsDown();
+        public bool dpadLeft => dpad.IsLeft();
+
+        public bool green => (m_Velocity1 & 0x80) != 0;
+        public bool red => (m_Velocity2 & 0x80) != 0;
+        public bool yellow => (m_Velocity3 & 0x80) != 0;
+        public bool blue => (m_Velocity4 & 0x80) != 0;
+        public bool orange => (m_Velocity5 & 0x80) != 0;
+        public bool solo => (m_Frets2 & 0x8000) != 0;
+
+        public ushort frets1 => (ushort)(m_Frets1 & 0x7FFF);
+        public ushort frets2 => (ushort)(m_Frets2 & 0x7FFF);
+
+        public byte velocity1 => (byte)(m_Velocity1 & 0x7F);
+        public byte velocity2 => (byte)(m_Velocity2 & 0x7F);
+        public byte velocity3 => (byte)(m_Velocity3 & 0x7F);
+        public byte velocity4 => (byte)(m_Velocity4 & 0x7F);
+        public byte velocity5 => (byte)(m_Velocity5 & 0x7F);
+        public byte velocity6 => (byte)(m_Velocity6 & 0x7F);
+
+        // Tilt is 0x40 when inactive, 0x7F when active
+        public bool tilt => m_Tilt != 0x40;
+
+        public bool digitalPedal => (m_Pedal & 0x80) != 0;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3ProGuitarState_ReportId : IInputStateTypeInfo
+    internal unsafe struct PS3WiiProGuitarState_ReportId : IProGuitarState
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
-        public PS3ProGuitarState_NoReportId state;
+        public PS3WiiProGuitarState_NoReportId state;
+
+        public bool west => state.west;
+        public bool south => state.south;
+        public bool east => state.east;
+        public bool north => state.north;
+
+        public bool select => state.select;
+        public bool start => state.start;
+        public bool system => state.system;
+
+        public bool dpadUp => state.dpadUp;
+        public bool dpadRight => state.dpadRight;
+        public bool dpadDown => state.dpadDown;
+        public bool dpadLeft => state.dpadLeft;
+
+        public bool green => state.green;
+        public bool red => state.red;
+        public bool yellow => state.yellow;
+        public bool blue => state.blue;
+        public bool orange => state.orange;
+        public bool solo => state.solo;
+
+        public ushort frets1 => state.frets1;
+        public ushort frets2 => state.frets2;
+
+        public byte velocity1 => state.velocity1;
+        public byte velocity2 => state.velocity2;
+        public byte velocity3 => state.velocity3;
+        public byte velocity4 => state.velocity4;
+        public byte velocity5 => state.velocity5;
+        public byte velocity6 => state.velocity6;
+
+        public bool tilt => state.tilt;
+
+        public bool digitalPedal => state.digitalPedal;
     }
 
-    [InputControlLayout(stateType = typeof(PS3ProGuitarState_NoReportId), displayName = "PlayStation 3 Rock Band Pro Guitar")]
-    internal class PS3ProGuitar : ProGuitar
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal struct PS3ProGuitarLayout : IInputStateTypeInfo
+    {
+        public FourCC format => TranslatedProGuitarState.Format;
+
+        [InputControl(name = "buttonSouth", layout = "Button", bit = (int)TranslatedProGuitarButton.South, displayName = "Cross")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = (int)TranslatedProGuitarButton.East, displayName = "Circle")]
+        [InputControl(name = "buttonWest", layout = "Button", bit = (int)TranslatedProGuitarButton.West, displayName = "Square")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = (int)TranslatedProGuitarButton.North, displayName = "Triangle")]
+
+        [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedProGuitarButton.System, displayName = "PlayStation")]
+        public TranslatedProGuitarState state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS3ProGuitarLayout), displayName = "PlayStation 3 Rock Band Pro Guitar")]
+    internal class PS3ProGuitar : TranslatingProGuitar<PS3WiiProGuitarState_NoReportId>
     {
         internal new static void Initialize()
         {
@@ -109,6 +153,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3ProGuitarState_ReportId), hideInUI = true)]
-    internal class PS3ProGuitar_ReportId : PS3ProGuitar { }
+    [InputControlLayout(stateType = typeof(PS3ProGuitarLayout), hideInUI = true)]
+    internal class PS3ProGuitar_ReportId : TranslatingProGuitar<PS3WiiProGuitarState_ReportId> { }
 }
