@@ -1,8 +1,7 @@
-// TODO: Solo fret flag handling
-
 using System;
 using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -228,7 +227,18 @@ namespace PlasticBand.Devices
             StateTranslator<TState, TranslatedProGuitarState>.VerifyDevice(this);
         }
 
-        void IInputStateCallbackReceiver.OnNextUpdate() {}
+        unsafe void IInputStateCallbackReceiver.OnNextUpdate()
+        {
+            // Strumming must be reset at the beginning of the update, else it will persist forever
+            using (var buffer = StateEvent.From(this, out var eventPtr))
+            {
+                ref var state = ref *(TranslatedProGuitarState*)buffer.GetUnsafePtr();
+                state.buttons &= ~(uint)(TranslatedProGuitarButton.Strum1 | TranslatedProGuitarButton.Strum2 |
+                    TranslatedProGuitarButton.Strum3 | TranslatedProGuitarButton.Strum4 |
+                    TranslatedProGuitarButton.Strum5 | TranslatedProGuitarButton.Strum6);
+                InputState.Change(this, eventPtr);
+            }
+        }
 
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
             => StateTranslator<TState, TranslatedProGuitarState>.UpdateState(this, eventPtr, m_Translator);

@@ -108,38 +108,62 @@ namespace PlasticBand.Devices
         public IntegerControl fret6 { get; private set; }
 
         /// <summary>
-        /// The velocity of the guitar's 1st string.
+        /// Whether or not the guitar's 1st string has been strummed.
         /// </summary>
+        /// <remarks>
+        /// Due to how this is calculated, the value does not persist beyond the end of the current frame.
+        /// Do not depend on it being held for any period of time.
+        /// </remarks>
         [InputControl(displayName = "String 1 Strum")]
         public ButtonControl strum1 { get; private set; }
 
         /// <summary>
-        /// The velocity of the guitar's 2nd string.
+        /// Whether or not the guitar's 2nd string has been strummed.
         /// </summary>
+        /// <remarks>
+        /// Due to how this is calculated, the value does not persist beyond the end of the current frame.
+        /// Do not depend on it being held for any period of time.
+        /// </remarks>
         [InputControl(displayName = "String 2 Strum")]
         public ButtonControl strum2 { get; private set; }
 
         /// <summary>
-        /// The velocity of the guitar's 3rd string.
+        /// Whether or not the guitar's 3rd string has been strummed.
         /// </summary>
+        /// <remarks>
+        /// Due to how this is calculated, the value does not persist beyond the end of the current frame.
+        /// Do not depend on it being held for any period of time.
+        /// </remarks>
         [InputControl(displayName = "String 3 Strum")]
         public ButtonControl strum3 { get; private set; }
 
         /// <summary>
-        /// The velocity of the guitar's 4th string.
+        /// Whether or not the guitar's 4th string has been strummed.
         /// </summary>
+        /// <remarks>
+        /// Due to how this is calculated, the value does not persist beyond the end of the current frame.
+        /// Do not depend on it being held for any period of time.
+        /// </remarks>
         [InputControl(displayName = "String 4 Strum")]
         public ButtonControl strum4 { get; private set; }
 
         /// <summary>
-        /// The velocity of the guitar's 5th string.
+        /// Whether or not the guitar's 5th string has been strummed.
         /// </summary>
+        /// <remarks>
+        /// Due to how this is calculated, the value does not persist beyond the end of the current frame.
+        /// Do not depend on it being held for any period of time.
+        /// </remarks>
         [InputControl(displayName = "String 5 Strum")]
         public ButtonControl strum5 { get; private set; }
 
         /// <summary>
-        /// The velocity of the guitar's 6th string.
+        /// Whether or not the guitar's 6th string has been strummed.
         /// </summary>
+        /// <remarks>
+        /// Due to how this is calculated, the value does not persist beyond the end of the current frame.
+        /// Do not depend on it being held for any period of time.
+        /// </remarks>
         [InputControl(displayName = "String 6 Strum")]
         public ButtonControl strum6 { get; private set; }
 
