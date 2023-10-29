@@ -12,7 +12,7 @@ namespace PlasticBand.Controls
     /// <summary>
     /// A button that is considered pressed when all bits of a specified button mask are set.
     /// </summary>
-    public class MaskButtonControl : ButtonControl
+    internal class MaskButtonControl : ButtonControl
     {
         internal static void Initialize()
         {

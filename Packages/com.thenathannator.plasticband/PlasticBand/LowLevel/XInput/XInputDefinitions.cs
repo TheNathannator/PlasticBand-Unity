@@ -11,7 +11,7 @@ namespace PlasticBand.LowLevel
     using static XInputController;
 
     [Flags]
-    public enum XInputButton : ushort
+    internal enum XInputButton : ushort
     {
         DpadUp = 0x0001,
         DpadDown = 0x0002,

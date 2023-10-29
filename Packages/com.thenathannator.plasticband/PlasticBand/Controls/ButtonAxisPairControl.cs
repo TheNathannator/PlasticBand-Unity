@@ -12,7 +12,7 @@ namespace PlasticBand.Controls
     /// <summary>
     /// A button that is considered pressed when either a given button bit or a given axis are active.
     /// </summary>
-    public class ButtonAxisPairControl : ButtonControl
+    internal class ButtonAxisPairControl : ButtonControl
     {
         internal static void Initialize()
         {

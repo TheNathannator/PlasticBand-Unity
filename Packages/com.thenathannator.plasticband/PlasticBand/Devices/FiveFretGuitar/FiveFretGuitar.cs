@@ -151,7 +151,7 @@ namespace PlasticBand.Devices
                 case FiveFret.Yellow: return yellowFret;
                 case FiveFret.Blue: return blueFret;
                 case FiveFret.Orange: return orangeFret;
-                default: throw new ArgumentException($"Could not determine the fret to retrieve! Value: '{fret}'", nameof(fret));
+                default: throw new ArgumentException($"Invalid fret value {fret}!", nameof(fret));
             }
         }
 

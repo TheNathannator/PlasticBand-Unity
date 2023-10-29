@@ -16,7 +16,7 @@ namespace PlasticBand.Controls
     /// <summary>
     /// The pickup switch on an Xbox 360/PS3/Wii <see cref="RockBandGuitar"/>.
     /// </summary>
-    public class RockBandPickupSwitchControl : IntegerControl
+    internal class RockBandPickupSwitchControl : IntegerControl
     {
         internal static void Initialize()
         {

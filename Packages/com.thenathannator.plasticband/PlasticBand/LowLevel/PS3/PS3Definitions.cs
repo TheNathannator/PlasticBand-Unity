@@ -11,7 +11,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices.LowLevel
 {
     [Flags]
-    public enum PS3Button
+    internal enum PS3Button
     {
         None = 0,
 

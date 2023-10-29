@@ -17,7 +17,7 @@ namespace PlasticBand.Controls
     /// <summary>
     /// One of the segments on a <see cref="GuitarHeroGuitar"/>'s slider bar.
     /// </summary>
-    public class GuitarHeroSliderControl : ButtonControl
+    internal class GuitarHeroSliderControl : ButtonControl
     {
         internal static void Initialize()
         {

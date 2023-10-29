@@ -50,7 +50,7 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(XInputSixFretGuitarState), displayName = "XInput Guitar Hero Live Guitar")]
-    public class XInputSixFretGuitar : SixFretGuitar
+    internal class XInputSixFretGuitar : SixFretGuitar
     {
         internal new static void Initialize()
         {

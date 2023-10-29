@@ -29,7 +29,7 @@ namespace PlasticBand.Devices
     }
 
     [Flags]
-    public enum TranslatedFourLaneButtonMask : ushort
+    internal enum TranslatedFourLaneButtonMask : ushort
     {
         None = 0,
 
