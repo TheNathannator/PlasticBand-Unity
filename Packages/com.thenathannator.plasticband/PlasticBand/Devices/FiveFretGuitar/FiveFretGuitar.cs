@@ -74,24 +74,27 @@ namespace PlasticBand.Devices
         public ButtonControl orangeFret { get; private set; }
 
         /// <summary>
-        /// The guitar's strum up input.
-        /// On most models this is equivalent to the d-pad up input, but on some it may not be.
+        /// The guitar's d-pad.
         /// </summary>
-        public ButtonControl strumUp { get; private set; }
+        /// <remarks>
+        /// D-pad up and down are also used for strum up/down.
+        /// </remarks>
+        [InputControl(displayName = "D-Pad", usage = "Hatswitch")]
+        [InputControl(name = "dpad/up", displayName = "Up/Strum Up", alias = "strumUp")]
+        [InputControl(name = "dpad/down", displayName = "Down/Strum Down", alias = "strumDown")]
+        public DpadControl dpad { get; private set; }
+
+        /// <summary>
+        /// The guitar's strum up input.
+        /// Provided for convenience; this is equivalent to <c>dpad.up</c>.
+        /// </summary>
+        public ButtonControl strumUp => dpad.up;
 
         /// <summary>
         /// The guitar's strum down input.
-        /// On most models this is equivalent to the d-pad down input, but on some it may not be.
+        /// Provided for convenience; this is equivalent to <c>dpad.down</c>.
         /// </summary>
-        public ButtonControl strumDown { get; private set; }
-
-        /// <summary>
-        /// The guitar's d-pad.
-        /// </summary>
-        [InputControl(displayName = "D-Pad", usage = "Hatswitch")]
-        [InputControl(name = "dpad/up", displayName = "Up/Strum Up")]
-        [InputControl(name = "dpad/down", displayName = "Down/Strum Down")]
-        public DpadControl dpad { get; private set; }
+        public ButtonControl strumDown => dpad.down;
 
         /// <summary>
         /// The guitar's tilt orientation.
@@ -192,15 +195,6 @@ namespace PlasticBand.Devices
             yellowFret = GetChildControl<ButtonControl>(nameof(yellowFret));
             blueFret = GetChildControl<ButtonControl>(nameof(blueFret));
             orangeFret = GetChildControl<ButtonControl>(nameof(orangeFret));
-
-            // Since strum up/down can be aliased to leaf controls on a d-pad control,
-            // we must search for it as both a child and a child of a child
-            // The latter is done first, as it's the only actual case currently,
-            // and the former is reserved for whenever Wii GH guitars are implemented
-            strumUp = TryGetChildControl<ButtonControl>($"*/{nameof(strumUp)}")
-                ?? GetChildControl<ButtonControl>(nameof(strumUp));
-            strumDown = TryGetChildControl<ButtonControl>($"*/{nameof(strumDown)}")
-                ?? GetChildControl<ButtonControl>(nameof(strumDown));
 
             dpad = GetChildControl<DpadControl>(nameof(dpad));
 
