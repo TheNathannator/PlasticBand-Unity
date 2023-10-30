@@ -31,7 +31,6 @@ namespace PlasticBand
             XInputLayoutFinder.Initialize();
 
             // General controls
-            ButtonAxisPairControl.Initialize();
             MaskButtonControl.Initialize();
 
             // 5-fret guitars
