@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
@@ -12,72 +13,113 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 27)]
-    internal unsafe struct PS3TurntableState_NoReportId : IInputStateTypeInfo
+    internal unsafe struct PS3TurntableState_NoReportId : ITurntableState
     {
         public FourCC format => HidDefinitions.InputFormat;
 
-        [InputControl(name = "buttonWest", layout = "Button", bit = 0, displayName = "Square")]
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 1, displayName = "Cross")]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 2, displayName = "Circle")]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 3, displayName = "Triangle / Euphoria")]
-
-        [InputControl(name = "euphoria", layout = "Button", bit = 3, displayName = "Euphoria")]
-
-        [InputControl(name = "selectButton", layout = "Button", bit = 8)]
-        [InputControl(name = "startButton", layout = "Button", bit = 9)]
-
-        [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "PlayStation")]
-
         [FieldOffset(0)]
-        public ushort buttons;
-
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 15)]
-        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=15,wrapAtValue=7", displayName = "Up/Strum Up")]
-        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
-        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5", displayName = "Down/Strum Down")]
-        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
+        public PS3Button buttons;
 
         [FieldOffset(2)]
-        public byte dpad;
+        public HidDpad dpad;
 
-        [InputControl(name = "leftTableVelocity", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         [FieldOffset(5)]
-        public byte leftTableVelocity;
+        private readonly byte m_LeftTableVelocity;
 
-        [InputControl(name = "rightTableVelocity", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         [FieldOffset(6)]
-        public byte rightTableVelocity;
+        private readonly byte m_RightTableVelocity;
 
-        [InputControl(name = "effectsDial", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         [FieldOffset(19)]
-        public short effectsDial;
+        private readonly short m_EffectsDial;
 
-        [InputControl(name = "crossFader", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         [FieldOffset(21)]
-        public short crossFader;
-
-        [InputControl(name = "rightTableGreen", layout = "Button", bit = 0)]
-        [InputControl(name = "rightTableRed", layout = "Button", bit = 1)]
-        [InputControl(name = "rightTableBlue", layout = "Button", bit = 2)]
-        [InputControl(name = "leftTableGreen", layout = "Button", bit = 4)]
-        [InputControl(name = "leftTableRed", layout = "Button", bit = 5)]
-        [InputControl(name = "leftTableBlue", layout = "Button", bit = 6)]
+        private readonly short m_Crossfader;
 
         [FieldOffset(23)]
         public short tableButtons;
+
+        public bool west => (buttons & PS3Button.Square) != 0;
+        public bool south => (buttons & PS3Button.Cross) != 0;
+        public bool east => (buttons & PS3Button.Circle) != 0;
+        public bool north_euphoria => (buttons & PS3Button.Triangle) != 0;
+
+        public bool select => (buttons & PS3Button.Select) != 0;
+        public bool start => (buttons & PS3Button.Start) != 0;
+        public bool system => (buttons & PS3Button.PlayStation) != 0;
+
+        public bool dpadUp => dpad.IsUp();
+        public bool dpadRight => dpad.IsRight();
+        public bool dpadDown => dpad.IsDown();
+        public bool dpadLeft => dpad.IsLeft();
+
+        public bool rightGreen => (tableButtons & 0x001) != 0;
+        public bool rightRed => (tableButtons & 0x002) != 0;
+        public bool rightBlue => (tableButtons & 0x004) != 0;
+
+        public bool leftGreen => (tableButtons & 0x010) != 0;
+        public bool leftRed => (tableButtons & 0x020) != 0;
+        public bool leftBlue => (tableButtons & 0x040) != 0;
+
+        public sbyte leftVelocity => (sbyte)(m_LeftTableVelocity - 0x80);
+        public sbyte rightVelocity => (sbyte)(m_RightTableVelocity - 0x80);
+
+        public sbyte effectsDial => (sbyte)((m_EffectsDial >> 2) - 0x80);
+        public sbyte crossfader => (sbyte)((m_Crossfader >> 2) - 0x80);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3TurntableState_ReportId : IInputStateTypeInfo
+    internal unsafe struct PS3TurntableState_ReportId : ITurntableState
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
         public PS3TurntableState_NoReportId state;
+
+        public bool west => state.west;
+        public bool south => state.south;
+        public bool east => state.east;
+        public bool north_euphoria => state.north_euphoria;
+
+        public bool select => state.select;
+        public bool start => state.start;
+        public bool system => state.system;
+
+        public bool dpadUp => state.dpadUp;
+        public bool dpadRight => state.dpadRight;
+        public bool dpadDown => state.dpadDown;
+        public bool dpadLeft => state.dpadLeft;
+
+        public bool leftGreen => state.leftGreen;
+        public bool leftRed => state.leftRed;
+        public bool leftBlue => state.leftBlue;
+
+        public bool rightGreen => state.rightGreen;
+        public bool rightRed => state.rightRed;
+        public bool rightBlue => state.rightBlue;
+
+        public sbyte leftVelocity => state.leftVelocity;
+        public sbyte rightVelocity => state.rightVelocity;
+
+        public sbyte effectsDial => state.effectsDial;
+        public sbyte crossfader => state.crossfader;
     }
 
-    [InputControlLayout(stateType = typeof(PS3TurntableState_NoReportId), displayName = "PlayStation 3 DJ Hero Turntable")]
-    internal class PS3Turntable : Turntable
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal struct PS3TurntableLayout : IInputStateTypeInfo
+    {
+        public FourCC format => TranslatedTurntableState.Format;
+
+        [InputControl(name = "buttonSouth", layout = "Button", bit = (int)TranslatedTurntableButton.South, displayName = "Cross")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = (int)TranslatedTurntableButton.East, displayName = "Circle")]
+        [InputControl(name = "buttonWest", layout = "Button", bit = (int)TranslatedTurntableButton.West, displayName = "Square")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = (int)TranslatedTurntableButton.North_Euphoria, displayName = "Triangle / Euphoria")]
+
+        [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedTurntableButton.System, displayName = "PlayStation")]
+        public TranslatedTurntableState state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS3TurntableLayout), displayName = "PlayStation 3 DJ Hero Turntable")]
+    internal class PS3Turntable : TranslatingTurntable<PS3TurntableState_NoReportId>
     {
         internal new static void Initialize()
         {
@@ -91,6 +133,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3TurntableState_ReportId), hideInUI = true)]
-    internal class PS3Turntable_ReportId : PS3Turntable { }
+    [InputControlLayout(stateType = typeof(PS3TurntableLayout), hideInUI = true)]
+    internal class PS3Turntable_ReportId : TranslatingTurntable<PS3TurntableState_ReportId> { }
 }

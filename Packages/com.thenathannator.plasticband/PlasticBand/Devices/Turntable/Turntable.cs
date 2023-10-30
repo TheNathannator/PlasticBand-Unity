@@ -82,14 +82,13 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The top face button in the navigation button compartment.
         /// </summary>
-        [InputControl(displayName = "Button North")]
+        [InputControl(displayName = "Button North / Euphoria", alias = "euphoria")]
         public ButtonControl buttonNorth { get; private set; }
 
         /// <summary>
         /// The euphoria button on the deck.
         /// </summary>
-        [InputControl(displayName = "Euphoria")]
-        public ButtonControl euphoria { get; private set; }
+        public ButtonControl euphoria => buttonNorth;
 
         /// <summary>
         /// The green button on the left turntable.
@@ -140,8 +139,12 @@ namespace PlasticBand.Devices
         public AxisControl rightTableVelocity { get; private set; }
 
         /// <summary>
-        /// The effects dial on the deck.
+        /// The change in position of the effects dial on the deck.
         /// </summary>
+        /// <remarks>
+        /// This value accumulates over the course of an input update, much like other delta controls
+        /// in the input system do. Event-based handling must be aware of this and account for it.
+        /// </remarks>
         [InputControl(displayName = "Effects Dial")]
         public AxisControl effectsDial { get; private set; }
 
@@ -149,7 +152,7 @@ namespace PlasticBand.Devices
         /// The cross-fader on the deck.
         /// </summary>
         [InputControl(displayName = "Crossfader")]
-        public AxisControl crossFader { get; private set; }
+        public AxisControl crossfader { get; private set; }
 
         /// <summary>
         /// The number of pads available on the drumkit.
@@ -276,8 +279,6 @@ namespace PlasticBand.Devices
             buttonWest = GetChildControl<ButtonControl>(nameof(buttonWest));
             buttonNorth = GetChildControl<ButtonControl>(nameof(buttonNorth));
 
-            euphoria = GetChildControl<ButtonControl>(nameof(euphoria));
-
             leftTableGreen = GetChildControl<ButtonControl>(nameof(leftTableGreen));
             leftTableRed = GetChildControl<ButtonControl>(nameof(leftTableRed));
             leftTableBlue = GetChildControl<ButtonControl>(nameof(leftTableBlue));
@@ -290,7 +291,7 @@ namespace PlasticBand.Devices
             rightTableVelocity = GetChildControl<AxisControl>(nameof(rightTableVelocity));
 
             effectsDial = GetChildControl<AxisControl>(nameof(effectsDial));
-            crossFader = GetChildControl<AxisControl>(nameof(crossFader));
+            crossfader = GetChildControl<AxisControl>(nameof(crossfader));
         }
 
         /// <inheritdoc/>

@@ -16,18 +16,11 @@ namespace PlasticBand.Devices
     /// The state format for Santroller HID DJ Hero Turntables.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct SantrollerHIDTurntableState : IInputStateTypeInfo
+    internal unsafe struct SantrollerHIDTurntableState : ITurntableState
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
-
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 0, displayName = "Cross")]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 1, displayName = "Circle")]
-        [InputControl(name = "buttonWest", layout = "Button", bit = 2, displayName = "Square")]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 3, displayName = "Triangle / Euphoria")]
-
-        [InputControl(name = "euphoria", layout = "Button", bit = 3, displayName = "Euphoria")]
 
         [InputControl(name = "selectButton", layout = "Button", bit = 4)]
         [InputControl(name = "startButton", layout = "Button", bit = 5)]
@@ -42,31 +35,47 @@ namespace PlasticBand.Devices
         [InputControl(name = "leftTableBlue", layout = "Button", bit = 12)]
         public ushort buttons;
 
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
-        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7", displayName = "Up/Strum Up")]
-        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
-        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5", displayName = "Down/Strum Down")]
-        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
-        public byte dpad;
+        public HidDpad dpad;
 
-        [InputControl(name = "leftTableVelocity", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public byte leftTableVelocity;
+        private readonly byte m_LeftTableVelocity;
+        private readonly byte m_RightTableVelocity;
+        private readonly byte m_EffectsDial;
+        private readonly byte m_Crossfader;
 
-        [InputControl(name = "rightTableVelocity", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public byte rightTableVelocity;
+        public bool south => (buttons & 0x0001) != 0;
+        public bool east => (buttons & 0x0002) != 0;
+        public bool west => (buttons & 0x0004) != 0;
+        public bool north_euphoria => (buttons & 0x0008) != 0;
 
-        [InputControl(name = "effectsDial", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public byte effectsDial;
+        public bool select => (buttons & 0x0010) != 0;
+        public bool start => (buttons & 0x0020) != 0;
+        public bool system => (buttons & 0x0040) != 0;
 
-        [InputControl(name = "crossFader", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public byte crossFader;
+        public bool dpadUp => dpad.IsUp();
+        public bool dpadRight => dpad.IsRight();
+        public bool dpadDown => dpad.IsDown();
+        public bool dpadLeft => dpad.IsLeft();
+
+        public bool rightGreen => (buttons & 0x0080) != 0;
+        public bool rightRed => (buttons & 0x0100) != 0;
+        public bool rightBlue => (buttons & 0x0200) != 0;
+
+        public bool leftGreen => (buttons & 0x0400) != 0;
+        public bool leftRed => (buttons & 0x0800) != 0;
+        public bool leftBlue => (buttons & 0x1000) != 0;
+
+        public sbyte leftVelocity => (sbyte)(m_LeftTableVelocity - 0x80);
+        public sbyte rightVelocity => (sbyte)(m_RightTableVelocity - 0x80);
+
+        public sbyte effectsDial => (sbyte)(m_EffectsDial - 0x80);
+        public sbyte crossfader => (sbyte)(m_Crossfader - 0x80);
     }
 
     /// <summary>
     /// A Santroller HID Turntable.
     /// </summary>
-    [InputControlLayout(stateType = typeof(SantrollerHIDTurntableState), displayName = "Santroller HID Turntable")]
-    internal class SantrollerHIDTurntable : PS3Turntable, ISantrollerTurntableHaptics
+    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "Santroller HID Turntable")]
+    internal class SantrollerHIDTurntable : TranslatingTurntable<SantrollerHIDTurntableState>, ISantrollerTurntableHaptics
     {
         internal new static void Initialize()
         {

@@ -8,7 +8,7 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(XInputTurntableState), displayName = "Santroller XInput Turntable")]
+    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "Santroller XInput Turntable")]
     internal class SantrollerXInputTurntable : XInputTurntable, ISantrollerTurntableHaptics
     {
         internal new static void Initialize()
