@@ -66,20 +66,20 @@ namespace PlasticBand.Devices
         public byte keys3;
 
         [InputControl(name = "key25", layout = "Button", bit = 7)]
-        // TODO: Try to pair velocities with keys
-        [InputControl(name = "velocity1", layout = "Axis", format = "BIT", sizeInBits = 7)]
+        // TODO: Velocities are ignored currently until they can be paired with keys
+        // [InputControl(name = "velocity1", layout = "Axis", format = "BIT", sizeInBits = 7)]
         public byte velocity1;
 
-        [InputControl(name = "velocity2", layout = "Axis", format = "BIT", sizeInBits = 7)]
+        // [InputControl(name = "velocity2", layout = "Axis", format = "BIT", sizeInBits = 7)]
         public byte velocity2;
 
-        [InputControl(name = "velocity3", layout = "Axis", format = "BIT", sizeInBits = 7)]
+        // [InputControl(name = "velocity3", layout = "Axis", format = "BIT", sizeInBits = 7)]
         public byte velocity3;
 
-        [InputControl(name = "velocity4", layout = "Axis", format = "BIT", sizeInBits = 7)]
+        // [InputControl(name = "velocity4", layout = "Axis", format = "BIT", sizeInBits = 7)]
         public byte velocity4;
 
-        [InputControl(name = "velocity5", layout = "Axis", format = "BIT", sizeInBits = 7)]
+        // [InputControl(name = "velocity5", layout = "Axis", format = "BIT", sizeInBits = 7)]
         public byte velocity5;
 
         [InputControl(name = "overdrive", layout = "Button", bit = 7)]
