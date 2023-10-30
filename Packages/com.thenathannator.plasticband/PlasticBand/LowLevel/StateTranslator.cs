@@ -54,6 +54,7 @@ namespace PlasticBand.LowLevel
             ref TFromState fromState = ref *(TFromState*)stateEvent->state;
             var translated = translator(ref fromState);
             UnsafeUtility.CopyStructureToPtr(ref translated, stateEvent->state);
+            stateEvent->stateFormat = ToStateFormat;
 
             // Update underlying state buffers
             // We don't need to worry about the final state event buffer being greater than
