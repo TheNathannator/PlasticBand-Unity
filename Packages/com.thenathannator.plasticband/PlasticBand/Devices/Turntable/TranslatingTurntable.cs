@@ -182,11 +182,31 @@ namespace PlasticBand.Devices
             translated.effectsDial = (sbyte)(effectsDialAbsolute - m_PreviousEffectsDial);
             m_PreviousEffectsDial = effectsDialAbsolute;
 
+            // Turntables
+            var left = TurntableButton.None;
+            var right = TurntableButton.None;
+
+            if (state.leftGreen) left |= TurntableButton.Green;
+            if (state.leftRed) left |= TurntableButton.Red;
+            if (state.leftBlue) left |= TurntableButton.Blue;
+    
+            if (state.rightGreen) right |= TurntableButton.Green;
+            if (state.rightRed) right |= TurntableButton.Red;
+            if (state.rightBlue) right |= TurntableButton.Blue;
+
+            var tableButtons = left | right;
+
+            translated.leftTableButtons = left;
+            translated.rightTableButtons = right;
+
+            translated.leftTableVelocity = state.leftVelocity;
+            translated.rightTableVelocity = state.rightVelocity;
+
             // Face buttons
             var buttons = TranslatedTurntableButtonMask.None;
-            if (state.south) buttons |= TranslatedTurntableButtonMask.South; // A, cross
-            if (state.east) buttons |= TranslatedTurntableButtonMask.East; // B, circle
-            if (state.west) buttons |= TranslatedTurntableButtonMask.West; // X, square
+            if ((tableButtons & TurntableButton.Green) != 0 && state.south) buttons |= TranslatedTurntableButtonMask.South; // A, cross
+            if ((tableButtons & TurntableButton.Red) != 0 && state.east) buttons |= TranslatedTurntableButtonMask.East; // B, circle
+            if ((tableButtons & TurntableButton.Blue) != 0 && state.west) buttons |= TranslatedTurntableButtonMask.West; // X, square
             if (state.north_euphoria) buttons |= TranslatedTurntableButtonMask.North_Euphoria; // Y, triangle, euphoria
 
             if (state.dpadUp) buttons |= TranslatedTurntableButtonMask.DpadUp;
@@ -199,23 +219,6 @@ namespace PlasticBand.Devices
             if (state.system) buttons |= TranslatedTurntableButtonMask.System;
 
             translated.buttons = (ushort)buttons;
-
-            var left = TurntableButton.None;
-            var right = TurntableButton.None;
-
-            if (state.leftGreen) left |= TurntableButton.Green;
-            if (state.leftRed) left |= TurntableButton.Red;
-            if (state.leftBlue) left |= TurntableButton.Blue;
-    
-            if (state.rightGreen) right |= TurntableButton.Green;
-            if (state.rightRed) right |= TurntableButton.Red;
-            if (state.rightBlue) right |= TurntableButton.Blue;
-
-            translated.leftTableButtons = left;
-            translated.rightTableButtons = right;
-
-            translated.leftTableVelocity = state.leftVelocity;
-            translated.rightTableVelocity = state.rightVelocity;
 
             return translated;
         }
