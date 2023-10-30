@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.Utilities;
@@ -14,10 +15,10 @@ namespace PlasticBand.Devices
         public FourCC format => HidDefinitions.InputFormat;
 
         [FieldOffset(4)]
-        public ushort buttons1;
+        public PS4Button1 buttons1;
 
         [FieldOffset(6)]
-        public byte buttons2;
+        public PS4Button2 buttons2;
 
         [FieldOffset(42)]
         public byte redPad;
@@ -40,22 +41,22 @@ namespace PlasticBand.Devices
         [FieldOffset(48)]
         public byte greenCymbal;
 
-        public bool west => (buttons1 & 0x0010) != 0;
-        public bool south => (buttons1 & 0x0020) != 0;
-        public bool east => (buttons1 & 0x0040) != 0;
-        public bool north => (buttons1 & 0x0080) != 0;
+        public bool west => (buttons1 & PS4Button1.Square) != 0;
+        public bool south => (buttons1 & PS4Button1.Cross) != 0;
+        public bool east => (buttons1 & PS4Button1.Circle) != 0;
+        public bool north => (buttons1 & PS4Button1.Triangle) != 0;
 
-        public bool kick1 => (buttons1 & 0x0100) != 0;
-        public bool kick2 => (buttons1 & 0x0200) != 0;
+        public bool kick1 => (buttons1 & PS4Button1.L2) != 0;
+        public bool kick2 => (buttons1 & PS4Button1.R2) != 0;
 
-        public bool select => (buttons1 & 0x1000) != 0;
-        public bool start => (buttons1 & 0x2000) != 0;
-        public bool system => (buttons2 & 0x01) != 0;
+        public bool select => (buttons1 & PS4Button1.Select) != 0;
+        public bool start => (buttons1 & PS4Button1.Start) != 0;
+        public bool system => (buttons2 & PS4Button2.PlayStation) != 0;
 
-        public bool dpadUp => ((HidDpad)(buttons1 & 0x0F)).IsUp();
-        public bool dpadRight => ((HidDpad)(buttons1 & 0x0F)).IsRight();
-        public bool dpadDown => ((HidDpad)(buttons1 & 0x0F)).IsDown();
-        public bool dpadLeft => ((HidDpad)(buttons1 & 0x0F)).IsLeft();
+        public bool dpadUp => buttons1.GetDpad().IsUp();
+        public bool dpadRight => buttons1.GetDpad().IsRight();
+        public bool dpadDown => buttons1.GetDpad().IsDown();
+        public bool dpadLeft => buttons1.GetDpad().IsLeft();
 
         byte IFourLaneDrumkitState_Distinct.redPad => redPad;
         byte IFourLaneDrumkitState_Distinct.yellowPad => yellowPad;

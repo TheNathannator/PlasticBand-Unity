@@ -22,25 +22,25 @@ namespace PlasticBand.Devices
         private readonly byte m_Whammy;
         private readonly byte m_Tilt;
 
-        public ushort buttons1;
-        public byte buttons2;
+        public PS4Button1 buttons1;
+        public PS4Button2 buttons2;
 
-        public bool dpadUp => ((HidDpad)(buttons1 & 0x0F)).IsUp();
-        public bool dpadRight => ((HidDpad)(buttons1 & 0x0F)).IsRight();
-        public bool dpadDown => ((HidDpad)(buttons1 & 0x0F)).IsDown();
-        public bool dpadLeft => ((HidDpad)(buttons1 & 0x0F)).IsLeft();
+        public bool dpadUp => buttons1.GetDpad().IsUp();
+        public bool dpadRight => buttons1.GetDpad().IsRight();
+        public bool dpadDown => buttons1.GetDpad().IsDown();
+        public bool dpadLeft => buttons1.GetDpad().IsLeft();
 
-        public bool start => (buttons1 & 0x2000) != 0;
-        public bool ghtv => (buttons1 & 0x4000) != 0;
-        public bool select => (buttons1 & 0x8000) != 0;
-        public bool system => (buttons2 & 0x01) != 0;
+        public bool start => (buttons1 & PS4Button1.Start) != 0;
+        public bool ghtv => (buttons1 & PS4Button1.L3) != 0;
+        public bool select => (buttons1 & PS4Button1.R3) != 0; // TODO: is this actually correct?
+        public bool system => (buttons2 & PS4Button2.PlayStation) != 0;
 
-        public bool white1 => (buttons1 & 0x0010) != 0;
-        public bool black1 => (buttons1 & 0x0020) != 0;
-        public bool black2 => (buttons1 & 0x0040) != 0;
-        public bool black3 => (buttons1 & 0x0080) != 0;
-        public bool white2 => (buttons1 & 0x0100) != 0;
-        public bool white3 => (buttons1 & 0x0200) != 0;
+        public bool white1 => (buttons1 & PS4Button1.Square) != 0;
+        public bool black1 => (buttons1 & PS4Button1.Cross) != 0;
+        public bool black2 => (buttons1 & PS4Button1.Circle) != 0;
+        public bool black3 => (buttons1 & PS4Button1.Triangle) != 0;
+        public bool white2 => (buttons1 & PS4Button1.L2) != 0;
+        public bool white3 => (buttons1 & PS4Button1.R2) != 0;
 
         // The stick up/down values on PS4 controllers are inverted compared to what might be expected
         // 0x00 = max up, 0xFF = max down
