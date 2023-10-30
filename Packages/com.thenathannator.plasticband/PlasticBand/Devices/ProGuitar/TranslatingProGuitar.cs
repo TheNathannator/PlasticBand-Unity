@@ -205,9 +205,6 @@ namespace PlasticBand.Devices
     /// A <see cref="ProGuitar"/> which translates its state data into a common
     /// <see cref="TranslatedProGuitarState"/> format.
     /// </summary>
-    // This is done to greatly simplify velocity support and distinguishing between pads and face buttons.
-    // Doing these via only custom control types would be very duplicative and hacky, and I'd rather ensure things are
-    // done properly than wrestle with using mechanisms designed for simple, trivial state on more complex state.
     internal abstract class TranslatingProGuitar<TState> : ProGuitar, IInputStateCallbackReceiver
         where TState : unmanaged, IProGuitarState, IInputStateTypeInfo
     {
