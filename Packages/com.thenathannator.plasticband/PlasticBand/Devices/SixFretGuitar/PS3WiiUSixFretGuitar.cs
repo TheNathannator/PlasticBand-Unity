@@ -2,7 +2,6 @@ using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -13,63 +12,90 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Explicit, Pack = 1)]
-    internal unsafe struct PS3WiiUSixFretGuitarState_NoReportId : IInputStateTypeInfo
+    internal unsafe struct PS3WiiUSixFretGuitarState_NoReportId : ISixFretGuitarState
     {
         public FourCC format => HidDefinitions.InputFormat;
 
-        [InputControl(name = "white1", layout = "Button", bit = 0)]
-        [InputControl(name = "black1", layout = "Button", bit = 1)]
-        [InputControl(name = "black2", layout = "Button", bit = 2)]
-        [InputControl(name = "black3", layout = "Button", bit = 3)]
-
-        [InputControl(name = "white2", layout = "Button", bit = 4)]
-        [InputControl(name = "white3", layout = "Button", bit = 5)]
-
-        [InputControl(name = "selectButton", layout = "Button", bit = 8)]
-        [InputControl(name = "startButton", layout = "Button", bit = 9)]
-        [InputControl(name = "ghtvButton", layout = "Button", bit = 10)]
-
-        [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "D-pad Center")]
-
         [FieldOffset(0)]
-        public ushort buttons;
-
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 15)]
-        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=15,wrapAtValue=7")]
-        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
-        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
-        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
+        public PS3Button buttons;
 
         [FieldOffset(2)]
-        public byte dpad;
+        public HidDpad dpad;
 
-        [InputControl(name = "strumUp", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x7F,maxValue=0,nullValue=0x80")]
-        [InputControl(name = "strumDown", layout = "DiscreteButton", format = "BYTE", parameters = "minValue=0x81,maxValue=0xFF,nullValue=0x80")]
         [FieldOffset(4)]
         public byte strumBar;
 
-        // TODO: See if any normalization is needed
-        [InputControl(name = "whammy", layout = "Axis")]
         [FieldOffset(6)]
-        public byte whammy;
+        private readonly byte m_Whammy;
 
-        // TODO: See if any additional normalization is needed
-        [InputControl(name = "tilt", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         [FieldOffset(19)]
-        public short tilt;
+        private readonly short m_Tilt;
+
+        public bool dpadUp => dpad.IsUp();
+        public bool dpadRight => dpad.IsRight();
+        public bool dpadDown => dpad.IsDown();
+        public bool dpadLeft => dpad.IsLeft();
+
+        public bool select => (buttons & PS3Button.Select) != 0;
+        public bool start => (buttons & PS3Button.Start) != 0;
+        public bool ghtv => (buttons & PS3Button.L3) != 0;
+        public bool system => (buttons & PS3Button.PlayStation) != 0;
+
+        public bool white1 => (buttons & PS3Button.Square) != 0;
+        public bool black1 => (buttons & PS3Button.Cross) != 0;
+        public bool black2 => (buttons & PS3Button.Circle) != 0;
+        public bool black3 => (buttons & PS3Button.Triangle) != 0;
+        public bool white2 => (buttons & PS3Button.L2) != 0;
+        public bool white3 => (buttons & PS3Button.R2) != 0;
+
+        // The stick up/down values on PS3 controllers are inverted compared to what might be expected
+        // 0x00 = max up, 0xFF = max down
+        public bool strumUp => strumBar < 0x80;
+        public bool strumDown => strumBar > 0x80;
+
+        // TODO: Needs verification
+        // Whammy ranges from 0x80 to 0xFF
+        public byte whammy => (byte)((m_Whammy - 0x80) * 2);
+
+        // Tilt is a 10-bit number centered at 0x200
+        public sbyte tilt => (sbyte)(((m_Tilt & 0x3FF) >> 2) - 0x80);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3WiiUSixFretGuitarState_ReportId : IInputStateTypeInfo
+    internal unsafe struct PS3WiiUSixFretGuitarState_ReportId : ISixFretGuitarState
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
         public PS3WiiUSixFretGuitarState_NoReportId state;
+
+        public bool dpadUp => state.dpadUp;
+        public bool dpadRight => state.dpadRight;
+        public bool dpadDown => state.dpadDown;
+        public bool dpadLeft => state.dpadLeft;
+
+        public bool select => state.select;
+        public bool start => state.start;
+        public bool ghtv => state.ghtv;
+        public bool system => state.system;
+
+        public bool black1 => state.black1;
+        public bool black2 => state.black2;
+        public bool black3 => state.black3;
+        public bool white1 => state.white1;
+        public bool white2 => state.white2;
+        public bool white3 => state.white3;
+
+        public bool strumUp => state.strumUp;
+        public bool strumDown => state.strumDown;
+
+        public byte whammy => state.whammy;
+        public sbyte tilt => state.tilt;
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState_NoReportId), displayName = "PS3/Wii U Guitar Hero Live Guitar")]
-    internal class PS3WiiUSixFretGuitar : SixFretGuitar, IInputUpdateCallbackReceiver
+    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), displayName = "PS3/Wii U Guitar Hero Live Guitar")]
+    internal class PS3WiiUSixFretGuitar : TranslatingSixFretGuitar<PS3WiiUSixFretGuitarState_NoReportId>,
+        IInputUpdateCallbackReceiver
     {
         internal new static void Initialize()
         {
@@ -77,7 +103,7 @@ namespace PlasticBand.Devices
         }
 
         // Magic data to be sent periodically to unlock full input data
-        private static PS3OutputCommand s_PokeCommand = new PS3OutputCommand(
+        internal static PS3OutputCommand s_PokeCommand = new PS3OutputCommand(
             0x02, // TODO: Determine if this report ID is correct/necessary
             0x02,
             new byte[PS3OutputCommand.kDataSize] { 0x08, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00 }
@@ -94,6 +120,18 @@ namespace PlasticBand.Devices
         void IInputUpdateCallbackReceiver.OnUpdate() => m_Poker.OnUpdate();
     }
 
-    [InputControlLayout(stateType = typeof(PS3WiiUSixFretGuitarState_ReportId), hideInUI = true)]
-    internal class PS3WiiUSixFretGuitar_ReportId : PS3WiiUSixFretGuitar { }
+    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), hideInUI = true)]
+    internal class PS3WiiUSixFretGuitar_ReportId : TranslatingSixFretGuitar<PS3WiiUSixFretGuitarState_ReportId>,
+        IInputUpdateCallbackReceiver
+    {
+        protected override void FinishSetup()
+        {
+            base.FinishSetup();
+            m_Poker = new SixFretPoker<PS3OutputCommand>(this, PS3WiiUSixFretGuitar.s_PokeCommand);
+        }
+
+        private SixFretPoker<PS3OutputCommand> m_Poker;
+
+        void IInputUpdateCallbackReceiver.OnUpdate() => m_Poker.OnUpdate();
+    }
 }

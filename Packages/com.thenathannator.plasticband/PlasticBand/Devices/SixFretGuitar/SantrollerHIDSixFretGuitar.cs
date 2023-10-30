@@ -1,10 +1,8 @@
 using System.Runtime.InteropServices;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
@@ -13,45 +11,45 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct SantrollerHIDSixFretGuitarState : IInputStateTypeInfo
+    internal unsafe struct SantrollerHIDSixFretGuitarState : ISixFretGuitarState
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
 
-        [InputControl(name = "black1", layout = "Button", bit = 0)]
-        [InputControl(name = "black2", layout = "Button", bit = 1)]
-        [InputControl(name = "black3", layout = "Button", bit = 2)]
-
-        [InputControl(name = "white1", layout = "Button", bit = 3)]
-        [InputControl(name = "white2", layout = "Button", bit = 4)]
-        [InputControl(name = "white3", layout = "Button", bit = 5)]
-
-        [InputControl(name = "selectButton", layout = "Button", bit = 6)]
-        [InputControl(name = "startButton", layout = "Button", bit = 7)]
-        [InputControl(name = "ghtvButton", layout = "Button", bit = 8)]
-        [InputControl(name = "systemButton", layout = "Button", bit = 9, displayName = "D-pad Center")]
         public ushort buttons;
+        public HidDpad dpad;
 
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 15)]
-        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=15,wrapAtValue=7")]
-        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
-        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
-        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
-        
-        [InputControl(name = "strumUp", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, defaultState = 0x1F, parameters = "minValue=7,maxValue=1,nullValue=0x1F,wrapAtValue=7")]
-        [InputControl(name = "strumDown", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, defaultState = 0x1F, parameters = "minValue=3,maxValue=5,nullValue=0x1F")]
-        public byte dpad;
+        private readonly byte m_Whammy;
+        private readonly byte m_Tilt;
 
-        [InputControl(name = "whammy", layout = "Axis")]
-        public byte whammy;
+        public bool dpadUp => dpad.IsUp();
+        public bool dpadRight => dpad.IsRight();
+        public bool dpadDown => dpad.IsDown();
+        public bool dpadLeft => dpad.IsLeft();
 
-        [InputControl(name = "tilt", layout = "Axis")]
-        public byte tilt;
+        public bool black1 => (buttons & 0x0001) != 0;
+        public bool black2 => (buttons & 0x0002) != 0;
+        public bool black3 => (buttons & 0x0004) != 0;
+        public bool white1 => (buttons & 0x0008) != 0;
+        public bool white2 => (buttons & 0x0010) != 0;
+        public bool white3 => (buttons & 0x0020) != 0;
+
+        public bool select => (buttons & 0x0040) != 0;
+        public bool start => (buttons & 0x0080) != 0;
+        public bool ghtv => (buttons & 0x0100) != 0;
+        public bool system => (buttons & 0x0200) != 0;
+
+        public bool strumUp => dpad.IsUp();
+        public bool strumDown => dpad.IsDown();
+
+        public byte whammy => m_Whammy;
+        public sbyte tilt => (sbyte)(m_Tilt - 0x80);
     }
 
-    [InputControlLayout(stateType = typeof(SantrollerHIDSixFretGuitarState), displayName = "Santroller HID Guitar Hero Live Guitar")]
-    internal class SantrollerHIDSixFretGuitar : SixFretGuitar, ISantrollerSixFretGuitarHaptics
+    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), displayName = "Santroller HID Guitar Hero Live Guitar")]
+    internal class SantrollerHIDSixFretGuitar : TranslatingSixFretGuitar<SantrollerHIDSixFretGuitarState>,
+        ISantrollerSixFretGuitarHaptics
     {
         internal new static void Initialize()
         {

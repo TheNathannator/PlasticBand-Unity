@@ -81,24 +81,27 @@ namespace PlasticBand.Devices
         public ButtonControl white3 { get; private set; }
 
         /// <summary>
-        /// The guitar's strum up input.
-        /// On 6-fret guitars, this is *not* equivalent to d-pad up (though strumming may still trigger the d-pad).
+        /// The guitar's d-pad.
         /// </summary>
-        [InputControl(displayName = "Strum Up")]
-        public ButtonControl strumUp { get; private set; }
+        /// <remarks>
+        /// D-pad up and down are also used for strum up/down.
+        /// </remarks>
+        [InputControl(displayName = "D-Pad", usage = "Hatswitch")]
+        [InputControl(name = "dpad/up", displayName = "Up/Strum Up", alias = "strumUp")]
+        [InputControl(name = "dpad/down", displayName = "Down/Strum Down", alias = "strumDown")]
+        public DpadControl dpad { get; private set; }
+
+        /// <summary>
+        /// The guitar's strum up input.
+        /// Provided for convenience; this is equivalent to <c>dpad.up</c>.
+        /// </summary>
+        public ButtonControl strumUp => dpad.up;
 
         /// <summary>
         /// The guitar's strum down input.
-        /// On 6-fret guitars, this is *not* equivalent to d-pad down (though strumming may still trigger the d-pad).
+        /// Provided for convenience; this is equivalent to <c>dpad.down</c>.
         /// </summary>
-        [InputControl(displayName = "Strum Down")]
-        public ButtonControl strumDown { get; private set; }
-
-        /// <summary>
-        /// The guitar's d-pad.
-        /// </summary>
-        [InputControl(displayName = "D-Pad", usage = "Hatswitch")]
-        public DpadControl dpad { get; private set; }
+        public ButtonControl strumDown => dpad.down;
 
         /// <summary>
         /// The guitar's tilt orientation.
@@ -210,9 +213,6 @@ namespace PlasticBand.Devices
             white1 = GetChildControl<ButtonControl>(nameof(white1));
             white2 = GetChildControl<ButtonControl>(nameof(white2));
             white3 = GetChildControl<ButtonControl>(nameof(white3));
-
-            strumUp = GetChildControl<ButtonControl>(nameof(strumUp));
-            strumDown = GetChildControl<ButtonControl>(nameof(strumDown));
 
             dpad = GetChildControl<DpadControl>(nameof(dpad));
 
