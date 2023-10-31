@@ -92,7 +92,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "white3", layout = "Button", bit = 5)]
         public byte frets;
 
-        [InputControl(name = "whammy", layout = "Axis", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0")]
+        [InputControl(name = "whammy", layout = "Axis")]
         public byte whammy;
 
         [InputControl(name = "tilt", layout = "Axis", noisy = true)]
