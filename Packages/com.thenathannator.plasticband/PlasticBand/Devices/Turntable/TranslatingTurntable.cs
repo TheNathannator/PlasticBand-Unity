@@ -73,8 +73,8 @@ namespace PlasticBand.Devices
         sbyte leftVelocity { get; }
         sbyte rightVelocity { get; }
 
-        sbyte effectsDial { get; }
         sbyte crossfader { get; }
+        ushort effectsDial { get; }
     }
 
     /// <summary>
@@ -129,10 +129,12 @@ namespace PlasticBand.Devices
         public sbyte rightTableVelocity;
 
         [InputControl(layout = "Axis")]
-        public sbyte effectsDial;
-
-        [InputControl(layout = "Axis")]
         public sbyte crossfader;
+
+        // Due to the repeating/wrapping nature of the effects dial, the value 1f itself should never be reported,
+        // so a scale factor of 65535 / 65536 is used to ensure this.
+        [InputControl(layout = "Axis", parameters = "scale, scaleFactor=0.9999847412109375")]
+        public ushort effectsDial;
     }
 
     /// <summary>
@@ -144,8 +146,6 @@ namespace PlasticBand.Devices
     {
         private TranslateStateHandler<TState, TranslatedTurntableState> m_Translator;
 
-        private sbyte? m_PreviousEffectsDial;
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -153,16 +153,7 @@ namespace PlasticBand.Devices
             StateTranslator<TState, TranslatedTurntableState>.VerifyDevice(this);
         }
 
-        unsafe void IInputStateCallbackReceiver.OnNextUpdate()
-        {
-            // The effects dial delta must be reset at the beginning of an update
-            using (var buffer = StateEvent.From(this, out var eventPtr))
-            {
-                ref var state = ref *(TranslatedTurntableState*)buffer.GetUnsafePtr();
-                state.effectsDial = 0;
-                InputState.Change(this, eventPtr);
-            }
-        }
+        void IInputStateCallbackReceiver.OnNextUpdate() {}
 
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
             => StateTranslator<TState, TranslatedTurntableState>.UpdateState(this, eventPtr, m_Translator);
@@ -174,13 +165,8 @@ namespace PlasticBand.Devices
             var translated = new TranslatedTurntableState()
             {
                 crossfader = state.crossfader,
+                effectsDial = state.effectsDial,
             };
-
-            // Effects dial delta
-            // This calculation relies on overflow being defined behavior in C#/.NET
-            sbyte effectsDialAbsolute = state.effectsDial;
-            if (m_PreviousEffectsDial.HasValue) translated.effectsDial = (sbyte)(effectsDialAbsolute - m_PreviousEffectsDial.Value);
-            m_PreviousEffectsDial = effectsDialAbsolute;
 
             // Turntables
             var left = TurntableButton.None;

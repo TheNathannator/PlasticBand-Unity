@@ -139,11 +139,13 @@ namespace PlasticBand.Devices
         public AxisControl rightTableVelocity { get; private set; }
 
         /// <summary>
-        /// The change in position of the effects dial on the deck.
+        /// The absolute rotation of the effects dial on the deck.
         /// </summary>
         /// <remarks>
-        /// This value accumulates over the course of an input update, much like other delta controls
-        /// in the input system do. Event-based handling must be aware of this and account for it.
+        /// This value ranges from 0 inclusive to 1 exclusive, where 1 is a full 360-degree rotation.
+        /// It is 1 *exclusive* since the dial spins infinitely, and the reported value wraps between
+        /// its min/max values, effectively modulo'ing by 1.<br/>
+        /// Multiply this value by 360 to get degrees, or by π / 2 to get radians.
         /// </remarks>
         [InputControl(displayName = "Effects Dial")]
         public AxisControl effectsDial { get; private set; }

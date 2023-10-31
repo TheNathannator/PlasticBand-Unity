@@ -23,7 +23,7 @@ namespace PlasticBand.Devices
 
         private readonly short m_LeftTableVelocity;
         private readonly short m_RightTableVelocity;
-        private readonly short m_EffectsDial;
+        private readonly ushort m_EffectsDial;
         private readonly short m_Crossfader;
 
         public bool south => (buttons & XInputButton.A) != 0;
@@ -53,7 +53,7 @@ namespace PlasticBand.Devices
         public sbyte leftVelocity => (sbyte)(m_LeftTableVelocity & 0xFF);
         public sbyte rightVelocity => (sbyte)(m_RightTableVelocity & 0xFF);
 
-        public sbyte effectsDial => (sbyte)(m_EffectsDial >> 8);
+        public ushort effectsDial => m_EffectsDial;
         public sbyte crossfader => (sbyte)(m_Crossfader >> 8);
     }
 

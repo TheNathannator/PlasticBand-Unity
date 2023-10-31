@@ -63,7 +63,7 @@ namespace PlasticBand.Devices
         public sbyte leftVelocity => (sbyte)(m_LeftTableVelocity - 0x80);
         public sbyte rightVelocity => (sbyte)(m_RightTableVelocity - 0x80);
 
-        public sbyte effectsDial => (sbyte)((m_EffectsDial >> 2) - 0x80);
+        public ushort effectsDial => (ushort)(m_EffectsDial << 6);
         public sbyte crossfader => (sbyte)((m_Crossfader >> 2) - 0x80);
     }
 
@@ -100,7 +100,7 @@ namespace PlasticBand.Devices
         public sbyte leftVelocity => state.leftVelocity;
         public sbyte rightVelocity => state.rightVelocity;
 
-        public sbyte effectsDial => state.effectsDial;
+        public ushort effectsDial => state.effectsDial;
         public sbyte crossfader => state.crossfader;
     }
 
