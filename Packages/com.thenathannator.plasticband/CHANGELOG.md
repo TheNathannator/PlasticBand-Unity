@@ -10,13 +10,15 @@ Dates are relative to UTC.
 
 ### Fixed
 
-- Various control conflicts/duplicate controls on the device layouts have been fixed. Some of the properties on the device classes may still result in duplicate inputs relative to each other, but in these cases both properties will now refer to the same control instance instead of two separate controls. Interactive rebinding will also now work correctly, whereas before these duplicate controls were causing issues.
+- Various control conflicts/duplicate controls on the device layouts have been fixed. Some of the properties on the device classes may still result in duplicate inputs relative to each other, but in these cases both properties will now refer to the same control instance instead of two separate controls. This should fix interactive rebinding not working correctly with these controls.
+- The table velocity on turntables will now truly rest at 0 instead of being just slightly above it.
 
 ### Added
 
 - Velocity support for drumkits has now been added! No new controls have been added for this, instead the existing button controls for the pads and cymbals have been made analog. They have also been configured so that any velocity will register as a press, so no special handling will need to be done if you don't care about velocity, so long as things are done relative to the press point (i.e. via `isPressed` or `IsValueConsideredPressed`).
 - Support for the emulated 5-fret flags on Pro Guitars has been expanded to include the solo frets as well, along with additional convenience methods for the emulated frets in general.
 - The pedal port on Pro Guitars is now supported as well, at least the digital portion of it. Unsure if it supports analog pedals like the Pro Keyboard does.
+- 5-lane drumkits once again expose dedicated face button controls, this time without being identical to the equivalent drum/cymbal controls. Detection is done to separate the two, and drum hits will mask out any face button presses.
 
 ### Changed
 
@@ -24,6 +26,12 @@ Dates are relative to UTC.
 - Pro Guitar string velocity is no longer reported directly, as from what I know it is not very reliable and can be confusing to work with if you haven't had experience with them before. Now, only whether or not a strum has occurred is reported; due to how this is determined, the value only lasts for a single frame and must be reset at the end of the frame.
 - The custom control types used internally are now `internal` instead of `public`, as these are meant more as implementation details rather than concrete custom control types.
 - `XInputSixFretGuitar` is now `internal` as is intended; it was unintentionally left public when all of the implementation device classes were made internal.
+- Strum up/down on 5/6-fret guitars are now directly aliased to d-pad up/down, and no longer have their own distinct control instances.
+- The layout-only velocity controls on Pro Keyboards have been removed. If/when velocity support is implemented, the regular key controls will become analog instead, much like how drums velocity support has been implemented.
+- The euphoria button on turntables is now directly aliased to the north face button control, and no longer has its own distinct control instance.
+- The crossfader control on turntables has been renamed from `crossFader` to `crossfader`.
+- Wii Rock Band instruments now have their start/select controls' display names set to `Plus` and `Minus`.
+- The effects dial on turntables is now reported as a value in rotations, ranging from 0 inclusive to 1 exclusive.
 
 ## [0.3.4] - 2023/15/08
 
