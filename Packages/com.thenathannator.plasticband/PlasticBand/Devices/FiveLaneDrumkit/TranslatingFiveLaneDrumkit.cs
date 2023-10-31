@@ -101,24 +101,24 @@ namespace PlasticBand.Devices
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedFiveLaneButton.System)]
         public ushort buttons;
 
-        private const string kPadParameters = "pressPoint=0.00392156"; // 1 / 255
+        private const string kPadParameters = "intPressPoint=1,minValue=0,maxValue=255";
 
-        [InputControl(layout = "Button", format = "BYTE", parameters = kPadParameters)]
+        [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
         public byte redPad;
 
-        [InputControl(layout = "Button", format = "BYTE", parameters = kPadParameters)]
+        [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
         public byte yellowCymbal;
 
-        [InputControl(layout = "Button", format = "BYTE", parameters = kPadParameters)]
+        [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
         public byte bluePad;
 
-        [InputControl(layout = "Button", format = "BYTE", parameters = kPadParameters)]
+        [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
         public byte orangeCymbal;
 
-        [InputControl(layout = "Button", format = "BYTE", parameters = kPadParameters)]
+        [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
         public byte greenPad;
 
-        [InputControl(layout = "Button", format = "BYTE", parameters = kPadParameters)]
+        [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
         public byte kick;
     }
 

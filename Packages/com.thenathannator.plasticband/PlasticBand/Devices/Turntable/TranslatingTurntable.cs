@@ -122,18 +122,18 @@ namespace PlasticBand.Devices
             set => m_TurntableButtons = (byte)((m_TurntableButtons & ~(0x07 << 4)) | (((byte)value & 0x07) << 4));
         }
 
-        [InputControl(layout = "Axis", noisy = true)]
+        [InputControl(layout = "IntAxis", noisy = true, parameters = "maxValue=127,minValue=-128,zeroPoint=0")]
         public sbyte leftTableVelocity;
 
-        [InputControl(layout = "Axis", noisy = true)]
+        [InputControl(layout = "IntAxis", noisy = true, parameters = "maxValue=127,minValue=-128,zeroPoint=0")]
         public sbyte rightTableVelocity;
 
         [InputControl(layout = "Axis")]
         public sbyte crossfader;
 
         // Due to the repeating/wrapping nature of the effects dial, the value 1f itself should never be reported,
-        // so a scale factor of 65535 / 65536 is used to ensure this.
-        [InputControl(layout = "Axis", parameters = "scale, scaleFactor=0.9999847412109375")]
+        // so a max value of ushort.MaxValue + 1 is used to ensure this.
+        [InputControl(layout = "IntAxis", parameters = "maxValue=65536,minValue=0,zeroPoint=0")]
         public ushort effectsDial;
     }
 
