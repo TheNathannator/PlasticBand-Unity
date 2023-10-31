@@ -128,7 +128,7 @@ namespace PlasticBand.Devices
         [InputControl(layout = "Axis", noisy = true)]
         public sbyte rightTableVelocity;
 
-        [InputControl(layout = "Axis", synthetic = true)]
+        [InputControl(layout = "Axis")]
         public sbyte effectsDial;
 
         [InputControl(layout = "Axis")]
@@ -144,7 +144,7 @@ namespace PlasticBand.Devices
     {
         private TranslateStateHandler<TState, TranslatedTurntableState> m_Translator;
 
-        private sbyte m_PreviousEffectsDial = 0;
+        private sbyte? m_PreviousEffectsDial;
 
         protected override void FinishSetup()
         {
@@ -179,7 +179,7 @@ namespace PlasticBand.Devices
             // Effects dial delta
             // This calculation relies on overflow being defined behavior in C#/.NET
             sbyte effectsDialAbsolute = state.effectsDial;
-            translated.effectsDial = (sbyte)(effectsDialAbsolute - m_PreviousEffectsDial);
+            if (m_PreviousEffectsDial.HasValue) translated.effectsDial = (sbyte)(effectsDialAbsolute - m_PreviousEffectsDial.Value);
             m_PreviousEffectsDial = effectsDialAbsolute;
 
             // Turntables
@@ -204,9 +204,9 @@ namespace PlasticBand.Devices
 
             // Face buttons
             var buttons = TranslatedTurntableButtonMask.None;
-            if ((tableButtons & TurntableButton.Green) != 0 && state.south) buttons |= TranslatedTurntableButtonMask.South; // A, cross
-            if ((tableButtons & TurntableButton.Red) != 0 && state.east) buttons |= TranslatedTurntableButtonMask.East; // B, circle
-            if ((tableButtons & TurntableButton.Blue) != 0 && state.west) buttons |= TranslatedTurntableButtonMask.West; // X, square
+            if ((tableButtons & TurntableButton.Green) == 0 && state.south) buttons |= TranslatedTurntableButtonMask.South; // A, cross
+            if ((tableButtons & TurntableButton.Red) == 0 && state.east) buttons |= TranslatedTurntableButtonMask.East; // B, circle
+            if ((tableButtons & TurntableButton.Blue) == 0 && state.west) buttons |= TranslatedTurntableButtonMask.West; // X, square
             if (state.north_euphoria) buttons |= TranslatedTurntableButtonMask.North_Euphoria; // Y, triangle, euphoria
 
             if (state.dpadUp) buttons |= TranslatedTurntableButtonMask.DpadUp;

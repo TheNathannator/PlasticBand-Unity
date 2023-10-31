@@ -68,6 +68,9 @@ namespace PlasticBand.Devices
         public PS4RockBandGuitarState_NoReportId state;
     }
 
+    [InputControlLayout(stateType = typeof(PS4RockBandGuitarState_NoReportId), displayName = "PlayStation 4 Rock Band Guitar", hideInUI = true)]
+    internal class PS4RockBandGuitar_NoReportId : PS4RockBandGuitar { }
+
     [InputControlLayout(stateType = typeof(PS4RockBandGuitarState_ReportId), displayName = "PlayStation 4 Rock Band Guitar")]
     internal class PS4RockBandGuitar : RockBandGuitar
     {
@@ -80,7 +83,4 @@ namespace PlasticBand.Devices
             HidLayoutFinder.RegisterLayout<PS4RockBandGuitar, PS4RockBandGuitar_NoReportId>(0x0E6F, 0x0173, reportIdDefault: true);
         }
     }
-
-    [InputControlLayout(stateType = typeof(PS4RockBandGuitarState_NoReportId), hideInUI = true)]
-    internal class PS4RockBandGuitar_NoReportId : PS4RockBandGuitar { }
 }

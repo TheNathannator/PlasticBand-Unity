@@ -166,7 +166,7 @@ namespace PlasticBand.Devices
             if (translated.redPad == 0 && state.east) buttons |= TranslatedFiveLaneButtonMask.East;
             // X, square
             if (translated.bluePad == 0 && state.west) buttons |= TranslatedFiveLaneButtonMask.West;
-            // Y, square
+            // Y, triangle
             if (translated.yellowCymbal == 0 && state.north) buttons |= TranslatedFiveLaneButtonMask.North;
 
             if (state.dpadUp) buttons |= TranslatedFiveLaneButtonMask.DpadUp;

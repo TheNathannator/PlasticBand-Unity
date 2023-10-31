@@ -90,6 +90,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_ReportId), hideInUI = true)]
+    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_ReportId), displayName = "PlayStation 3 Guitar Hero Guitar", hideInUI = true)]
     internal class PS3GuitarHeroGuitar_ReportId : PS3GuitarHeroGuitar { }
 }

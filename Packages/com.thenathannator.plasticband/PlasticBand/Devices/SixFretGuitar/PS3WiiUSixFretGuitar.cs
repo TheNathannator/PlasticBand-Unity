@@ -120,7 +120,7 @@ namespace PlasticBand.Devices
         void IInputUpdateCallbackReceiver.OnUpdate() => m_Poker.OnUpdate();
     }
 
-    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), displayName = "PS3/Wii U Guitar Hero Live Guitar", hideInUI = true)]
     internal class PS3WiiUSixFretGuitar_ReportId : TranslatingSixFretGuitar<PS3WiiUSixFretGuitarState_ReportId>,
         IInputUpdateCallbackReceiver
     {

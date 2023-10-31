@@ -20,6 +20,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "buttonWest", layout = "Button", bit = (int)TranslatedFourLaneButton.West, displayName = "1")]
         [InputControl(name = "buttonNorth", layout = "Button", bit = (int)TranslatedFourLaneButton.North, displayName = "2")]
 
+        [InputControl(name = "startButton", layout = "Button", bit = (int)TranslatedFourLaneButton.Start, displayName = "Plus", shortDisplayName = "+")]
+        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedFourLaneButton.Select, displayName = "Minus", shortDisplayName = "-")]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedFourLaneButton.System, displayName = "System")]
         public TranslatedFourLaneState state;
     }
@@ -40,6 +42,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(WiiFourLaneDrumkitLayout), hideInUI = true)]
+    [InputControlLayout(stateType = typeof(WiiFourLaneDrumkitLayout), displayName = "Wii Rock Band Drumkit", hideInUI = true)]
     internal class WiiFourLaneDrumkit_ReportId : TranslatingFourLaneDrumkit_Flags<PS3WiiFourLaneDrumkitState_ReportId> { }
 }

@@ -58,7 +58,7 @@ namespace PlasticBand.Devices
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct XInputLayout : IInputStateTypeInfo
+    internal struct XInputTurntableLayout : IInputStateTypeInfo
     {
         public FourCC format => TranslatedTurntableState.Format;
 
@@ -71,8 +71,8 @@ namespace PlasticBand.Devices
         public TranslatedTurntableState state;
     }
 
-    [InputControlLayout(stateType = typeof(XInputTurntableState), displayName = "XInput DJ Hero Turntable")]
-    internal class XInputTurntable : Turntable
+    [InputControlLayout(stateType = typeof(XInputTurntableLayout), displayName = "XInput DJ Hero Turntable")]
+    internal class XInputTurntable : TranslatingTurntable<XInputTurntableState>
     {
         internal new static void Initialize()
         {

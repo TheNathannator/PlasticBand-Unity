@@ -151,7 +151,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedProGuitarButton.Select)]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedProGuitarButton.System)]
 
-        [InputControl(name = "tilt", layout = "Button", bit = (int)TranslatedProGuitarButton.Tilt)]
+        [InputControl(name = "tilt", layout = "Button", bit = (int)TranslatedProGuitarButton.Tilt, noisy = true)]
 
         [InputControl(name = "strum1", layout = "Button", bit = (int)TranslatedProGuitarButton.Strum1)]
         [InputControl(name = "strum2", layout = "Button", bit = (int)TranslatedProGuitarButton.Strum2)]
@@ -210,12 +210,12 @@ namespace PlasticBand.Devices
     {
         private TranslateStateHandler<TState, TranslatedProGuitarState> m_Translator;
 
-        private byte m_PreviousVelocity1;
-        private byte m_PreviousVelocity2;
-        private byte m_PreviousVelocity3;
-        private byte m_PreviousVelocity4;
-        private byte m_PreviousVelocity5;
-        private byte m_PreviousVelocity6;
+        private byte? m_PreviousVelocity1;
+        private byte? m_PreviousVelocity2;
+        private byte? m_PreviousVelocity3;
+        private byte? m_PreviousVelocity4;
+        private byte? m_PreviousVelocity5;
+        private byte? m_PreviousVelocity6;
 
         protected override void FinishSetup()
         {
@@ -276,12 +276,12 @@ namespace PlasticBand.Devices
 
             // The string velocity is apparently not very reliable and can be confusing to work with,
             // so only whether or not the strum has changed is exposed until more research can be done
-            bool strum1 = velocity1 != m_PreviousVelocity1 && velocity1 != 0;
-            bool strum2 = velocity2 != m_PreviousVelocity2 && velocity2 != 0;
-            bool strum3 = velocity3 != m_PreviousVelocity3 && velocity3 != 0;
-            bool strum4 = velocity4 != m_PreviousVelocity4 && velocity4 != 0;
-            bool strum5 = velocity5 != m_PreviousVelocity5 && velocity5 != 0;
-            bool strum6 = velocity6 != m_PreviousVelocity6 && velocity6 != 0;
+            bool strum1 = m_PreviousVelocity1.HasValue && velocity1 != m_PreviousVelocity1 && velocity1 != 0;
+            bool strum2 = m_PreviousVelocity2.HasValue && velocity2 != m_PreviousVelocity2 && velocity2 != 0;
+            bool strum3 = m_PreviousVelocity3.HasValue && velocity3 != m_PreviousVelocity3 && velocity3 != 0;
+            bool strum4 = m_PreviousVelocity4.HasValue && velocity4 != m_PreviousVelocity4 && velocity4 != 0;
+            bool strum5 = m_PreviousVelocity5.HasValue && velocity5 != m_PreviousVelocity5 && velocity5 != 0;
+            bool strum6 = m_PreviousVelocity6.HasValue && velocity6 != m_PreviousVelocity6 && velocity6 != 0;
 
             m_PreviousVelocity1 = velocity1;
             m_PreviousVelocity2 = velocity2;

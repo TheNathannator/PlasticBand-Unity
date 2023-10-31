@@ -153,6 +153,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3ProGuitarLayout), hideInUI = true)]
+    [InputControlLayout(stateType = typeof(PS3ProGuitarLayout), displayName = "PlayStation 3 Rock Band Pro Guitar", hideInUI = true)]
     internal class PS3ProGuitar_ReportId : TranslatingProGuitar<PS3WiiProGuitarState_ReportId> { }
 }

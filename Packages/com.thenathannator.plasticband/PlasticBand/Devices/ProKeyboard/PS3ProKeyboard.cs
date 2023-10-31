@@ -116,6 +116,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3ProKeyboardState_ReportId), hideInUI = true)]
+    [InputControlLayout(stateType = typeof(PS3ProKeyboardState_ReportId), displayName = "PlayStation 3 Rock Band Pro Keyboard", hideInUI = true)]
     internal class PS3ProKeyboard_ReportId : PS3ProKeyboard { }
 }

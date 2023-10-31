@@ -86,6 +86,21 @@ namespace PlasticBand.Devices
         public sbyte tilt => state.tilt;
     }
 
+    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), displayName = "PlayStation 4 Guitar Hero Live Guitar", hideInUI = true)]
+    internal class PS4SixFretGuitar_NoReportId : TranslatingSixFretGuitar<PS4SixFretGuitarState_NoReportId>,
+        IInputUpdateCallbackReceiver
+    {
+        protected override void FinishSetup()
+        {
+            base.FinishSetup();
+            m_Poker = new SixFretPoker<PS3OutputCommand>(this, PS4SixFretGuitar.s_PokeCommand);
+        }
+
+        private SixFretPoker<PS3OutputCommand> m_Poker;
+
+        void IInputUpdateCallbackReceiver.OnUpdate() => m_Poker.OnUpdate();
+    }
+
     [InputControlLayout(stateType = typeof(TranslatedProGuitarState), displayName = "PlayStation 4 Guitar Hero Live Guitar")]
     internal class PS4SixFretGuitar : TranslatingSixFretGuitar<PS4SixFretGuitarState_ReportId>,
         IInputUpdateCallbackReceiver
@@ -106,21 +121,6 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
             m_Poker = new SixFretPoker<PS3OutputCommand>(this, s_PokeCommand);
-        }
-
-        private SixFretPoker<PS3OutputCommand> m_Poker;
-
-        void IInputUpdateCallbackReceiver.OnUpdate() => m_Poker.OnUpdate();
-    }
-
-    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), hideInUI = true)]
-    internal class PS4SixFretGuitar_NoReportId : TranslatingSixFretGuitar<PS4SixFretGuitarState_NoReportId>,
-        IInputUpdateCallbackReceiver
-    {
-        protected override void FinishSetup()
-        {
-            base.FinishSetup();
-            m_Poker = new SixFretPoker<PS3OutputCommand>(this, PS4SixFretGuitar.s_PokeCommand);
         }
 
         private SixFretPoker<PS3OutputCommand> m_Poker;

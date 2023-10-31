@@ -258,7 +258,7 @@ namespace PlasticBand.Devices
             // X, square, 1
             if ((pads & (FourLanePad.BluePad | FourLanePad.BlueCymbal)) == 0 && state.west)
                 buttons |= TranslatedFourLaneButtonMask.West;
-            // Y, square, 2
+            // Y, triangle, 2
             if ((pads & (FourLanePad.YellowPad | FourLanePad.YellowCymbal)) == 0 && state.north)
                 buttons |= TranslatedFourLaneButtonMask.North;
 

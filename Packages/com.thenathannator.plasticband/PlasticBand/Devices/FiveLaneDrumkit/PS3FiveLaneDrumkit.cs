@@ -120,6 +120,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitLayout), hideInUI = true)]
+    [InputControlLayout(stateType = typeof(PS3FiveLaneDrumkitLayout), displayName = "PlayStation 3 Guitar Hero Drumkit", hideInUI = true)]
     internal class PS3FiveLaneDrumkit_ReportId : TranslatingFiveLaneDrumkit<PS3FiveLaneDrumkitState_ReportId> { }
 }

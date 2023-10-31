@@ -101,8 +101,11 @@ namespace PlasticBand.Devices
         public bool kick2 => state.kick2;
     }
 
+    [InputControlLayout(stateType = typeof(PSFourLaneDrumkitLayout), displayName = "PlayStation 4 Rock Band Drumkit", hideInUI = true)]
+    internal class PS4FourLaneDrumkit_NoReportId : TranslatingFourLaneDrumkit_Distinct<PS4FourLaneDrumkitState_NoReportId> { }
+
     [InputControlLayout(stateType = typeof(PSFourLaneDrumkitLayout), displayName = "PlayStation 4 Rock Band Drumkit")]
-    internal class PS4FourLaneDrumkit : TranslatingFourLaneDrumkit_Distinct<PS4FourLaneDrumkitState_NoReportId>
+    internal class PS4FourLaneDrumkit : TranslatingFourLaneDrumkit_Distinct<PS4FourLaneDrumkitState_ReportId>
     {
         internal new static void Initialize()
         {
@@ -113,7 +116,4 @@ namespace PlasticBand.Devices
             HidLayoutFinder.RegisterLayout<PS4FourLaneDrumkit, PS4FourLaneDrumkit_NoReportId>(0x0E6F, 0x0174, reportIdDefault: true);
         }
     }
-
-    [InputControlLayout(stateType = typeof(PSFourLaneDrumkitLayout), hideInUI = true)]
-    internal class PS4FourLaneDrumkit_NoReportId : TranslatingFourLaneDrumkit_Distinct<PS4FourLaneDrumkitState_ReportId> { }
 }

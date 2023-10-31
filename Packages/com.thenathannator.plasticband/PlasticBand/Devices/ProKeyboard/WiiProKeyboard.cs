@@ -15,6 +15,8 @@ namespace PlasticBand.Devices
     {
         public FourCC format => HidDefinitions.InputFormat;
 
+        [InputControl(name = "selectButton", layout = "Button", bit = 8, displayName = "Minus", shortDisplayName = "-")]
+        [InputControl(name = "startButton", layout = "Button", bit = 9, displayName = "Plus", shortDisplayName = "+")]
         [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "System")]
         public PS3ProKeyboardState_NoReportId state;
     }
@@ -41,6 +43,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(WiiProKeyboardState_ReportId), hideInUI = true)]
+    [InputControlLayout(stateType = typeof(WiiProKeyboardState_ReportId), displayName = "Wii Rock Band Pro Keyboard", hideInUI = true)]
     internal class WiiProKeyboard_ReportId : WiiProKeyboard { }
 }
