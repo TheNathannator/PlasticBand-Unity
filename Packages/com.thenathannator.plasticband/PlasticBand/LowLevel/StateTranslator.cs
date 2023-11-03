@@ -72,7 +72,7 @@ namespace PlasticBand.LowLevel
         public static bool GetStateOffsetForEvent(InputDevice device, InputControl control, InputEventPtr eventPtr,
             ref uint offset, TranslateStateHandler<TFromState, TToState> translator)
         {
-            if (control.device != device || !UpdateState(device, eventPtr, translator))
+            if ((control != null && control.device != device) || !UpdateState(device, eventPtr, translator))
                 return false;
 
             // No offset is required, all of our controls will be reading
