@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.4.1] - 2023/03/11
+
+### Fixed
+
+- Drumkits no longer forget to assign their face button controls to their class instance on initialization.
+- Fixed a null-reference exception when using the `EnumerateControls` extension on an `InputEventPtr` for a device that uses the new state translation infrastructure.
+
 ## [0.4.0] - 2023/31/10
 
 ### Fixed
