@@ -20,7 +20,7 @@ namespace PlasticBand.Controls
             InputSystem.RegisterLayout<IntegerButtonControl>("IntButton");
         }
 
-        public int intPressPoint = 0;
+        public int intPressPoint = int.MinValue;
         public int minValue = 0;
         public int maxValue = 0;
 
@@ -31,14 +31,14 @@ namespace PlasticBand.Controls
             if (!stateBlock.format.IsIntegerFormat())
                 throw new NotSupportedException($"Non-integer format '{stateBlock.format}' is not supported on {nameof(IntegerButtonControl)} '{this}'");
 
-            if (pressPoint < 0 && intPressPoint > 0)
-                pressPoint = IntegerAxisControl.NormalizeUnchecked(intPressPoint, minValue, maxValue, minValue);
-
             if (maxValue == 0 && minValue == 0)
                 throw new NotSupportedException($"Range parameters have not been set on {nameof(IntegerButtonControl)} '{this}'! Please set {nameof(minValue)} and {nameof(maxValue)}.");
 
             if (maxValue <= minValue)
                 throw new NotSupportedException($"Maximum value ({maxValue}) must be greater than minimum value ({minValue}) on {nameof(IntegerButtonControl)} '{this}'!");
+
+            if (pressPoint < 0 && intPressPoint > minValue)
+                pressPoint = IntegerAxisControl.NormalizeUnchecked(intPressPoint, minValue, maxValue, minValue);
         }
 
         /// <inheritdoc/>
