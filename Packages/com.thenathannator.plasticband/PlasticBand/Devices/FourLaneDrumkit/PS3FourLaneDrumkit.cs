@@ -54,13 +54,13 @@ namespace PlasticBand.Devices
         public bool dpadDown => dpad.IsDown();
         public bool dpadLeft => dpad.IsLeft();
 
-        public byte redPadVelocity => redVelocity;
-        public byte yellowPadVelocity => yellowVelocity;
-        public byte bluePadVelocity => blueVelocity;
-        public byte greenPadVelocity => greenVelocity;
-        public byte yellowCymbalVelocity => yellowVelocity;
-        public byte blueCymbalVelocity => blueVelocity;
-        public byte greenCymbalVelocity => greenVelocity;
+        public byte redPadVelocity => (byte)~redVelocity;
+        public byte yellowPadVelocity => (byte)~yellowVelocity;
+        public byte bluePadVelocity => (byte)~blueVelocity;
+        public byte greenPadVelocity => (byte)~greenVelocity;
+        public byte yellowCymbalVelocity => (byte)~yellowVelocity;
+        public byte blueCymbalVelocity => (byte)~blueVelocity;
+        public byte greenCymbalVelocity => (byte)~greenVelocity;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

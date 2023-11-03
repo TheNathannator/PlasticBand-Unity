@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [Unreleased]
+
+### Fixed
+
+- The velocity values on PS3/Wii 4-lane drumkits is no longer inverted.
+
 ## [0.4.1] - 2023/03/11
 
 ### Fixed
