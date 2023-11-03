@@ -245,6 +245,11 @@ namespace PlasticBand.Devices
             startButton = GetChildControl<ButtonControl>(nameof(startButton));
             selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
 
+            buttonSouth = GetChildControl<ButtonControl>(nameof(buttonSouth));
+            buttonEast = GetChildControl<ButtonControl>(nameof(buttonEast));
+            buttonWest = GetChildControl<ButtonControl>(nameof(buttonWest));
+            buttonNorth = GetChildControl<ButtonControl>(nameof(buttonNorth));
+
             redPad = GetChildControl<ButtonControl>(nameof(redPad));
             yellowPad = GetChildControl<ButtonControl>(nameof(yellowPad));
             bluePad = GetChildControl<ButtonControl>(nameof(bluePad));
