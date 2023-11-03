@@ -320,6 +320,16 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
 
+            dpad = GetChildControl<DpadControl>(nameof(dpad));
+
+            buttonSouth = GetChildControl<ButtonControl>(nameof(buttonSouth));
+            buttonEast = GetChildControl<ButtonControl>(nameof(buttonEast));
+            buttonWest = GetChildControl<ButtonControl>(nameof(buttonWest));
+            buttonNorth = GetChildControl<ButtonControl>(nameof(buttonNorth));
+
+            startButton = GetChildControl<ButtonControl>(nameof(startButton));
+            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
+
             key1 = GetChildControl<ButtonControl>(nameof(key1));
             key2 = GetChildControl<ButtonControl>(nameof(key2));
             key3 = GetChildControl<ButtonControl>(nameof(key3));
@@ -345,16 +355,6 @@ namespace PlasticBand.Devices
             key23 = GetChildControl<ButtonControl>(nameof(key23));
             key24 = GetChildControl<ButtonControl>(nameof(key24));
             key25 = GetChildControl<ButtonControl>(nameof(key25));
-
-            dpad = GetChildControl<DpadControl>(nameof(dpad));
-
-            buttonSouth = GetChildControl<ButtonControl>(nameof(buttonSouth));
-            buttonEast = GetChildControl<ButtonControl>(nameof(buttonEast));
-            buttonWest = GetChildControl<ButtonControl>(nameof(buttonWest));
-            buttonNorth = GetChildControl<ButtonControl>(nameof(buttonNorth));
-
-            startButton = GetChildControl<ButtonControl>(nameof(startButton));
-            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
 
             overdrive = GetChildControl<ButtonControl>(nameof(overdrive));
             digitalPedal = GetChildControl<ButtonControl>(nameof(digitalPedal));
