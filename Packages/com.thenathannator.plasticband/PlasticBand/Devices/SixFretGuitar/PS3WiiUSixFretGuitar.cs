@@ -93,7 +93,7 @@ namespace PlasticBand.Devices
         public sbyte tilt => state.tilt;
     }
 
-    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), displayName = "PS3/Wii U Guitar Hero Live Guitar")]
+    [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "PS3/Wii U Guitar Hero Live Guitar")]
     internal class PS3WiiUSixFretGuitar : TranslatingSixFretGuitar<PS3WiiUSixFretGuitarState_NoReportId>,
         IInputUpdateCallbackReceiver
     {
@@ -120,7 +120,7 @@ namespace PlasticBand.Devices
         void IInputUpdateCallbackReceiver.OnUpdate() => m_Poker.OnUpdate();
     }
 
-    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), displayName = "PS3/Wii U Guitar Hero Live Guitar", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "PS3/Wii U Guitar Hero Live Guitar", hideInUI = true)]
     internal class PS3WiiUSixFretGuitar_ReportId : TranslatingSixFretGuitar<PS3WiiUSixFretGuitarState_ReportId>,
         IInputUpdateCallbackReceiver
     {

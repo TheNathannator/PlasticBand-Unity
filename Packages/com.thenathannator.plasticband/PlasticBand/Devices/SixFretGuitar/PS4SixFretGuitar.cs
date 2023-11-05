@@ -86,7 +86,7 @@ namespace PlasticBand.Devices
         public sbyte tilt => state.tilt;
     }
 
-    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), displayName = "PlayStation 4 Guitar Hero Live Guitar", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "PlayStation 4 Guitar Hero Live Guitar", hideInUI = true)]
     internal class PS4SixFretGuitar_NoReportId : TranslatingSixFretGuitar<PS4SixFretGuitarState_NoReportId>,
         IInputUpdateCallbackReceiver
     {
@@ -101,7 +101,7 @@ namespace PlasticBand.Devices
         void IInputUpdateCallbackReceiver.OnUpdate() => m_Poker.OnUpdate();
     }
 
-    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), displayName = "PlayStation 4 Guitar Hero Live Guitar")]
+    [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "PlayStation 4 Guitar Hero Live Guitar")]
     internal class PS4SixFretGuitar : TranslatingSixFretGuitar<PS4SixFretGuitarState_ReportId>,
         IInputUpdateCallbackReceiver
     {

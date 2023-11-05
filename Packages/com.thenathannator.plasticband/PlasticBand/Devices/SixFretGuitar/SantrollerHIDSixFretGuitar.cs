@@ -47,7 +47,7 @@ namespace PlasticBand.Devices
         public sbyte tilt => (sbyte)(m_Tilt - 0x80);
     }
 
-    [InputControlLayout(stateType = typeof(TranslatedProGuitarState), displayName = "Santroller HID Guitar Hero Live Guitar")]
+    [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "Santroller HID Guitar Hero Live Guitar")]
     internal class SantrollerHIDSixFretGuitar : TranslatingSixFretGuitar<SantrollerHIDSixFretGuitarState>,
         ISantrollerSixFretGuitarHaptics
     {
