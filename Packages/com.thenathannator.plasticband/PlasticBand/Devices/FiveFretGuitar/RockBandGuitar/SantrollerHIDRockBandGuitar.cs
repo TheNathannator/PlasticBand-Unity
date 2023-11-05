@@ -65,7 +65,7 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Haptics = new SantrollerFiveFretGuitarHaptics(this);
+            m_Haptics = new SantrollerFiveFretGuitarHaptics.Hid(this);
         }
 
         private SantrollerFiveFretGuitarHaptics m_Haptics;

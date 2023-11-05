@@ -76,7 +76,7 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Haptics = new SantrollerFiveLaneDrumkitHaptics(this);
+            m_Haptics = new SantrollerFiveLaneDrumkitHaptics.Hid(this);
         }
 
         private SantrollerFiveLaneDrumkitHaptics m_Haptics;

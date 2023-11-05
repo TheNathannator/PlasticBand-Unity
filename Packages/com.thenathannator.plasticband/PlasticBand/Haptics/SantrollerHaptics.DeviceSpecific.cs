@@ -4,8 +4,26 @@ using UnityEngine.InputSystem;
 
 namespace PlasticBand.Haptics
 {
-    internal class SantrollerFiveFretGuitarHaptics : SantrollerHaptics, ISantrollerFiveFretGuitarHaptics
+    internal abstract class SantrollerFiveFretGuitarHaptics : SantrollerHaptics, ISantrollerFiveFretGuitarHaptics
     {
+        public class XInput : SantrollerFiveFretGuitarHaptics
+        {
+            public XInput(InputDevice device) : base(device)
+            { }
+
+            protected override void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
+                => SendCommand_XInput(device, commandId, parameter);
+        }
+
+        public class Hid : SantrollerFiveFretGuitarHaptics
+        {
+            public Hid(InputDevice device) : base(device)
+            { }
+
+            protected override unsafe void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
+                => SendCommand_Hid(device, commandId, parameter);
+        }
+
         private enum SantrollerFiveFretCommandId : byte
         {
             OpenNote = 0x90,
@@ -77,8 +95,26 @@ namespace PlasticBand.Haptics
             => SendCommand((byte)commandId, parameter);
     }
 
-    internal class SantrollerSixFretGuitarHaptics : SantrollerHaptics, ISantrollerSixFretGuitarHaptics
+    internal abstract class SantrollerSixFretGuitarHaptics : SantrollerHaptics, ISantrollerSixFretGuitarHaptics
     {
+        public class XInput : SantrollerSixFretGuitarHaptics
+        {
+            public XInput(InputDevice device) : base(device)
+            { }
+
+            protected override void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
+                => SendCommand_XInput(device, commandId, parameter);
+        }
+
+        public class Hid : SantrollerSixFretGuitarHaptics
+        {
+            public Hid(InputDevice device) : base(device)
+            { }
+
+            protected override unsafe void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
+                => SendCommand_Hid(device, commandId, parameter);
+        }
+
         private enum SantrollerSixFretCommandId : byte
         {
             OpenNote = 0x90,
@@ -153,8 +189,26 @@ namespace PlasticBand.Haptics
             => SendCommand((byte)commandId, parameter);
     }
 
-    internal class SantrollerFourLaneDrumkitHaptics : SantrollerHaptics, ISantrollerFourLaneDrumkitHaptics
+    internal abstract class SantrollerFourLaneDrumkitHaptics : SantrollerHaptics, ISantrollerFourLaneDrumkitHaptics
     {
+        public class XInput : SantrollerFourLaneDrumkitHaptics
+        {
+            public XInput(InputDevice device) : base(device)
+            { }
+
+            protected override void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
+                => SendCommand_XInput(device, commandId, parameter);
+        }
+
+        public class Hid : SantrollerFourLaneDrumkitHaptics
+        {
+            public Hid(InputDevice device) : base(device)
+            { }
+
+            protected override unsafe void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
+                => SendCommand_Hid(device, commandId, parameter);
+        }
+
         private enum SantrollerFourLaneCommandId : byte
         {
             KickPedal = 0x90,
@@ -221,8 +275,26 @@ namespace PlasticBand.Haptics
             => SendCommand((byte)commandId, parameter);
     }
 
-    internal class SantrollerFiveLaneDrumkitHaptics : SantrollerHaptics, ISantrollerFiveLaneDrumkitHaptics
+    internal abstract class SantrollerFiveLaneDrumkitHaptics : SantrollerHaptics, ISantrollerFiveLaneDrumkitHaptics
     {
+        public class XInput : SantrollerFiveLaneDrumkitHaptics
+        {
+            public XInput(InputDevice device) : base(device)
+            { }
+
+            protected override void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
+                => SendCommand_XInput(device, commandId, parameter);
+        }
+
+        public class Hid : SantrollerFiveLaneDrumkitHaptics
+        {
+            public Hid(InputDevice device) : base(device)
+            { }
+
+            protected override unsafe void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
+                => SendCommand_Hid(device, commandId, parameter);
+        }
+
         private enum SantrollerFiveLaneCommandId : byte
         {
             KickPedal = 0x90,
@@ -281,8 +353,26 @@ namespace PlasticBand.Haptics
             => SendCommand((byte)commandId, parameter);
     }
 
-    internal class SantrollerTurntableHaptics : SantrollerHaptics, ISantrollerTurntableHaptics
+    internal abstract class SantrollerTurntableHaptics : SantrollerHaptics, ISantrollerTurntableHaptics
     {
+        public class XInput : SantrollerTurntableHaptics
+        {
+            public XInput(InputDevice device) : base(device)
+            { }
+
+            protected override void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
+                => SendCommand_XInput(device, commandId, parameter);
+        }
+
+        public class Hid : SantrollerTurntableHaptics
+        {
+            public Hid(InputDevice device) : base(device)
+            { }
+
+            protected override unsafe void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
+                => SendCommand_Hid(device, commandId, parameter);
+        }
+
         private enum SantrollerTurntableCommandId : byte
         {
             LeftScratch = 0x90,
