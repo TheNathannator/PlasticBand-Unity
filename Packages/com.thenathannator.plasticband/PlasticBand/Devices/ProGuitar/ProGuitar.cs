@@ -487,6 +487,8 @@ namespace PlasticBand.Devices
             soloOrange = GetChildControl<ButtonControl>(nameof(soloOrange));
 
             tilt = GetChildControl<AxisControl>(nameof(tilt));
+
+            digitalPedal = GetChildControl<ButtonControl>(nameof(digitalPedal));
         }
 
         /// <inheritdoc/>

@@ -10,7 +10,8 @@ Dates are relative to UTC.
 
 ### Fixed
 
-- The velocity values on PS3/Wii 4-lane drumkits is no longer inverted.
+- The velocity values on PS3/Wii 4-lane drumkits are no longer inverted.
+- Pro Guitars no longer forget to assign their digital pedal control.
 
 ## [0.4.1] - 2023/03/11
 
