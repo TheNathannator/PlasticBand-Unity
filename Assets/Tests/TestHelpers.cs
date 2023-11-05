@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -17,6 +18,7 @@ namespace PlasticBand.Tests
                 Assert.DoesNotThrow(() => device = InputSystem.AddDevice<TDevice>());
                 Assert.That(InputSystem.devices, Has.Exactly(1).TypeOf<TDevice>());
                 Assert.That(InputSystem.devices, Contains.Item(device));
+                AssertControlPropertiesSet(device);
                 validateAction?.Invoke(device);
             }
             finally
@@ -37,6 +39,25 @@ namespace PlasticBand.Tests
             finally
             {
                 InputSystem.RemoveDevice(device);
+            }
+        }
+
+        public static void AssertControlPropertiesSet(InputDevice device)
+        {
+            foreach (var property in device.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                // Search for InputControl-returning properties
+                if (!property.PropertyType.IsSubclassOf(typeof(InputControl)))
+                    continue;
+
+                // Ignore the `parent` property
+                string name = property.Name;
+                if (name == nameof(InputDevice.parent))
+                    continue;
+
+                // Ensure the returned control is not null
+                var control = property.GetMethod.Invoke(device, null);
+                Assert.That(control, Is.Not.Null, $"Control {name} on device {device} is not set!");
             }
         }
 
