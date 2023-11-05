@@ -13,6 +13,7 @@ Dates are relative to UTC.
 - The velocity values on PS3/Wii 4-lane drumkits are no longer inverted.
 - Pro Guitars no longer forget to assign their digital pedal control.
 - 6-fret guitars were using the entirely wrong state layout lol, copy-paste error I missed during review.
+- Fixed turntables failing to initialize due to `sbyte`s not being considered integers by `InputState.IsIntegerFormat` for some reason.
 
 ## [0.4.1] - 2023/03/11
 

@@ -28,8 +28,10 @@ namespace PlasticBand.Controls
         {
             base.FinishSetup();
 
-            if (!stateBlock.format.IsIntegerFormat())
-                throw new NotSupportedException($"Non-integer format '{stateBlock.format}' is not supported on {nameof(IntegerAxisControl)} '{this}'");
+            var format = stateBlock.format;
+            // For whatever reason, 'sbyte' is not checked for in IsIntegerFormat
+            if (!format.IsIntegerFormat() && format != InputStateBlock.FormatSByte)
+                throw new NotSupportedException($"Non-integer format '{format}' is not supported on {nameof(IntegerAxisControl)} '{this}'");
 
             if (maxValue == 0 && minValue == 0 && zeroPoint == 0)
                 throw new NotSupportedException($"Range parameters have not been set on {nameof(IntegerAxisControl)} '{this}'! Please set {nameof(minValue)}, {nameof(maxValue)}, and {nameof(zeroPoint)}.");
