@@ -271,7 +271,7 @@ namespace PlasticBand.Devices
                 case 3: return fret4;
                 case 4: return fret5;
                 case 5: return fret6;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, $"Expected an index less than {nameof(StringCount)} ({StringCount})!");
             }
         }
 
@@ -288,7 +288,7 @@ namespace PlasticBand.Devices
                 case 3: return strum4;
                 case 4: return strum5;
                 case 5: return strum6;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, $"Expected an index less than {nameof(StringCount)} ({StringCount})!");
             }
         }
 
@@ -305,7 +305,7 @@ namespace PlasticBand.Devices
                 case 2: return yellowFret;
                 case 3: return blueFret;
                 case 4: return orangeFret;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, $"Expected an index less than {nameof(EmulatedFretCount)} ({EmulatedFretCount})!");
             }
         }
 
@@ -338,7 +338,7 @@ namespace PlasticBand.Devices
                 case 2: return soloYellow;
                 case 3: return soloBlue;
                 case 4: return soloOrange;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, $"Expected an index less than {nameof(EmulatedFretCount)} ({EmulatedFretCount})!");
             }
         }
 

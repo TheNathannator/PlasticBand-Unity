@@ -152,7 +152,7 @@ namespace PlasticBand.Devices
                 case 3: return white1;
                 case 4: return white2;
                 case 5: return white3;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, $"Expected an index less than {nameof(FretCount)} ({FretCount})!");
             }
         }
 
@@ -169,7 +169,7 @@ namespace PlasticBand.Devices
                 case SixFret.White1: return white1;
                 case SixFret.White2: return white2;
                 case SixFret.White3: return white3;
-                default: throw new ArgumentException($"Could not determine the fret to retrieve! Value: '{fret}'", nameof(fret));
+                default: throw new ArgumentException($"Invalid fret value {fret}!", nameof(fret));
             }
         }
 

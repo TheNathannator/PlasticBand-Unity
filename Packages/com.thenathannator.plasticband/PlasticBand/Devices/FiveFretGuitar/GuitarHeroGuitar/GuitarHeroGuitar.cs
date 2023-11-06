@@ -106,7 +106,7 @@ namespace PlasticBand.Devices
                 case 2: return touchYellow;
                 case 3: return touchBlue;
                 case 4: return touchOrange;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, $"Expected an index less than {nameof(FretCount)} ({FretCount})!");
             }
         }
 

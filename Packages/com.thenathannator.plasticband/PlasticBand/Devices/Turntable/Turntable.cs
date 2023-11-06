@@ -172,7 +172,7 @@ namespace PlasticBand.Devices
                 case 0: return leftTableGreen;
                 case 1: return leftTableRed;
                 case 2: return leftTableBlue;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, $"Expected an index less than {ButtonCount}!");
             }
         }
 
@@ -186,7 +186,7 @@ namespace PlasticBand.Devices
                 case TurntableButton.Green: return leftTableGreen;
                 case TurntableButton.Red: return leftTableRed;
                 case TurntableButton.Blue: return leftTableBlue;
-                default: throw new ArgumentOutOfRangeException(nameof(button));
+                default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
             }
         }
 
@@ -225,7 +225,7 @@ namespace PlasticBand.Devices
                 case 0: return rightTableGreen;
                 case 1: return rightTableRed;
                 case 2: return rightTableBlue;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, $"Expected an index less than {ButtonCount}!");
             }
         }
 
@@ -239,7 +239,7 @@ namespace PlasticBand.Devices
                 case TurntableButton.Green: return rightTableGreen;
                 case TurntableButton.Red: return rightTableRed;
                 case TurntableButton.Blue: return rightTableBlue;
-                default: throw new ArgumentOutOfRangeException(nameof(button));
+                default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
             }
         }
 

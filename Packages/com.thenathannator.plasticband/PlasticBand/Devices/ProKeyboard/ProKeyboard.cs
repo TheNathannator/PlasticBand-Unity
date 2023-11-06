@@ -282,7 +282,7 @@ namespace PlasticBand.Devices
                 case 22: return key23;
                 case 23: return key24;
                 case 24: return key25;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, $"Expected an index less than {nameof(KeyCount)} ({KeyCount})!");
             }
         }
 

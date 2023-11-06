@@ -138,7 +138,7 @@ namespace PlasticBand.Devices
                 case 2: return yellowFret;
                 case 3: return blueFret;
                 case 4: return orangeFret;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, $"Expected an index less than {nameof(FretCount)} ({FretCount})!");
             }
         }
 

@@ -141,7 +141,7 @@ namespace PlasticBand.Devices
                 case 3: return bluePad;
                 case 4: return orangeCymbal;
                 case 5: return greenPad;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
+                default: throw new ArgumentOutOfRangeException(nameof(index), index, $"Expected an index less than {nameof(PadCount)} ({PadCount})!");
             }
         }
 
@@ -158,7 +158,7 @@ namespace PlasticBand.Devices
                 case FiveLanePad.Blue: return bluePad;
                 case FiveLanePad.Orange: return orangeCymbal;
                 case FiveLanePad.Green: return greenPad;
-                default: throw new ArgumentException($"Could not determine the pad to retrieve! Value: '{pad}'", nameof(pad));
+                default: throw new ArgumentException($"Invalid pad value {pad}!", nameof(pad));
             }
         }
 
