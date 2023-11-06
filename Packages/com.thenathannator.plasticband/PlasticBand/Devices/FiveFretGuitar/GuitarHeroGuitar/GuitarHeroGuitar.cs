@@ -94,11 +94,6 @@ namespace PlasticBand.Devices
         public AxisControl accelZ { get; private set; }
 
         /// <summary>
-        /// The number of frets available on the guitar.
-        /// </summary>
-        public const int TouchFretCount = 5;
-
-        /// <summary>
         /// Retrieves a touch fret control by index.<br/>
         /// 0 = green, 4 = orange.
         /// </summary>

@@ -72,11 +72,6 @@ namespace PlasticBand.Devices
         public const int PickupNotchCount = 5;
 
         /// <summary>
-        /// The number of frets available on the guitar.
-        /// </summary>
-        public const int SoloFretCount = 5;
-
-        /// <summary>
         /// Retrieves a solo fret control by index.<br/>
         /// 0 = green, 4 = orange.
         /// </summary>

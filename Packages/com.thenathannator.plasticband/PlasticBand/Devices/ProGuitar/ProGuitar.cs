@@ -254,13 +254,9 @@ namespace PlasticBand.Devices
 
         /// <summary>
         /// The number of emulated 5-fret frets available on the guitar.
+        /// Provided for convenience, equivalent to <see cref="FiveFretGuitar.FretCount"/>.
         /// </summary>
-        public const int EmulatedFretCount = 5;
-
-        /// <summary>
-        /// The number of emulated 5-fret solo frets available on the guitar.
-        /// </summary>
-        public const int EmulatedSoloFretCount = 5;
+        public const int EmulatedFretCount = FiveFretGuitar.FretCount;
 
         /// <summary>
         /// Retrieves a fret control by index.

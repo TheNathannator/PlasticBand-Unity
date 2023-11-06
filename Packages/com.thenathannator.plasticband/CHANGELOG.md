@@ -15,6 +15,11 @@ Dates are relative to UTC.
 - 6-fret guitars were using the entirely wrong state layout lol, copy-paste error I missed during review.
 - Fixed turntables failing to initialize due to `sbyte`s not being considered integers by `InputState.IsIntegerFormat` for some reason.
 
+### Changed
+
+- The redundant `SoloFretCount`, `TouchFretCount`, and `EmulatedSoloFretCount` constants on `RockBandGuitar`, `GuitarHeroGuitar`, and `ProGuitar` respectively have been removed, in favor of having the one `FiveFretGuitar.FretCount` constant for everything.
+  - The `EmulatedFretCount` constant on `ProGuitar` remains for convenience, but is otherwise now directly equivalent to `FiveFretGuitar.FretCount`.
+
 ## [0.4.1] - 2023/03/11
 
 ### Fixed
