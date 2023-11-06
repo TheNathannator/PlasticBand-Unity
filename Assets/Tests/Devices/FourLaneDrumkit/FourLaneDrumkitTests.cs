@@ -8,18 +8,18 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void CanCreate()
         {
-            TestHelpers.AssertDeviceCreation<FourLaneDrumkit>();
+            AssertDeviceCreation<FourLaneDrumkit>();
 
-            TestHelpers.AssertDeviceCreation<XInputFourLaneDrumkit>();
-            TestHelpers.AssertDeviceCreation<SantrollerXInputFourLaneDrumkit>();
+            AssertDeviceCreation<XInputFourLaneDrumkit>();
+            AssertDeviceCreation<SantrollerXInputFourLaneDrumkit>();
 
-            TestHelpers.AssertDeviceCreation<PS3FourLaneDrumkit>();
-            TestHelpers.AssertDeviceCreation<PS3FourLaneDrumkit_ReportId>();
-            TestHelpers.AssertDeviceCreation<WiiFourLaneDrumkit>();
-            TestHelpers.AssertDeviceCreation<WiiFourLaneDrumkit_ReportId>();
-            TestHelpers.AssertDeviceCreation<PS4FourLaneDrumkit>();
-            TestHelpers.AssertDeviceCreation<PS4FourLaneDrumkit_NoReportId>();
-            TestHelpers.AssertDeviceCreation<SantrollerHIDFourLaneDrumkit>();
+            AssertDeviceCreation<PS3FourLaneDrumkit>();
+            AssertDeviceCreation<PS3FourLaneDrumkit_ReportId>();
+            AssertDeviceCreation<WiiFourLaneDrumkit>();
+            AssertDeviceCreation<WiiFourLaneDrumkit_ReportId>();
+            AssertDeviceCreation<PS4FourLaneDrumkit>();
+            AssertDeviceCreation<PS4FourLaneDrumkit_NoReportId>();
+            AssertDeviceCreation<SantrollerHIDFourLaneDrumkit>();
         }
     }
 }

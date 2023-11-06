@@ -47,7 +47,7 @@ namespace PlasticBand.Tests.Controls
         }
 
         [Test]
-        public void CanCreate() => TestHelpers.AssertDeviceCreation<IntegerAxisDevice>((device) =>
+        public void CanCreate() => AssertDeviceCreation<IntegerAxisDevice>((device) =>
         {
             var intAxis = device.intAxis;
             Assert.That(intAxis, Is.Not.Null);
@@ -57,13 +57,13 @@ namespace PlasticBand.Tests.Controls
         });
 
         [Test]
-        public void HandlesState() => TestHelpers.CreateAndRun<IntegerAxisDevice>((device) =>
+        public void HandlesState() => CreateAndRun<IntegerAxisDevice>((device) =>
         {
             const float epsilon = 1f / byte.MaxValue;
 
             // Zero point
             var state = new IntegerAxisState() { intAxis = IntegerAxisState.ZeroPoint };
-            TestHelpers.AssertAxisValue(device, state, 0f, epsilon, device.intAxis);
+            AssertAxisValue(device, state, 0f, epsilon, device.intAxis);
 
             for (int i = 1; i <= 4; i++)
             {
@@ -72,12 +72,12 @@ namespace PlasticBand.Tests.Controls
                 // Positive
                 float value = Mathf.LerpUnclamped(IntegerAxisState.ZeroPoint, IntegerAxisState.MaxValue, factor);
                 state.intAxis = Mathf.RoundToInt(value);
-                TestHelpers.AssertAxisValue(device, state, factor, epsilon, device.intAxis);
+                AssertAxisValue(device, state, factor, epsilon, device.intAxis);
 
                 // Negative
                 value = Mathf.LerpUnclamped(IntegerAxisState.ZeroPoint, IntegerAxisState.MinValue, factor);
                 state.intAxis = Mathf.RoundToInt(value);
-                TestHelpers.AssertAxisValue(device, state, -factor, epsilon, device.intAxis);
+                AssertAxisValue(device, state, -factor, epsilon, device.intAxis);
             }
         });
     }

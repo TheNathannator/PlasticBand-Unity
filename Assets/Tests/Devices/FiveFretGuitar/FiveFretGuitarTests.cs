@@ -8,7 +8,7 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void CanCreate()
         {
-            TestHelpers.AssertDeviceCreation<FiveFretGuitar>(VerifyDevice);
+            AssertDeviceCreation<FiveFretGuitar>(VerifyDevice);
         }
 
         public static void VerifyDevice(FiveFretGuitar guitar)

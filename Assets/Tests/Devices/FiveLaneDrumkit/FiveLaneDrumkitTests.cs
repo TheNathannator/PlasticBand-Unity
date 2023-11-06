@@ -8,14 +8,14 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void CanCreate()
         {
-            TestHelpers.AssertDeviceCreation<FiveLaneDrumkit>();
+            AssertDeviceCreation<FiveLaneDrumkit>();
 
-            TestHelpers.AssertDeviceCreation<XInputFiveLaneDrumkit>();
-            TestHelpers.AssertDeviceCreation<SantrollerXInputFiveLaneDrumkit>();
+            AssertDeviceCreation<XInputFiveLaneDrumkit>();
+            AssertDeviceCreation<SantrollerXInputFiveLaneDrumkit>();
 
-            TestHelpers.AssertDeviceCreation<PS3FiveLaneDrumkit>();
-            TestHelpers.AssertDeviceCreation<PS3FiveLaneDrumkit_ReportId>();
-            TestHelpers.AssertDeviceCreation<SantrollerHIDFiveLaneDrumkit>();
+            AssertDeviceCreation<PS3FiveLaneDrumkit>();
+            AssertDeviceCreation<PS3FiveLaneDrumkit_ReportId>();
+            AssertDeviceCreation<SantrollerHIDFiveLaneDrumkit>();
         }
     }
 }

@@ -47,7 +47,7 @@ namespace PlasticBand.Tests.Controls
         }
 
         [Test]
-        public void CanCreate() => TestHelpers.AssertDeviceCreation<IntegerButtonDevice>((device) =>
+        public void CanCreate() => AssertDeviceCreation<IntegerButtonDevice>((device) =>
         {
             var intButton = device.intButton;
             Assert.That(intButton, Is.Not.Null);
@@ -58,7 +58,7 @@ namespace PlasticBand.Tests.Controls
         });
 
         [Test]
-        public void HandlesState() => TestHelpers.CreateAndRun<IntegerButtonDevice>((device) =>
+        public void HandlesState() => CreateAndRun<IntegerButtonDevice>((device) =>
         {
             // IntegerButton outputs an analog value, so we test this in the same way as IntegerAxis
             // There is no negative range, the value should always be 0 or greater
@@ -77,7 +77,7 @@ namespace PlasticBand.Tests.Controls
             const float epsilon = 1f / byte.MaxValue;
 
             var state = new IntegerButtonState() { intButton = rawValue };
-            TestHelpers.AssertAxisValue(device, state, normalValue, epsilon, device.intButton);
+            AssertAxisValue(device, state, normalValue, epsilon, device.intButton);
             Assert.That(device.intButton.value, Is.Not.Negative);
             Assert.That(device.intButton.isPressed, Is.EqualTo(state.intButton >= IntegerButtonState.PressPoint));
         }

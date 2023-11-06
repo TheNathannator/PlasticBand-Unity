@@ -8,14 +8,14 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void CanCreate()
         {
-            TestHelpers.AssertDeviceCreation<ProGuitar>();
+            AssertDeviceCreation<ProGuitar>();
 
-            TestHelpers.AssertDeviceCreation<XInputProGuitar>();
+            AssertDeviceCreation<XInputProGuitar>();
 
-            TestHelpers.AssertDeviceCreation<PS3ProGuitar>();
-            TestHelpers.AssertDeviceCreation<PS3ProGuitar_ReportId>();
-            TestHelpers.AssertDeviceCreation<WiiProGuitar>();
-            TestHelpers.AssertDeviceCreation<WiiProGuitar_ReportId>();
+            AssertDeviceCreation<PS3ProGuitar>();
+            AssertDeviceCreation<PS3ProGuitar_ReportId>();
+            AssertDeviceCreation<WiiProGuitar>();
+            AssertDeviceCreation<WiiProGuitar_ReportId>();
         }
     }
 }

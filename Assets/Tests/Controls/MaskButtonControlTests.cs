@@ -57,7 +57,7 @@ namespace PlasticBand.Tests.Controls
         }
 
         [Test]
-        public void CanCreate() => TestHelpers.AssertDeviceCreation<MaskButtonDevice>((device) =>
+        public void CanCreate() => AssertDeviceCreation<MaskButtonDevice>((device) =>
         {
             var maskButton = device.maskButton;
             Assert.That(maskButton, Is.Not.Null);
@@ -65,7 +65,7 @@ namespace PlasticBand.Tests.Controls
         });
 
         [Test]
-        public void HandlesState() => TestHelpers.CreateAndRun<MaskButtonDevice>((device) =>
+        public void HandlesState() => CreateAndRun<MaskButtonDevice>((device) =>
         {
             for (var value = MaskButton.None; value <= MaskButton.All; value++)
             {

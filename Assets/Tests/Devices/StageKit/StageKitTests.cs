@@ -8,12 +8,12 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void CanCreate()
         {
-            TestHelpers.AssertDeviceCreation<StageKit>();
+            AssertDeviceCreation<StageKit>();
 
-            TestHelpers.AssertDeviceCreation<XInputStageKit>();
-            TestHelpers.AssertDeviceCreation<SantrollerXInputStageKit>();
+            AssertDeviceCreation<XInputStageKit>();
+            AssertDeviceCreation<SantrollerXInputStageKit>();
 
-            TestHelpers.AssertDeviceCreation<SantrollerHidStageKit>();
+            AssertDeviceCreation<SantrollerHidStageKit>();
         }
     }
 }

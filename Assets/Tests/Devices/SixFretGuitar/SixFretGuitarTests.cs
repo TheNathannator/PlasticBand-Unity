@@ -8,15 +8,16 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void CanCreate()
         {
-            TestHelpers.AssertDeviceCreation<SixFretGuitar>(VerifyDevice);
+            AssertDeviceCreation<SixFretGuitar>(VerifyDevice);
 
-            TestHelpers.AssertDeviceCreation<XInputSixFretGuitar>(VerifyDevice);
-            TestHelpers.AssertDeviceCreation<PS3WiiUSixFretGuitar>(VerifyDevice);
-            TestHelpers.AssertDeviceCreation<PS3WiiUSixFretGuitar_ReportId>(VerifyDevice);
-            TestHelpers.AssertDeviceCreation<PS4SixFretGuitar>(VerifyDevice);
-            TestHelpers.AssertDeviceCreation<PS4SixFretGuitar_NoReportId>(VerifyDevice);
-            TestHelpers.AssertDeviceCreation<SantrollerHIDSixFretGuitar>(VerifyDevice);
-            TestHelpers.AssertDeviceCreation<SantrollerXInputSixFretGuitar>(VerifyDevice);
+            AssertDeviceCreation<XInputSixFretGuitar>(VerifyDevice);
+            AssertDeviceCreation<SantrollerXInputSixFretGuitar>(VerifyDevice);
+
+            AssertDeviceCreation<PS3WiiUSixFretGuitar>(VerifyDevice);
+            AssertDeviceCreation<PS3WiiUSixFretGuitar_ReportId>(VerifyDevice);
+            AssertDeviceCreation<PS4SixFretGuitar>(VerifyDevice);
+            AssertDeviceCreation<PS4SixFretGuitar_NoReportId>(VerifyDevice);
+            AssertDeviceCreation<SantrollerHIDSixFretGuitar>(VerifyDevice);
         }
 
         public static void VerifyDevice(SixFretGuitar guitar)

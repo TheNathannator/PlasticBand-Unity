@@ -8,14 +8,14 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void CanCreate()
         {
-            TestHelpers.AssertDeviceCreation<Turntable>();
+            AssertDeviceCreation<Turntable>();
 
-            TestHelpers.AssertDeviceCreation<XInputTurntable>();
-            TestHelpers.AssertDeviceCreation<SantrollerXInputTurntable>();
+            AssertDeviceCreation<XInputTurntable>();
+            AssertDeviceCreation<SantrollerXInputTurntable>();
 
-            TestHelpers.AssertDeviceCreation<PS3Turntable>();
-            TestHelpers.AssertDeviceCreation<PS3Turntable_ReportId>();
-            TestHelpers.AssertDeviceCreation<SantrollerHIDTurntable>();
+            AssertDeviceCreation<PS3Turntable>();
+            AssertDeviceCreation<PS3Turntable_ReportId>();
+            AssertDeviceCreation<SantrollerHIDTurntable>();
         }
     }
 }
