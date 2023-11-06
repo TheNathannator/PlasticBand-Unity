@@ -22,7 +22,13 @@ namespace PlasticBand.Tests.Devices
             where TGuitar : GuitarHeroGuitar
         {
             FiveFretGuitarTests.VerifyDevice(guitar);
+
+            // Ensure accelerometer X and tilt are equivalent
             Assert.That(guitar.accelX, Is.EqualTo(guitar.tilt));
+
+            // Ensure GetTouchFret works correctly
+            FiveFretGuitarTests.VerifyFrets(guitar.GetTouchFret, guitar.GetTouchFret,
+                guitar.touchGreen, guitar.touchRed, guitar.touchYellow, guitar.touchBlue, guitar.touchOrange);
         }
     }
 }

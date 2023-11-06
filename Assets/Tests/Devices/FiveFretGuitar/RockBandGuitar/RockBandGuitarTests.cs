@@ -8,18 +8,25 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void CanCreate()
         {
-            AssertDeviceCreation<RockBandGuitar>(FiveFretGuitarTests.VerifyDevice);
+            AssertDeviceCreation<RockBandGuitar>(VerifyDevice);
 
-            AssertDeviceCreation<XInputRockBandGuitar>(FiveFretGuitarTests.VerifyDevice);
-            AssertDeviceCreation<SantrollerXInputRockBandGuitar>(FiveFretGuitarTests.VerifyDevice);
+            AssertDeviceCreation<XInputRockBandGuitar>(VerifyDevice);
+            AssertDeviceCreation<SantrollerXInputRockBandGuitar>(VerifyDevice);
 
-            AssertDeviceCreation<PS3RockBandGuitar>(FiveFretGuitarTests.VerifyDevice);
-            AssertDeviceCreation<PS3RockBandGuitar_ReportId>(FiveFretGuitarTests.VerifyDevice);
-            AssertDeviceCreation<WiiRockBandGuitar>(FiveFretGuitarTests.VerifyDevice);
-            AssertDeviceCreation<WiiRockBandGuitar_ReportId>(FiveFretGuitarTests.VerifyDevice);
-            AssertDeviceCreation<PS4RockBandGuitar>(FiveFretGuitarTests.VerifyDevice);
-            AssertDeviceCreation<PS4RockBandGuitar_NoReportId>(FiveFretGuitarTests.VerifyDevice);
-            AssertDeviceCreation<SantrollerHIDRockBandGuitar>(FiveFretGuitarTests.VerifyDevice);
+            AssertDeviceCreation<PS3RockBandGuitar>(VerifyDevice);
+            AssertDeviceCreation<PS3RockBandGuitar_ReportId>(VerifyDevice);
+            AssertDeviceCreation<WiiRockBandGuitar>(VerifyDevice);
+            AssertDeviceCreation<WiiRockBandGuitar_ReportId>(VerifyDevice);
+            AssertDeviceCreation<PS4RockBandGuitar>(VerifyDevice);
+            AssertDeviceCreation<PS4RockBandGuitar_NoReportId>(VerifyDevice);
+            AssertDeviceCreation<SantrollerHIDRockBandGuitar>(VerifyDevice);
+        }
+
+        private static void VerifyDevice(RockBandGuitar guitar)
+        {
+            // Ensure GetSoloFret works correctly
+            FiveFretGuitarTests.VerifyFrets(guitar.GetSoloFret, guitar.GetSoloFret,
+                guitar.soloGreen, guitar.soloRed, guitar.soloYellow, guitar.soloBlue, guitar.soloOrange);
         }
     }
 }
