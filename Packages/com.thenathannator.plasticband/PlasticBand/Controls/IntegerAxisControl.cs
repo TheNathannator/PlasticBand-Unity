@@ -24,6 +24,9 @@ namespace PlasticBand.Controls
         public int maxValue = 0;
         public int zeroPoint = 0;
 
+        public bool hasNullValue; 
+        public int nullValue;
+
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -43,12 +46,18 @@ namespace PlasticBand.Controls
                 throw new NotSupportedException($"Max value ({maxValue}) is less than zero point ({zeroPoint}) on {nameof(IntegerAxisControl)} '{this}'!");
         }
 
+        private float m_LastValue;
+
         /// <inheritdoc/>
         public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
         {
             int value = stateBlock.ReadInt(statePtr);
+            if (hasNullValue && value == nullValue)
+                return m_LastValue;
+
             float normalized = Normalize(value, minValue, maxValue, zeroPoint);
-            return Preprocess(normalized);
+            m_LastValue = Preprocess(normalized);
+            return m_LastValue;
         }
 
         public static float Normalize(int value, int minValue, int maxValue, int zeroPoint)

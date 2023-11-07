@@ -24,6 +24,9 @@ namespace PlasticBand.Controls
         public int minValue = 0;
         public int maxValue = 0;
 
+        public bool hasNullValue; 
+        public int nullValue;
+
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -41,12 +44,18 @@ namespace PlasticBand.Controls
                 pressPoint = IntegerAxisControl.Normalize(intPressPoint, minValue, maxValue, minValue);
         }
 
+        private float m_LastValue;
+
         /// <inheritdoc/>
         public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
         {
             int value = stateBlock.ReadInt(statePtr);
+            if (hasNullValue && value == nullValue)
+                return m_LastValue;
+
             float normalized = IntegerAxisControl.Normalize(value, minValue, maxValue, minValue);
-            return Preprocess(normalized);
+            m_LastValue = Preprocess(normalized);
+            return m_LastValue;
         }
     }
 }
