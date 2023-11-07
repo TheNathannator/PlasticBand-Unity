@@ -80,5 +80,32 @@ namespace PlasticBand.Controls
 
             return normalized;
         }
+
+        internal static int DenormalizeUnchecked(float value, int minValue, int maxValue, int zeroPoint)
+        {
+            int max;
+            int min;
+            float @base;
+
+            if (value > 0f)
+            {
+                max = maxValue;
+                min = zeroPoint;
+                @base = 0f;
+            }
+            else if (value < 0f)
+            {
+                max = zeroPoint;
+                min = minValue;
+                @base = 1f;
+            }
+            else // value == 0f
+            {
+                return zeroPoint;
+            }
+
+            int denormalized = min + (int)((max - min) * (@base + value));
+            return denormalized;
+        }
     }
 }

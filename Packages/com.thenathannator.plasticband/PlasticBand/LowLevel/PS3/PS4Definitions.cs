@@ -43,5 +43,15 @@ namespace PlasticBand.Devices.LowLevel
         {
             return (HidDpad)(buttons & PS4Button1.DpadMask);
         }
+
+        public static void SetDpad(ref this PS4Button1 buttons, HidDpad dpad)
+        {
+            buttons = (buttons & PS4Button1.DpadMask) | ((PS4Button1)dpad & PS4Button1.DpadMask);
+        }
+
+        public static PS4Button1 AsPS4Buttons(this HidDpad dpad)
+        {
+            return (PS4Button1)dpad & PS4Button1.DpadMask;
+        }
     }
 }

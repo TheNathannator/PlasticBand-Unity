@@ -16,5 +16,13 @@ namespace PlasticBand.Tests
         internal static HidDpad ToHidDpad(this DpadDirection dpad)
             // DpadDirection is equivalent to HidDpad
             => (HidDpad)dpad;
+
+        public static void SetBit(ref this ushort value, ushort mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= (ushort)~mask;
+        }
     }
 }

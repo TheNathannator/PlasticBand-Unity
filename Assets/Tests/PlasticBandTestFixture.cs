@@ -40,6 +40,13 @@ namespace PlasticBand.Tests
         All = South | East | West | North | Start | Select
     }
 
+    public enum AxisMode
+    {
+        Signed,
+        Unsigned,
+        Button
+    }
+
     // Interface to simplify the amount of parameters that need to be passed around everywhere
     public interface IDeviceHandler<TState>
         where TState : unmanaged, IInputStateTypeInfo
@@ -69,6 +76,12 @@ namespace PlasticBand.Tests
 
     public class PlasticBandTestFixture : InputTestFixture
     {
+        public delegate void SetButtonAction<TState>(ref TState state, bool pressed)
+            where TState : unmanaged, IInputStateTypeInfo;
+
+        public delegate void SetAxisAction<TState>(ref TState state, float value)
+            where TState : unmanaged, IInputStateTypeInfo;
+
         public override void Setup()
         {
             base.Setup();
@@ -142,6 +155,19 @@ namespace PlasticBand.Tests
             }
         }
 
+        public static void AssertIntegerValue<TState>(InputDevice device, TState state,
+            int value, params IntegerControl[] integers)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            InputSystem.QueueStateEvent(device, state);
+            InputSystem.Update();
+            foreach (var integer in integers)
+            {
+                float integerValue = integer.value;
+                Assert.That(integerValue, Is.EqualTo(value), $"Value for integer '{integer}' is not correct!");
+            }
+        }
+
         public static void RecognizesCommonControls<TState>(IDeviceHandler<TState> handler)
             where TState : unmanaged, IInputStateTypeInfo
         {
@@ -153,6 +179,7 @@ namespace PlasticBand.Tests
             where TState : unmanaged, IInputStateTypeInfo
         {
             var device = handler.device;
+            var state = handler.CreateState();
 
             var southButton = handler.southButton;
             var eastButton = handler.eastButton;
@@ -165,7 +192,6 @@ namespace PlasticBand.Tests
             var buttonList = new List<ButtonControl>(6);
             for (var buttons = FaceButton.None; buttons <= FaceButton.All; buttons++)
             {
-                var state = handler.CreateState();
                 handler.SetFaceButtons(ref state, buttons);
 
                 // Not all devices have the 4 main face buttons
@@ -189,12 +215,13 @@ namespace PlasticBand.Tests
             where TState : unmanaged, IInputStateTypeInfo
         {
             var device = handler.device;
+            var state = handler.CreateState();
+
             var dpad = handler.dpad;
 
             var directionList = new List<ButtonControl>(4);
             for (var dpadDir = DpadDirection.Min; dpadDir <= DpadDirection.Max; dpadDir++)
             {
-                var state = handler.CreateState();
                 handler.SetDpad(ref state, dpadDir);
 
                 if (dpadDir.IsUp()) directionList.Add(dpad.up);
@@ -205,6 +232,77 @@ namespace PlasticBand.Tests
                 AssertButtonPress(device, state, directionList.ToArray());
                 directionList.Clear();
             }
+        }
+
+        public static void RecognizesButton<TState>(IDeviceHandler<TState> handler, ButtonControl button,
+            SetButtonAction<TState> setButton)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            var device = handler.device;
+            var state = handler.CreateState();
+
+            setButton(ref state, true);
+            AssertButtonPress(device, state, button);
+
+            setButton(ref state, false);
+            AssertButtonPress(device, state);
+        }
+
+        public static void RecognizesAxis<TState>(IDeviceHandler<TState> handler, AxisControl axis, AxisMode mode,
+            SetAxisAction<TState> setAxis)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            switch (mode)
+            {
+                case AxisMode.Signed: RecognizesSignedAxis(handler, axis, setAxis); break;
+                case AxisMode.Unsigned: RecognizesUnsignedAxis(handler, axis, setAxis); break;
+                case AxisMode.Button: RecognizesButtonAxis(handler, axis, setAxis); break;
+                default: throw new NotImplementedException($"Unhandled axis mode {mode}!");
+            }
+        }
+
+        public static void RecognizesUnsignedAxis<TState>(IDeviceHandler<TState> handler, AxisControl axis,
+            SetAxisAction<TState> setAxis)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            var device = handler.device;
+            var state = handler.CreateState();
+
+            for (int i = 0; i <= 100; i++)
+            {
+                float value = i / 100f;
+                setAxis(ref state, value);
+                AssertAxisValue(device, state, value, 1 / 100f, axis);
+            }
+        }
+
+        public static void RecognizesSignedAxis<TState>(IDeviceHandler<TState> handler, AxisControl axis,
+            SetAxisAction<TState> setAxis)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            var device = handler.device;
+
+            var state = handler.CreateState();
+            for (int i = -100; i <= 100; i++)
+            {
+                float value = i / 100f;
+                setAxis(ref state, value);
+                AssertAxisValue(device, state, value, 1 / 100f, axis);
+            }
+        }
+
+        public static void RecognizesButtonAxis<TState>(IDeviceHandler<TState> handler, AxisControl button,
+            SetAxisAction<TState> setButton)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            var device = handler.device;
+            var state = handler.CreateState();
+
+            setButton(ref state, 1f);
+            AssertAxisValue(device, state, 1f, 0.001f, button);
+
+            setButton(ref state, 0f);
+            AssertAxisValue(device, state, 0f, 0.001f, button);
         }
     }
 }
