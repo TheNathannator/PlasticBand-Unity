@@ -50,7 +50,6 @@ namespace PlasticBand.Tests.Controls
         public void CanCreate() => AssertDeviceCreation<IntegerButtonDevice>((device) =>
         {
             var intButton = device.intButton;
-            Assert.That(intButton, Is.Not.Null);
             Assert.That(intButton.minValue, Is.EqualTo(IntegerButtonState.MinValue));
             Assert.That(intButton.maxValue, Is.EqualTo(IntegerButtonState.MaxValue));
             Assert.That(intButton.intPressPoint, Is.EqualTo(IntegerButtonState.PressPoint));

@@ -60,7 +60,6 @@ namespace PlasticBand.Tests.Controls
         public void CanCreate() => AssertDeviceCreation<MaskButtonDevice>((device) =>
         {
             var maskButton = device.maskButton;
-            Assert.That(maskButton, Is.Not.Null);
             Assert.That(maskButton.mask, Is.EqualTo((int)MaskButtonState.ActiveMask));
         });
 

@@ -50,7 +50,6 @@ namespace PlasticBand.Tests.Controls
         public void CanCreate() => AssertDeviceCreation<IntegerAxisDevice>((device) =>
         {
             var intAxis = device.intAxis;
-            Assert.That(intAxis, Is.Not.Null);
             Assert.That(intAxis.minValue, Is.EqualTo(IntegerAxisState.MinValue));
             Assert.That(intAxis.maxValue, Is.EqualTo(IntegerAxisState.MaxValue));
             Assert.That(intAxis.zeroPoint, Is.EqualTo(IntegerAxisState.ZeroPoint));
