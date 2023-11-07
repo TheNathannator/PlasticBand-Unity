@@ -34,6 +34,8 @@ namespace PlasticBand.Devices.LowLevel
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct PS3DeviceState : IInputStateTypeInfo
     {
+        public const byte StickCenter = 0x7F;
+
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;

@@ -1,5 +1,6 @@
 using System;
 using PlasticBand.Devices;
+using PlasticBand.Devices.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
@@ -23,7 +24,8 @@ namespace PlasticBand.Controls
             InputSystem.RegisterLayout<RockBandPickupSwitchControl>("RockBandPickupSwitch");
         }
 
-        private const int kNotchCount = 5;
+        internal const int kNullValue = PS3DeviceState.StickCenter;
+        internal const float kNotchSize = (byte.MaxValue + 1) / 5f;
 
         protected override void FinishSetup()
         {
@@ -45,12 +47,12 @@ namespace PlasticBand.Controls
             int rawValue = stateBlock.ReadInt(statePtr);
             // PS3/Wii RB guitars will report back 0x7F after the switch has been resting for a moment,
             // so we need to ignore that
-            if (rawValue == 0x7F)
+            if (rawValue == kNullValue)
                 return m_PreviousNotch;
 
             // Determine which notch is currently selected
             // See the reference doc linked above for more details
-            int notch = Math.Min(rawValue / (byte.MaxValue / 5), kNotchCount - 1);
+            int notch = (int)(rawValue / kNotchSize);
             m_PreviousNotch = notch;
 
 #if PLASTICBAND_DEBUG_CONTROLS

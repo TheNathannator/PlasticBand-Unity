@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
@@ -15,6 +16,24 @@ namespace PlasticBand.Devices
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct SantrollerHIDGuitarHeroGuitarState : IInputStateTypeInfo
     {
+        [Flags]
+        public enum Button : ushort
+        {
+            None = 0,
+
+            Green = 0x0001,
+            Red = 0x0002,
+            Yellow = 0x0004,
+            Blue = 0x0008,
+            Orange = 0x0010,
+
+            SpPedal = 0x0020,
+
+            Select = 0x0040,
+            Start = 0x0080,
+            System = 0x0100,
+        }
+
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;

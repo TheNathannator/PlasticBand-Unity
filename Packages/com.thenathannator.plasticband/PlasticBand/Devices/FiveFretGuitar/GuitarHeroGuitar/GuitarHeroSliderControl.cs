@@ -32,7 +32,7 @@ namespace PlasticBand.Controls
         private const FiveFret O = FiveFret.Orange;
 
         // Possible values for the World Tour slider bar
-        private static readonly Dictionary<byte, FiveFret> s_WTSliderLookup = new Dictionary<byte, FiveFret>()
+        internal static readonly Dictionary<byte, FiveFret> s_WTSliderLookup = new Dictionary<byte, FiveFret>()
         {
             { 0x7B, FiveFret.None },
             { 0x7C, FiveFret.None },
@@ -66,7 +66,7 @@ namespace PlasticBand.Controls
         };
 
         // Possible values for the GH5 slider bar
-        private static readonly Dictionary<byte, FiveFret> s_GH5SliderLookup = new Dictionary<byte, FiveFret>()
+        internal static readonly Dictionary<byte, FiveFret> s_GH5SliderLookup = new Dictionary<byte, FiveFret>()
         {
             // GH5 guitars
             { 0x00, FiveFret.None },
