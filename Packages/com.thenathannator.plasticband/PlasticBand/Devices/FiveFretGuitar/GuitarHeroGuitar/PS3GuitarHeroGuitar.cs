@@ -40,7 +40,7 @@ namespace PlasticBand.Devices
         [FieldOffset(2)]
         public byte dpad;
 
-        [InputControl(name = "whammy", layout = "Axis")]
+        [InputControl(name = "whammy", layout = "IntAxis", parameters = "minValue=0x7F,maxValue=0xFF,zeroPoint=0x7F")]
         [FieldOffset(5)]
         public byte whammy;
 

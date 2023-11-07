@@ -48,12 +48,10 @@ namespace PlasticBand.Devices
         [FieldOffset(43)]
         public byte pickupSwitch;
 
-        // TODO: Normalization
         [InputControl(name = "whammy", layout = "Axis")]
         [FieldOffset(44)]
         public byte whammy;
 
-        // TODO: Normalization
         [InputControl(name = "tilt", layout = "Axis")]
         [FieldOffset(45)]
         public byte tilt;

@@ -72,7 +72,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "pickupSwitch", layout = "RockBandPickupSwitch")]
         public byte pickupSwitch;
 
-        [InputControl(name = "tilt", layout = "Axis")]
+        [InputControl(name = "tilt", layout = "IntAxis", parameters = "minValue=0x00,maxValue=0xFF,zeroPoint=0x80")]
         public byte tilt;
     }
 
