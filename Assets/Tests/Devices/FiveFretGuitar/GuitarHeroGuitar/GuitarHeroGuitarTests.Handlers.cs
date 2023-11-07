@@ -265,7 +265,7 @@ namespace PlasticBand.Tests.Devices
 
         public static byte GetWhammy(float value)
         {
-            return (byte)IntegerAxisControl.DenormalizeUnchecked(value, PS3DeviceState.StickCenter, byte.MaxValue, PS3DeviceState.StickCenter);
+            return (byte)IntegerAxisControl.Denormalize(value, PS3DeviceState.StickCenter, byte.MaxValue, PS3DeviceState.StickCenter);
         }
     }
 }

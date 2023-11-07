@@ -179,7 +179,7 @@ namespace PlasticBand.Tests.Devices
 
         public static short GetWhammy(float value)
         {
-            return (short)IntegerAxisControl.DenormalizeUnchecked(value, short.MinValue, short.MaxValue, short.MinValue);
+            return (short)IntegerAxisControl.Denormalize(value, short.MinValue, short.MaxValue, short.MinValue);
         }
     }
 }

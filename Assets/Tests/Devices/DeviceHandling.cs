@@ -8,17 +8,17 @@ namespace PlasticBand.Tests.Devices
     {
         public static byte DenormalizeByteSigned(float value)
         {
-            return (byte)IntegerAxisControl.DenormalizeUnchecked(value, byte.MinValue, byte.MaxValue, 0x80);
+            return (byte)IntegerAxisControl.Denormalize(value, byte.MinValue, byte.MaxValue, 0x80);
         }
 
         public static byte DenormalizeByteUnsigned(float value)
         {
-            return (byte)IntegerAxisControl.DenormalizeUnchecked(value, byte.MinValue, byte.MaxValue, byte.MinValue);
+            return (byte)IntegerAxisControl.Denormalize(value, byte.MinValue, byte.MaxValue, byte.MinValue);
         }
 
         public static short DenormalizeInt16(float value)
         {
-            return (short)IntegerAxisControl.DenormalizeUnchecked(value, short.MinValue, short.MaxValue, 0);
+            return (short)IntegerAxisControl.Denormalize(value, short.MinValue, short.MaxValue, 0);
         }
     }
 
@@ -74,7 +74,7 @@ namespace PlasticBand.Tests.Devices
 
         public static short DenormalizeAccelerometer(float value)
         {
-            return (short)IntegerAxisControl.DenormalizeUnchecked(value, 0, 0x3FF, 0x200);
+            return (short)IntegerAxisControl.Denormalize(value, 0, 0x3FF, 0x200);
         }
     }
 

@@ -38,14 +38,14 @@ namespace PlasticBand.Controls
                 throw new NotSupportedException($"Maximum value ({maxValue}) must be greater than minimum value ({minValue}) on {nameof(IntegerButtonControl)} '{this}'!");
 
             if (pressPoint < 0 && intPressPoint > minValue)
-                pressPoint = IntegerAxisControl.NormalizeUnchecked(intPressPoint, minValue, maxValue, minValue);
+                pressPoint = IntegerAxisControl.Normalize(intPressPoint, minValue, maxValue, minValue);
         }
 
         /// <inheritdoc/>
         public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
         {
             int value = stateBlock.ReadInt(statePtr);
-            float normalized = IntegerAxisControl.NormalizeUnchecked(value, minValue, maxValue, minValue);
+            float normalized = IntegerAxisControl.Normalize(value, minValue, maxValue, minValue);
             return Preprocess(normalized);
         }
     }

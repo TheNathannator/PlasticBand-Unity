@@ -47,12 +47,17 @@ namespace PlasticBand.Controls
         public override unsafe float ReadUnprocessedValueFromState(void* statePtr)
         {
             int value = stateBlock.ReadInt(statePtr);
-            float normalized = NormalizeUnchecked(value, minValue, maxValue, zeroPoint);
+            float normalized = Normalize(value, minValue, maxValue, zeroPoint);
             return Preprocess(normalized);
         }
 
-        internal static float NormalizeUnchecked(int value, int minValue, int maxValue, int zeroPoint)
+        public static float Normalize(int value, int minValue, int maxValue, int zeroPoint)
         {
+            if (value >= maxValue)
+                return 1f;
+            else if (value <= minValue && minValue != zeroPoint)
+                return -1f;
+
             float max;
             float min;
             float @base;
@@ -81,8 +86,13 @@ namespace PlasticBand.Controls
             return normalized;
         }
 
-        internal static int DenormalizeUnchecked(float value, int minValue, int maxValue, int zeroPoint)
+        public static int Denormalize(float value, int minValue, int maxValue, int zeroPoint)
         {
+            if (value >= 1f)
+                return maxValue;
+            else if (value <= -1f)
+                return minValue;
+
             int max;
             int min;
             float @base;
