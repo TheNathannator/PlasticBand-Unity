@@ -47,7 +47,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "whammy", layout = "IntAxis", parameters = "minValue=0x00,maxValue=0xFF,zeroPoint=0x00,hasNullValue,nullValue=0x7F")]
         public byte whammy;
 
-        [InputControl(name = "pickupSwitch", layout = "RockBandPickupSwitch")]
+        [InputControl(name = "pickupSwitch", layout = "RockBandPickupSwitch", parameters = "hasNullValue")]
         public byte pickupSwitch;
     }
 

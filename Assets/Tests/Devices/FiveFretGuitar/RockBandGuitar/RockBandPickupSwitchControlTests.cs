@@ -18,7 +18,7 @@ namespace PlasticBand.Tests.Devices
         {
             public FourCC format => new FourCC('R', 'B', 'P', 'K');
 
-            [InputControl(layout = "RockBandPickupSwitch")]
+            [InputControl(layout = "RockBandPickupSwitch", parameters = "hasNullValue")]
             public byte pickupSwitch;
         }
 

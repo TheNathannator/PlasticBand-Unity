@@ -27,6 +27,8 @@ namespace PlasticBand.Controls
         internal const int kNullValue = PS3DeviceState.StickCenter;
         internal const float kNotchSize = (byte.MaxValue + 1) / 5f;
 
+        public bool hasNullValue;
+
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -47,7 +49,7 @@ namespace PlasticBand.Controls
             int rawValue = stateBlock.ReadInt(statePtr);
             // PS3/Wii RB guitars will report back 0x7F after the switch has been resting for a moment,
             // so we need to ignore that
-            if (rawValue == kNullValue)
+            if (hasNullValue && rawValue == kNullValue)
                 return m_PreviousNotch;
 
             // Determine which notch is currently selected
