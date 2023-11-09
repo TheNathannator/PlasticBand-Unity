@@ -4,24 +4,20 @@ using PlasticBand.Devices;
 
 namespace PlasticBand.Tests.Devices
 {
-    public class ProKeyboardTests : PlasticBandTestFixture
+    public sealed class ProKeyboardTests : PlasticBandTestFixture<ProKeyboard>
     {
         [Test]
-        public void CanCreate()
+        public void GetKeyReturnsCorrectFrets()
+            => CreateAndRun(_GetKeyReturnsCorrectFrets);
+
+        [Test]
+        public void GetKeyThrowsCorrectly()
+            => CreateAndRun(_GetKeyThrowsCorrectly);
+
+        // These must be named differently from the actual test methods, or else the input system test fixture
+        // will fail to get the current method due to name ambiguity from reflection
+        public static void _GetKeyReturnsCorrectFrets(ProKeyboard keyboard)
         {
-            AssertDeviceCreation<ProKeyboard>(VerifyDevice);
-
-            AssertDeviceCreation<XInputProKeyboard>(VerifyDevice);
-
-            AssertDeviceCreation<PS3ProKeyboard>(VerifyDevice);
-            AssertDeviceCreation<PS3ProKeyboard_ReportId>(VerifyDevice);
-            AssertDeviceCreation<WiiProKeyboard>(VerifyDevice);
-            AssertDeviceCreation<WiiProKeyboard_ReportId>(VerifyDevice);
-        }
-
-        private static void VerifyDevice(ProKeyboard keyboard)
-        {
-            // Ensure GetKey returns the correct controls
             Assert.That(keyboard.GetKey(0), Is.EqualTo(keyboard.key1));
             Assert.That(keyboard.GetKey(1), Is.EqualTo(keyboard.key2));
             Assert.That(keyboard.GetKey(2), Is.EqualTo(keyboard.key3));
@@ -47,8 +43,10 @@ namespace PlasticBand.Tests.Devices
             Assert.That(keyboard.GetKey(22), Is.EqualTo(keyboard.key23));
             Assert.That(keyboard.GetKey(23), Is.EqualTo(keyboard.key24));
             Assert.That(keyboard.GetKey(24), Is.EqualTo(keyboard.key25));
+        }
 
-            // Ensure correct GetKey throw behavior
+        public static void _GetKeyThrowsCorrectly(ProKeyboard keyboard)
+        {
             for (int i = -5; i < ProKeyboard.KeyCount + 5; i++)
             {
                 if (i < 0 || i >= ProKeyboard.KeyCount)

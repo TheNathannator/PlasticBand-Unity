@@ -3,17 +3,9 @@ using PlasticBand.Devices;
 
 namespace PlasticBand.Tests.Devices
 {
-    public class StageKitTests : PlasticBandTestFixture
+    public class StageKitTests : PlasticBandTestFixture<StageKit>
     {
-        [Test]
-        public void CanCreate()
-        {
-            AssertDeviceCreation<StageKit>();
-
-            AssertDeviceCreation<XInputStageKit>();
-            AssertDeviceCreation<SantrollerXInputStageKit>();
-
-            AssertDeviceCreation<SantrollerHidStageKit>();
-        }
+        // Nothing specific to stage kits that needs to be tested currently,
+        // only the base tests are needed
     }
 }

@@ -1,30 +1,28 @@
 using System;
 using NUnit.Framework;
 using PlasticBand.Devices;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Tests.Devices
 {
-    public class FiveLaneDrumkitTests : PlasticBandTestFixture
+    public sealed class FiveLaneDrumkitTests : PlasticBandTestFixture<FiveLaneDrumkit>
     {
         public const FiveLanePad AllPads = FiveLanePad.Kick | FiveLanePad.Red | FiveLanePad.Yellow |
             FiveLanePad.Blue | FiveLanePad.Orange | FiveLanePad.Green;
 
         [Test]
-        public void CanCreate()
+        public void GetPadReturnsCorrectPads()
+            => CreateAndRun(_GetPadReturnsCorrectPads);
+
+        [Test]
+        public void GetPadThrowsCorrectly()
+            => CreateAndRun(_GetPadThrowsCorrectly);
+
+        // These must be named differently from the actual test methods, or else the input system test fixture
+        // will fail to get the current method due to name ambiguity from reflection
+        public static void _GetPadReturnsCorrectPads(FiveLaneDrumkit drumkit)
         {
-            AssertDeviceCreation<FiveLaneDrumkit>(VerifyDevice);
-
-            AssertDeviceCreation<XInputFiveLaneDrumkit>(VerifyDevice);
-            AssertDeviceCreation<SantrollerXInputFiveLaneDrumkit>(VerifyDevice);
-
-            AssertDeviceCreation<PS3FiveLaneDrumkit>(VerifyDevice);
-            AssertDeviceCreation<PS3FiveLaneDrumkit_ReportId>(VerifyDevice);
-            AssertDeviceCreation<SantrollerHIDFiveLaneDrumkit>(VerifyDevice);
-        }
-
-        private static void VerifyDevice(FiveLaneDrumkit drumkit)
-        {
-            // Ensure GetPad returns the correct controls
             Assert.That(drumkit.GetPad(0), Is.EqualTo(drumkit.kick));
             Assert.That(drumkit.GetPad(1), Is.EqualTo(drumkit.redPad));
             Assert.That(drumkit.GetPad(2), Is.EqualTo(drumkit.yellowCymbal));
@@ -38,8 +36,10 @@ namespace PlasticBand.Tests.Devices
             Assert.That(drumkit.GetPad(FiveLanePad.Blue), Is.EqualTo(drumkit.bluePad));
             Assert.That(drumkit.GetPad(FiveLanePad.Orange), Is.EqualTo(drumkit.orangeCymbal));
             Assert.That(drumkit.GetPad(FiveLanePad.Green), Is.EqualTo(drumkit.greenPad));
+        }
 
-            // Ensure correct GetPad throw behavior
+        public static void _GetPadThrowsCorrectly(FiveLaneDrumkit drumkit)
+        {
             for (int i = -5; i < FiveLaneDrumkit.PadCount + 5; i++)
             {
                 if (i < 0 || i >= FiveLaneDrumkit.PadCount)

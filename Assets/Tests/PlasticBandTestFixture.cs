@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine.InputSystem;
@@ -8,38 +7,6 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Tests
 {
-    public enum DpadDirection : uint
-    {
-        Up = 0,
-        UpRight = 1,
-        Right = 2,
-        DownRight = 3,
-        Down = 4,
-        DownLeft = 5,
-        Left = 6,
-        UpLeft = 7,
-        Neutral = 8,
-
-        Min = Up,
-        Max = Neutral
-    }
-
-    [Flags]
-    public enum FaceButton
-    {
-        None = 0,
-
-        South = 0x01,
-        East = 0x02,
-        West = 0x04,
-        North = 0x08,
-
-        Start = 0x10,
-        Select = 0x20,
-
-        All = South | East | West | North | Start | Select
-    }
-
     public enum AxisMode
     {
         Signed,
@@ -47,34 +14,8 @@ namespace PlasticBand.Tests
         Button
     }
 
-    // Interface to simplify the amount of parameters that need to be passed around everywhere
-    public interface IDeviceHandler<TState>
-        where TState : unmanaged, IInputStateTypeInfo
-    {
-        // Opaque to simplify the generics required to use the interface
-        InputDevice device { get; }
-
-        DpadControl dpad { get; }
-
-        // Note: may be null if not present on the device
-        // D-pad and start/select are present on all PlasticBand devices,
-        // but these face buttons are not
-        ButtonControl southButton { get; }
-        ButtonControl eastButton { get; }
-        ButtonControl westButton { get; }
-        ButtonControl northButton { get; }
-        // end note
-
-        ButtonControl startButton { get; }
-        ButtonControl selectButton { get; }
-
-        TState CreateState();
-
-        void SetDpad(ref TState state, DpadDirection dpad);
-        void SetFaceButtons(ref TState state, FaceButton buttons);
-    }
-
-    public class PlasticBandTestFixture : InputTestFixture
+    public class PlasticBandTestFixture<TDevice> : InputTestFixture
+        where TDevice : InputDevice
     {
         public delegate void SetButtonAction<TState>(ref TState state, bool pressed)
             where TState : unmanaged, IInputStateTypeInfo;
@@ -90,40 +31,11 @@ namespace PlasticBand.Tests
             Initialization.Initialize();
         }
 
-        public static void AssertDeviceCreation<TDevice>(Action<TDevice> validateAction = null)
-            where TDevice : InputDevice
-        {
-            TDevice device = null;
-            try
-            {
-                Assert.DoesNotThrow(() => device = InputSystem.AddDevice<TDevice>());
-                Assert.That(InputSystem.devices, Has.Exactly(1).TypeOf<TDevice>());
-                Assert.That(InputSystem.devices, Contains.Item(device));
-                AssertControlPropertiesSet(device);
-                validateAction?.Invoke(device);
-            }
-            finally
-            {
-                if (device != null)
-                    InputSystem.RemoveDevice(device);
-            }
-        }
+        [Test]
+        public void CanCreate() => Assert.DoesNotThrow(() => CreateAndRun((device) => {}));
 
-        public static void CreateAndRun<TDevice>(Action<TDevice> action)
-            where TDevice : InputDevice
-        {
-            TDevice device = InputSystem.AddDevice<TDevice>();
-            try
-            {
-                action(device);
-            }
-            finally
-            {
-                InputSystem.RemoveDevice(device);
-            }
-        }
-
-        public static void AssertControlPropertiesSet(InputDevice device)
+        [Test]
+        public void AllControlPropertiesSet() => CreateAndRun((device) =>
         {
             foreach (var property in device.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
@@ -139,6 +51,19 @@ namespace PlasticBand.Tests
                 // Ensure the returned control is not null
                 var control = property.GetMethod.Invoke(device, null);
                 Assert.That(control, Is.Not.Null, $"Control {name} on device {device} is not set!");
+            }
+        });
+
+        public static void CreateAndRun(Action<TDevice> action)
+        {
+            TDevice device = InputSystem.AddDevice<TDevice>();
+            try
+            {
+                action(device);
+            }
+            finally
+            {
+                InputSystem.RemoveDevice(device);
             }
         }
 
@@ -168,79 +93,10 @@ namespace PlasticBand.Tests
             }
         }
 
-        public static void RecognizesCommonControls<TState>(IDeviceHandler<TState> handler)
-            where TState : unmanaged, IInputStateTypeInfo
-        {
-            RecognizesFaceButtons(handler);
-            RecognizesDpad(handler);
-        }
-
-        public static void RecognizesFaceButtons<TState>(IDeviceHandler<TState> handler)
-            where TState : unmanaged, IInputStateTypeInfo
-        {
-            var device = handler.device;
-            var state = handler.CreateState();
-
-            var southButton = handler.southButton;
-            var eastButton = handler.eastButton;
-            var westButton = handler.westButton;
-            var northButton = handler.northButton;
-
-            var startButton = handler.startButton;
-            var selectButton = handler.selectButton;
-
-            var buttonList = new List<ButtonControl>(6);
-            for (var buttons = FaceButton.None; buttons <= FaceButton.All; buttons++)
-            {
-                handler.SetFaceButtons(ref state, buttons);
-
-                // Not all devices have the 4 main face buttons
-                if (southButton != null)
-                {
-                    if ((buttons & FaceButton.South) != 0) buttonList.Add(southButton);
-                    if ((buttons & FaceButton.East) != 0) buttonList.Add(eastButton);
-                    if ((buttons & FaceButton.West) != 0) buttonList.Add(westButton);
-                    if ((buttons & FaceButton.North) != 0) buttonList.Add(northButton);
-                }
-
-                if ((buttons & FaceButton.Start) != 0) buttonList.Add(startButton);
-                if ((buttons & FaceButton.Select) != 0) buttonList.Add(selectButton);
-
-                AssertButtonPress(device, state, buttonList.ToArray());
-                buttonList.Clear();
-            }
-        }
-
-        public static void RecognizesDpad<TState>(IDeviceHandler<TState> handler)
-            where TState : unmanaged, IInputStateTypeInfo
-        {
-            var device = handler.device;
-            var state = handler.CreateState();
-
-            var dpad = handler.dpad;
-
-            var directionList = new List<ButtonControl>(4);
-            for (var dpadDir = DpadDirection.Min; dpadDir <= DpadDirection.Max; dpadDir++)
-            {
-                handler.SetDpad(ref state, dpadDir);
-
-                if (dpadDir.IsUp()) directionList.Add(dpad.up);
-                if (dpadDir.IsDown()) directionList.Add(dpad.down);
-                if (dpadDir.IsLeft()) directionList.Add(dpad.left);
-                if (dpadDir.IsRight()) directionList.Add(dpad.right);
-    
-                AssertButtonPress(device, state, directionList.ToArray());
-                directionList.Clear();
-            }
-        }
-
-        public static void RecognizesButton<TState>(IDeviceHandler<TState> handler, ButtonControl button,
+        public static void RecognizesButton<TState>(InputDevice device, TState state, ButtonControl button,
             SetButtonAction<TState> setButton)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            var device = handler.device;
-            var state = handler.CreateState();
-
             setButton(ref state, true);
             AssertButtonPress(device, state, button);
 
@@ -248,26 +104,23 @@ namespace PlasticBand.Tests
             AssertButtonPress(device, state);
         }
 
-        public static void RecognizesAxis<TState>(IDeviceHandler<TState> handler, AxisControl axis, AxisMode mode,
+        public static void RecognizesAxis<TState>(InputDevice device, TState state, AxisControl axis, AxisMode mode,
             SetAxisAction<TState> setAxis)
             where TState : unmanaged, IInputStateTypeInfo
         {
             switch (mode)
             {
-                case AxisMode.Signed: RecognizesSignedAxis(handler, axis, setAxis); break;
-                case AxisMode.Unsigned: RecognizesUnsignedAxis(handler, axis, setAxis); break;
-                case AxisMode.Button: RecognizesButtonAxis(handler, axis, setAxis); break;
+                case AxisMode.Signed: RecognizesSignedAxis(device, state, axis, setAxis); break;
+                case AxisMode.Unsigned: RecognizesUnsignedAxis(device, state, axis, setAxis); break;
+                case AxisMode.Button: RecognizesButtonAxis(device, state, axis, setAxis); break;
                 default: throw new NotImplementedException($"Unhandled axis mode {mode}!");
             }
         }
 
-        public static void RecognizesUnsignedAxis<TState>(IDeviceHandler<TState> handler, AxisControl axis,
+        public static void RecognizesUnsignedAxis<TState>(InputDevice device, TState state, AxisControl axis,
             SetAxisAction<TState> setAxis)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            var device = handler.device;
-            var state = handler.CreateState();
-
             for (int i = 0; i <= 100; i++)
             {
                 float value = i / 100f;
@@ -276,13 +129,10 @@ namespace PlasticBand.Tests
             }
         }
 
-        public static void RecognizesSignedAxis<TState>(IDeviceHandler<TState> handler, AxisControl axis,
+        public static void RecognizesSignedAxis<TState>(InputDevice device, TState state, AxisControl axis,
             SetAxisAction<TState> setAxis)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            var device = handler.device;
-
-            var state = handler.CreateState();
             for (int i = -100; i <= 100; i++)
             {
                 float value = i / 100f;
@@ -291,13 +141,10 @@ namespace PlasticBand.Tests
             }
         }
 
-        public static void RecognizesButtonAxis<TState>(IDeviceHandler<TState> handler, AxisControl button,
+        public static void RecognizesButtonAxis<TState>(InputDevice device, TState state, AxisControl button,
             SetAxisAction<TState> setButton)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            var device = handler.device;
-            var state = handler.CreateState();
-
             setButton(ref state, 1f);
             AssertAxisValue(device, state, 1f, 0.001f, button);
 

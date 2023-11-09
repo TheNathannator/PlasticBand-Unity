@@ -1,33 +1,28 @@
 using System;
 using NUnit.Framework;
 using PlasticBand.Devices;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Tests.Devices
 {
-    public class FourLaneDrumkitTests : PlasticBandTestFixture
+    public sealed class FourLaneDrumkitTests : PlasticBandTestFixture<FourLaneDrumkit>
     {
         public const FourLanePad AllPads = FourLanePad.Kick1 | FourLanePad.Kick2 |
             FourLanePad.RedPad | FourLanePad.YellowPad | FourLanePad.BluePad | FourLanePad.GreenPad |
             FourLanePad.YellowCymbal | FourLanePad.BlueCymbal | FourLanePad.GreenCymbal;
 
         [Test]
-        public void CanCreate()
-        {
-            AssertDeviceCreation<FourLaneDrumkit>(VerifyDevice);
+        public void GetPadReturnsCorrectPads()
+            => CreateAndRun(_GetPadReturnsCorrectPads);
 
-            AssertDeviceCreation<XInputFourLaneDrumkit>(VerifyDevice);
-            AssertDeviceCreation<SantrollerXInputFourLaneDrumkit>(VerifyDevice);
+        [Test]
+        public void GetPadThrowsCorrectly()
+            => CreateAndRun(_GetPadThrowsCorrectly);
 
-            AssertDeviceCreation<PS3FourLaneDrumkit>(VerifyDevice);
-            AssertDeviceCreation<PS3FourLaneDrumkit_ReportId>(VerifyDevice);
-            AssertDeviceCreation<WiiFourLaneDrumkit>(VerifyDevice);
-            AssertDeviceCreation<WiiFourLaneDrumkit_ReportId>(VerifyDevice);
-            AssertDeviceCreation<PS4FourLaneDrumkit>(VerifyDevice);
-            AssertDeviceCreation<PS4FourLaneDrumkit_NoReportId>(VerifyDevice);
-            AssertDeviceCreation<SantrollerHIDFourLaneDrumkit>(VerifyDevice);
-        }
-
-        private static void VerifyDevice(FourLaneDrumkit drumkit)
+        // These must be named differently from the actual test methods, or else the input system test fixture
+        // will fail to get the current method due to name ambiguity from reflection
+        public static void _GetPadReturnsCorrectPads(FourLaneDrumkit drumkit)
         {
             // Ensure GetPad returns the correct controls
             Assert.That(drumkit.GetPad(0), Is.EqualTo(drumkit.kick1));
@@ -49,8 +44,10 @@ namespace PlasticBand.Tests.Devices
             Assert.That(drumkit.GetPad(FourLanePad.YellowCymbal), Is.EqualTo(drumkit.yellowCymbal));
             Assert.That(drumkit.GetPad(FourLanePad.BlueCymbal), Is.EqualTo(drumkit.blueCymbal));
             Assert.That(drumkit.GetPad(FourLanePad.GreenCymbal), Is.EqualTo(drumkit.greenCymbal));
+        }
 
-            // Ensure correct GetPad throw behavior
+        public static void _GetPadThrowsCorrectly(FourLaneDrumkit drumkit)
+        {
             for (int i = -5; i < FourLaneDrumkit.PadCount + 5; i++)
             {
                 if (i < 0 || i >= FourLaneDrumkit.PadCount)

@@ -11,68 +11,47 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Tests.Devices
 {
-    public abstract class FiveFretGuitarHandler<TState> : IDeviceHandler<TState>
-        where TState : unmanaged, IInputStateTypeInfo
+    public sealed class FiveFretGuitarTests : PlasticBandTestFixture<FiveFretGuitar>
     {
-        public readonly FiveFretGuitar guitar;
-        public readonly AxisMode tiltMode;
-
-        protected virtual InputDevice device => guitar;
-        InputDevice IDeviceHandler<TState>.device => device;
-
-        public DpadControl dpad => guitar.dpad;
-
-        ButtonControl IDeviceHandler<TState>.southButton => null;
-        ButtonControl IDeviceHandler<TState>.eastButton => null;
-        ButtonControl IDeviceHandler<TState>.westButton => null;
-        ButtonControl IDeviceHandler<TState>.northButton => null;
-
-        public ButtonControl startButton => guitar.startButton;
-        public ButtonControl selectButton => guitar.selectButton;
-
-        public FiveFretGuitarHandler(FiveFretGuitar guitar, AxisMode tiltMode = AxisMode.Signed)
-        {
-            this.guitar = guitar;
-            this.tiltMode = tiltMode;
-        }
-
-        public abstract TState CreateState();
-        public abstract void SetDpad(ref TState state, DpadDirection dpad);
-        public abstract void SetFaceButtons(ref TState state, FaceButton buttons);
-
-        public abstract void SetFrets(ref TState state, FiveFret frets);
-        public abstract void SetWhammy(ref TState state, float value);
-        public abstract void SetTilt(ref TState state, float value);
-    }
-
-    public class FiveFretGuitarTests : PlasticBandTestFixture
-    {
-        public delegate void SetFiveFretAction<TState>(ref TState state, FiveFret fret)
-            where TState : unmanaged, IInputStateTypeInfo;
-
         public const FiveFret AllFrets = FiveFret.Green | FiveFret.Red | FiveFret.Yellow | FiveFret.Blue | FiveFret.Orange;
 
         [Test]
-        public void CanCreate()
-        {
-            AssertDeviceCreation<FiveFretGuitar>(VerifyDevice);
-        }
+        public void StrumAndDpadAreEquivalent()
+            => CreateAndRun(_StrumAndDpadAreEquivalent);
 
-        public static void VerifyDevice(FiveFretGuitar guitar)
+        [Test]
+        public void GetFretReturnsCorrectFrets()
+            => CreateAndRun(_GetFretReturnsCorrectFrets);
+
+        [Test]
+        public void GetFretThrowsCorrectly()
+            => CreateAndRun(_GetFretThrowsCorrectly);
+
+        // These must be named differently from the actual test methods, or else the input system test fixture
+        // will fail to get the current method due to name ambiguity from reflection
+        public static void _StrumAndDpadAreEquivalent(FiveFretGuitar guitar)
         {
-            // Ensure strum and d-pad up/down are equivalent
             Assert.That(guitar.strumUp, Is.EqualTo(guitar.dpad.up));
             Assert.That(guitar.strumDown, Is.EqualTo(guitar.dpad.down));
+        }
 
-            // Ensure GetFret works correctly
-            VerifyFrets(guitar.GetFret, guitar.GetFret,
+        public static void _GetFretReturnsCorrectFrets(FiveFretGuitar guitar)
+        {
+            _GetFretReturnsCorrectFrets(guitar.GetFret, guitar.GetFret,
                 guitar.greenFret, guitar.redFret, guitar.yellowFret, guitar.blueFret, guitar.orangeFret);
         }
 
-        public static void VerifyFrets(Func<int, ButtonControl> getByIndex, Func<FiveFret, ButtonControl> getByEnum,
+        public static void _GetFretThrowsCorrectly(FiveFretGuitar guitar)
+        {
+            _GetFretThrowsCorrectly(guitar.GetFret, guitar.GetFret);
+        }
+
+        // These methods are re-used for different sets of frets, including solo frets and Pro Guitar emulated frets,
+        // so they must take delegates and parameters for each fret control
+        public static void _GetFretReturnsCorrectFrets(
+            Func<int, ButtonControl> getByIndex, Func<FiveFret, ButtonControl> getByEnum,
             ButtonControl green, ButtonControl red, ButtonControl yellow, ButtonControl blue, ButtonControl orange)
         {
-            // Ensure the correct controls are returned
             Assert.That(getByIndex(0), Is.EqualTo(green));
             Assert.That(getByIndex(1), Is.EqualTo(red));
             Assert.That(getByIndex(2), Is.EqualTo(yellow));
@@ -84,8 +63,11 @@ namespace PlasticBand.Tests.Devices
             Assert.That(getByEnum(FiveFret.Yellow), Is.EqualTo(yellow));
             Assert.That(getByEnum(FiveFret.Blue), Is.EqualTo(blue));
             Assert.That(getByEnum(FiveFret.Orange), Is.EqualTo(orange));
+        }
 
-            // Ensure correct throw behavior
+        public static void _GetFretThrowsCorrectly(
+            Func<int, ButtonControl> getByIndex, Func<FiveFret, ButtonControl> getByEnum)
+        {
             for (int i = -5; i < FiveFretGuitar.FretCount + 5; i++)
             {
                 if (i < 0 || i >= FiveFretGuitar.FretCount)
@@ -109,59 +91,124 @@ namespace PlasticBand.Tests.Devices
                     Assert.DoesNotThrow(() => getByEnum(frets));
             }
         }
+    }
 
-        // FiveFretGuitar has no concrete state layout, no testing is done for it
-        // [Test]
-        // public void HandlesState()
-        // {
-        //     CreateAndRun<FiveFretGuitar>((guitar) => HandlesState(new FiveFretGuitarHandler(guitar)));
-        // }
+    public abstract class FiveFretGuitarTests<TGuitar, TState> : DeviceTestFixture<TGuitar, TState>
+        where TGuitar : FiveFretGuitar
+        where TState : unmanaged, IInputStateTypeInfo
+    {
+        public delegate void SetFiveFretAction(ref TState state, FiveFret fret);
 
-        public static void HandlesState<TState>(FiveFretGuitarHandler<TState> handler)
-            where TState : unmanaged, IInputStateTypeInfo
+        protected abstract AxisMode tiltMode { get; }
+
+        protected abstract void SetFrets(ref TState state, FiveFret frets);
+        protected abstract void SetWhammy(ref TState state, float value);
+        protected abstract void SetTilt(ref TState state, float value);
+
+        protected override ButtonControl GetMenuButton(TGuitar guitar, MenuButton button)
         {
-            var guitar = handler.guitar;
-
-            RecognizesCommonControls(handler);
-            RecognizesFrets(guitar, handler, handler.SetFrets, guitar.GetFretMask, guitar.GetFretMask,
-                guitar.greenFret, guitar.redFret, guitar.yellowFret, guitar.blueFret, guitar.orangeFret);
-
-            RecognizesUnsignedAxis(handler, guitar.whammy, handler.SetWhammy);
-            RecognizesAxis(handler, guitar.tilt, handler.tiltMode, handler.SetTilt);
+            switch (button)
+            {
+                case MenuButton.Start: return guitar.startButton;
+                case MenuButton.Select: return guitar.selectButton;
+                default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
+            }
         }
 
-        // This method is re-used for different sets of frets, including solo frets and Pro Guitar emulated frets,
-        // so it must take delegates and parameters for each fret control
-        public static void RecognizesFrets<TState>(InputDevice device, FiveFretGuitarHandler<TState> handler,
-            SetFiveFretAction<TState> setFret, Func<FiveFret> getMask, Func<InputEventPtr, FiveFret> getMaskFromEvent,
-            ButtonControl green, ButtonControl red, ButtonControl yellow, ButtonControl blue, ButtonControl orange)
-            where TState : unmanaged, IInputStateTypeInfo
-        {
-            var fretMap = new List<(FiveFret fret, ButtonControl control)>()
-            {
-                (FiveFret.Green, green),
-                (FiveFret.Red, red),
-                (FiveFret.Yellow, yellow),
-                (FiveFret.Blue, blue),
-                (FiveFret.Orange, orange),
-            };
+        protected override DpadControl GetDpad(TGuitar guitar) => guitar.dpad;
 
-            var fretList = new List<ButtonControl>(fretMap.Count);
-            for (var frets = FiveFret.None; frets <= AllFrets; frets++)
+        [Test]
+        public void StrumAndDpadAreEquivalent()
+            => CreateAndRun(FiveFretGuitarTests._StrumAndDpadAreEquivalent);
+
+        [Test]
+        public void GetFretReturnsCorrectFrets()
+            => CreateAndRun(FiveFretGuitarTests._GetFretReturnsCorrectFrets);
+
+        [Test]
+        public void GetFretThrowsCorrectly()
+            => CreateAndRun(FiveFretGuitarTests._GetFretThrowsCorrectly);
+
+        [Test]
+        public void RecognizesFrets() => CreateAndRun((guitar) =>
+        {
+            _RecognizesFrets(guitar, CreateState(), SetFrets,
+                guitar.greenFret, guitar.redFret, guitar.yellowFret, guitar.blueFret, guitar.orangeFret);
+        });
+
+        [Test]
+        public void GetFretMaskReturnsCorrectFrets() => CreateAndRun((guitar) =>
+        {
+            _GetFretMaskReturnsCorrectFrets(guitar, CreateState(), SetFrets, guitar.GetFretMask, guitar.GetFretMask,
+                guitar.greenFret, guitar.redFret, guitar.yellowFret, guitar.blueFret, guitar.orangeFret);
+        });
+
+        [Test]
+        public void RecognizesWhammy() => CreateAndRun((guitar) =>
+        {
+            RecognizesUnsignedAxis(guitar, CreateState(), guitar.whammy, SetWhammy);
+        });
+
+        [Test]
+        public void RecognizesTilt() => CreateAndRun((guitar) =>
+        {
+            RecognizesAxis(guitar, CreateState(), guitar.tilt, tiltMode, SetTilt);
+        });
+
+        // These methods are re-used for different sets of frets, including solo frets and Pro Guitar emulated frets,
+        // so it must take delegates and parameters for each fret control
+        // They must also be named differently from the actual test methods, or else the input system test fixture
+        // will fail to get the current method due to name ambiguity from reflection
+        public static void _RecognizesFrets(InputDevice device, TState state, SetFiveFretAction setFret,
+            ButtonControl green, ButtonControl red, ButtonControl yellow, ButtonControl blue, ButtonControl orange)
+        {
+            var fretList = new List<ButtonControl>(5);
+            for (var frets = FiveFret.None; frets <= FiveFretGuitarTests.AllFrets; frets++)
             {
-                var state = handler.CreateState();
                 setFret(ref state, frets);
 
-                foreach (var (fret, control) in fretMap)
-                {
-                    if ((frets & fret) != 0)
-                        fretList.Add(control);
-                }
+                if ((frets & FiveFret.Green) != 0) fretList.Add(green);
+                if ((frets & FiveFret.Red) != 0) fretList.Add(red);
+                if ((frets & FiveFret.Yellow) != 0) fretList.Add(yellow);
+                if ((frets & FiveFret.Blue) != 0) fretList.Add(blue);
+                if ((frets & FiveFret.Orange) != 0) fretList.Add(orange);
 
-                InputSystem.onEvent.CallOnce((eventPtr) => Assert.That(getMaskFromEvent(eventPtr), Is.EqualTo(frets)));
                 AssertButtonPress(device, state, fretList.ToArray());
-                Assert.That(getMask(), Is.EqualTo(frets));
                 fretList.Clear();
+            }
+        }
+
+        public static void _GetFretMaskReturnsCorrectFrets(InputDevice device, TState state,
+            SetFiveFretAction setFret, Func<FiveFret> getMask, Func<InputEventPtr, FiveFret> getMaskFromEvent,
+            ButtonControl green, ButtonControl red, ButtonControl yellow, ButtonControl blue, ButtonControl orange)
+        {
+            for (var frets = FiveFret.None; frets <= FiveFretGuitarTests.AllFrets; frets++)
+            {
+                setFret(ref state, frets);
+                InputSystem.QueueStateEvent(device, state);
+                InputSystem.Update();
+
+                var mask = getMask();
+                Assert.That(mask, Is.EqualTo(frets), "Fret mask is not correct!");
+
+                Assert.That((mask & FiveFret.Green) != 0, Is.EqualTo(green.isPressed), "Green fret state is not correct!");
+                Assert.That((mask & FiveFret.Red) != 0, Is.EqualTo(red.isPressed), "Red fret state is not correct!");
+                Assert.That((mask & FiveFret.Yellow) != 0, Is.EqualTo(yellow.isPressed), "Yellow fret state is not correct!");
+                Assert.That((mask & FiveFret.Blue) != 0, Is.EqualTo(blue.isPressed), "Blue fret state is not correct!");
+                Assert.That((mask & FiveFret.Orange) != 0, Is.EqualTo(orange.isPressed), "Orange fret state is not correct!");
+
+                // Not using InputSystem.onEvent since it doesn't handle NUnit assert exceptions correctly
+                using (_ = StateEvent.From(device, out var eventPtr))
+                {
+                    mask = getMaskFromEvent(eventPtr);
+                    Assert.That(mask, Is.EqualTo(frets), "Fret mask is not correct!");
+
+                    Assert.That((mask & FiveFret.Green) != 0, Is.EqualTo(green.IsPressedInEvent(eventPtr)), "Green fret state is not correct!");
+                    Assert.That((mask & FiveFret.Red) != 0, Is.EqualTo(red.IsPressedInEvent(eventPtr)), "Red fret state is not correct!");
+                    Assert.That((mask & FiveFret.Yellow) != 0, Is.EqualTo(yellow.IsPressedInEvent(eventPtr)), "Yellow fret state is not correct!");
+                    Assert.That((mask & FiveFret.Blue) != 0, Is.EqualTo(blue.IsPressedInEvent(eventPtr)), "Blue fret state is not correct!");
+                    Assert.That((mask & FiveFret.Orange) != 0, Is.EqualTo(orange.IsPressedInEvent(eventPtr)), "Orange fret state is not correct!");
+                }
             }
         }
     }

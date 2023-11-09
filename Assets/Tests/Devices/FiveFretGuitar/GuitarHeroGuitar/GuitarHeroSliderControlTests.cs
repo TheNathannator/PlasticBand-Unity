@@ -11,41 +11,41 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Tests.Devices
 {
-    public class GuitarHeroSliderControlTests : PlasticBandTestFixture
+    internal struct GuitarHeroSliderState : IInputStateTypeInfo
     {
-        private struct GuitarHeroSliderState : IInputStateTypeInfo
+        public FourCC format => new FourCC('G', 'H', 'S', 'L');
+
+        [InputControl(name = "touchGreen", layout = "GuitarHeroSlider", format = "BYTE")]
+        [InputControl(name = "touchRed", layout = "GuitarHeroSlider", format = "BYTE")]
+        [InputControl(name = "touchYellow", layout = "GuitarHeroSlider", format = "BYTE")]
+        [InputControl(name = "touchBlue", layout = "GuitarHeroSlider", format = "BYTE")]
+        [InputControl(name = "touchOrange", layout = "GuitarHeroSlider", format = "BYTE")]
+        public byte slider;
+    }
+
+    [InputControlLayout(stateType = typeof(GuitarHeroSliderState), hideInUI = true)]
+    internal class GuitarHeroSliderDevice : InputDevice
+    {
+        public ButtonControl touchGreen { get; private set; }
+        public ButtonControl touchRed { get; private set; }
+        public ButtonControl touchYellow { get; private set; }
+        public ButtonControl touchBlue { get; private set; }
+        public ButtonControl touchOrange { get; private set; }
+
+        protected override void FinishSetup()
         {
-            public FourCC format => new FourCC('G', 'H', 'S', 'L');
+            base.FinishSetup();
 
-            [InputControl(name = "touchGreen", layout = "GuitarHeroSlider", format = "BYTE")]
-            [InputControl(name = "touchRed", layout = "GuitarHeroSlider", format = "BYTE")]
-            [InputControl(name = "touchYellow", layout = "GuitarHeroSlider", format = "BYTE")]
-            [InputControl(name = "touchBlue", layout = "GuitarHeroSlider", format = "BYTE")]
-            [InputControl(name = "touchOrange", layout = "GuitarHeroSlider", format = "BYTE")]
-            public byte slider;
+            touchGreen = GetChildControl<GuitarHeroSliderControl>(nameof(touchGreen));
+            touchRed = GetChildControl<GuitarHeroSliderControl>(nameof(touchRed));
+            touchYellow = GetChildControl<GuitarHeroSliderControl>(nameof(touchYellow));
+            touchBlue = GetChildControl<GuitarHeroSliderControl>(nameof(touchBlue));
+            touchOrange = GetChildControl<GuitarHeroSliderControl>(nameof(touchOrange));
         }
+    }
 
-        [InputControlLayout(stateType = typeof(GuitarHeroSliderState), hideInUI = true)]
-        private class GuitarHeroSliderDevice : InputDevice
-        {
-            public ButtonControl touchGreen { get; private set; }
-            public ButtonControl touchRed { get; private set; }
-            public ButtonControl touchYellow { get; private set; }
-            public ButtonControl touchBlue { get; private set; }
-            public ButtonControl touchOrange { get; private set; }
-
-            protected override void FinishSetup()
-            {
-                base.FinishSetup();
-
-                touchGreen = GetChildControl<GuitarHeroSliderControl>(nameof(touchGreen));
-                touchRed = GetChildControl<GuitarHeroSliderControl>(nameof(touchRed));
-                touchYellow = GetChildControl<GuitarHeroSliderControl>(nameof(touchYellow));
-                touchBlue = GetChildControl<GuitarHeroSliderControl>(nameof(touchBlue));
-                touchOrange = GetChildControl<GuitarHeroSliderControl>(nameof(touchOrange));
-            }
-        }
-
+    internal class GuitarHeroSliderControlTests : PlasticBandTestFixture<GuitarHeroSliderDevice>
+    {
         public override void Setup()
         {
             base.Setup();
@@ -59,16 +59,14 @@ namespace PlasticBand.Tests.Devices
         }
 
         [Test]
-        public void CanCreate() => AssertDeviceCreation<GuitarHeroSliderDevice>();
+        public void HandlesWorldTourSlider()
+            => CreateAndRun((device) => HandlesSlider(device, GuitarHeroSliderControl.s_WTSliderLookup));
 
         [Test]
-        public void HandlesState()
-        {
-            CreateAndRun<GuitarHeroSliderDevice>((device) => HandlesState(device, GuitarHeroSliderControl.s_WTSliderLookup));
-            CreateAndRun<GuitarHeroSliderDevice>((device) => HandlesState(device, GuitarHeroSliderControl.s_GH5SliderLookup));
-        }
+        public void HandlesGH5Slider()
+            => CreateAndRun((device) => HandlesSlider(device, GuitarHeroSliderControl.s_GH5SliderLookup));
 
-        private static void HandlesState(GuitarHeroSliderDevice device, Dictionary<byte, FiveFret> sliderLookup)
+        private static void HandlesSlider(GuitarHeroSliderDevice device, Dictionary<byte, FiveFret> sliderLookup)
         {
             // Set initial state; no buttons should be pressed at this point
             byte sliderDefault = sliderLookup.First((pair) => pair.Value == FiveFret.None).Key;

@@ -7,34 +7,36 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Tests.Controls
 {
-    public class IntegerAxisControlTests : PlasticBandTestFixture
+    internal struct IntegerAxisState : IInputStateTypeInfo
     {
-        private struct IntegerAxisState : IInputStateTypeInfo
+        public FourCC format => new FourCC('I', 'A', 'X', 'S');
+
+        // For this test to work, the min and max value must be
+        // equal (in terms of absolute value) and of opposite signs
+        public const int MinValue = -MaxValue;
+        public const int MaxValue = 100;
+        public const int ZeroPoint = 0;
+        public const int NullValue = MaxValue / 10;
+
+        [InputControl(layout = "IntAxis", parameters = "minValue=-100,maxValue=100,zeroPoint=0,hasNullValue,nullValue=10")]
+        public int intAxis;
+    }
+
+    [InputControlLayout(stateType = typeof(IntegerAxisState), hideInUI = true)]
+    internal class IntegerAxisDevice : InputDevice
+    {
+        public IntegerAxisControl intAxis { get; private set; }
+
+        protected override void FinishSetup()
         {
-            public FourCC format => new FourCC('I', 'A', 'X', 'S');
-
-            // For this test to work, the min and max value must be
-            // equal (in terms of absolute value) and of opposite signs
-            public const int MinValue = -MaxValue;
-            public const int MaxValue = 100;
-            public const int ZeroPoint = 0;
-            public const int NullValue = MaxValue / 10;
-
-            [InputControl(layout = "IntAxis", parameters = "minValue=-100,maxValue=100,zeroPoint=0,hasNullValue,nullValue=10")]
-            public int intAxis;
+            base.FinishSetup();
+            intAxis = GetChildControl<IntegerAxisControl>(nameof(intAxis));
         }
+    }
 
-        [InputControlLayout(stateType = typeof(IntegerAxisState), hideInUI = true)]
-        private class IntegerAxisDevice : InputDevice
-        {
-            public IntegerAxisControl intAxis { get; private set; }
-
-            protected override void FinishSetup()
-            {
-                base.FinishSetup();
-                intAxis = GetChildControl<IntegerAxisControl>(nameof(intAxis));
-            }
-        }
+    internal class IntegerAxisControlTests : PlasticBandTestFixture<IntegerAxisDevice>
+    {
+        private const float kEpsilon = 1f / IntegerAxisState.MaxValue;
 
         public override void Setup()
         {
@@ -49,27 +51,68 @@ namespace PlasticBand.Tests.Controls
         }
 
         [Test]
-        public void CanCreate() => AssertDeviceCreation<IntegerAxisDevice>((device) =>
+        public void SetsMinValue() => CreateAndRun((device) =>
         {
-            var intAxis = device.intAxis;
-
-            Assert.That(intAxis.minValue, Is.EqualTo(IntegerAxisState.MinValue));
-            Assert.That(intAxis.maxValue, Is.EqualTo(IntegerAxisState.MaxValue));
-            Assert.That(intAxis.zeroPoint, Is.EqualTo(IntegerAxisState.ZeroPoint));
-
-            Assert.That(intAxis.hasNullValue, Is.True);
-            Assert.That(intAxis.nullValue, Is.EqualTo(IntegerAxisState.NullValue));
+            Assert.That(device.intAxis.minValue, Is.EqualTo(IntegerAxisState.MinValue));
         });
 
         [Test]
-        public void HandlesState() => CreateAndRun<IntegerAxisDevice>((device) =>
+        public void SetsMaxValue() => CreateAndRun((device) =>
         {
-            const float epsilon = 1f / IntegerAxisState.MaxValue;
+            Assert.That(device.intAxis.maxValue, Is.EqualTo(IntegerAxisState.MaxValue));
+        });
 
-            // Zero point
+        [Test]
+        public void SetsZeroPoint() => CreateAndRun((device) =>
+        {
+            Assert.That(device.intAxis.zeroPoint, Is.EqualTo(IntegerAxisState.ZeroPoint));
+        });
+
+        [Test]
+        public void SetsHasNullValue() => CreateAndRun((device) =>
+        {
+            Assert.That(device.intAxis.hasNullValue, Is.True);
+        });
+
+        [Test]
+        public void SetsNullValue() => CreateAndRun((device) =>
+        {
+            Assert.That(device.intAxis.nullValue, Is.EqualTo(IntegerAxisState.NullValue));
+        });
+
+        [Test]
+        public void HandlesMaxValue() => CreateAndRun((device) =>
+        {
+            var state = new IntegerAxisState() { intAxis = IntegerAxisState.MaxValue };
+            AssertAxisValue(device, state, 1f, kEpsilon, device.intAxis);
+        });
+
+        [Test]
+        public void HandlesMinValue() => CreateAndRun((device) =>
+        {
+            var state = new IntegerAxisState() { intAxis = IntegerAxisState.MinValue };
+            AssertAxisValue(device, state, -1f, kEpsilon, device.intAxis);
+        });
+
+        [Test]
+        public void HandlesZeroPoint() => CreateAndRun((device) =>
+        {
             var state = new IntegerAxisState() { intAxis = IntegerAxisState.ZeroPoint };
-            AssertAxisValue(device, state, 0f, epsilon, device.intAxis);
+            AssertAxisValue(device, state, 0f, kEpsilon, device.intAxis);
+        });
 
+        [Test]
+        public void HandlesNullValue() => CreateAndRun((device) =>
+        {
+            AssertValueNullChecked(device, IntegerAxisState.MaxValue, 1f);
+            AssertValueNullChecked(device, IntegerAxisState.MinValue, -1f);
+            AssertValueNullChecked(device, IntegerAxisState.ZeroPoint, 0f);
+        });
+
+        [Test]
+        public void HandlesRange() => CreateAndRun((device) =>
+        {
+            var state = new IntegerAxisState() { intAxis = IntegerAxisState.ZeroPoint };
             for (int i = 0; i <= IntegerAxisState.MaxValue; i++)
             {
                 // Ignore null value
@@ -79,21 +122,21 @@ namespace PlasticBand.Tests.Controls
                 float expectedValue = (float)i / IntegerAxisState.MaxValue;
 
                 // Positive
-                state.intAxis = i;
-                AssertAxisValue(device, state, expectedValue, epsilon, device.intAxis);
-
-                // Test that null value does not affect state
-                state.intAxis = IntegerAxisState.NullValue;
-                AssertAxisValue(device, state, expectedValue, epsilon, device.intAxis);
+                AssertValueNullChecked(device, i, expectedValue);
 
                 // Negative
-                state.intAxis = -i;
-                AssertAxisValue(device, state, -expectedValue, epsilon, device.intAxis);
-
-                // Test that null value does not affect state
-                state.intAxis = IntegerAxisState.NullValue;
-                AssertAxisValue(device, state, -expectedValue, epsilon, device.intAxis);
+                AssertValueNullChecked(device, -i, -expectedValue);
             }
         });
+
+        private static void AssertValueNullChecked(IntegerAxisDevice device, int rawValue, float normalValue)
+        {
+            var state = new IntegerAxisState() { intAxis = rawValue };
+            AssertAxisValue(device, state, normalValue, kEpsilon, device.intAxis);
+
+            // Test that null value does not affect state
+            state.intAxis = IntegerAxisState.NullValue;
+            AssertAxisValue(device, state, normalValue, kEpsilon, device.intAxis);
+        }
     }
 }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 using PlasticBand.Controls;
 using PlasticBand.Devices;
@@ -12,29 +9,29 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Tests.Devices
 {
-    public class RockBandPickupSwitchControlTests : PlasticBandTestFixture
+    internal struct RockBandPickupSwitchState : IInputStateTypeInfo
     {
-        private struct RockBandPickupSwitchState : IInputStateTypeInfo
+        public FourCC format => new FourCC('R', 'B', 'P', 'K');
+
+        [InputControl(layout = "RockBandPickupSwitch", parameters = "hasNullValue")]
+        public byte pickupSwitch;
+    }
+
+    [InputControlLayout(stateType = typeof(RockBandPickupSwitchState), hideInUI = true)]
+    internal class RockBandPickupSwitchDevice : InputDevice
+    {
+        public IntegerControl pickupSwitch { get; private set; }
+
+        protected override void FinishSetup()
         {
-            public FourCC format => new FourCC('R', 'B', 'P', 'K');
+            base.FinishSetup();
 
-            [InputControl(layout = "RockBandPickupSwitch", parameters = "hasNullValue")]
-            public byte pickupSwitch;
+            pickupSwitch = GetChildControl<RockBandPickupSwitchControl>(nameof(pickupSwitch));
         }
+    }
 
-        [InputControlLayout(stateType = typeof(RockBandPickupSwitchState), hideInUI = true)]
-        private class RockBandPickupSwitchDevice : InputDevice
-        {
-            public IntegerControl pickupSwitch { get; private set; }
-
-            protected override void FinishSetup()
-            {
-                base.FinishSetup();
-
-                pickupSwitch = GetChildControl<RockBandPickupSwitchControl>(nameof(pickupSwitch));
-            }
-        }
-
+    internal class RockBandPickupSwitchControlTests : PlasticBandTestFixture<RockBandPickupSwitchDevice>
+    {
         public override void Setup()
         {
             base.Setup();
@@ -48,10 +45,7 @@ namespace PlasticBand.Tests.Devices
         }
 
         [Test]
-        public void CanCreate() => AssertDeviceCreation<RockBandPickupSwitchDevice>();
-
-        [Test]
-        public void HandlesState() => CreateAndRun<RockBandPickupSwitchDevice>((device) =>
+        public void HandlesNotches() => CreateAndRun((device) =>
         {
             var state = new RockBandPickupSwitchState();
             AssertIntegerValue(device, state, 0, device.pickupSwitch);

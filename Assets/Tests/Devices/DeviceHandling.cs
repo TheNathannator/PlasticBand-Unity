@@ -6,6 +6,27 @@ namespace PlasticBand.Tests.Devices
 {
     public static class DeviceHandling
     {
+        public static bool IsUp(this DpadDirection dpad)
+            => dpad == DpadDirection.UpLeft || dpad <= DpadDirection.UpRight;
+        public static bool IsRight(this DpadDirection dpad)
+            => dpad >= DpadDirection.UpRight && dpad <= DpadDirection.DownRight;
+        public static bool IsDown(this DpadDirection dpad)
+            => dpad >= DpadDirection.DownRight && dpad <= DpadDirection.DownLeft;
+        public static bool IsLeft(this DpadDirection dpad)
+            => dpad >= DpadDirection.DownLeft && dpad <= DpadDirection.UpLeft;
+
+        internal static HidDpad ToHidDpad(this DpadDirection dpad)
+            // DpadDirection is equivalent to HidDpad
+            => (HidDpad)dpad;
+
+        public static void SetBit(ref this ushort value, ushort mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= (ushort)~mask;
+        }
+
         public static byte DenormalizeByteSigned(float value)
         {
             return (byte)IntegerAxisControl.Denormalize(value, byte.MinValue, byte.MaxValue, 0x80);
@@ -38,14 +59,12 @@ namespace PlasticBand.Tests.Devices
             buttonsField.SetBit((ushort)XInputButton.B, (buttons & FaceButton.East) != 0);
             buttonsField.SetBit((ushort)XInputButton.X, (buttons & FaceButton.West) != 0);
             buttonsField.SetBit((ushort)XInputButton.Y, (buttons & FaceButton.North) != 0);
-
-            SetMenuButtonsOnly(ref buttonsField, buttons);
         }
 
-        public static void SetMenuButtonsOnly(ref ushort buttonsField, FaceButton buttons)
+        public static void SetMenuButtons(ref ushort buttonsField, MenuButton buttons)
         {
-            buttonsField.SetBit((ushort)XInputButton.Start, (buttons & FaceButton.Start) != 0);
-            buttonsField.SetBit((ushort)XInputButton.Back, (buttons & FaceButton.Select) != 0);
+            buttonsField.SetBit((ushort)XInputButton.Start, (buttons & MenuButton.Start) != 0);
+            buttonsField.SetBit((ushort)XInputButton.Back, (buttons & MenuButton.Select) != 0);
         }
     }
 
@@ -62,14 +81,12 @@ namespace PlasticBand.Tests.Devices
             buttonsField.SetBit((ushort)PS3Button.Circle, (buttons & FaceButton.East) != 0);
             buttonsField.SetBit((ushort)PS3Button.Square, (buttons & FaceButton.West) != 0);
             buttonsField.SetBit((ushort)PS3Button.Triangle, (buttons & FaceButton.North) != 0);
-
-            SetMenuButtonsOnly(ref buttonsField, buttons);
         }
 
-        public static void SetMenuButtonsOnly(ref ushort buttonsField, FaceButton buttons)
+        public static void SetMenuButtons(ref ushort buttonsField, MenuButton buttons)
         {
-            buttonsField.SetBit((ushort)PS3Button.Start, (buttons & FaceButton.Start) != 0);
-            buttonsField.SetBit((ushort)PS3Button.Select, (buttons & FaceButton.Select) != 0);
+            buttonsField.SetBit((ushort)PS3Button.Start, (buttons & MenuButton.Start) != 0);
+            buttonsField.SetBit((ushort)PS3Button.Select, (buttons & MenuButton.Select) != 0);
         }
 
         public static short DenormalizeAccelerometer(float value)
@@ -93,14 +110,12 @@ namespace PlasticBand.Tests.Devices
             buttonsField.SetBit((ushort)PS4Button1.Circle, (buttons & FaceButton.East) != 0);
             buttonsField.SetBit((ushort)PS4Button1.Square, (buttons & FaceButton.West) != 0);
             buttonsField.SetBit((ushort)PS4Button1.Triangle, (buttons & FaceButton.North) != 0);
-
-            SetMenuButtonsOnly(ref buttonsField, buttons);
         }
 
-        public static void SetMenuButtonsOnly(ref ushort buttonsField, FaceButton buttons)
+        public static void SetMenuButtons(ref ushort buttonsField, MenuButton buttons)
         {
-            buttonsField.SetBit((ushort)PS4Button1.Start, (buttons & FaceButton.Start) != 0);
-            buttonsField.SetBit((ushort)PS4Button1.Select, (buttons & FaceButton.Select) != 0);
+            buttonsField.SetBit((ushort)PS4Button1.Start, (buttons & MenuButton.Start) != 0);
+            buttonsField.SetBit((ushort)PS4Button1.Select, (buttons & MenuButton.Select) != 0);
         }
     }
 }
