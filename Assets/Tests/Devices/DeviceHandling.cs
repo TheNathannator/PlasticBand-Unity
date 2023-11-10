@@ -47,24 +47,45 @@ namespace PlasticBand.Tests.Devices
     {
         public static void SetDpad(ref ushort buttonsField, DpadDirection dpad)
         {
-            buttonsField.SetBit((ushort)XInputButton.DpadUp, dpad.IsUp());
-            buttonsField.SetBit((ushort)XInputButton.DpadDown, dpad.IsDown());
-            buttonsField.SetBit((ushort)XInputButton.DpadLeft, dpad.IsLeft());
-            buttonsField.SetBit((ushort)XInputButton.DpadRight, dpad.IsRight());
+            var xButtons = (XInputButton)buttonsField;
+            SetDpad(ref xButtons, dpad);
+            buttonsField = (ushort)xButtons;
+        }
+
+        internal static void SetDpad(ref XInputButton buttonsField, DpadDirection dpad)
+        {
+            buttonsField.SetBit(XInputButton.DpadUp, dpad.IsUp());
+            buttonsField.SetBit(XInputButton.DpadDown, dpad.IsDown());
+            buttonsField.SetBit(XInputButton.DpadLeft, dpad.IsLeft());
+            buttonsField.SetBit(XInputButton.DpadRight, dpad.IsRight());
         }
 
         public static void SetFaceButtons(ref ushort buttonsField, FaceButton buttons)
         {
-            buttonsField.SetBit((ushort)XInputButton.A, (buttons & FaceButton.South) != 0);
-            buttonsField.SetBit((ushort)XInputButton.B, (buttons & FaceButton.East) != 0);
-            buttonsField.SetBit((ushort)XInputButton.X, (buttons & FaceButton.West) != 0);
-            buttonsField.SetBit((ushort)XInputButton.Y, (buttons & FaceButton.North) != 0);
+            var xButtons = (XInputButton)buttonsField;
+            SetFaceButtons(ref xButtons, buttons);
+            buttonsField = (ushort)xButtons;
+        }
+
+        internal static void SetFaceButtons(ref XInputButton buttonsField, FaceButton buttons)
+        {
+            buttonsField.SetBit(XInputButton.A, (buttons & FaceButton.South) != 0);
+            buttonsField.SetBit(XInputButton.B, (buttons & FaceButton.East) != 0);
+            buttonsField.SetBit(XInputButton.X, (buttons & FaceButton.West) != 0);
+            buttonsField.SetBit(XInputButton.Y, (buttons & FaceButton.North) != 0);
         }
 
         public static void SetMenuButtons(ref ushort buttonsField, MenuButton buttons)
         {
-            buttonsField.SetBit((ushort)XInputButton.Start, (buttons & MenuButton.Start) != 0);
-            buttonsField.SetBit((ushort)XInputButton.Back, (buttons & MenuButton.Select) != 0);
+            var xButtons = (XInputButton)buttonsField;
+            SetMenuButtons(ref xButtons, buttons);
+            buttonsField = (ushort)xButtons;
+        }
+
+        internal static void SetMenuButtons(ref XInputButton buttonsField, MenuButton buttons)
+        {
+            buttonsField.SetBit(XInputButton.Start, (buttons & MenuButton.Start) != 0);
+            buttonsField.SetBit(XInputButton.Back, (buttons & MenuButton.Select) != 0);
         }
     }
 
@@ -77,16 +98,30 @@ namespace PlasticBand.Tests.Devices
     {
         public static void SetFaceButtons(ref ushort buttonsField, FaceButton buttons)
         {
-            buttonsField.SetBit((ushort)PS3Button.Cross, (buttons & FaceButton.South) != 0);
-            buttonsField.SetBit((ushort)PS3Button.Circle, (buttons & FaceButton.East) != 0);
-            buttonsField.SetBit((ushort)PS3Button.Square, (buttons & FaceButton.West) != 0);
-            buttonsField.SetBit((ushort)PS3Button.Triangle, (buttons & FaceButton.North) != 0);
+            var psButtons = (PS3Button)buttonsField;
+            SetFaceButtons(ref psButtons, buttons);
+            buttonsField = (ushort)psButtons;
+        }
+
+        internal static void SetFaceButtons(ref PS3Button buttonsField, FaceButton buttons)
+        {
+            buttonsField.SetBit(PS3Button.Cross, (buttons & FaceButton.South) != 0);
+            buttonsField.SetBit(PS3Button.Circle, (buttons & FaceButton.East) != 0);
+            buttonsField.SetBit(PS3Button.Square, (buttons & FaceButton.West) != 0);
+            buttonsField.SetBit(PS3Button.Triangle, (buttons & FaceButton.North) != 0);
         }
 
         public static void SetMenuButtons(ref ushort buttonsField, MenuButton buttons)
         {
-            buttonsField.SetBit((ushort)PS3Button.Start, (buttons & MenuButton.Start) != 0);
-            buttonsField.SetBit((ushort)PS3Button.Select, (buttons & MenuButton.Select) != 0);
+            var psButtons = (PS3Button)buttonsField;
+            SetMenuButtons(ref psButtons, buttons);
+            buttonsField = (ushort)psButtons;
+        }
+
+        internal static void SetMenuButtons(ref PS3Button buttonsField, MenuButton buttons)
+        {
+            buttonsField.SetBit(PS3Button.Start, (buttons & MenuButton.Start) != 0);
+            buttonsField.SetBit(PS3Button.Select, (buttons & MenuButton.Select) != 0);
         }
 
         public static short DenormalizeAccelerometer(float value)

@@ -73,6 +73,11 @@ namespace PlasticBand.Tests
         {
             InputSystem.QueueStateEvent(device, state);
             InputSystem.Update();
+            AssertAxisValue(value, epsilon, axes);
+        }
+
+        public static void AssertAxisValue(float value, float epsilon, params AxisControl[] axes)
+        {
             foreach (var axis in axes)
             {
                 float axisValue = axis.value;

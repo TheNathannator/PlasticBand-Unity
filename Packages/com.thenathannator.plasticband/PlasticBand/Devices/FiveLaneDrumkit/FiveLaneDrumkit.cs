@@ -22,6 +22,32 @@ namespace PlasticBand.Devices
         Green = 0x20,
     }
 
+    internal interface IFiveLaneDrumkitState : IInputStateTypeInfo
+    {
+        bool red_east { get; set; }
+        bool yellow_north { get; set; }
+        bool blue_west { get; set; }
+        bool green_south { get; set; }
+        bool orange { get; set; }
+        bool kick { get; set; }
+
+        bool dpadUp { get; set; }
+        bool dpadDown { get; set; }
+        bool dpadLeft { get; set; }
+        bool dpadRight { get; set; }
+
+        bool start { get; set; }
+        bool select { get; set; }
+        bool system { get; set; }
+
+        byte redVelocity { get; set; }
+        byte yellowVelocity { get; set; }
+        byte blueVelocity { get; set; }
+        byte orangeVelocity { get; set; }
+        byte greenVelocity { get; set; }
+        byte kickVelocity { get; set; }
+    }
+
     /// <summary>
     /// A 5-lane (Guitar Hero) drumkit controller.
     /// </summary>

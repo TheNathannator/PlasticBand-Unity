@@ -29,33 +29,119 @@ namespace PlasticBand.Devices
         public byte orangeVelocity;
         public byte kickVelocity;
 
-        public bool south => (buttons & XInputButton.A) != 0;
-        public bool east => (buttons & XInputButton.B) != 0;
-        public bool west => (buttons & XInputButton.X) != 0;
-        public bool north => (buttons & XInputButton.Y) != 0;
+        public bool red_east
+        {
+            get => (buttons & XInputButton.B) != 0;
+            set => buttons.SetBit(XInputButton.B, value);
+        }
 
-        public bool red => east;
-        public bool yellow => north;
-        public bool blue => west;
-        public bool green => south;
-        public bool orange => (buttons & XInputButton.RightShoulder) != 0;
-        public bool kick => (buttons & XInputButton.LeftShoulder) != 0;
+        public bool yellow_north
+        {
+            get => (buttons & XInputButton.Y) != 0;
+            set => buttons.SetBit(XInputButton.Y, value);
+        }
 
-        public bool start => (buttons & XInputButton.Start) != 0;
-        public bool select => (buttons & XInputButton.Back) != 0;
-        public bool system => (buttons & XInputButton.Guide) != 0;
+        public bool blue_west
+        {
+            get => (buttons & XInputButton.X) != 0;
+            set => buttons.SetBit(XInputButton.X, value);
+        }
 
-        public bool dpadUp => (buttons & XInputButton.DpadUp) != 0;
-        public bool dpadDown => (buttons & XInputButton.DpadDown) != 0;
-        public bool dpadLeft => (buttons & XInputButton.DpadLeft) != 0;
-        public bool dpadRight => (buttons & XInputButton.DpadRight) != 0;
+        public bool green_south
+        {
+            get => (buttons & XInputButton.A) != 0;
+            set => buttons.SetBit(XInputButton.A, value);
+        }
 
-        byte IFiveLaneDrumkitState.redVelocity => redVelocity;
-        byte IFiveLaneDrumkitState.yellowVelocity => yellowVelocity;
-        byte IFiveLaneDrumkitState.blueVelocity => blueVelocity;
-        byte IFiveLaneDrumkitState.orangeVelocity => orangeVelocity;
-        byte IFiveLaneDrumkitState.greenVelocity => greenVelocity;
-        byte IFiveLaneDrumkitState.kickVelocity => kickVelocity;
+        public bool orange
+        {
+            get => (buttons & XInputButton.RightShoulder) != 0;
+            set => buttons.SetBit(XInputButton.RightShoulder, value);
+        }
+
+        public bool kick
+        {
+            get => (buttons & XInputButton.LeftShoulder) != 0;
+            set => buttons.SetBit(XInputButton.LeftShoulder, value);
+        }
+
+        public bool start
+        {
+            get => (buttons & XInputButton.Start) != 0;
+            set => buttons.SetBit(XInputButton.Start, value);
+        }
+
+        public bool select
+        {
+            get => (buttons & XInputButton.Back) != 0;
+            set => buttons.SetBit(XInputButton.Back, value);
+        }
+
+        public bool system
+        {
+            get => (buttons & XInputButton.Guide) != 0;
+            set => buttons.SetBit(XInputButton.Guide, value);
+        }
+
+        public bool dpadUp
+        {
+            get => (buttons & XInputButton.DpadUp) != 0;
+            set => buttons.SetBit(XInputButton.DpadUp, value);
+        }
+
+        public bool dpadDown
+        {
+            get => (buttons & XInputButton.DpadDown) != 0;
+            set => buttons.SetBit(XInputButton.DpadDown, value);
+        }
+
+        public bool dpadLeft
+        {
+            get => (buttons & XInputButton.DpadLeft) != 0;
+            set => buttons.SetBit(XInputButton.DpadLeft, value);
+        }
+
+        public bool dpadRight
+        {
+            get => (buttons & XInputButton.DpadRight) != 0;
+            set => buttons.SetBit(XInputButton.DpadRight, value);
+        }
+
+        byte IFiveLaneDrumkitState.redVelocity
+        {
+            get => redVelocity;
+            set => redVelocity = value;
+        }
+
+        byte IFiveLaneDrumkitState.yellowVelocity
+        {
+            get => yellowVelocity;
+            set => yellowVelocity = value;
+        }
+
+        byte IFiveLaneDrumkitState.blueVelocity
+        {
+            get => blueVelocity;
+            set => blueVelocity = value;
+        }
+
+        byte IFiveLaneDrumkitState.orangeVelocity
+        {
+            get => orangeVelocity;
+            set => orangeVelocity = value;
+        }
+
+        byte IFiveLaneDrumkitState.greenVelocity
+        {
+            get => greenVelocity;
+            set => greenVelocity = value;
+        }
+
+        byte IFiveLaneDrumkitState.kickVelocity
+        {
+            get => kickVelocity;
+            set => kickVelocity = value;
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

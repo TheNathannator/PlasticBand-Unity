@@ -45,37 +45,6 @@ namespace PlasticBand.Devices
         System = 1 << TranslatedFiveLaneButton.System,
     }
 
-    internal interface IFiveLaneDrumkitState : IInputStateTypeInfo
-    {
-        bool south { get; }
-        bool east { get; }
-        bool west { get; }
-        bool north { get; }
-
-        bool dpadUp { get; }
-        bool dpadDown { get; }
-        bool dpadLeft { get; }
-        bool dpadRight { get; }
-
-        bool start { get; }
-        bool select { get; }
-        bool system { get; }
-
-        bool red { get; }
-        bool yellow { get; }
-        bool blue { get; }
-        bool orange { get; }
-        bool green { get; }
-        bool kick { get; }
-
-        byte redVelocity { get; }
-        byte yellowVelocity { get; }
-        byte blueVelocity { get; }
-        byte orangeVelocity { get; }
-        byte greenVelocity { get; }
-        byte kickVelocity { get; }
-    }
-
     /// <summary>
     /// The format which <see cref="TranslatingFiveLaneDrumkit{TState}"/>s translate state into.
     /// </summary>
@@ -150,24 +119,24 @@ namespace PlasticBand.Devices
         {
             var translated = new TranslatedFiveLaneState()
             {
-                redPad       = state.red ? state.redVelocity : (byte)0,
-                yellowCymbal = state.yellow ? state.yellowVelocity : (byte)0,
-                bluePad      = state.blue ? state.blueVelocity : (byte)0,
+                redPad       = state.red_east ? state.redVelocity : (byte)0,
+                yellowCymbal = state.yellow_north ? state.yellowVelocity : (byte)0,
+                bluePad      = state.blue_west ? state.blueVelocity : (byte)0,
                 orangeCymbal = state.orange ? state.orangeVelocity : (byte)0,
-                greenPad     = state.green ? state.greenVelocity : (byte)0,
+                greenPad     = state.green_south ? state.greenVelocity : (byte)0,
                 kick         = state.kick ? state.kickVelocity : (byte)0,
             };
 
             // Face buttons; these are ignored if the corresponding pad/cymbal is also active
             var buttons = TranslatedFiveLaneButtonMask.None;
             // A, cross
-            if (translated.greenPad == 0 && state.south) buttons |= TranslatedFiveLaneButtonMask.South;
+            if (translated.greenPad == 0 && state.green_south) buttons |= TranslatedFiveLaneButtonMask.South;
             // B, circle
-            if (translated.redPad == 0 && state.east) buttons |= TranslatedFiveLaneButtonMask.East;
+            if (translated.redPad == 0 && state.red_east) buttons |= TranslatedFiveLaneButtonMask.East;
             // X, square
-            if (translated.bluePad == 0 && state.west) buttons |= TranslatedFiveLaneButtonMask.West;
+            if (translated.bluePad == 0 && state.blue_west) buttons |= TranslatedFiveLaneButtonMask.West;
             // Y, triangle
-            if (translated.yellowCymbal == 0 && state.north) buttons |= TranslatedFiveLaneButtonMask.North;
+            if (translated.yellowCymbal == 0 && state.yellow_north) buttons |= TranslatedFiveLaneButtonMask.North;
 
             if (state.dpadUp) buttons |= TranslatedFiveLaneButtonMask.DpadUp;
             if (state.dpadDown) buttons |= TranslatedFiveLaneButtonMask.DpadDown;

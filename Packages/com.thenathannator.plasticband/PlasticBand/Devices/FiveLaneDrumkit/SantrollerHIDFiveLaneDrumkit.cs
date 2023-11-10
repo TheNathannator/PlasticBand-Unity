@@ -1,11 +1,11 @@
+using System;
+using System.Runtime.InteropServices;
 using PlasticBand.Haptics;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
-using System.Runtime.InteropServices;
 
 
 // PlasticBand reference doc:
@@ -18,11 +18,28 @@ namespace PlasticBand.Devices
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct SantrollerFiveLaneDrumkitState : IFiveLaneDrumkitState
     {
+        [Flags]
+        public enum Button : ushort
+        {
+            None = 0,
+
+            Green = 0x0001,
+            Red = 0x0002,
+            Yellow = 0x0004,
+            Blue = 0x0008,
+            Orange = 0x0010,
+            Kick = 0x0020,
+
+            Select = 0x0040,
+            Start = 0x0080,
+            System = 0x0100,
+        }
+
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
 
-        public ushort buttons;
+        public Button buttons;
         public HidDpad dpad;
 
         public byte greenVelocity;
@@ -32,33 +49,120 @@ namespace PlasticBand.Devices
         public byte orangeVelocity;
         public byte kickVelocity;
 
-        public bool south => green;
-        public bool east => red;
-        public bool west => blue;
-        public bool north => yellow;
+        public bool red_east
+        {
+            get => (buttons & Button.Red) != 0;
+            set => buttons.SetBit(Button.Red, value);
+        }
 
-        public bool green => (buttons & 0x0001) != 0;
-        public bool red => (buttons & 0x0002) != 0;
-        public bool yellow => (buttons & 0x0004) != 0;
-        public bool blue => (buttons & 0x0008) != 0;
-        public bool orange => (buttons & 0x0010) != 0;
-        public bool kick => (buttons & 0x0020) != 0;
+        public bool yellow_north
+        {
+            get => (buttons & Button.Yellow) != 0;
+            set => buttons.SetBit(Button.Yellow, value);
+        }
 
-        public bool select => (buttons & 0x0040) != 0;
-        public bool start => (buttons & 0x0080) != 0;
-        public bool system => (buttons & 0x0100) != 0;
+        public bool blue_west
+        {
+            get => (buttons & Button.Blue) != 0;
+            set => buttons.SetBit(Button.Blue, value);
+        }
 
-        public bool dpadUp => dpad.IsUp();
-        public bool dpadRight => dpad.IsRight();
-        public bool dpadDown => dpad.IsDown();
-        public bool dpadLeft => dpad.IsLeft();
+        public bool green_south
+        {
+            get => (buttons & Button.Green) != 0;
+            set => buttons.SetBit(Button.Green, value);
+        }
 
-        byte IFiveLaneDrumkitState.redVelocity => redVelocity;
-        byte IFiveLaneDrumkitState.yellowVelocity => yellowVelocity;
-        byte IFiveLaneDrumkitState.blueVelocity => blueVelocity;
-        byte IFiveLaneDrumkitState.orangeVelocity => orangeVelocity;
-        byte IFiveLaneDrumkitState.greenVelocity => greenVelocity;
-        byte IFiveLaneDrumkitState.kickVelocity => kickVelocity;
+        public bool orange
+        {
+            get => (buttons & Button.Orange) != 0;
+            set => buttons.SetBit(Button.Orange, value);
+        }
+
+        public bool kick
+        {
+            get => (buttons & Button.Kick) != 0;
+            set => buttons.SetBit(Button.Kick, value);
+        }
+
+        public bool select
+        {
+            get => (buttons & Button.Select) != 0;
+            set => buttons.SetBit(Button.Select, value);
+        }
+
+        public bool start
+        {
+            get => (buttons & Button.Start) != 0;
+            set => buttons.SetBit(Button.Start, value);
+        }
+
+        public bool system
+        {
+            get => (buttons & Button.System) != 0;
+            set => buttons.SetBit(Button.System, value);
+        }
+
+
+        public bool dpadUp
+        {
+            get => dpad.IsUp();
+            set => dpad.SetUp(value);
+        }
+
+        public bool dpadRight
+        {
+            get => dpad.IsRight();
+            set => dpad.SetRight(value);
+        }
+
+        public bool dpadDown
+        {
+            get => dpad.IsDown();
+            set => dpad.SetDown(value);
+        }
+
+        public bool dpadLeft
+        {
+            get => dpad.IsLeft();
+            set => dpad.SetLeft(value);
+        }
+
+        byte IFiveLaneDrumkitState.redVelocity
+        {
+            get => redVelocity;
+            set => redVelocity = value;
+        }
+
+        byte IFiveLaneDrumkitState.yellowVelocity
+        {
+            get => yellowVelocity;
+            set => yellowVelocity = value;
+        }
+
+        byte IFiveLaneDrumkitState.blueVelocity
+        {
+            get => blueVelocity;
+            set => blueVelocity = value;
+        }
+
+        byte IFiveLaneDrumkitState.orangeVelocity
+        {
+            get => orangeVelocity;
+            set => orangeVelocity = value;
+        }
+
+        byte IFiveLaneDrumkitState.greenVelocity
+        {
+            get => greenVelocity;
+            set => greenVelocity = value;
+        }
+
+        byte IFiveLaneDrumkitState.kickVelocity
+        {
+            get => kickVelocity;
+            set => kickVelocity = value;
+        }
     }
 
     /// <summary>

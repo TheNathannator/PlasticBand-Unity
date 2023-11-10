@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using PlasticBand.Devices;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
 
@@ -64,5 +66,265 @@ namespace PlasticBand.Tests.Devices
                     Assert.DoesNotThrow(() => drumkit.GetPad(pads));
             }
         }
+    }
+
+    internal abstract class FiveLaneDrumkitTests<TDrumkit, TState> : FaceButtonDeviceTestFixture<TDrumkit, TState>
+        where TDrumkit : FiveLaneDrumkit
+        where TState : unmanaged, IFiveLaneDrumkitState
+    {
+        protected override ButtonControl GetFaceButton(TDrumkit drumkit, FaceButton button)
+        {
+            switch (button)
+            {
+                case FaceButton.South: return drumkit.buttonSouth;
+                case FaceButton.East: return drumkit.buttonEast;
+                case FaceButton.West: return drumkit.buttonWest;
+                case FaceButton.North: return drumkit.buttonNorth;
+                default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
+            }
+        }
+
+        protected override ButtonControl GetMenuButton(TDrumkit drumkit, MenuButton button)
+        {
+            switch (button)
+            {
+                case MenuButton.Start: return drumkit.startButton;
+                case MenuButton.Select: return drumkit.selectButton;
+                default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
+            }
+        }
+
+        protected override DpadControl GetDpad(TDrumkit drumkit) => drumkit.dpad;
+
+        protected override void SetDpad(ref TState state, DpadDirection dpad)
+        {
+            state.dpadUp = dpad.IsUp();
+            state.dpadDown = dpad.IsDown();
+            state.dpadLeft = dpad.IsLeft();
+            state.dpadRight = dpad.IsRight();
+        }
+
+        protected override void SetFaceButtons(ref TState state, FaceButton buttons)
+        {
+            state.green_south = (buttons & FaceButton.South) != 0;
+            state.red_east = (buttons & FaceButton.East) != 0;
+            state.blue_west = (buttons & FaceButton.West) != 0;
+            state.yellow_north = (buttons & FaceButton.North) != 0;
+        }
+
+        protected override void SetMenuButtons(ref TState state, MenuButton buttons)
+        {
+            state.start = (buttons & MenuButton.Start) != 0;
+            state.select = (buttons & MenuButton.Select) != 0;
+        }
+
+        protected void SetPad(ref TState state, FiveLanePad pad, float velocity)
+        {
+            bool hit = velocity > 0f;
+            byte rawVelocity = DeviceHandling.DenormalizeByteUnsigned(velocity);
+            switch (pad)
+            {
+                case FiveLanePad.Kick:
+                    state.kick = hit;
+                    state.kickVelocity = rawVelocity;
+                    break;
+
+                case FiveLanePad.Red:
+                    state.red_east = hit;
+                    state.redVelocity = rawVelocity;
+                    break;
+
+                case FiveLanePad.Yellow:
+                    state.yellow_north = hit;
+                    state.yellowVelocity = rawVelocity;
+                    break;
+
+                case FiveLanePad.Blue:
+                    state.blue_west = hit;
+                    state.blueVelocity = rawVelocity;
+                    break;
+
+                case FiveLanePad.Orange:
+                    state.orange = hit;
+                    state.orangeVelocity = rawVelocity;
+                    break;
+
+                case FiveLanePad.Green:
+                    state.green_south = hit;
+                    state.greenVelocity = rawVelocity;
+                    break;
+
+                default:
+                    throw new ArgumentException($"Invalid pad value {pad}!", nameof(pad));
+            }
+        }
+
+        [Test]
+        public void GetPadReturnsCorrectPads()
+            => CreateAndRun(FiveLaneDrumkitTests._GetPadReturnsCorrectPads);
+
+        [Test]
+        public void GetPadThrowsCorrectly()
+            => CreateAndRun(FiveLaneDrumkitTests._GetPadThrowsCorrectly);
+
+        [Test]
+        public void RecognizesPads() => CreateAndRun((drumkit) =>
+        {
+            var velocityList = new List<float> { 1f, 0.75f, 0.5f, 0.25f, 0f };
+            var padMap = new List<(FiveLanePad pad, ButtonControl button)>()
+            {
+                (FiveLanePad.Kick,   drumkit.kick),
+                (FiveLanePad.Red,    drumkit.redPad),
+                (FiveLanePad.Yellow, drumkit.yellowCymbal),
+                (FiveLanePad.Blue,   drumkit.bluePad),
+                (FiveLanePad.Orange, drumkit.orangeCymbal),
+                (FiveLanePad.Green,  drumkit.greenPad),
+            };
+
+            var state = CreateState();
+            foreach (var (pad, button) in padMap)
+            {
+                foreach (float velocity in velocityList)
+                {
+                    SetPad(ref state, pad, velocity);
+
+                    if (velocity > 0f)
+                        AssertButtonPress(drumkit, state, button);
+                    else
+                        AssertButtonPress(drumkit, state);
+
+                    AssertAxisValue(velocity, 1 / 100f, button);
+                }
+            }
+        });
+
+        [Test]
+        public void RecognizesPadChords() => CreateAndRun((drumkit) =>
+        {
+            var padMap = new List<(FiveLanePad pad, ButtonControl button)>()
+            {
+                (FiveLanePad.Kick,   drumkit.kick),
+                (FiveLanePad.Red,    drumkit.redPad),
+                (FiveLanePad.Yellow, drumkit.yellowCymbal),
+                (FiveLanePad.Blue,   drumkit.bluePad),
+                (FiveLanePad.Orange, drumkit.orangeCymbal),
+                (FiveLanePad.Green,  drumkit.greenPad),
+            };
+
+            var padList = new List<FiveLanePad>()
+            {
+                FiveLanePad.Red,
+                FiveLanePad.Yellow,
+                FiveLanePad.Blue,
+                FiveLanePad.Orange,
+                FiveLanePad.Green,
+            };
+
+            var chordList = new HashSet<FiveLanePad>();
+            foreach (var pad1 in padList)
+            {
+                foreach (var pad2 in padList)
+                {
+                    if (pad1 == pad2)
+                        continue;
+
+                    chordList.Add(pad1 | pad2);
+                    chordList.Add(FiveLanePad.Kick | pad1 | pad2);
+                }
+            }
+
+            var state = CreateState();
+            var buttonList = new List<ButtonControl>(3);
+            foreach (var chord in chordList)
+            {
+                foreach (var (pad, button) in padMap)
+                {
+                    if ((chord & pad) != 0)
+                    {
+                        SetPad(ref state, pad, 1f);
+                        buttonList.Add(button);
+                    }
+                    else
+                    {
+                        SetPad(ref state, pad, 0f);
+                    }
+                }
+
+                AssertButtonPress(drumkit, state, buttonList.ToArray());
+
+                // Velocity is not tested here since Wii drumkits only have a
+                // single velocity axis shared by all pads
+
+                buttonList.Clear();
+            }
+        });
+
+        [Test]
+        public void GetPadMaskReturnsCorrectPads() => CreateAndRun((drumkit) =>
+        {
+            var padMap = new List<(FiveLanePad pad, ButtonControl button)>()
+            {
+                (FiveLanePad.Kick,   drumkit.kick),
+                (FiveLanePad.Red,    drumkit.redPad),
+                (FiveLanePad.Yellow, drumkit.yellowCymbal),
+                (FiveLanePad.Blue,   drumkit.bluePad),
+                (FiveLanePad.Orange, drumkit.orangeCymbal),
+                (FiveLanePad.Green,  drumkit.greenPad),
+            };
+
+            // Used to generate the list of pads to run through
+            var padList = new List<FiveLanePad>()
+            {
+                FiveLanePad.Red,
+                FiveLanePad.Yellow,
+                FiveLanePad.Blue,
+                FiveLanePad.Orange,
+                FiveLanePad.Green,
+            };
+
+            var padsList = new HashSet<FiveLanePad>() { FiveLanePad.Kick };
+            foreach (var pad1 in padList)
+            {
+                padsList.Add(pad1);
+                foreach (var pad2 in padList)
+                {
+                    if (pad1 == pad2)
+                        continue;
+
+                    padsList.Add(pad1 | pad2);
+                    padsList.Add(FiveLanePad.Kick | pad1 | pad2);
+                }
+            }
+
+            var state = CreateState();
+            foreach (var pads in padsList)
+            {
+                foreach (var (pad, button) in padMap)
+                {
+                    SetPad(ref state, pad, (pads & pad) != 0 ? 1f : 0f);
+                }
+
+                InputSystem.QueueStateEvent(drumkit, state);
+                InputSystem.Update();
+
+                AssertMask(drumkit.GetPadMask(), pads, (button) => button.isPressed);
+                using (StateEvent.From(drumkit, out var eventPtr))
+                {
+                    AssertMask(drumkit.GetPadMask(eventPtr), pads, (button) => button.IsPressedInEvent(eventPtr));
+                }
+            }
+
+            void AssertMask(FiveLanePad mask, FiveLanePad targetMask, Func<ButtonControl, bool> buttonPressed)
+            {
+                Assert.That(mask, Is.EqualTo(targetMask), "Pad mask is not correct!");
+
+                Assert.That((mask & FiveLanePad.Kick) != 0,   Is.EqualTo(buttonPressed(drumkit.kick)), "Kick state is not correct!");
+                Assert.That((mask & FiveLanePad.Red) != 0,    Is.EqualTo(buttonPressed(drumkit.redPad)), "Red pad state is not correct!");
+                Assert.That((mask & FiveLanePad.Yellow) != 0, Is.EqualTo(buttonPressed(drumkit.yellowCymbal)), "Yellow cymbal state is not correct!");
+                Assert.That((mask & FiveLanePad.Blue) != 0,   Is.EqualTo(buttonPressed(drumkit.bluePad)), "Blue pad state is not correct!");
+                Assert.That((mask & FiveLanePad.Orange) != 0, Is.EqualTo(buttonPressed(drumkit.orangeCymbal)), "Orange cymbal state is not correct!");
+                Assert.That((mask & FiveLanePad.Green) != 0,  Is.EqualTo(buttonPressed(drumkit.greenPad)), "Green pad state is not correct!");
+            }
+        });
     }
 }

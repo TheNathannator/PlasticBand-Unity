@@ -135,4 +135,15 @@ namespace PlasticBand.LowLevel
         Turntable = 23,
         ProGuitar = 25,
     }
+
+    internal static class XInputExtensions
+    {
+        internal static void SetBit(ref this XInputButton value, XInputButton mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= ~mask;
+        }
+    }
 }

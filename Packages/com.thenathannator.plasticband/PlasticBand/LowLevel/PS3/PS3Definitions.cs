@@ -135,4 +135,15 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "gyro", layout = "Axis", format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         public ushort gyro;
     }
+
+    internal static class PS3Extensions
+    {
+        public static void SetBit(ref this PS3Button value, PS3Button mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= ~mask;
+        }
+    }
 }
