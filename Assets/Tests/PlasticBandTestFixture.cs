@@ -171,6 +171,13 @@ namespace PlasticBand.Tests
             void EventAssert(InputEventPtr eventPtr)
                 => assertMask(getMaskFromEvent(eventPtr), targetMask, (button) => button.IsPressedInEvent(eventPtr));
 
+            // Input event assert
+            using (InputSystem.onEvent.Assert(EventAssert))
+            {
+                InputSystem.QueueStateEvent(device, state);
+                InputSystem.Update();
+            }
+
             // Post-update assert
             UpdateAssert();
 
