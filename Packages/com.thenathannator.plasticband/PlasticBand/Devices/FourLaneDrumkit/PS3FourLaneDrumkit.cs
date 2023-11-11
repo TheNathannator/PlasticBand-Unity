@@ -24,43 +24,142 @@ namespace PlasticBand.Devices
         // TODO:
         // - Hardware verification
         // - Input ranges have yet to be determined
-        public byte yellowVelocity;
-        public byte redVelocity;
-        public byte greenVelocity;
-        public byte blueVelocity;
+        private byte m_YellowVelocity;
+        private byte m_RedVelocity;
+        private byte m_GreenVelocity;
+        private byte m_BlueVelocity;
 
-        public bool west => (buttons & PS3Button.Square) != 0;
-        public bool south => (buttons & PS3Button.Cross) != 0;
-        public bool east => (buttons & PS3Button.Circle) != 0;
-        public bool north => (buttons & PS3Button.Triangle) != 0;
+        public bool red_east
+        {
+            get => (buttons & PS3Button.Circle) != 0;
+            set => buttons.SetBit(PS3Button.Circle, value);
+        }
 
-        public bool red => east;
-        public bool yellow => north;
-        public bool blue => west;
-        public bool green => south;
+        public bool yellow_north
+        {
+            get => (buttons & PS3Button.Triangle) != 0;
+            set => buttons.SetBit(PS3Button.Triangle, value);
+        }
 
-        public bool kick1 => (buttons & PS3Button.L2) != 0;
-        public bool kick2 => (buttons & PS3Button.R2) != 0;
+        public bool blue_west
+        {
+            get => (buttons & PS3Button.Square) != 0;
+            set => buttons.SetBit(PS3Button.Square, value);
+        }
 
-        public bool select => (buttons & PS3Button.Select) != 0;
-        public bool start => (buttons & PS3Button.Start) != 0;
-        public bool system => (buttons & PS3Button.PlayStation) != 0;
+        public bool green_south
+        {
+            get => (buttons & PS3Button.Cross) != 0;
+            set => buttons.SetBit(PS3Button.Cross, value);
+        }
 
-        public bool pad => (buttons & PS3Button.L3) != 0;
-        public bool cymbal => (buttons & PS3Button.R3) != 0;
+        public bool kick1
+        {
+            get => (buttons & PS3Button.L2) != 0;
+            set => buttons.SetBit(PS3Button.L2, value);
+        }
 
-        public bool dpadUp => dpad.IsUp();
-        public bool dpadRight => dpad.IsRight();
-        public bool dpadDown => dpad.IsDown();
-        public bool dpadLeft => dpad.IsLeft();
+        public bool kick2
+        {
+            get => (buttons & PS3Button.R2) != 0;
+            set => buttons.SetBit(PS3Button.R2, value);
+        }
 
-        public byte redPadVelocity => (byte)~redVelocity;
-        public byte yellowPadVelocity => (byte)~yellowVelocity;
-        public byte bluePadVelocity => (byte)~blueVelocity;
-        public byte greenPadVelocity => (byte)~greenVelocity;
-        public byte yellowCymbalVelocity => (byte)~yellowVelocity;
-        public byte blueCymbalVelocity => (byte)~blueVelocity;
-        public byte greenCymbalVelocity => (byte)~greenVelocity;
+        public bool select
+        {
+            get => (buttons & PS3Button.Select) != 0;
+            set => buttons.SetBit(PS3Button.Select, value);
+        }
+
+        public bool start
+        {
+            get => (buttons & PS3Button.Start) != 0;
+            set => buttons.SetBit(PS3Button.Start, value);
+        }
+
+        public bool system
+        {
+            get => (buttons & PS3Button.PlayStation) != 0;
+            set => buttons.SetBit(PS3Button.PlayStation, value);
+        }
+
+        public bool pad
+        {
+            get => (buttons & PS3Button.L3) != 0;
+            set => buttons.SetBit(PS3Button.L3, value);
+        }
+
+        public bool cymbal
+        {
+            get => (buttons & PS3Button.R3) != 0;
+            set => buttons.SetBit(PS3Button.R3, value);
+        }
+
+        public bool dpadUp
+        {
+            get => dpad.IsUp();
+            set => dpad.SetUp(value);
+        }
+
+        public bool dpadRight
+        {
+            get => dpad.IsRight();
+            set => dpad.SetRight(value);
+        }
+
+        public bool dpadDown
+        {
+            get => dpad.IsDown();
+            set => dpad.SetDown(value);
+        }
+
+        public bool dpadLeft
+        {
+            get => dpad.IsLeft();
+            set => dpad.SetLeft(value);
+        }
+
+        public byte redPadVelocity
+        {
+            get => (byte)~m_RedVelocity;
+            set => m_RedVelocity = (byte)~value;
+        }
+
+        public byte yellowPadVelocity
+        {
+            get => (byte)~m_YellowVelocity;
+            set => m_YellowVelocity = (byte)~value;
+        }
+
+        public byte bluePadVelocity
+        {
+            get => (byte)~m_BlueVelocity;
+            set => m_BlueVelocity = (byte)~value;
+        }
+
+        public byte greenPadVelocity
+        {
+            get => (byte)~m_GreenVelocity;
+            set => m_GreenVelocity = (byte)~value;
+        }
+
+        public byte yellowCymbalVelocity
+        {
+            get => yellowPadVelocity;
+            set => yellowPadVelocity = value;
+        }
+
+        public byte blueCymbalVelocity
+        {
+            get => bluePadVelocity;
+            set => bluePadVelocity = value;
+        }
+
+        public byte greenCymbalVelocity
+        {
+            get => greenPadVelocity;
+            set => greenPadVelocity = value;
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -71,39 +170,34 @@ namespace PlasticBand.Devices
         public byte reportId;
         public PS3WiiFourLaneDrumkitState_NoReportId state;
 
-        public bool west => state.west;
-        public bool south => state.south;
-        public bool east => state.east;
-        public bool north => state.north;
+        public bool blue_west { get => state.blue_west; set => state.blue_west = value; }
+        public bool green_south { get => state.green_south; set => state.green_south = value; }
+        public bool red_east { get => state.red_east; set => state.red_east = value; }
+        public bool yellow_north { get => state.yellow_north; set => state.yellow_north = value; }
 
-        public bool red => state.red;
-        public bool yellow => state.yellow;
-        public bool blue => state.blue;
-        public bool green => state.green;
+        public bool kick1 { get => state.kick1; set => state.kick1 = value; }
+        public bool kick2 { get => state.kick2; set => state.kick2 = value; }
 
-        public bool kick1 => state.kick1;
-        public bool kick2 => state.kick2;
+        public bool select { get => state.select; set => state.select = value; }
+        public bool start { get => state.start; set => state.start = value; }
 
-        public bool select => state.select;
-        public bool start => state.start;
+        public bool pad { get => state.pad; set => state.pad = value; }
+        public bool cymbal { get => state.cymbal; set => state.cymbal = value; }
 
-        public bool pad => state.pad;
-        public bool cymbal => state.cymbal;
+        public bool system { get => state.system; set => state.system = value; }
 
-        public bool system => state.system;
+        public bool dpadUp { get => state.dpadUp; set => state.dpadUp = value; }
+        public bool dpadDown { get => state.dpadDown; set => state.dpadDown = value; }
+        public bool dpadLeft { get => state.dpadLeft; set => state.dpadLeft = value; }
+        public bool dpadRight { get => state.dpadRight; set => state.dpadRight = value; }
 
-        public bool dpadUp => state.dpadUp;
-        public bool dpadDown => state.dpadDown;
-        public bool dpadLeft => state.dpadLeft;
-        public bool dpadRight => state.dpadRight;
-
-        public byte redPadVelocity => state.redPadVelocity;
-        public byte yellowPadVelocity => state.yellowPadVelocity;
-        public byte bluePadVelocity => state.bluePadVelocity;
-        public byte greenPadVelocity => state.greenPadVelocity;
-        public byte yellowCymbalVelocity => state.yellowCymbalVelocity;
-        public byte blueCymbalVelocity => state.blueCymbalVelocity;
-        public byte greenCymbalVelocity => state.greenCymbalVelocity;
+        public byte redPadVelocity { get => state.redPadVelocity; set => state.redPadVelocity = value; }
+        public byte yellowPadVelocity { get => state.yellowPadVelocity; set => state.yellowPadVelocity = value; }
+        public byte bluePadVelocity { get => state.bluePadVelocity; set => state.bluePadVelocity = value; }
+        public byte greenPadVelocity { get => state.greenPadVelocity; set => state.greenPadVelocity = value; }
+        public byte yellowCymbalVelocity { get => state.yellowCymbalVelocity; set => state.yellowCymbalVelocity = value; }
+        public byte blueCymbalVelocity { get => state.blueCymbalVelocity; set => state.blueCymbalVelocity = value; }
+        public byte greenCymbalVelocity { get => state.greenCymbalVelocity; set => state.greenCymbalVelocity = value; }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

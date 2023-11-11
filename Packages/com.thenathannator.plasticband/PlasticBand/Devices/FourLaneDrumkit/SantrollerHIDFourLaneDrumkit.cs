@@ -1,10 +1,11 @@
+using System;
+using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.Utilities;
-using System.Runtime.InteropServices;
 
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/Santroller.md
@@ -16,11 +17,40 @@ namespace PlasticBand.Devices
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct SantrollerFourLaneDrumkitState : IFourLaneDrumkitState_Flags
     {
+        [Flags]
+        public enum Button : ushort
+        {
+            None = 0,
+
+            South = 0x0001,
+            East = 0x0002,
+            West = 0x0004,
+            North = 0x0008,
+
+            Red = East,
+            Yellow = North,
+            Blue = West,
+            Green = South,
+    
+            Pad = 0x0010,
+            Cymbal = 0x0020,
+
+            ColorFlags = Red | Yellow | Blue | Green,
+            TypeFlags = Pad | Cymbal,
+    
+            Kick1 = 0x0040,
+            Kick2 = 0x0080,
+
+            Select = 0x0100,
+            Start = 0x0200,
+            System = 0x0400,
+        }
+
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
 
-        public ushort buttons;
+        public Button buttons;
         public HidDpad dpad;
 
         public byte greenPadVelocity;
@@ -31,38 +61,137 @@ namespace PlasticBand.Devices
         public byte yellowCymbalVelocity;
         public byte blueCymbalVelocity;
 
-        public bool south => (buttons & 0x0001) != 0;
-        public bool east => (buttons & 0x0002) != 0;
-        public bool west => (buttons & 0x0004) != 0;
-        public bool north => (buttons & 0x0008) != 0;
+        public bool red_east
+        {
+            get => (buttons & Button.East) != 0;
+            set => buttons.SetBit(Button.East, value);
+        }
 
-        public bool red => east;
-        public bool yellow => north;
-        public bool blue => west;
-        public bool green => south;
+        public bool yellow_north
+        {
+            get => (buttons & Button.North) != 0;
+            set => buttons.SetBit(Button.North, value);
+        }
 
-        public bool pad => (buttons & 0x0010) != 0;
-        public bool cymbal => (buttons & 0x0020) != 0;
+        public bool blue_west
+        {
+            get => (buttons & Button.West) != 0;
+            set => buttons.SetBit(Button.West, value);
+        }
 
-        public bool kick1 => (buttons & 0x0040) != 0;
-        public bool kick2 => (buttons & 0x0080) != 0;
+        public bool green_south
+        {
+            get => (buttons & Button.South) != 0;
+            set => buttons.SetBit(Button.South, value);
+        }
 
-        public bool dpadUp => dpad.IsUp();
-        public bool dpadRight => dpad.IsRight();
-        public bool dpadDown => dpad.IsDown();
-        public bool dpadLeft => dpad.IsLeft();
+        public bool pad
+        {
+            get => (buttons & Button.Pad) != 0;
+            set => buttons.SetBit(Button.Pad, value);
+        }
 
-        public bool select => (buttons & 0x0100) != 0;
-        public bool start => (buttons & 0x0200) != 0;
-        public bool system => (buttons & 0x0400) != 0;
+        public bool cymbal
+        {
+            get => (buttons & Button.Cymbal) != 0;
+            set => buttons.SetBit(Button.Cymbal, value);
+        }
 
-        byte IFourLaneDrumkitState_Flags.redPadVelocity => redPadVelocity;
-        byte IFourLaneDrumkitState_Flags.yellowPadVelocity => yellowPadVelocity;
-        byte IFourLaneDrumkitState_Flags.bluePadVelocity => bluePadVelocity;
-        byte IFourLaneDrumkitState_Flags.greenPadVelocity => greenPadVelocity;
-        byte IFourLaneDrumkitState_Flags.yellowCymbalVelocity => yellowCymbalVelocity;
-        byte IFourLaneDrumkitState_Flags.blueCymbalVelocity => blueCymbalVelocity;
-        byte IFourLaneDrumkitState_Flags.greenCymbalVelocity => greenCymbalVelocity;
+        public bool kick1
+        {
+            get => (buttons & Button.Kick1) != 0;
+            set => buttons.SetBit(Button.Kick1, value);
+        }
+
+        public bool kick2
+        {
+            get => (buttons & Button.Kick2) != 0;
+            set => buttons.SetBit(Button.Kick2, value);
+        }
+
+        public bool dpadUp
+        {
+            get => dpad.IsUp();
+            set => dpad.SetUp(value);
+        }
+
+        public bool dpadRight
+        {
+            get => dpad.IsRight();
+            set => dpad.SetRight(value);
+        }
+
+        public bool dpadDown
+        {
+            get => dpad.IsDown();
+            set => dpad.SetDown(value);
+        }
+
+        public bool dpadLeft
+        {
+            get => dpad.IsLeft();
+            set => dpad.SetLeft(value);
+        }
+
+        public bool select
+        {
+            get => (buttons & Button.Select) != 0;
+            set => buttons.SetBit(Button.Select, value);
+        }
+
+        public bool start
+        {
+            get => (buttons & Button.Start) != 0;
+            set => buttons.SetBit(Button.Start, value);
+        }
+
+        public bool system
+        {
+            get => (buttons & Button.System) != 0;
+            set => buttons.SetBit(Button.System, value);
+        }
+
+        byte IFourLaneDrumkitState_Flags.redPadVelocity
+        {
+            get => redPadVelocity;
+            set => redPadVelocity = value;
+        }
+
+        byte IFourLaneDrumkitState_Flags.yellowPadVelocity
+        {
+            get => yellowPadVelocity;
+            set => yellowPadVelocity = value;
+        }
+
+        byte IFourLaneDrumkitState_Flags.bluePadVelocity
+        {
+            get => bluePadVelocity;
+            set => bluePadVelocity = value;
+        }
+
+        byte IFourLaneDrumkitState_Flags.greenPadVelocity
+        {
+            get => greenPadVelocity;
+            set => greenPadVelocity = value;
+        }
+
+        byte IFourLaneDrumkitState_Flags.yellowCymbalVelocity
+        {
+            get => yellowCymbalVelocity;
+            set => yellowCymbalVelocity = value;
+        }
+
+        byte IFourLaneDrumkitState_Flags.blueCymbalVelocity
+        {
+            get => blueCymbalVelocity;
+            set => blueCymbalVelocity = value;
+        }
+
+        byte IFourLaneDrumkitState_Flags.greenCymbalVelocity
+        {
+            get => greenCymbalVelocity;
+            set => greenCymbalVelocity = value;
+        }
     }
 
     /// <summary>

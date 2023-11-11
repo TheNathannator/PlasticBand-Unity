@@ -25,38 +25,144 @@ namespace PlasticBand.Devices
         public short blueVelocity;
         public short greenVelocity;
 
-        public bool south => (buttons & XInputButton.A) != 0;
-        public bool east => (buttons & XInputButton.B) != 0;
-        public bool west => (buttons & XInputButton.X) != 0;
-        public bool north => (buttons & XInputButton.Y) != 0;
+        public bool red_east
+        {
+            get => (buttons & XInputButton.B) != 0;
+            set => buttons.SetBit(XInputButton.B, value);
+        }
 
-        public bool red => east;
-        public bool yellow => north;
-        public bool blue => west;
-        public bool green => south;
+        public bool yellow_north
+        {
+            get => (buttons & XInputButton.Y) != 0;
+            set => buttons.SetBit(XInputButton.Y, value);
+        }
 
-        public bool kick1 => (buttons & XInputButton.LeftShoulder) != 0;
-        public bool kick2 => (buttons & XInputButton.LeftThumb) != 0;
+        public bool blue_west
+        {
+            get => (buttons & XInputButton.X) != 0;
+            set => buttons.SetBit(XInputButton.X, value);
+        }
 
-        public bool start => (buttons & XInputButton.Start) != 0;
-        public bool select => (buttons & XInputButton.Back) != 0;
-        public bool system => (buttons & XInputButton.Guide) != 0;
+        public bool green_south
+        {
+            get => (buttons & XInputButton.A) != 0;
+            set => buttons.SetBit(XInputButton.A, value);
+        }
 
-        public bool pad => (buttons & XInputButton.RightThumb) != 0;
-        public bool cymbal => (buttons & XInputButton.RightShoulder) != 0;
+        public bool kick1
+        {
+            get => (buttons & XInputButton.LeftShoulder) != 0;
+            set => buttons.SetBit(XInputButton.LeftShoulder, value);
+        }
 
-        public bool dpadUp => (buttons & XInputButton.DpadUp) != 0;
-        public bool dpadDown => (buttons & XInputButton.DpadDown) != 0;
-        public bool dpadLeft => (buttons & XInputButton.DpadLeft) != 0;
-        public bool dpadRight => (buttons & XInputButton.DpadRight) != 0;
+        public bool kick2
+        {
+            get => (buttons & XInputButton.LeftThumb) != 0;
+            set => buttons.SetBit(XInputButton.LeftThumb, value);
+        }
 
-        public byte redPadVelocity => (byte)((~redVelocity & 0x7FFF) >> 7);
-        public byte yellowPadVelocity => (byte)((~yellowVelocity & 0x7FFF) >> 7);
-        public byte bluePadVelocity => (byte)((~blueVelocity & 0x7FFF) >> 7);
-        public byte greenPadVelocity => (byte)((~greenVelocity & 0x7FFF) >> 7);
-        public byte yellowCymbalVelocity => (byte)((~yellowVelocity & 0x7FFF) >> 7);
-        public byte blueCymbalVelocity => (byte)((~blueVelocity & 0x7FFF) >> 7);
-        public byte greenCymbalVelocity => (byte)((~greenVelocity & 0x7FFF) >> 7);
+        public bool start
+        {
+            get => (buttons & XInputButton.Start) != 0;
+            set => buttons.SetBit(XInputButton.Start, value);
+        }
+
+        public bool select
+        {
+            get => (buttons & XInputButton.Back) != 0;
+            set => buttons.SetBit(XInputButton.Back, value);
+        }
+
+        public bool system
+        {
+            get => (buttons & XInputButton.Guide) != 0;
+            set => buttons.SetBit(XInputButton.Guide, value);
+        }
+
+        public bool pad
+        {
+            get => (buttons & XInputButton.RightThumb) != 0;
+            set => buttons.SetBit(XInputButton.RightThumb, value);
+        }
+
+        public bool cymbal
+        {
+            get => (buttons & XInputButton.RightShoulder) != 0;
+            set => buttons.SetBit(XInputButton.RightShoulder, value);
+        }
+
+
+        public bool dpadUp
+        {
+            get => (buttons & XInputButton.DpadUp) != 0;
+            set => buttons.SetBit(XInputButton.DpadUp, value);
+        }
+
+        public bool dpadDown
+        {
+            get => (buttons & XInputButton.DpadDown) != 0;
+            set => buttons.SetBit(XInputButton.DpadDown, value);
+        }
+
+        public bool dpadLeft
+        {
+            get => (buttons & XInputButton.DpadLeft) != 0;
+            set => buttons.SetBit(XInputButton.DpadLeft, value);
+        }
+
+        public bool dpadRight
+        {
+            get => (buttons & XInputButton.DpadRight) != 0;
+            set => buttons.SetBit(XInputButton.DpadRight, value);
+        }
+
+        byte IFourLaneDrumkitState_Flags.redPadVelocity
+        {
+            get => GetVelocity(redVelocity);
+            set => SetVelocity(ref redVelocity, value);
+        }
+
+        byte IFourLaneDrumkitState_Flags.yellowPadVelocity
+        {
+            get => GetVelocity(yellowVelocity);
+            set => SetVelocity(ref yellowVelocity, value);
+        }
+
+        byte IFourLaneDrumkitState_Flags.bluePadVelocity
+        {
+            get => GetVelocity(blueVelocity);
+            set => SetVelocity(ref blueVelocity, value);
+        }
+
+        byte IFourLaneDrumkitState_Flags.greenPadVelocity
+        {
+            get => GetVelocity(greenVelocity);
+            set => SetVelocity(ref greenVelocity, value);
+        }
+
+        byte IFourLaneDrumkitState_Flags.yellowCymbalVelocity
+        {
+            get => GetVelocity(yellowVelocity);
+            set => SetVelocity(ref yellowVelocity, value);
+        }
+
+        byte IFourLaneDrumkitState_Flags.blueCymbalVelocity
+        {
+            get => GetVelocity(blueVelocity);
+            set => SetVelocity(ref blueVelocity, value);
+        }
+
+        byte IFourLaneDrumkitState_Flags.greenCymbalVelocity
+        {
+            get => GetVelocity(greenVelocity);
+            set => SetVelocity(ref greenVelocity, value);
+        }
+
+        private static byte GetVelocity(short velocity)
+            => (byte)((~velocity & 0x7FFF) >> 7);
+
+        private static void SetVelocity(ref short velocity, byte value)
+            => velocity = (short)(~value << 7);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

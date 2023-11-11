@@ -51,56 +51,6 @@ namespace PlasticBand.Devices
         Kick2 = 1 << TranslatedFourLaneButton.Kick2,
     }
 
-    internal interface IFourLaneDrumkitState_Base : IInputStateTypeInfo
-    {
-        bool south { get; }
-        bool east { get; }
-        bool west { get; }
-        bool north { get; }
-
-        bool dpadUp { get; }
-        bool dpadDown { get; }
-        bool dpadLeft { get; }
-        bool dpadRight { get; }
-
-        bool start { get; }
-        bool select { get; }
-        bool system { get; }
-
-        bool kick1 { get; }
-        bool kick2 { get; }
-    }
-
-    internal interface IFourLaneDrumkitState_Flags : IFourLaneDrumkitState_Base
-    {
-        bool red { get; }
-        bool yellow { get; }
-        bool blue { get; }
-        bool green { get; }
-
-        bool pad { get; }
-        bool cymbal { get; }
-
-        byte redPadVelocity { get; }
-        byte yellowPadVelocity { get; }
-        byte bluePadVelocity { get; }
-        byte greenPadVelocity { get; }
-        byte yellowCymbalVelocity { get; }
-        byte blueCymbalVelocity { get; }
-        byte greenCymbalVelocity { get; }
-    }
-
-    internal interface IFourLaneDrumkitState_Distinct : IFourLaneDrumkitState_Base
-    {
-        byte redPad { get; }
-        byte yellowPad { get; }
-        byte bluePad { get; }
-        byte greenPad { get; }
-        byte yellowCymbal { get; }
-        byte blueCymbal { get; }
-        byte greenCymbal { get; }
-    }
-
     /// <summary>
     /// The format which <see cref="TranslatingFourLaneDrumkit"/>s translate state into.
     /// </summary>
@@ -165,10 +115,10 @@ namespace PlasticBand.Devices
             var pads = FourLanePad.None;
 
             // Retrieve flag values
-            bool red = state.red;
-            bool yellow = state.yellow;
-            bool blue = state.blue;
-            bool green = state.green;
+            bool red = state.red_east;
+            bool yellow = state.yellow_north;
+            bool blue = state.blue_west;
+            bool green = state.green_south;
             bool pad = state.pad;
             bool cymbal = state.cymbal;
             bool dpadUp = state.dpadUp;
@@ -243,23 +193,24 @@ namespace PlasticBand.Devices
             return pads;
         }
 
-        internal static TranslatedFourLaneButtonMask TranslateButtons<TState>(ref TState state, FourLanePad pads)
+        internal static TranslatedFourLaneButtonMask TranslateButtons<TState>(ref TState state, FourLanePad pads,
+            bool south_green, bool east_red, bool west_blue, bool north_yellow)
             where TState : unmanaged, IFourLaneDrumkitState_Base, IInputStateTypeInfo
         {
             var buttons = TranslatedFourLaneButtonMask.None;
 
             // Face buttons; these are ignored if the corresponding pad/cymbal is also active
             // A, cross
-            if ((pads & (FourLanePad.GreenPad | FourLanePad.GreenCymbal)) == 0 && state.south)
+            if ((pads & (FourLanePad.GreenPad | FourLanePad.GreenCymbal)) == 0 && south_green)
                 buttons |= TranslatedFourLaneButtonMask.South;
             // B, circle
-            if ((pads & FourLanePad.RedPad) == 0 && state.east)
+            if ((pads & FourLanePad.RedPad) == 0 && east_red)
                 buttons |= TranslatedFourLaneButtonMask.East;
             // X, square, 1
-            if ((pads & (FourLanePad.BluePad | FourLanePad.BlueCymbal)) == 0 && state.west)
+            if ((pads & (FourLanePad.BluePad | FourLanePad.BlueCymbal)) == 0 && west_blue)
                 buttons |= TranslatedFourLaneButtonMask.West;
             // Y, triangle, 2
-            if ((pads & (FourLanePad.YellowPad | FourLanePad.YellowCymbal)) == 0 && state.north)
+            if ((pads & (FourLanePad.YellowPad | FourLanePad.YellowCymbal)) == 0 && north_yellow)
                 buttons |= TranslatedFourLaneButtonMask.North;
 
             // D-pad
@@ -318,7 +269,8 @@ namespace PlasticBand.Devices
         internal static TranslatedFourLaneState TranslateState(ref TState state, ref bool hasFlags)
         {
             var pads = TranslatingFourLaneDrumkit.TranslatePads(ref state, ref hasFlags);
-            var buttons = TranslatingFourLaneDrumkit.TranslateButtons(ref state, pads);
+            var buttons = TranslatingFourLaneDrumkit.TranslateButtons(ref state, pads,
+                state.green_south, state.red_east, state.blue_west, state.yellow_north);
 
             return new TranslatedFourLaneState()
             {
@@ -369,7 +321,8 @@ namespace PlasticBand.Devices
             if (state.blueCymbal != 0) pads |= FourLanePad.BlueCymbal;
             if (state.greenCymbal != 0) pads |= FourLanePad.GreenCymbal;
 
-            var buttons = TranslatingFourLaneDrumkit.TranslateButtons(ref state, pads);
+            var buttons = TranslatingFourLaneDrumkit.TranslateButtons(ref state, pads,
+                state.south, state.east, state.west, state.north);
 
             return new TranslatedFourLaneState()
             {

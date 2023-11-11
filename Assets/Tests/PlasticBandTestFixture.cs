@@ -54,11 +54,12 @@ namespace PlasticBand.Tests
             }
         });
 
-        public static void CreateAndRun(Action<TDevice> action)
+        public void CreateAndRun(Action<TDevice> action)
         {
             TDevice device = InputSystem.AddDevice<TDevice>();
             try
             {
+                InitializeDevice(device);
                 action(device);
             }
             finally
@@ -66,6 +67,8 @@ namespace PlasticBand.Tests
                 InputSystem.RemoveDevice(device);
             }
         }
+
+        protected virtual void InitializeDevice(TDevice device) { }
 
         public static void AssertAxisValue<TState>(InputDevice device, TState state,
             float value, float epsilon, params AxisControl[] axes)

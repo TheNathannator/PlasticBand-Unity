@@ -41,30 +41,125 @@ namespace PlasticBand.Devices
         [FieldOffset(48)]
         public byte greenCymbal;
 
-        public bool west => (buttons1 & PS4Button1.Square) != 0;
-        public bool south => (buttons1 & PS4Button1.Cross) != 0;
-        public bool east => (buttons1 & PS4Button1.Circle) != 0;
-        public bool north => (buttons1 & PS4Button1.Triangle) != 0;
+        public bool south
+        {
+            get => (buttons1 & PS4Button1.Cross) != 0;
+            set => buttons1.SetBit(PS4Button1.Cross, value);
+        }
 
-        public bool kick1 => (buttons1 & PS4Button1.L2) != 0;
-        public bool kick2 => (buttons1 & PS4Button1.R2) != 0;
+        public bool east
+        {
+            get => (buttons1 & PS4Button1.Circle) != 0;
+            set => buttons1.SetBit(PS4Button1.Circle, value);
+        }
 
-        public bool select => (buttons1 & PS4Button1.Select) != 0;
-        public bool start => (buttons1 & PS4Button1.Start) != 0;
-        public bool system => (buttons2 & PS4Button2.PlayStation) != 0;
+        public bool west
+        {
+            get => (buttons1 & PS4Button1.Square) != 0;
+            set => buttons1.SetBit(PS4Button1.Square, value);
+        }
 
-        public bool dpadUp => buttons1.GetDpad().IsUp();
-        public bool dpadRight => buttons1.GetDpad().IsRight();
-        public bool dpadDown => buttons1.GetDpad().IsDown();
-        public bool dpadLeft => buttons1.GetDpad().IsLeft();
+        public bool north
+        {
+            get => (buttons1 & PS4Button1.Triangle) != 0;
+            set => buttons1.SetBit(PS4Button1.Triangle, value);
+        }
 
-        byte IFourLaneDrumkitState_Distinct.redPad => redPad;
-        byte IFourLaneDrumkitState_Distinct.yellowPad => yellowPad;
-        byte IFourLaneDrumkitState_Distinct.bluePad => bluePad;
-        byte IFourLaneDrumkitState_Distinct.greenPad => greenPad;
-        byte IFourLaneDrumkitState_Distinct.yellowCymbal => yellowCymbal;
-        byte IFourLaneDrumkitState_Distinct.blueCymbal => blueCymbal;
-        byte IFourLaneDrumkitState_Distinct.greenCymbal => greenCymbal;
+        public bool kick1
+        {
+            get => (buttons1 & PS4Button1.L2) != 0;
+            set => buttons1.SetBit(PS4Button1.L2, value);
+        }
+
+        public bool kick2
+        {
+            get => (buttons1 & PS4Button1.R2) != 0;
+            set => buttons1.SetBit(PS4Button1.R2, value);
+        }
+
+        public bool select
+        {
+            get => (buttons1 & PS4Button1.Select) != 0;
+            set => buttons1.SetBit(PS4Button1.Select, value);
+        }
+
+        public bool start
+        {
+            get => (buttons1 & PS4Button1.Start) != 0;
+            set => buttons1.SetBit(PS4Button1.Start, value);
+        }
+
+        public bool system
+        {
+            get => (buttons2 & PS4Button2.PlayStation) != 0;
+            set => buttons2.SetBit(PS4Button2.PlayStation, value);
+        }
+
+        public bool dpadUp
+        {
+            get => buttons1.GetDpad().IsUp();
+            set => buttons1.SetDpadUp(value);
+        }
+
+        public bool dpadRight
+        {
+            get => buttons1.GetDpad().IsRight();
+            set => buttons1.SetDpadRight(value);
+        }
+
+        public bool dpadDown
+        {
+            get => buttons1.GetDpad().IsDown();
+            set => buttons1.SetDpadDown(value);
+        }
+
+        public bool dpadLeft
+        {
+            get => buttons1.GetDpad().IsLeft();
+            set => buttons1.SetDpadLeft(value);
+        }
+
+        byte IFourLaneDrumkitState_Distinct.redPad
+        {
+            get => redPad;
+            set => redPad = value;
+        }
+
+        byte IFourLaneDrumkitState_Distinct.yellowPad
+        {
+            get => yellowPad;
+            set => yellowPad = value;
+        }
+
+        byte IFourLaneDrumkitState_Distinct.bluePad
+        {
+            get => bluePad;
+            set => bluePad = value;
+        }
+
+        byte IFourLaneDrumkitState_Distinct.greenPad
+        {
+            get => greenPad;
+            set => greenPad = value;
+        }
+
+        byte IFourLaneDrumkitState_Distinct.yellowCymbal
+        {
+            get => yellowCymbal;
+            set => yellowCymbal = value;
+        }
+
+        byte IFourLaneDrumkitState_Distinct.blueCymbal
+        {
+            get => blueCymbal;
+            set => blueCymbal = value;
+        }
+
+        byte IFourLaneDrumkitState_Distinct.greenCymbal
+        {
+            get => greenCymbal;
+            set => greenCymbal = value;
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -75,30 +170,30 @@ namespace PlasticBand.Devices
         public byte reportId;
         public PS4FourLaneDrumkitState_NoReportId state;
 
-        public bool south => state.south;
-        public bool east => state.east;
-        public bool west => state.west;
-        public bool north => state.north;
+        public bool south { get => state.south; set => state.south = value; }
+        public bool east { get => state.east; set => state.east = value; }
+        public bool west { get => state.west; set => state.west = value; }
+        public bool north { get => state.north; set => state.north = value; }
 
-        public bool dpadUp => state.dpadUp;
-        public bool dpadDown => state.dpadDown;
-        public bool dpadLeft => state.dpadLeft;
-        public bool dpadRight => state.dpadRight;
+        public bool dpadUp { get => state.dpadUp; set => state.dpadUp = value; }
+        public bool dpadDown { get => state.dpadDown; set => state.dpadDown = value; }
+        public bool dpadLeft { get => state.dpadLeft; set => state.dpadLeft = value; }
+        public bool dpadRight { get => state.dpadRight; set => state.dpadRight = value; }
 
-        public bool start => state.start;
-        public bool select => state.select;
-        public bool system => state.system;
+        public bool start { get => state.start; set => state.start = value; }
+        public bool select { get => state.select; set => state.select = value; }
+        public bool system { get => state.system; set => state.system = value; }
 
-        public byte redPad => state.redPad;
-        public byte yellowPad => state.yellowPad;
-        public byte bluePad => state.bluePad;
-        public byte greenPad => state.greenPad;
-        public byte yellowCymbal => state.yellowCymbal;
-        public byte blueCymbal => state.blueCymbal;
-        public byte greenCymbal => state.greenCymbal;
+        public byte redPad { get => state.redPad; set => state.redPad = value; }
+        public byte yellowPad { get => state.yellowPad; set => state.yellowPad = value; }
+        public byte bluePad { get => state.bluePad; set => state.bluePad = value; }
+        public byte greenPad { get => state.greenPad; set => state.greenPad = value; }
+        public byte yellowCymbal { get => state.yellowCymbal; set => state.yellowCymbal = value; }
+        public byte blueCymbal { get => state.blueCymbal; set => state.blueCymbal = value; }
+        public byte greenCymbal { get => state.greenCymbal; set => state.greenCymbal = value; }
 
-        public bool kick1 => state.kick1;
-        public bool kick2 => state.kick2;
+        public bool kick1 { get => state.kick1; set => state.kick1 = value; }
+        public bool kick2 { get => state.kick2; set => state.kick2 = value; }
     }
 
     [InputControlLayout(stateType = typeof(PSFourLaneDrumkitLayout), displayName = "PlayStation 4 Rock Band Drumkit", hideInUI = true)]

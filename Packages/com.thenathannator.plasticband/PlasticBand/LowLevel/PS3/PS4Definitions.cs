@@ -37,7 +37,7 @@ namespace PlasticBand.Devices.LowLevel
         PlayStation = 0x01,
     }
 
-    internal static class PS4ButtonExtensions
+    internal static class PS4Extensions
     {
         public static HidDpad GetDpad(this PS4Button1 buttons)
         {
@@ -49,9 +49,53 @@ namespace PlasticBand.Devices.LowLevel
             buttons = (buttons & ~PS4Button1.DpadMask) | ((PS4Button1)dpad & PS4Button1.DpadMask);
         }
 
+        public static void SetDpadUp(ref this PS4Button1 buttons, bool pressed)
+        {
+            var dpad = buttons.GetDpad();
+            dpad.SetUp(pressed);
+            buttons.SetDpad(dpad);
+        }
+
+        public static void SetDpadRight(ref this PS4Button1 buttons, bool pressed)
+        {
+            var dpad = buttons.GetDpad();
+            dpad.SetRight(pressed);
+            buttons.SetDpad(dpad);
+        }
+
+        public static void SetDpadDown(ref this PS4Button1 buttons, bool pressed)
+        {
+            var dpad = buttons.GetDpad();
+            dpad.SetDown(pressed);
+            buttons.SetDpad(dpad);
+        }
+
+        public static void SetDpadLeft(ref this PS4Button1 buttons, bool pressed)
+        {
+            var dpad = buttons.GetDpad();
+            dpad.SetLeft(pressed);
+            buttons.SetDpad(dpad);
+        }
+
         public static PS4Button1 AsPS4Buttons(this HidDpad dpad)
         {
             return (PS4Button1)dpad & PS4Button1.DpadMask;
+        }
+
+        public static void SetBit(ref this PS4Button1 value, PS4Button1 mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= ~mask;
+        }
+
+        public static void SetBit(ref this PS4Button2 value, PS4Button2 mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= ~mask;
         }
     }
 }
