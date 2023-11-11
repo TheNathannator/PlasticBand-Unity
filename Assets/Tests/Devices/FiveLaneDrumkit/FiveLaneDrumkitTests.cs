@@ -167,11 +167,9 @@ namespace PlasticBand.Tests.Devices
         public void GetPadThrowsCorrectly()
             => CreateAndRun(FiveLaneDrumkitTests._GetPadThrowsCorrectly);
 
-        [Test]
-        public void RecognizesPads() => CreateAndRun((drumkit) =>
+        private List<(FiveLanePad pad, ButtonControl button)> CreatePadMap(TDrumkit drumkit)
         {
-            var velocityList = new List<float> { 1f, 0.75f, 0.5f, 0.25f, 0f };
-            var padMap = new List<(FiveLanePad pad, ButtonControl button)>()
+            return new List<(FiveLanePad, ButtonControl)>()
             {
                 (FiveLanePad.Kick,   drumkit.kick),
                 (FiveLanePad.Red,    drumkit.redPad),
@@ -180,6 +178,46 @@ namespace PlasticBand.Tests.Devices
                 (FiveLanePad.Orange, drumkit.orangeCymbal),
                 (FiveLanePad.Green,  drumkit.greenPad),
             };
+        }
+
+        private HashSet<FiveLanePad> CreatePadsList()
+        {
+            var pads = new FiveLanePad[]
+            {
+                // Kicks are handled specially
+                // FiveLanePad.Kick,
+                FiveLanePad.Red,
+                FiveLanePad.Yellow,
+                FiveLanePad.Blue,
+                FiveLanePad.Orange,
+                FiveLanePad.Green,
+            };
+
+            var padsList = new HashSet<FiveLanePad>() { FiveLanePad.Kick };
+            foreach (var pad1 in pads)
+            {
+                foreach (var pad2 in pads)
+                {
+                    // Allow even if they're the same, so that single-pad entries are added as well
+                    // if (pad1 == pad2)
+                    //     continue;
+
+                    padsList.Add(pad1 | pad2);
+                    padsList.Add(FiveLanePad.Kick | pad1 | pad2);
+                }
+            }
+
+            // Test resetting to none at the end
+            padsList.Add(FiveLanePad.None);
+
+            return padsList;
+        }
+
+        [Test]
+        public void RecognizesPads() => CreateAndRun((drumkit) =>
+        {
+            var padMap = CreatePadMap(drumkit);
+            var velocityList = new List<float> { 1f, 0.75f, 0.5f, 0.25f, 0f };
 
             var state = CreateState();
             foreach (var (pad, button) in padMap)
@@ -201,41 +239,12 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void RecognizesPadChords() => CreateAndRun((drumkit) =>
         {
-            var padMap = new List<(FiveLanePad pad, ButtonControl button)>()
-            {
-                (FiveLanePad.Kick,   drumkit.kick),
-                (FiveLanePad.Red,    drumkit.redPad),
-                (FiveLanePad.Yellow, drumkit.yellowCymbal),
-                (FiveLanePad.Blue,   drumkit.bluePad),
-                (FiveLanePad.Orange, drumkit.orangeCymbal),
-                (FiveLanePad.Green,  drumkit.greenPad),
-            };
-
-            var padList = new List<FiveLanePad>()
-            {
-                FiveLanePad.Red,
-                FiveLanePad.Yellow,
-                FiveLanePad.Blue,
-                FiveLanePad.Orange,
-                FiveLanePad.Green,
-            };
-
-            var chordList = new HashSet<FiveLanePad>();
-            foreach (var pad1 in padList)
-            {
-                foreach (var pad2 in padList)
-                {
-                    if (pad1 == pad2)
-                        continue;
-
-                    chordList.Add(pad1 | pad2);
-                    chordList.Add(FiveLanePad.Kick | pad1 | pad2);
-                }
-            }
+            var padMap = CreatePadMap(drumkit);
+            var padsList = CreatePadsList();
 
             var state = CreateState();
             var buttonList = new List<ButtonControl>(3);
-            foreach (var chord in chordList)
+            foreach (var chord in padsList)
             {
                 foreach (var (pad, button) in padMap)
                 {
@@ -262,39 +271,8 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void GetPadMaskReturnsCorrectPads() => CreateAndRun((drumkit) =>
         {
-            var padMap = new List<(FiveLanePad pad, ButtonControl button)>()
-            {
-                (FiveLanePad.Kick,   drumkit.kick),
-                (FiveLanePad.Red,    drumkit.redPad),
-                (FiveLanePad.Yellow, drumkit.yellowCymbal),
-                (FiveLanePad.Blue,   drumkit.bluePad),
-                (FiveLanePad.Orange, drumkit.orangeCymbal),
-                (FiveLanePad.Green,  drumkit.greenPad),
-            };
-
-            // Used to generate the list of pads to run through
-            var padList = new List<FiveLanePad>()
-            {
-                FiveLanePad.Red,
-                FiveLanePad.Yellow,
-                FiveLanePad.Blue,
-                FiveLanePad.Orange,
-                FiveLanePad.Green,
-            };
-
-            var padsList = new HashSet<FiveLanePad>() { FiveLanePad.Kick };
-            foreach (var pad1 in padList)
-            {
-                padsList.Add(pad1);
-                foreach (var pad2 in padList)
-                {
-                    if (pad1 == pad2)
-                        continue;
-
-                    padsList.Add(pad1 | pad2);
-                    padsList.Add(FiveLanePad.Kick | pad1 | pad2);
-                }
-            }
+            var padMap = CreatePadMap(drumkit);
+            var padsList = CreatePadsList();
 
             var state = CreateState();
             foreach (var pads in padsList)
