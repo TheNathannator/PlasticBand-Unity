@@ -185,30 +185,18 @@ namespace PlasticBand.Tests.Devices
             for (var frets = FiveFret.None; frets <= FiveFretGuitarTests.AllFrets; frets++)
             {
                 setFret(ref state, frets);
-                InputSystem.QueueStateEvent(device, state);
-                InputSystem.Update();
+                AssertButtonsWithEventUpdate(device, state, frets, getMask, getMaskFromEvent, AssertMask);
+            }
 
-                var mask = getMask();
-                Assert.That(mask, Is.EqualTo(frets), "Fret mask is not correct!");
+            void AssertMask(FiveFret mask, FiveFret targetMask, Func<ButtonControl, bool> buttonPressed)
+            {
+                Assert.That(mask, Is.EqualTo(targetMask), "Fret mask is not correct!");
 
-                Assert.That((mask & FiveFret.Green) != 0, Is.EqualTo(green.isPressed), "Green fret state is not correct!");
-                Assert.That((mask & FiveFret.Red) != 0, Is.EqualTo(red.isPressed), "Red fret state is not correct!");
-                Assert.That((mask & FiveFret.Yellow) != 0, Is.EqualTo(yellow.isPressed), "Yellow fret state is not correct!");
-                Assert.That((mask & FiveFret.Blue) != 0, Is.EqualTo(blue.isPressed), "Blue fret state is not correct!");
-                Assert.That((mask & FiveFret.Orange) != 0, Is.EqualTo(orange.isPressed), "Orange fret state is not correct!");
-
-                // Not using InputSystem.onEvent since it doesn't handle NUnit assert exceptions correctly
-                using (_ = StateEvent.From(device, out var eventPtr))
-                {
-                    mask = getMaskFromEvent(eventPtr);
-                    Assert.That(mask, Is.EqualTo(frets), "Fret mask is not correct!");
-
-                    Assert.That((mask & FiveFret.Green) != 0, Is.EqualTo(green.IsPressedInEvent(eventPtr)), "Green fret state is not correct!");
-                    Assert.That((mask & FiveFret.Red) != 0, Is.EqualTo(red.IsPressedInEvent(eventPtr)), "Red fret state is not correct!");
-                    Assert.That((mask & FiveFret.Yellow) != 0, Is.EqualTo(yellow.IsPressedInEvent(eventPtr)), "Yellow fret state is not correct!");
-                    Assert.That((mask & FiveFret.Blue) != 0, Is.EqualTo(blue.IsPressedInEvent(eventPtr)), "Blue fret state is not correct!");
-                    Assert.That((mask & FiveFret.Orange) != 0, Is.EqualTo(orange.IsPressedInEvent(eventPtr)), "Orange fret state is not correct!");
-                }
+                Assert.That((mask & FiveFret.Green) != 0, Is.EqualTo(buttonPressed(green)), "Green fret state is not correct!");
+                Assert.That((mask & FiveFret.Red) != 0, Is.EqualTo(buttonPressed(red)), "Red fret state is not correct!");
+                Assert.That((mask & FiveFret.Yellow) != 0, Is.EqualTo(buttonPressed(yellow)), "Yellow fret state is not correct!");
+                Assert.That((mask & FiveFret.Blue) != 0, Is.EqualTo(buttonPressed(blue)), "Blue fret state is not correct!");
+                Assert.That((mask & FiveFret.Orange) != 0, Is.EqualTo(buttonPressed(orange)), "Orange fret state is not correct!");
             }
         }
     }

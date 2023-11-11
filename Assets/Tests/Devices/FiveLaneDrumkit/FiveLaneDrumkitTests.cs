@@ -304,14 +304,7 @@ namespace PlasticBand.Tests.Devices
                     SetPad(ref state, pad, (pads & pad) != 0 ? 1f : 0f);
                 }
 
-                InputSystem.QueueStateEvent(drumkit, state);
-                InputSystem.Update();
-
-                AssertMask(drumkit.GetPadMask(), pads, (button) => button.isPressed);
-                using (StateEvent.From(drumkit, out var eventPtr))
-                {
-                    AssertMask(drumkit.GetPadMask(eventPtr), pads, (button) => button.IsPressedInEvent(eventPtr));
-                }
+                AssertButtonsWithEventUpdate(drumkit, state, pads, drumkit.GetPadMask, drumkit.GetPadMask, AssertMask);
             }
 
             void AssertMask(FiveLanePad mask, FiveLanePad targetMask, Func<ButtonControl, bool> buttonPressed)

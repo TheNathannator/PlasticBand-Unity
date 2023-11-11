@@ -156,5 +156,30 @@ namespace PlasticBand.Tests
             setButton(ref state, 0f);
             AssertAxisValue(device, state, 0f, 0.001f, button);
         }
+
+        public delegate void AssertButtonsAction<TMask>(TMask result, TMask expected, Func<ButtonControl, bool> getPressed);
+
+        /// <summary>
+        /// Asserts the state of buttons across both input events and post-update properties.
+        /// </summary>
+        public static void AssertButtonsWithEventUpdate<TState, TMask>(InputDevice device, TState state,
+            TMask targetMask, Func<TMask> getMask, Func<InputEventPtr, TMask> getMaskFromEvent,
+            AssertButtonsAction<TMask> assertMask)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            void UpdateAssert() => assertMask(getMask(), targetMask, (button) => button.isPressed);
+            void EventAssert(InputEventPtr eventPtr)
+                => assertMask(getMaskFromEvent(eventPtr), targetMask, (button) => button.IsPressedInEvent(eventPtr));
+
+            // Post-update assert
+            UpdateAssert();
+
+            // Input event assert using post-update state
+            // Not strictly necessary, but might as well to be thorough
+            using (StateEvent.From(device, out var eventPtr))
+            {
+                EventAssert(eventPtr);
+            }
+        }
     }
 }
