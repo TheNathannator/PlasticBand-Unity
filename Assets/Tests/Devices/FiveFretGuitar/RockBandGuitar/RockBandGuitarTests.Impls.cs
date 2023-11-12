@@ -8,7 +8,7 @@ namespace PlasticBand.Tests.Devices
     using SantrollerHIDButton = SantrollerHIDRockBandGuitarState.Button;
 
     internal class XInputRockBandGuitarTests
-        : RockBandGuitarTests<XInputRockBandGuitar, XInputRockBandGuitarState>
+        : RockBandGuitarTests_SoloFlag<XInputRockBandGuitar, XInputRockBandGuitarState>
     {
         protected override XInputRockBandGuitarState CreateState()
             => new XInputRockBandGuitarState()
@@ -45,7 +45,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class SantrollerXInputRockBandGuitarTests
-        : RockBandGuitarTests<SantrollerXInputRockBandGuitar, XInputRockBandGuitarState>
+        : RockBandGuitarTests_SoloFlag<SantrollerXInputRockBandGuitar, XInputRockBandGuitarState>
     {
         protected override AxisMode tiltMode => AxisMode.Signed;
 
@@ -84,7 +84,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class PS3RockBandGuitarTests_NoReportId
-        : RockBandGuitarTests<PS3RockBandGuitar, PS3RockBandGuitarState_NoReportId>
+        : RockBandGuitarTests_SoloFlag<PS3RockBandGuitar, PS3RockBandGuitarState_NoReportId>
     {
         protected override PS3RockBandGuitarState_NoReportId CreateState()
             => new PS3RockBandGuitarState_NoReportId()
@@ -123,7 +123,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class PS3RockBandGuitarTests_ReportId
-        : RockBandGuitarTests<PS3RockBandGuitar_ReportId, PS3RockBandGuitarState_ReportId>
+        : RockBandGuitarTests_SoloFlag<PS3RockBandGuitar_ReportId, PS3RockBandGuitarState_ReportId>
     {
         protected override PS3RockBandGuitarState_ReportId CreateState()
             => new PS3RockBandGuitarState_ReportId()
@@ -165,7 +165,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class WiiRockBandGuitarTests_NoReportId
-        : RockBandGuitarTests<WiiRockBandGuitar, WiiRockBandGuitarState_NoReportId>
+        : RockBandGuitarTests_SoloFlag<WiiRockBandGuitar, WiiRockBandGuitarState_NoReportId>
     {
         protected override WiiRockBandGuitarState_NoReportId CreateState()
             => new WiiRockBandGuitarState_NoReportId()
@@ -207,7 +207,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class WiiRockBandGuitarTests_ReportId
-        : RockBandGuitarTests<WiiRockBandGuitar_ReportId, WiiRockBandGuitarState_ReportId>
+        : RockBandGuitarTests_SoloFlag<WiiRockBandGuitar_ReportId, WiiRockBandGuitarState_ReportId>
     {
         protected override WiiRockBandGuitarState_ReportId CreateState()
             => new WiiRockBandGuitarState_ReportId()
@@ -253,7 +253,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class PS4RockBandGuitarTests_ReportId
-        : RockBandGuitarTests<PS4RockBandGuitar, PS4RockBandGuitarState_ReportId>
+        : RockBandGuitarTests_SoloFlag<PS4RockBandGuitar, PS4RockBandGuitarState_ReportId>
     {
         protected override AxisMode tiltMode => AxisMode.Unsigned;
 
@@ -297,7 +297,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class PS4RockBandGuitarTests_NoReportId
-        : RockBandGuitarTests<PS4RockBandGuitar_NoReportId, PS4RockBandGuitarState_NoReportId>
+        : RockBandGuitarTests_SoloFlag<PS4RockBandGuitar_NoReportId, PS4RockBandGuitarState_NoReportId>
     {
         protected override AxisMode tiltMode => AxisMode.Unsigned;
 
@@ -338,7 +338,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class SantrollerHIDRockBandGuitarTests
-        : RockBandGuitarTests<SantrollerHIDRockBandGuitar, SantrollerHIDRockBandGuitarState>
+        : RockBandGuitarTests_SoloDistinct<SantrollerHIDRockBandGuitar, SantrollerHIDRockBandGuitarState>
     {
         protected override AxisMode tiltMode => AxisMode.Signed;
 

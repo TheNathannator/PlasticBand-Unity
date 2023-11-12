@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using NUnit.Framework;
 using PlasticBand.Devices;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Tests.Devices
@@ -36,8 +38,6 @@ namespace PlasticBand.Tests.Devices
 
         protected abstract void SetSoloFrets(ref TState state, FiveFret frets);
 
-        // Not handled by RockBandPickupSwitchControlTests, 
-        // as not all RB guitar layouts use RockBandPickupSwitchControl
         protected abstract void SetPickupSwitch(ref TState state, int value);
 
         [Test]
@@ -49,15 +49,6 @@ namespace PlasticBand.Tests.Devices
             => CreateAndRun(RockBandGuitarTests._GetSoloFretThrowsCorrectly);
 
         [Test]
-        [Ignore("Does not work correctly due to regular and solo frets registering at the same time on some guitars")]
-        public void HandlesSoloFrets() => CreateAndRun((guitar) =>
-        {
-            _RecognizesFrets(guitar, CreateState(), SetSoloFrets,
-                guitar.soloGreen, guitar.soloRed, guitar.soloYellow, guitar.soloBlue, guitar.soloOrange);
-        });
-
-        [Test]
-        // [Ignore("Does not work correctly due to regular and solo frets registering at the same time on some guitars")]
         public void GetSoloFretMaskReturnsCorrectFrets() => CreateAndRun((guitar) =>
         {
             _GetFretMaskReturnsCorrectFrets(guitar, CreateState(), SetSoloFrets, guitar.GetSoloFretMask, guitar.GetSoloFretMask,
@@ -67,14 +58,75 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void HandlesPickupSwitch() => CreateAndRun((guitar) =>
         {
-            // Not handled by RockBandPickupSwitchControlTests, 
-            // as not all RB guitar layouts use RockBandPickupSwitchControl
             var state = CreateState();
             for (int notch = 0; notch < RockBandGuitar.PickupNotchCount; notch++)
             {
                 SetPickupSwitch(ref state, notch);
                 AssertIntegerValue(guitar, state, notch, guitar.pickupSwitch);
             }
+        });
+    }
+
+    public abstract class RockBandGuitarTests_SoloFlag<TGuitar, TState> : RockBandGuitarTests<TGuitar, TState>
+        where TGuitar : RockBandGuitar
+        where TState : unmanaged, IInputStateTypeInfo
+    {
+        [Test]
+        public void HandlesSoloFrets() => CreateAndRun((guitar) =>
+        {
+            var state = CreateState();
+            var fretList = new List<ButtonControl>(10);
+            for (var frets = FiveFret.None; frets <= FiveFretGuitarTests.AllFrets; frets++)
+            {
+                SetSoloFrets(ref state, frets);
+
+                if ((frets & FiveFret.Green) != 0)
+                {
+                    // The normal frets must be included since both 
+                    // regular and solo frets share the same button bits
+                    fretList.Add(guitar.greenFret);
+                    fretList.Add(guitar.soloGreen);
+                }
+
+                if ((frets & FiveFret.Red) != 0)
+                {
+                    fretList.Add(guitar.redFret);
+                    fretList.Add(guitar.soloRed);
+                }
+
+                if ((frets & FiveFret.Yellow) != 0)
+                {
+                    fretList.Add(guitar.yellowFret);
+                    fretList.Add(guitar.soloYellow);
+                }
+
+                if ((frets & FiveFret.Blue) != 0)
+                {
+                    fretList.Add(guitar.blueFret);
+                    fretList.Add(guitar.soloBlue);
+                }
+
+                if ((frets & FiveFret.Orange) != 0)
+                {
+                    fretList.Add(guitar.orangeFret);
+                    fretList.Add(guitar.soloOrange);
+                }
+
+                AssertButtonPress(guitar, state, fretList.ToArray());
+                fretList.Clear();
+            }
+        });
+    }
+
+    public abstract class RockBandGuitarTests_SoloDistinct<TGuitar, TState> : RockBandGuitarTests<TGuitar, TState>
+        where TGuitar : RockBandGuitar
+        where TState : unmanaged, IInputStateTypeInfo
+    {
+        [Test]
+        public void HandlesSoloFrets() => CreateAndRun((guitar) =>
+        {
+            _RecognizesFrets(guitar, CreateState(), SetSoloFrets,
+                guitar.soloGreen, guitar.soloRed, guitar.soloYellow, guitar.soloBlue, guitar.soloOrange);
         });
     }
 }

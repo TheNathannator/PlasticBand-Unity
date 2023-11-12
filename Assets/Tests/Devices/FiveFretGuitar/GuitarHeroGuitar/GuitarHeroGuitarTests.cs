@@ -44,8 +44,7 @@ namespace PlasticBand.Tests.Devices
         protected override AxisMode tiltMode => AxisMode.Signed;
         protected virtual bool supportsAccelerometers => true;
 
-        // Handled by GuitarHeroSliderControlTests
-        // protected abstract void SetTouchFrets(ref TState state, FiveFret fret);
+        protected abstract void SetSliderValue(ref TState state, byte value);
 
         protected abstract void SetAccelerometerX(ref TState state, float value);
         protected abstract void SetAccelerometerY(ref TState state, float value);
@@ -64,14 +63,16 @@ namespace PlasticBand.Tests.Devices
             => CreateAndRun(GuitarHeroGuitarTests._GetTouchFretThrowsCorrectly);
 
         [Test]
-        [Ignore("TODO")]
-        public void HandlesTouchFrets() => CreateAndRun((guitar) =>
-        {
-            Assert.Pass("This test is currently handled by GuitarHeroSliderControlTests.");
-            // FiveFretGuitarTests.RecognizesFrets(guitar, handler,
-            //     handler.SetTouchFrets, guitar.GetTouchFretMask, guitar.GetTouchFretMask,
-            //     guitar.touchGreen, guitar.touchRed, guitar.touchYellow, guitar.touchBlue, guitar.touchOrange);
-        });
+        public void HandlesWorldTourSlider()
+            => CreateAndRun((guitar) =>
+                GuitarHeroSliderControlTests._HandlesWorldTourSlider(guitar, CreateState(), SetSliderValue,
+                guitar.touchGreen, guitar.touchRed, guitar.touchYellow, guitar.touchBlue, guitar.touchOrange));
+
+        [Test]
+        public void HandlesGH5Slider()
+            => CreateAndRun((guitar) =>
+                GuitarHeroSliderControlTests._HandlesGH5Slider(guitar, CreateState(), SetSliderValue,
+                guitar.touchGreen, guitar.touchRed, guitar.touchYellow, guitar.touchBlue, guitar.touchOrange));
 
         [Test]
         public void HandlesAccelerometers() => CreateAndRun((guitar) =>

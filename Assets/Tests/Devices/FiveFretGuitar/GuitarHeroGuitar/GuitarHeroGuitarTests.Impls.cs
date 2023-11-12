@@ -37,6 +37,13 @@ namespace PlasticBand.Tests.Devices
             state.whammy = XInputFiveFretGuitarHandling.GetWhammy(value);
         }
 
+        protected override void SetSliderValue(ref XInputGuitarHeroGuitarState state, byte value)
+        {
+            // The Xbox 360 slider value is strange: the value is assigned to both the upper and lower byte
+            // of the short, but values of 0x80 or greater result in an upper byte of one less than the lower byte
+            state.slider = (short)-((sbyte)value * -0x0101);
+        }
+
         protected override void SetAccelerometerX(ref XInputGuitarHeroGuitarState state, float value)
             => SetTilt(ref state, value);
 
@@ -83,6 +90,11 @@ namespace PlasticBand.Tests.Devices
             state.whammy = XInputFiveFretGuitarHandling.GetWhammy(value);
         }
 
+        protected override void SetSliderValue(ref SantrollerXInputGuitarHeroGuitarState state, byte value)
+        {
+            state.slider = (short)-((sbyte)value * -0x0101);
+        }
+
         protected override void SetAccelerometerX(ref SantrollerXInputGuitarHeroGuitarState state, float value)
             => throw new NotSupportedException($"{nameof(SantrollerXInputGuitarHeroGuitar)} does not support the accelerometer axes!");
 
@@ -124,6 +136,11 @@ namespace PlasticBand.Tests.Devices
         protected override void SetWhammy(ref PS3GuitarHeroGuitarState_NoReportId state, float value)
         {
             state.whammy = PS3GuitarHeroGuitarHandling.GetWhammy(value);
+        }
+
+        protected override void SetSliderValue(ref PS3GuitarHeroGuitarState_NoReportId state, byte value)
+        {
+            state.slider = value;
         }
 
         protected override void SetAccelerometerX(ref PS3GuitarHeroGuitarState_NoReportId state, float value)
@@ -174,6 +191,11 @@ namespace PlasticBand.Tests.Devices
         protected override void SetWhammy(ref PS3GuitarHeroGuitarState_ReportId state, float value)
         {
             state.state.whammy = PS3GuitarHeroGuitarHandling.GetWhammy(value);
+        }
+
+        protected override void SetSliderValue(ref PS3GuitarHeroGuitarState_ReportId state, byte value)
+        {
+            state.state.slider = value;
         }
 
         protected override void SetAccelerometerX(ref PS3GuitarHeroGuitarState_ReportId state, float value)
@@ -231,6 +253,11 @@ namespace PlasticBand.Tests.Devices
         protected override void SetWhammy(ref SantrollerHIDGuitarHeroGuitarState state, float value)
         {
             state.whammy = DeviceHandling.DenormalizeByteUnsigned(value);
+        }
+
+        protected override void SetSliderValue(ref SantrollerHIDGuitarHeroGuitarState state, byte value)
+        {
+            state.slider = value;
         }
 
         protected override void SetAccelerometerX(ref SantrollerHIDGuitarHeroGuitarState state, float value)

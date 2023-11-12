@@ -58,31 +58,54 @@ namespace PlasticBand.Tests.Devices
             base.TearDown();
         }
 
+        public delegate void SetSliderAction<TState>(ref TState state, byte value)
+            where TState : unmanaged, IInputStateTypeInfo;
+
+        private static void SetSliderValue(ref GuitarHeroSliderState state, byte value)
+            => state.slider = value;
+
         [Test]
         public void HandlesWorldTourSlider()
-            => CreateAndRun((device) => HandlesSlider(device, GuitarHeroSliderControl.s_WTSliderLookup));
+            => CreateAndRun((device) => _HandlesWorldTourSlider(device, new GuitarHeroSliderState(), SetSliderValue,
+                device.touchGreen, device.touchRed, device.touchYellow, device.touchBlue, device.touchOrange));
 
         [Test]
         public void HandlesGH5Slider()
-            => CreateAndRun((device) => HandlesSlider(device, GuitarHeroSliderControl.s_GH5SliderLookup));
+            => CreateAndRun((device) => _HandlesGH5Slider(device, new GuitarHeroSliderState(), SetSliderValue,
+                device.touchGreen, device.touchRed, device.touchYellow, device.touchBlue, device.touchOrange));
 
-        private static void HandlesSlider(GuitarHeroSliderDevice device, Dictionary<byte, FiveFret> sliderLookup)
+        // These must be named differently from the actual test methods, or else the input system test fixture
+        // will fail to get the current method due to name ambiguity from reflection
+        public static void _HandlesWorldTourSlider<TState>(InputDevice device, TState state, SetSliderAction<TState> setSlider,
+            ButtonControl green, ButtonControl red, ButtonControl yellow, ButtonControl blue, ButtonControl orange)
+            where TState : unmanaged, IInputStateTypeInfo
+            => HandlesSlider(device, state, GuitarHeroSliderControl.s_WTSliderLookup, setSlider,
+                green, red, yellow, blue, orange);
+
+        public static void _HandlesGH5Slider<TState>(InputDevice device, TState state, SetSliderAction<TState> setSlider,
+            ButtonControl green, ButtonControl red, ButtonControl yellow, ButtonControl blue, ButtonControl orange)
+            where TState : unmanaged, IInputStateTypeInfo
+            => HandlesSlider(device, state, GuitarHeroSliderControl.s_GH5SliderLookup, setSlider,
+                green, red, yellow, blue, orange);
+
+        // TODO: Make usable with GuitarHeroGuitar
+        private static void HandlesSlider<TState>(InputDevice device, TState state, 
+            Dictionary<byte, FiveFret> sliderLookup, SetSliderAction<TState> setSlider,
+            ButtonControl green, ButtonControl red, ButtonControl yellow, ButtonControl blue, ButtonControl orange)
+            where TState : unmanaged, IInputStateTypeInfo
         {
             // Set initial state; no buttons should be pressed at this point
             byte sliderDefault = sliderLookup.First((pair) => pair.Value == FiveFret.None).Key;
-            var state = new GuitarHeroSliderState()
-            {
-                slider = sliderDefault
-            };
+            setSlider(ref state, sliderDefault);
             AssertButtonPress(device, state);
 
             var fretMap = new List<(FiveFret fret, ButtonControl control)>()
             {
-                (FiveFret.Green, device.touchGreen),
-                (FiveFret.Red, device.touchRed),
-                (FiveFret.Yellow, device.touchYellow),
-                (FiveFret.Blue, device.touchBlue),
-                (FiveFret.Orange, device.touchOrange),
+                (FiveFret.Green, green),
+                (FiveFret.Red, red),
+                (FiveFret.Yellow, yellow),
+                (FiveFret.Blue, blue),
+                (FiveFret.Orange, orange),
             };
 
             // Run through each value in the lookup
@@ -90,7 +113,7 @@ namespace PlasticBand.Tests.Devices
             foreach (var pair in sliderLookup)
             {
                 var (value, frets) = (pair.Key, pair.Value);
-                state.slider = value;
+                setSlider(ref state, value);
 
                 foreach (var (fret, control) in fretMap)
                 {
@@ -103,7 +126,7 @@ namespace PlasticBand.Tests.Devices
             }
 
             // Reset to default; no buttons should be pressed at this point
-            state.slider = sliderDefault;
+            setSlider(ref state, sliderDefault);
             AssertButtonPress(device, state);
         }
     }
