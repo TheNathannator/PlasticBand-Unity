@@ -37,32 +37,6 @@ namespace PlasticBand.Devices
         System = 1 << TranslatedSixFretButton.System,
     }
 
-    internal interface ISixFretGuitarState : IInputStateTypeInfo
-    {
-        bool dpadUp { get; }
-        bool dpadDown { get; }
-        bool dpadLeft { get; }
-        bool dpadRight { get; }
-
-        bool start { get; }
-        bool select { get; }
-        bool ghtv { get; }
-        bool system { get; }
-
-        bool black1 { get; }
-        bool black2 { get; }
-        bool black3 { get; }
-        bool white1 { get; }
-        bool white2 { get; }
-        bool white3 { get; }
-
-        bool strumUp { get; }
-        bool strumDown { get; }
-
-        byte whammy { get; }
-        sbyte tilt { get; }
-    }
-
     /// <summary>
     /// The format which <see cref="TranslatingSixFretGuitar{TState}"/>s translate state into.
     /// </summary>

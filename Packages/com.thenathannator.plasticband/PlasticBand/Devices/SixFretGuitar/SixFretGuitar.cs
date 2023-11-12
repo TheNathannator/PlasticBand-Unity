@@ -22,6 +22,32 @@ namespace PlasticBand.Devices
         White3 = 0x20,
     }
 
+    internal interface ISixFretGuitarState : IInputStateTypeInfo
+    {
+        bool dpadUp { get; set; }
+        bool dpadDown { get; set; }
+        bool dpadLeft { get; set; }
+        bool dpadRight { get; set; }
+
+        bool start { get; set; }
+        bool select { get; set; }
+        bool ghtv { get; set; }
+        bool system { get; set; }
+
+        bool black1 { get; set; }
+        bool black2 { get; set; }
+        bool black3 { get; set; }
+        bool white1 { get; set; }
+        bool white2 { get; set; }
+        bool white3 { get; set; }
+
+        bool strumUp { get; set; }
+        bool strumDown { get; set; }
+
+        byte whammy { get; set; }
+        sbyte tilt { get; set; }
+    }
+
     /// <summary>
     /// A 6-fret guitar controller.
     /// </summary>

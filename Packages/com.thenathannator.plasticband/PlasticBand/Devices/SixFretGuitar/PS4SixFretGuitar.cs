@@ -19,39 +19,122 @@ namespace PlasticBand.Devices
         public byte unused1;
 
         public byte strumBar;
-        private readonly byte m_Whammy;
-        private readonly byte m_Tilt;
+        private byte m_Whammy;
+        private byte m_Tilt;
 
         public PS4Button1 buttons1;
         public PS4Button2 buttons2;
 
-        public bool dpadUp => buttons1.GetDpad().IsUp();
-        public bool dpadRight => buttons1.GetDpad().IsRight();
-        public bool dpadDown => buttons1.GetDpad().IsDown();
-        public bool dpadLeft => buttons1.GetDpad().IsLeft();
+        public bool white1
+        {
+            get => (buttons1 & PS4Button1.Square) != 0;
+            set => buttons1.SetBit(PS4Button1.Square, value);
+        }
 
-        public bool start => (buttons1 & PS4Button1.Start) != 0;
-        public bool ghtv => (buttons1 & PS4Button1.L3) != 0;
-        public bool select => (buttons1 & PS4Button1.R3) != 0; // TODO: is this actually correct?
-        public bool system => (buttons2 & PS4Button2.PlayStation) != 0;
+        public bool black1
+        {
+            get => (buttons1 & PS4Button1.Cross) != 0;
+            set => buttons1.SetBit(PS4Button1.Cross, value);
+        }
 
-        public bool white1 => (buttons1 & PS4Button1.Square) != 0;
-        public bool black1 => (buttons1 & PS4Button1.Cross) != 0;
-        public bool black2 => (buttons1 & PS4Button1.Circle) != 0;
-        public bool black3 => (buttons1 & PS4Button1.Triangle) != 0;
-        public bool white2 => (buttons1 & PS4Button1.L2) != 0;
-        public bool white3 => (buttons1 & PS4Button1.R2) != 0;
+        public bool black2
+        {
+            get => (buttons1 & PS4Button1.Circle) != 0;
+            set => buttons1.SetBit(PS4Button1.Circle, value);
+        }
+
+        public bool black3
+        {
+            get => (buttons1 & PS4Button1.Triangle) != 0;
+            set => buttons1.SetBit(PS4Button1.Triangle, value);
+        }
+
+        public bool white2
+        {
+            get => (buttons1 & PS4Button1.L2) != 0;
+            set => buttons1.SetBit(PS4Button1.L2, value);
+        }
+
+        public bool white3
+        {
+            get => (buttons1 & PS4Button1.R2) != 0;
+            set => buttons1.SetBit(PS4Button1.R2, value);
+        }
+
+        public bool dpadUp
+        {
+            get => buttons1.GetDpad().IsUp();
+            set => buttons1.SetDpadUp(value);
+        }
+
+        public bool dpadRight
+        {
+            get => buttons1.GetDpad().IsRight();
+            set => buttons1.SetDpadRight(value);
+        }
+
+        public bool dpadDown
+        {
+            get => buttons1.GetDpad().IsDown();
+            set => buttons1.SetDpadDown(value);
+        }
+
+        public bool dpadLeft
+        {
+            get => buttons1.GetDpad().IsLeft();
+            set => buttons1.SetDpadLeft(value);
+        }
+
+        public bool select
+        {
+            get => (buttons1 & PS4Button1.R3) != 0; // TODO: is this actually correct?
+            set => buttons1.SetBit(PS4Button1.R3, value);
+        }
+
+        public bool start
+        {
+            get => (buttons1 & PS4Button1.Start) != 0;
+            set => buttons1.SetBit(PS4Button1.Start, value);
+        }
+
+        public bool system
+        {
+            get => (buttons2 & PS4Button2.PlayStation) != 0;
+            set => buttons2.SetBit(PS4Button2.PlayStation, value);
+        }
+
+        public bool ghtv
+        {
+            get => (buttons1 & PS4Button1.L3) != 0;
+            set => buttons1.SetBit(PS4Button1.L3, value);
+        }
 
         // The stick up/down values on PS4 controllers are inverted compared to what might be expected
         // 0x00 = max up, 0xFF = max down
-        public bool strumUp => strumBar < 0x80;
-        public bool strumDown => strumBar > 0x80;
+        public bool strumUp
+        {
+            get => strumBar < 0x80;
+            set => strumBar = value ? (byte)0x00 : (byte)0x80;
+        }
+
+        public bool strumDown
+        {
+            get => strumBar > 0x80;
+            set => strumBar = value ? (byte)0xFF : (byte)0x80;
+        }
 
         // Whammy ranges from 0x80 to 0xFF
-        public byte whammy => (byte)((m_Whammy - 0x80) * 2);
+        public byte whammy
+        {
+            get => (byte)((m_Whammy - 0x80) * 2);
+            set => m_Whammy = (byte)((value / 2) + 0x80);
+        }
 
-        // Tilt is a 10-bit number centered at 0x200
-        public sbyte tilt => (sbyte)(((m_Tilt & 0x3FF) >> 2) - 0x80);
+        public sbyte tilt
+        {
+            get => (sbyte)(m_Tilt - 0x80);
+            set => m_Tilt = (byte)(value + 0x80);
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -62,28 +145,113 @@ namespace PlasticBand.Devices
         public byte reportId;
         public PS4SixFretGuitarState_NoReportId state;
 
-        public bool dpadUp => state.dpadUp;
-        public bool dpadRight => state.dpadRight;
-        public bool dpadDown => state.dpadDown;
-        public bool dpadLeft => state.dpadLeft;
+        public bool black1
+        {
+            get => state.black1;
+            set => state.black1 = value;
+        }
 
-        public bool select => state.select;
-        public bool start => state.start;
-        public bool ghtv => state.ghtv;
-        public bool system => state.system;
+        public bool black2
+        {
+            get => state.black2;
+            set => state.black2 = value;
+        }
 
-        public bool black1 => state.black1;
-        public bool black2 => state.black2;
-        public bool black3 => state.black3;
-        public bool white1 => state.white1;
-        public bool white2 => state.white2;
-        public bool white3 => state.white3;
+        public bool black3
+        {
+            get => state.black3;
+            set => state.black3 = value;
+        }
 
-        public bool strumUp => state.strumUp;
-        public bool strumDown => state.strumDown;
+        public bool white1
+        {
+            get => state.white1;
+            set => state.white1 = value;
+        }
 
-        public byte whammy => state.whammy;
-        public sbyte tilt => state.tilt;
+        public bool white2
+        {
+            get => state.white2;
+            set => state.white2 = value;
+        }
+
+        public bool white3
+        {
+            get => state.white3;
+            set => state.white3 = value;
+        }
+
+        public bool dpadUp
+        {
+            get => state.dpadUp;
+            set => state.dpadUp = value;
+        }
+
+        public bool dpadRight
+        {
+            get => state.dpadRight;
+            set => state.dpadRight = value;
+        }
+
+        public bool dpadDown
+        {
+            get => state.dpadDown;
+            set => state.dpadDown = value;
+        }
+
+        public bool dpadLeft
+        {
+            get => state.dpadLeft;
+            set => state.dpadLeft = value;
+        }
+
+        public bool select
+        {
+            get => state.select;
+            set => state.select = value;
+        }
+
+        public bool start
+        {
+            get => state.start;
+            set => state.start = value;
+        }
+
+        public bool ghtv
+        {
+            get => state.ghtv;
+            set => state.ghtv = value;
+        }
+
+        public bool system
+        {
+            get => state.system;
+            set => state.system = value;
+        }
+
+        public bool strumUp
+        {
+            get => state.strumUp;
+            set => state.strumUp = value;
+        }
+
+        public bool strumDown
+        {
+            get => state.strumDown;
+            set => state.strumDown = value;
+        }
+
+        public byte whammy
+        {
+            get => state.whammy;
+            set => state.whammy = value;
+        }
+
+        public sbyte tilt
+        {
+            get => state.tilt;
+            set => state.tilt = value;
+        }
     }
 
     [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "PlayStation 4 Guitar Hero Live Guitar", hideInUI = true)]

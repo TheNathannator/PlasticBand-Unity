@@ -1,4 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Haptics;
@@ -13,38 +15,141 @@ namespace PlasticBand.Devices
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct SantrollerHIDSixFretGuitarState : ISixFretGuitarState
     {
+        [Flags]
+        public enum Button : ushort
+        {
+            None = 0,
+
+            Black1 = 0x0001,
+            Black2 = 0x0002,
+            Black3 = 0x0004,
+            White1 = 0x0008,
+            White2 = 0x0010,
+            White3 = 0x0020,
+
+            Select = 0x0040,
+            Start = 0x0080,
+            GHTV = 0x0100,
+            System = 0x0200,
+        }
+
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
 
-        public ushort buttons;
+        public Button buttons;
         public HidDpad dpad;
 
-        private readonly byte m_Whammy;
-        private readonly byte m_Tilt;
+        private byte m_Whammy;
+        private byte m_Tilt;
 
-        public bool dpadUp => dpad.IsUp();
-        public bool dpadRight => dpad.IsRight();
-        public bool dpadDown => dpad.IsDown();
-        public bool dpadLeft => dpad.IsLeft();
+        public bool black1
+        {
+            get => (buttons & Button.Black1) != 0;
+            set => buttons.SetBit(Button.Black1, value);
+        }
 
-        public bool black1 => (buttons & 0x0001) != 0;
-        public bool black2 => (buttons & 0x0002) != 0;
-        public bool black3 => (buttons & 0x0004) != 0;
-        public bool white1 => (buttons & 0x0008) != 0;
-        public bool white2 => (buttons & 0x0010) != 0;
-        public bool white3 => (buttons & 0x0020) != 0;
+        public bool black2
+        {
+            get => (buttons & Button.Black2) != 0;
+            set => buttons.SetBit(Button.Black2, value);
+        }
 
-        public bool select => (buttons & 0x0040) != 0;
-        public bool start => (buttons & 0x0080) != 0;
-        public bool ghtv => (buttons & 0x0100) != 0;
-        public bool system => (buttons & 0x0200) != 0;
+        public bool black3
+        {
+            get => (buttons & Button.Black3) != 0;
+            set => buttons.SetBit(Button.Black3, value);
+        }
 
-        public bool strumUp => dpad.IsUp();
-        public bool strumDown => dpad.IsDown();
+        public bool white1
+        {
+            get => (buttons & Button.White1) != 0;
+            set => buttons.SetBit(Button.White1, value);
+        }
 
-        public byte whammy => m_Whammy;
-        public sbyte tilt => (sbyte)(m_Tilt - 0x80);
+        public bool white2
+        {
+            get => (buttons & Button.White2) != 0;
+            set => buttons.SetBit(Button.White2, value);
+        }
+
+        public bool white3
+        {
+            get => (buttons & Button.White3) != 0;
+            set => buttons.SetBit(Button.White3, value);
+        }
+
+        public bool dpadUp
+        {
+            get => dpad.IsUp();
+            set => dpad.SetUp(value);
+        }
+
+        public bool dpadRight
+        {
+            get => dpad.IsRight();
+            set => dpad.SetRight(value);
+        }
+
+        public bool dpadDown
+        {
+            get => dpad.IsDown();
+            set => dpad.SetDown(value);
+        }
+
+        public bool dpadLeft
+        {
+            get => dpad.IsLeft();
+            set => dpad.SetLeft(value);
+        }
+
+        public bool select
+        {
+            get => (buttons & Button.Select) != 0;
+            set => buttons.SetBit(Button.Select, value);
+        }
+
+        public bool start
+        {
+            get => (buttons & Button.Start) != 0;
+            set => buttons.SetBit(Button.Start, value);
+        }
+
+        public bool ghtv
+        {
+            get => (buttons & Button.GHTV) != 0;
+            set => buttons.SetBit(Button.GHTV, value);
+        }
+
+        public bool system
+        {
+            get => (buttons & Button.System) != 0;
+            set => buttons.SetBit(Button.System, value);
+        }
+
+        public bool strumUp
+        {
+            get => dpadUp;
+            set => dpadUp = value;
+        }
+
+        public bool strumDown
+        {
+            get => dpadDown;
+            set => dpadDown = value;
+        }
+
+        public byte whammy
+        {
+            get => m_Whammy;
+            set => m_Whammy = value;
+        }
+
+        public sbyte tilt
+        {
+            get => (sbyte)(m_Tilt - 0x80);
+            set => m_Tilt = (byte)(value + 0x80);
+        }
     }
 
     [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "Santroller HID Guitar Hero Live Guitar")]

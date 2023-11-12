@@ -37,6 +37,11 @@ namespace PlasticBand.Tests.Devices
             return (byte)IntegerAxisControl.Denormalize(value, byte.MinValue, byte.MaxValue, byte.MinValue);
         }
 
+        public static sbyte DenormalizeSByte(float value)
+        {
+            return (sbyte)IntegerAxisControl.Denormalize(value, sbyte.MinValue, sbyte.MaxValue, 0);
+        }
+
         public static short DenormalizeInt16(float value)
         {
             return (short)IntegerAxisControl.Denormalize(value, short.MinValue, short.MaxValue, 0);
