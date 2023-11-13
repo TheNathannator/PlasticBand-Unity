@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
@@ -14,6 +15,21 @@ namespace PlasticBand.Devices
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct SantrollerHidStageKitState : IInputStateTypeInfo
     {
+        [Flags]
+        public enum Button : ushort
+        {
+            None = 0,
+
+            South = 0x0001,
+            East = 0x0002,
+            West = 0x0004,
+            North = 0x0008,
+
+            Select = 0x0010,
+            Start = 0x0020,
+            System = 0x0040,
+        }
+
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
