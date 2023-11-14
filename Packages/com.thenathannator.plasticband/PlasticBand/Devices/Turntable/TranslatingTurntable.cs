@@ -74,22 +74,10 @@ namespace PlasticBand.Devices
         [InputControl(name = "leftTableGreen", layout = "Button", bit = 0)]
         [InputControl(name = "leftTableRed", layout = "Button", bit = 1)]
         [InputControl(name = "leftTableBlue", layout = "Button", bit = 2)]
-        [InputControl(name = "rightTableGreen", layout = "Button", bit = 4)]
-        [InputControl(name = "rightTableRed", layout = "Button", bit = 5)]
-        [InputControl(name = "rightTableBlue", layout = "Button", bit = 6)]
-        private byte m_TurntableButtons;
-
-        public TurntableButton leftTableButtons
-        {
-            get => (TurntableButton)(m_TurntableButtons & 0x07);
-            set => m_TurntableButtons = (byte)((m_TurntableButtons & ~0x07) | ((byte)value & 0x07));
-        }
-
-        public TurntableButton rightTableButtons
-        {
-            get => (TurntableButton)((m_TurntableButtons >> 4) & 0x07);
-            set => m_TurntableButtons = (byte)((m_TurntableButtons & ~(0x07 << 4)) | (((byte)value & 0x07) << 4));
-        }
+        [InputControl(name = "rightTableGreen", layout = "Button", bit = 3)]
+        [InputControl(name = "rightTableRed", layout = "Button", bit = 4)]
+        [InputControl(name = "rightTableBlue", layout = "Button", bit = 5)]
+        public byte turntableButtons;
 
         [InputControl(layout = "IntAxis", noisy = true, parameters = "maxValue=127,minValue=-128,zeroPoint=0")]
         public sbyte leftTableVelocity;
@@ -150,9 +138,7 @@ namespace PlasticBand.Devices
             if (state.rightBlue) right |= TurntableButton.Blue;
 
             var tableButtons = left | right;
-
-            translated.leftTableButtons = left;
-            translated.rightTableButtons = right;
+            translated.turntableButtons = (byte)((byte)left | ((byte)right << 3));
 
             translated.leftTableVelocity = state.leftVelocity;
             translated.rightTableVelocity = state.rightVelocity;
