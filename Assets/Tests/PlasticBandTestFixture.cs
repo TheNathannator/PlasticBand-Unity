@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine.InputSystem;
@@ -76,15 +77,25 @@ namespace PlasticBand.Tests
         {
             InputSystem.QueueStateEvent(device, state);
             InputSystem.Update();
-            AssertAxisValue(value, epsilon, axes);
+            AssertAxisValue(device, value, epsilon, axes);
         }
 
-        public static void AssertAxisValue(float value, float epsilon, params AxisControl[] axes)
+        public static void AssertAxisValue(InputDevice device, float value, float epsilon, params AxisControl[] axes)
         {
-            foreach (var axis in axes)
+            foreach (var control in device.allControls)
             {
-                float axisValue = axis.value;
-                Assert.That(axisValue, Is.InRange(value - epsilon, value + epsilon), $"Value for axis '{axis}' is not in range!");
+                if (!(control is AxisControl axis))
+                    continue;
+
+                if (axes.Contains(axis))
+                {
+                    Assert.That(axis.value, Is.InRange(value - epsilon, value + epsilon), $"Value for axis '{axis}' is not in range!");
+                }
+                else
+                {
+                    float defaultValue = axis.ReadDefaultValue();
+                    Assert.That(axis.value, Is.InRange(defaultValue - epsilon, defaultValue + epsilon), $"Expected default value for axis '{axis}'!");
+                }
             }
         }
 
@@ -94,10 +105,21 @@ namespace PlasticBand.Tests
         {
             InputSystem.QueueStateEvent(device, state);
             InputSystem.Update();
-            foreach (var integer in integers)
+
+            foreach (var control in device.allControls)
             {
-                float integerValue = integer.value;
-                Assert.That(integerValue, Is.EqualTo(value), $"Value for integer '{integer}' is not correct!");
+                if (!(control is IntegerControl integer))
+                    continue;
+
+                if (integers.Contains(integer))
+                {
+                    Assert.That(integer.value, Is.EqualTo(value), $"Value for integer '{integer}' is not correct!");
+                }
+                else
+                {
+                    float defaultValue = integer.ReadDefaultValue();
+                    Assert.That(integer.value, Is.EqualTo(defaultValue), $"Expected default value for integer '{integer}'!");
+                }
             }
         }
 

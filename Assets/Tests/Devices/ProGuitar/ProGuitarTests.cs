@@ -264,6 +264,9 @@ namespace PlasticBand.Tests.Devices
                     SetStringFret(ref state, index, fret);
                     AssertIntegerValue(guitar, state, fret, guitar.GetStringFret(index));
                 }
+
+                // Reset afterwards
+                SetStringFret(ref state, index, 0);
             }
         });
 

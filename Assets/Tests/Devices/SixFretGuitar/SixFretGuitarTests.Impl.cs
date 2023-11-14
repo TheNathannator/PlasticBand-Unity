@@ -26,6 +26,9 @@ namespace PlasticBand.Tests.Devices
         {
             dpad = HidDpad.Neutral,
             strumBar = 0x80,
+
+            // The default value for these properties is not 0, so we must set them explicitly
+            tilt = 0,
         };
     }
 
@@ -39,6 +42,9 @@ namespace PlasticBand.Tests.Devices
             {
                 dpad = HidDpad.Neutral,
                 strumBar = 0x80,
+
+                // The default value for these properties is not 0, so we must set them explicitly
+                tilt = 0,
             }
         };
     }
@@ -53,6 +59,9 @@ namespace PlasticBand.Tests.Devices
             {
                 buttons1 = HidDpad.Neutral.AsPS4Buttons(),
                 strumBar = 0x80,
+
+                // The default value for these properties is not 0, so we must set them explicitly
+                tilt = 0,
             }
         };
     }
@@ -65,6 +74,9 @@ namespace PlasticBand.Tests.Devices
         {
             buttons1 = HidDpad.Neutral.AsPS4Buttons(),
             strumBar = 0x80,
+
+            // The default value for these properties is not 0, so we must set them explicitly
+            tilt = 0,
         };
     }
 
@@ -75,6 +87,9 @@ namespace PlasticBand.Tests.Devices
             => new SantrollerHIDSixFretGuitarState()
         {
             dpad = HidDpad.Neutral,
+
+            // The default value for these properties is not 0, so we must set them explicitly
+            tilt = 0,
         };
     }
 }

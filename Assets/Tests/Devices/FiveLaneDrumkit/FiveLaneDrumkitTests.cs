@@ -231,7 +231,7 @@ namespace PlasticBand.Tests.Devices
                     else
                         AssertButtonPress(drumkit, state);
 
-                    AssertAxisValue(velocity, 1 / 100f, button);
+                    AssertAxisValue(drumkit, velocity, 1 / 100f, button);
                 }
             }
         });

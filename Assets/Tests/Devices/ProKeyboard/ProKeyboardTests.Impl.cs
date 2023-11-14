@@ -8,7 +8,10 @@ namespace PlasticBand.Tests.Devices
         : ProKeyboardTests<XInputProKeyboard, XInputProKeyboardState>
     {
         protected override XInputProKeyboardState CreateState()
-            => new XInputProKeyboardState();
+            => new XInputProKeyboardState()
+        {
+            pedal = 0x7F,
+        };
 
         protected override void SetDpad(ref XInputProKeyboardState state, DpadDirection dpad)
             => XInputDeviceHandling.SetDpad(ref state.buttons, dpad);
@@ -44,6 +47,7 @@ namespace PlasticBand.Tests.Devices
             => new PS3ProKeyboardState_NoReportId()
         {
             dpad = 8,
+            pedal = 0x7F,
         };
 
         protected override void SetDpad(ref PS3ProKeyboardState_NoReportId state, DpadDirection dpad)
@@ -87,6 +91,7 @@ namespace PlasticBand.Tests.Devices
             state = new PS3ProKeyboardState_NoReportId()
             {
                 dpad = 8,
+                pedal = 0x7F,
             }
         };
 
@@ -131,6 +136,7 @@ namespace PlasticBand.Tests.Devices
             state = new PS3ProKeyboardState_NoReportId()
             {
                 dpad = 8,
+                pedal = 0x7F,
             }
         };
 
@@ -178,6 +184,7 @@ namespace PlasticBand.Tests.Devices
                 state = new PS3ProKeyboardState_NoReportId()
                 {
                     dpad = 8,
+                    pedal = 0x7F,
                 }
             }
         };
