@@ -21,59 +21,213 @@ namespace PlasticBand.Devices
 
         private fixed byte unused1[2];
 
-        private readonly ushort m_Frets1;
-        private readonly ushort m_Frets2;
+        private ushort m_Frets1;
+        private ushort m_Frets2;
 
-        private readonly byte m_Velocity1;
-        private readonly byte m_Velocity2;
-        private readonly byte m_Velocity3;
-        private readonly byte m_Velocity4;
-        private readonly byte m_Velocity5;
-        private readonly byte m_Velocity6;
+        private byte m_Velocity1;
+        private byte m_Velocity2;
+        private byte m_Velocity3;
+        private byte m_Velocity4;
+        private byte m_Velocity5;
+        private byte m_Velocity6;
 
         // TODO: Auto-calibration sensor support
         private readonly byte m_AutoCal_Microphone; // NOTE: When the sensor isn't activated, this
         private readonly byte m_AutoCal_Light; // and this just duplicate the tilt axis
 
-        private readonly byte m_Tilt;
+        private byte m_Tilt;
 
-        private readonly byte m_Pedal;
+        private byte m_Pedal;
 
-        public bool west => (buttons & PS3Button.Square) != 0;
-        public bool south => (buttons & PS3Button.Cross) != 0;
-        public bool east => (buttons & PS3Button.Circle) != 0;
-        public bool north => (buttons & PS3Button.Triangle) != 0;
+        public bool west
+        {
+            get => (buttons & PS3Button.Square) != 0;
+            set => buttons.SetBit(PS3Button.Square, value);
+        }
 
-        public bool select => (buttons & PS3Button.Select) != 0;
-        public bool start => (buttons & PS3Button.Start) != 0;
-        public bool system => (buttons & PS3Button.PlayStation) != 0;
+        public bool south
+        {
+            get => (buttons & PS3Button.Cross) != 0;
+            set => buttons.SetBit(PS3Button.Cross, value);
+        }
 
-        public bool dpadUp => dpad.IsUp();
-        public bool dpadRight => dpad.IsRight();
-        public bool dpadDown => dpad.IsDown();
-        public bool dpadLeft => dpad.IsLeft();
+        public bool east
+        {
+            get => (buttons & PS3Button.Circle) != 0;
+            set => buttons.SetBit(PS3Button.Circle, value);
+        }
 
-        public bool green => (m_Velocity1 & 0x80) != 0;
-        public bool red => (m_Velocity2 & 0x80) != 0;
-        public bool yellow => (m_Velocity3 & 0x80) != 0;
-        public bool blue => (m_Velocity4 & 0x80) != 0;
-        public bool orange => (m_Velocity5 & 0x80) != 0;
-        public bool solo => (m_Frets2 & 0x8000) != 0;
+        public bool north
+        {
+            get => (buttons & PS3Button.Triangle) != 0;
+            set => buttons.SetBit(PS3Button.Triangle, value);
+        }
+
+        public bool select
+        {
+            get => (buttons & PS3Button.Select) != 0;
+            set => buttons.SetBit(PS3Button.Select, value);
+        }
+
+        public bool start
+        {
+            get => (buttons & PS3Button.Start) != 0;
+            set => buttons.SetBit(PS3Button.Start, value);
+        }
+
+        public bool system
+        {
+            get => (buttons & PS3Button.PlayStation) != 0;
+            set => buttons.SetBit(PS3Button.PlayStation, value);
+        }
+
+        public bool dpadUp
+        {
+            get => dpad.IsUp();
+            set => dpad.SetUp(value);
+        }
+
+        public bool dpadRight
+        {
+            get => dpad.IsRight();
+            set => dpad.SetRight(value);
+        }
+
+        public bool dpadDown
+        {
+            get => dpad.IsDown();
+            set => dpad.SetDown(value);
+        }
+
+        public bool dpadLeft
+        {
+            get => dpad.IsLeft();
+            set => dpad.SetLeft(value);
+        }
+
+        public bool green
+        {
+            get => (m_Velocity1 & 0x80) != 0;
+            set => m_Velocity1.SetBit(0x80, value);
+        }
+
+        public bool red
+        {
+            get => (m_Velocity2 & 0x80) != 0;
+            set => m_Velocity2.SetBit(0x80, value);
+        }
+
+        public bool yellow
+        {
+            get => (m_Velocity3 & 0x80) != 0;
+            set => m_Velocity3.SetBit(0x80, value);
+        }
+
+        public bool blue
+        {
+            get => (m_Velocity4 & 0x80) != 0;
+            set => m_Velocity4.SetBit(0x80, value);
+        }
+
+        public bool orange
+        {
+            get => (m_Velocity5 & 0x80) != 0;
+            set => m_Velocity5.SetBit(0x80, value);
+        }
+
+        public bool solo
+        {
+            get => (m_Frets2 & 0x8000) != 0;
+            set => m_Frets2.SetBit(0x8000, value);
+        }
 
         public ushort frets1 => (ushort)(m_Frets1 & 0x7FFF);
         public ushort frets2 => (ushort)(m_Frets2 & 0x7FFF);
 
-        public byte velocity1 => (byte)(m_Velocity1 & 0x7F);
-        public byte velocity2 => (byte)(m_Velocity2 & 0x7F);
-        public byte velocity3 => (byte)(m_Velocity3 & 0x7F);
-        public byte velocity4 => (byte)(m_Velocity4 & 0x7F);
-        public byte velocity5 => (byte)(m_Velocity5 & 0x7F);
-        public byte velocity6 => (byte)(m_Velocity6 & 0x7F);
+        public byte fret1
+        {
+            get => (byte)m_Frets1.GetMask(0x1F, 0);
+            set => m_Frets1.SetMask(value, 0x1F, 0);
+        }
+
+        public byte fret2
+        {
+            get => (byte)m_Frets1.GetMask(0x1F, 5);
+            set => m_Frets1.SetMask(value, 0x1F, 5);
+        }
+
+        public byte fret3
+        {
+            get => (byte)m_Frets1.GetMask(0x1F, 10);
+            set => m_Frets1.SetMask(value, 0x1F, 10);
+        }
+
+        public byte fret4
+        {
+            get => (byte)m_Frets2.GetMask(0x1F, 0);
+            set => m_Frets2.SetMask(value, 0x1F, 0);
+        }
+
+        public byte fret5
+        {
+            get => (byte)m_Frets2.GetMask(0x1F, 5);
+            set => m_Frets2.SetMask(value, 0x1F, 5);
+        }
+
+        public byte fret6
+        {
+            get => (byte)m_Frets2.GetMask(0x1F, 10);
+            set => m_Frets2.SetMask(value, 0x1F, 10);
+        }
+
+        public byte velocity1
+        {
+            get => (byte)(m_Velocity1 & 0x7F);
+            set => m_Velocity1.SetMask(value, 0x7F, 0);
+        }
+
+        public byte velocity2
+        {
+            get => (byte)(m_Velocity2 & 0x7F);
+            set => m_Velocity2.SetMask(value, 0x7F, 0);
+        }
+
+        public byte velocity3
+        {
+            get => (byte)(m_Velocity3 & 0x7F);
+            set => m_Velocity3.SetMask(value, 0x7F, 0);
+        }
+
+        public byte velocity4
+        {
+            get => (byte)(m_Velocity4 & 0x7F);
+            set => m_Velocity4.SetMask(value, 0x7F, 0);
+        }
+
+        public byte velocity5
+        {
+            get => (byte)(m_Velocity5 & 0x7F);
+            set => m_Velocity5.SetMask(value, 0x7F, 0);
+        }
+
+        public byte velocity6
+        {
+            get => (byte)(m_Velocity6 & 0x7F);
+            set => m_Velocity6.SetMask(value, 0x7F, 0);
+        }
 
         // Tilt is 0x40 when inactive, 0x7F when active
-        public bool tilt => m_Tilt != 0x40;
+        public bool tilt
+        {
+            get => m_Tilt > 0x40;
+            set => m_Tilt = value ? (byte)0x7F : (byte)0x40;
+        }
 
-        public bool digitalPedal => (m_Pedal & 0x80) != 0;
+        public bool digitalPedal
+        {
+            get => (m_Pedal & 0x80) != 0;
+            set => m_Pedal.SetBit(0x80, value);
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -84,40 +238,47 @@ namespace PlasticBand.Devices
         public byte reportId;
         public PS3WiiProGuitarState_NoReportId state;
 
-        public bool west => state.west;
-        public bool south => state.south;
-        public bool east => state.east;
-        public bool north => state.north;
+        public bool west { get => state.west; set => state.west = value; }
+        public bool south { get => state.south; set => state.south = value; }
+        public bool east { get => state.east; set => state.east = value; }
+        public bool north { get => state.north; set => state.north = value; }
 
-        public bool select => state.select;
-        public bool start => state.start;
-        public bool system => state.system;
+        public bool select { get => state.select; set => state.select = value; }
+        public bool start { get => state.start; set => state.start = value; }
+        public bool system { get => state.system; set => state.system = value; }
 
-        public bool dpadUp => state.dpadUp;
-        public bool dpadRight => state.dpadRight;
-        public bool dpadDown => state.dpadDown;
-        public bool dpadLeft => state.dpadLeft;
+        public bool dpadUp { get => state.dpadUp; set => state.dpadUp = value; }
+        public bool dpadRight { get => state.dpadRight; set => state.dpadRight = value; }
+        public bool dpadDown { get => state.dpadDown; set => state.dpadDown = value; }
+        public bool dpadLeft { get => state.dpadLeft; set => state.dpadLeft = value; }
 
-        public bool green => state.green;
-        public bool red => state.red;
-        public bool yellow => state.yellow;
-        public bool blue => state.blue;
-        public bool orange => state.orange;
-        public bool solo => state.solo;
+        public bool green { get => state.green; set => state.green = value; }
+        public bool red { get => state.red; set => state.red = value; }
+        public bool yellow { get => state.yellow; set => state.yellow = value; }
+        public bool blue { get => state.blue; set => state.blue = value; }
+        public bool orange { get => state.orange; set => state.orange = value; }
+        public bool solo { get => state.solo; set => state.solo = value; }
 
         public ushort frets1 => state.frets1;
         public ushort frets2 => state.frets2;
 
-        public byte velocity1 => state.velocity1;
-        public byte velocity2 => state.velocity2;
-        public byte velocity3 => state.velocity3;
-        public byte velocity4 => state.velocity4;
-        public byte velocity5 => state.velocity5;
-        public byte velocity6 => state.velocity6;
+        public byte fret1 { get => state.fret1; set => state.fret1 = value; }
+        public byte fret2 { get => state.fret2; set => state.fret2 = value; }
+        public byte fret3 { get => state.fret3; set => state.fret3 = value; }
+        public byte fret4 { get => state.fret4; set => state.fret4 = value; }
+        public byte fret5 { get => state.fret5; set => state.fret5 = value; }
+        public byte fret6 { get => state.fret6; set => state.fret6 = value; }
 
-        public bool tilt => state.tilt;
+        public byte velocity1 { get => state.velocity1; set => state.velocity1 = value; }
+        public byte velocity2 { get => state.velocity2; set => state.velocity2 = value; }
+        public byte velocity3 { get => state.velocity3; set => state.velocity3 = value; }
+        public byte velocity4 { get => state.velocity4; set => state.velocity4 = value; }
+        public byte velocity5 { get => state.velocity5; set => state.velocity5 = value; }
+        public byte velocity6 { get => state.velocity6; set => state.velocity6 = value; }
 
-        public bool digitalPedal => state.digitalPedal;
+        public bool tilt { get => state.tilt; set => state.tilt = value; }
+
+        public bool digitalPedal { get => state.digitalPedal; set => state.digitalPedal = value; }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

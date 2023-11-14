@@ -40,6 +40,7 @@ namespace PlasticBand
         public static bool IsPressedInEvent(this ButtonControl control, InputEventPtr eventPtr)
             => control.ReadValueFromEvent(eventPtr, out float value) && control.IsValueConsideredPressed(value);
 
+        // TODO: Move all of this out into a separate Extensions file
         public static void SetBit(ref this byte value, byte mask, bool set)
         {
             if (set)
@@ -62,6 +63,30 @@ namespace PlasticBand
                 value |= mask;
             else
                 value &= (ushort)~mask;
+        }
+
+        public static byte GetMask(this byte value, byte mask, int bitOffset)
+        {
+            return (byte)((value >> bitOffset) & mask);
+        }
+
+        public static ushort GetMask(this ushort value, ushort mask, int bitOffset)
+        {
+            return (ushort)((value >> bitOffset) & mask);
+        }
+
+        public static void SetMask(ref this byte field, byte value, byte mask, int bitOffset)
+        {
+            int maskedField = field & (~mask << bitOffset);
+            int shiftedValue = (value & mask) << bitOffset;
+            field = (byte)(maskedField | shiftedValue);
+        }
+
+        public static void SetMask(ref this ushort field, ushort value, ushort mask, int bitOffset)
+        {
+            int maskedField = field & (~mask << bitOffset);
+            int shiftedValue = (value & mask) << bitOffset;
+            field = (ushort)(maskedField | shiftedValue);
         }
     }
 }

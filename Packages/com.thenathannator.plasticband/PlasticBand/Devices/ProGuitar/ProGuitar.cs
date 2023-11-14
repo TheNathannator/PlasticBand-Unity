@@ -7,6 +7,55 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
+    internal interface IProGuitarState : IInputStateTypeInfo
+    {
+        bool south { get; set; }
+        bool east { get; set; }
+        bool west { get; set; }
+        bool north { get; set; }
+
+        bool dpadUp { get; set; }
+        bool dpadDown { get; set; }
+        bool dpadLeft { get; set; }
+        bool dpadRight { get; set; }
+
+        bool start { get; set; }
+        bool select { get; set; }
+        bool system { get; set; }
+
+        bool green { get; set; }
+        bool red { get; set; }
+        bool yellow { get; set; }
+        bool blue { get; set; }
+        bool orange { get; set; }
+        bool solo { get; set; }
+
+        // Raw fret number values, for convenience in the state translation
+        // since we copy the compression technique used
+        ushort frets1 { get; }
+        ushort frets2 { get; }
+
+        // Separated fret number values, for convenience in the unit tests
+        byte fret1 { get; set; }
+        byte fret2 { get; set; }
+        byte fret3 { get; set; }
+        byte fret4 { get; set; }
+        byte fret5 { get; set; }
+        byte fret6 { get; set; }
+
+        byte velocity1 { get; set; }
+        byte velocity2 { get; set; }
+        byte velocity3 { get; set; }
+        byte velocity4 { get; set; }
+        byte velocity5 { get; set; }
+        byte velocity6 { get; set; }
+
+        bool tilt { get; set; }
+
+        bool digitalPedal { get; set; }
+        // byte analogPedal { get; set; }
+    }
+
     /// <summary>
     /// A Rock Band 3 Pro Guitar controller.
     /// </summary>

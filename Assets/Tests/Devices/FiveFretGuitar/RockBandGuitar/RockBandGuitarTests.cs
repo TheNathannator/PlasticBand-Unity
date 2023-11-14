@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using PlasticBand.Devices;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
 
@@ -28,6 +29,54 @@ namespace PlasticBand.Tests.Devices
         {
             FiveFretGuitarTests._GetFretThrowsCorrectly(guitar.GetSoloFret, guitar.GetSoloFret);
         }
+
+        public static void HandlesSoloFrets_Flags<TState>(InputDevice device, TState state,
+            SetFiveFretAction<TState> setFrets,
+            ButtonControl green, ButtonControl red, ButtonControl yellow, ButtonControl blue, ButtonControl orange,
+            ButtonControl sGreen, ButtonControl sRed, ButtonControl sYellow, ButtonControl sBlue, ButtonControl sOrange)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            var fretList = new List<ButtonControl>(10);
+            for (var frets = FiveFret.None; frets <= FiveFretGuitarTests.AllFrets; frets++)
+            {
+                setFrets(ref state, frets);
+
+                if ((frets & FiveFret.Green) != 0)
+                {
+                    // The normal frets must be included since both 
+                    // regular and solo frets share the same button bits
+                    fretList.Add(green);
+                    fretList.Add(sGreen);
+                }
+
+                if ((frets & FiveFret.Red) != 0)
+                {
+                    fretList.Add(red);
+                    fretList.Add(sRed);
+                }
+
+                if ((frets & FiveFret.Yellow) != 0)
+                {
+                    fretList.Add(yellow);
+                    fretList.Add(sYellow);
+                }
+
+                if ((frets & FiveFret.Blue) != 0)
+                {
+                    fretList.Add(blue);
+                    fretList.Add(sBlue);
+                }
+
+                if ((frets & FiveFret.Orange) != 0)
+                {
+                    fretList.Add(orange);
+                    fretList.Add(sOrange);
+                }
+
+                AssertButtonPress(device, state, fretList.ToArray());
+                fretList.Clear();
+            }
+        }
     }
 
     public abstract class RockBandGuitarTests<TGuitar, TState> : FiveFretGuitarTests<TGuitar, TState>
@@ -51,7 +100,8 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void GetSoloFretMaskReturnsCorrectFrets() => CreateAndRun((guitar) =>
         {
-            _GetFretMaskReturnsCorrectFrets(guitar, CreateState(), SetSoloFrets, guitar.GetSoloFretMask, guitar.GetSoloFretMask,
+            FiveFretGuitarTests._GetFretMaskReturnsCorrectFrets(guitar, CreateState(),
+                SetSoloFrets, guitar.GetSoloFretMask, guitar.GetSoloFretMask,
                 guitar.soloGreen, guitar.soloRed, guitar.soloYellow, guitar.soloBlue, guitar.soloOrange);
         });
 
@@ -74,47 +124,9 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void HandlesSoloFrets() => CreateAndRun((guitar) =>
         {
-            var state = CreateState();
-            var fretList = new List<ButtonControl>(10);
-            for (var frets = FiveFret.None; frets <= FiveFretGuitarTests.AllFrets; frets++)
-            {
-                SetSoloFrets(ref state, frets);
-
-                if ((frets & FiveFret.Green) != 0)
-                {
-                    // The normal frets must be included since both 
-                    // regular and solo frets share the same button bits
-                    fretList.Add(guitar.greenFret);
-                    fretList.Add(guitar.soloGreen);
-                }
-
-                if ((frets & FiveFret.Red) != 0)
-                {
-                    fretList.Add(guitar.redFret);
-                    fretList.Add(guitar.soloRed);
-                }
-
-                if ((frets & FiveFret.Yellow) != 0)
-                {
-                    fretList.Add(guitar.yellowFret);
-                    fretList.Add(guitar.soloYellow);
-                }
-
-                if ((frets & FiveFret.Blue) != 0)
-                {
-                    fretList.Add(guitar.blueFret);
-                    fretList.Add(guitar.soloBlue);
-                }
-
-                if ((frets & FiveFret.Orange) != 0)
-                {
-                    fretList.Add(guitar.orangeFret);
-                    fretList.Add(guitar.soloOrange);
-                }
-
-                AssertButtonPress(guitar, state, fretList.ToArray());
-                fretList.Clear();
-            }
+            RockBandGuitarTests.HandlesSoloFrets_Flags(guitar, CreateState(), SetSoloFrets,
+                guitar.greenFret, guitar.redFret, guitar.yellowFret, guitar.blueFret, guitar.orangeFret,
+                guitar.soloGreen, guitar.soloRed, guitar.soloYellow, guitar.soloBlue, guitar.soloOrange);
         });
     }
 
@@ -125,7 +137,7 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void HandlesSoloFrets() => CreateAndRun((guitar) =>
         {
-            _RecognizesFrets(guitar, CreateState(), SetSoloFrets,
+            FiveFretGuitarTests._RecognizesFrets(guitar, CreateState(), SetSoloFrets,
                 guitar.soloGreen, guitar.soloRed, guitar.soloYellow, guitar.soloBlue, guitar.soloOrange);
         });
     }

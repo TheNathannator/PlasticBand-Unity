@@ -88,45 +88,6 @@ namespace PlasticBand.Devices
         SoloOrange = 1u << TranslatedProGuitarButton.SoloOrange,
     }
 
-    internal interface IProGuitarState : IInputStateTypeInfo
-    {
-        bool south { get; }
-        bool east { get; }
-        bool west { get; }
-        bool north { get; }
-
-        bool dpadUp { get; }
-        bool dpadDown { get; }
-        bool dpadLeft { get; }
-        bool dpadRight { get; }
-
-        bool start { get; }
-        bool select { get; }
-        bool system { get; }
-
-        bool green { get; }
-        bool red { get; }
-        bool yellow { get; }
-        bool blue { get; }
-        bool orange { get; }
-        bool solo { get; }
-
-        ushort frets1 { get; }
-        ushort frets2 { get; }
-
-        byte velocity1 { get; }
-        byte velocity2 { get; }
-        byte velocity3 { get; }
-        byte velocity4 { get; }
-        byte velocity5 { get; }
-        byte velocity6 { get; }
-
-        bool tilt { get; }
-
-        bool digitalPedal { get; }
-        // byte analogPedal { get; }
-    }
-
     /// <summary>
     /// The format which <see cref="TranslatingProGuitar{TState}"/>s translate state into.
     /// </summary>
