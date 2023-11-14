@@ -68,7 +68,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "touchOrange", layout = "GuitarHeroSlider", format = "BYTE")]
         public byte slider;
 
-        [InputControl(name = "tilt", layout = "IntAxis", parameters = "minValue=0x00,maxValue=0xFF,zeroPoint=0x80")]
+        [InputControl(name = "tilt", layout = "IntAxis", defaultState = 0x80, parameters = "minValue=0x00,maxValue=0xFF,zeroPoint=0x80")]
         public byte tilt;
     }
 
