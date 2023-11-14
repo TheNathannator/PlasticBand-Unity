@@ -43,6 +43,14 @@ namespace PlasticBand.Tests.Devices
         {
             return (ushort)IntegerAxisControl.Denormalize(value, ushort.MinValue, ushort.MaxValue, ushort.MinValue);
         }
+
+        public static int CreateMask(int start, int end)
+        {
+            int mask = 0;
+            for (int i = start; i < end; i++)
+                mask |= 1 << i;
+            return mask;
+        }
     }
 
     public static class XInputDeviceHandling

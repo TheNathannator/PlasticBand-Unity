@@ -1,6 +1,8 @@
 using System;
 using NUnit.Framework;
 using PlasticBand.Devices;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Tests.Devices
 {
@@ -55,5 +57,132 @@ namespace PlasticBand.Tests.Devices
                     Assert.DoesNotThrow(() => keyboard.GetKey(i));
             }
         }
+    }
+
+    internal abstract class ProKeyboardTests<TKeyboard, TState> : FaceButtonDeviceTestFixture<TKeyboard, TState>
+        where TKeyboard : ProKeyboard
+        where TState : unmanaged, IInputStateTypeInfo
+    {
+        protected abstract void SetKey(ref TState state, int key, bool pressed);
+        protected abstract void SetKeys(ref TState state, int keyMask);
+
+        protected abstract void SetOverdriveButton(ref TState state, bool pressed);
+
+        protected abstract void SetDigitalPedal(ref TState state, bool pressed);
+        protected abstract void SetAnalogPedal(ref TState state, float value);
+
+        protected override ButtonControl GetFaceButton(TKeyboard keyboard, FaceButton button)
+        {
+            switch (button)
+            {
+                case FaceButton.South: return keyboard.buttonSouth;
+                case FaceButton.East: return keyboard.buttonEast;
+                case FaceButton.West: return keyboard.buttonWest;
+                case FaceButton.North: return keyboard.buttonNorth;
+                default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
+            }
+        }
+
+        protected override ButtonControl GetMenuButton(TKeyboard keyboard, MenuButton button)
+        {
+            switch (button)
+            {
+                case MenuButton.Start: return keyboard.startButton;
+                case MenuButton.Select: return keyboard.selectButton;
+                default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
+            }
+        }
+
+        protected override DpadControl GetDpad(TKeyboard keyboard) => keyboard.dpad;
+
+        [Test]
+        public void GetKeyReturnsCorrectFrets()
+            => CreateAndRun(ProKeyboardTests._GetKeyReturnsCorrectFrets);
+
+        [Test]
+        public void GetKeyThrowsCorrectly()
+            => CreateAndRun(ProKeyboardTests._GetKeyThrowsCorrectly);
+
+        [Test]
+        public void RecognizesKeys() => CreateAndRun((keyboard) =>
+        {
+            var state = CreateState();
+            for (int key = 0; key < ProKeyboard.KeyCount; key++)
+            {
+                var keyControl = keyboard.GetKey(key);
+                SetKey(ref state, key, true);
+                AssertButtonPress(keyboard, state, keyControl);
+
+                SetKey(ref state, key, false);
+                AssertButtonPress(keyboard, state);
+            }
+        });
+
+        [Test]
+        public void GetKeyMaskReturnsCorrectKeys() => CreateAndRun((keyboard) =>
+        {
+            var state = CreateState();
+
+            // For performance reasons, we test 5 bits of the mask at a time instead of all
+            // 25 bits. This brings the number of permutations down from 33,554,432, which
+            // would take around 6 1/2 days to run at 60 updates of the input system per second,
+            // to only 156, which takes around 3 seconds at 60 updates per second.
+            const int keyIncrement = 5;
+            for (int keyStart = 0; keyStart < ProKeyboard.KeyCount; keyStart += keyIncrement)
+            {
+                int keyEnd = keyStart + keyIncrement;
+                if (keyEnd > ProKeyboard.KeyCount)
+                    keyEnd = ProKeyboard.KeyCount;
+
+                int maskStart = keyStart == 0 ? 0 : 1 << keyStart;
+                int maxMask = DeviceHandling.CreateMask(keyStart, keyEnd);
+                for (int keys = maskStart; keys < maxMask; keys += 1 << keyStart)
+                {
+                    SetKeys(ref state, keys);
+                    AssertButtonsWithEventUpdate(keyboard, state, keys, keyboard.GetKeyMask, keyboard.GetKeyMask, AssertMask);
+                }
+            }
+
+            void AssertMask(int mask, int targetMask, Func<ButtonControl, bool> buttonPressed)
+            {
+                Assert.That(mask, Is.EqualTo(targetMask), "Key mask is not correct!");
+
+                for (int key = 0; key < ProKeyboard.KeyCount; key++)
+                {
+                    Assert.That((mask & (1 << key)) != 0, Is.EqualTo(buttonPressed(keyboard.GetKey(key))), $"Key {key + 1} state is not correct!");
+                }
+            }
+        });
+
+        [Test]
+        public void RecognizesOverdriveButton() => CreateAndRun((keyboard) =>
+        {
+            RecognizesButton(keyboard, CreateState(), keyboard.overdrive, SetOverdriveButton);
+        });
+
+        [Test]
+        public void RecognizesDigitalPedal() => CreateAndRun((keyboard) =>
+        {
+            RecognizesButton(keyboard, CreateState(), keyboard.digitalPedal, SetDigitalPedal);
+        });
+
+        [Test]
+        public void RecognizesAnalogPedal() => CreateAndRun((keyboard) =>
+        {
+            RecognizesUnsignedAxis(keyboard, CreateState(), keyboard.analogPedal, SetAnalogPedal);
+        });
+    }
+
+    internal abstract class ProKeyboardTests_TouchStrip<TKeyboard, TState> : ProKeyboardTests<TKeyboard, TState>
+        where TKeyboard : ProKeyboard
+        where TState : unmanaged, IInputStateTypeInfo
+    {
+        protected abstract void SetTouchStrip(ref TState state, float value);
+
+        [Test]
+        public void RecognizesTouchStrip() => CreateAndRun((keyboard) =>
+        {
+            RecognizesUnsignedAxis(keyboard, CreateState(), keyboard.touchStrip, SetTouchStrip);
+        });
     }
 }
