@@ -21,6 +21,37 @@ namespace PlasticBand.Devices
         Blue = 0x04
     }
 
+    internal interface ITurntableState : IInputStateTypeInfo
+    {
+        bool south { get; set; }
+        bool east { get; set; }
+        bool west { get; set; }
+        bool north_euphoria { get; set; }
+
+        bool dpadUp { get; set; }
+        bool dpadDown { get; set; }
+        bool dpadLeft { get; set; }
+        bool dpadRight { get; set; }
+
+        bool start { get; set; }
+        bool select { get; set; }
+        bool system { get; set; }
+
+        bool leftGreen { get; set; }
+        bool leftRed { get; set; }
+        bool leftBlue { get; set; }
+
+        bool rightGreen { get; set; }
+        bool rightRed { get; set; }
+        bool rightBlue { get; set; }
+
+        sbyte leftVelocity { get; set; }
+        sbyte rightVelocity { get; set; }
+
+        sbyte crossfader { get; set; }
+        ushort effectsDial { get; set; }
+    }
+
     /// <summary>
     /// A DJ Hero turntable.
     /// </summary>

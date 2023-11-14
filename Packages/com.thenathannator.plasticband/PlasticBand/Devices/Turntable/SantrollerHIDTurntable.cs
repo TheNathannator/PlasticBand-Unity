@@ -1,11 +1,11 @@
+using System;
+using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
-using System.Runtime.InteropServices;
 
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/Turntable/Santroller.md
@@ -18,57 +18,167 @@ namespace PlasticBand.Devices
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct SantrollerHIDTurntableState : ITurntableState
     {
+        [Flags]
+        public enum Button : ushort
+        {
+            None = 0,
+
+            South = 0x0001,
+            East = 0x0002,
+            West = 0x0004,
+            North_Euphoria = 0x0008,
+
+            Select = 0x0010,
+            Start = 0x0020,
+            System = 0x0040,
+
+            RightGreen = 0x0080,
+            RightRed = 0x0100,
+            RightBlue = 0x0200,
+
+            LeftGreen = 0x0400,
+            LeftRed = 0x0800,
+            LeftBlue = 0x1000,
+        }
+
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
 
-        [InputControl(name = "selectButton", layout = "Button", bit = 4)]
-        [InputControl(name = "startButton", layout = "Button", bit = 5)]
-        [InputControl(name = "systemButton", layout = "Button", bit = 6, displayName = "System")]
-
-        [InputControl(name = "rightTableGreen", layout = "Button", bit = 7)]
-        [InputControl(name = "rightTableRed", layout = "Button", bit = 8)]
-        [InputControl(name = "rightTableBlue", layout = "Button", bit = 9)]
-
-        [InputControl(name = "leftTableGreen", layout = "Button", bit = 10)]
-        [InputControl(name = "leftTableRed", layout = "Button", bit = 11)]
-        [InputControl(name = "leftTableBlue", layout = "Button", bit = 12)]
-        public ushort buttons;
+        public Button buttons;
 
         public HidDpad dpad;
 
-        private readonly byte m_LeftTableVelocity;
-        private readonly byte m_RightTableVelocity;
-        private readonly byte m_EffectsDial;
-        private readonly byte m_Crossfader;
+        private byte m_LeftTableVelocity;
+        private byte m_RightTableVelocity;
+        private byte m_EffectsDial;
+        private byte m_Crossfader;
 
-        public bool south => (buttons & 0x0001) != 0;
-        public bool east => (buttons & 0x0002) != 0;
-        public bool west => (buttons & 0x0004) != 0;
-        public bool north_euphoria => (buttons & 0x0008) != 0;
+        public bool south
+        {
+            get => (buttons & Button.South) != 0;
+            set => buttons.SetBit(Button.South, value);
+        }
 
-        public bool select => (buttons & 0x0010) != 0;
-        public bool start => (buttons & 0x0020) != 0;
-        public bool system => (buttons & 0x0040) != 0;
+        public bool east
+        {
+            get => (buttons & Button.East) != 0;
+            set => buttons.SetBit(Button.East, value);
+        }
 
-        public bool dpadUp => dpad.IsUp();
-        public bool dpadRight => dpad.IsRight();
-        public bool dpadDown => dpad.IsDown();
-        public bool dpadLeft => dpad.IsLeft();
+        public bool west
+        {
+            get => (buttons & Button.West) != 0;
+            set => buttons.SetBit(Button.West, value);
+        }
 
-        public bool rightGreen => (buttons & 0x0080) != 0;
-        public bool rightRed => (buttons & 0x0100) != 0;
-        public bool rightBlue => (buttons & 0x0200) != 0;
+        public bool north_euphoria
+        {
+            get => (buttons & Button.North_Euphoria) != 0;
+            set => buttons.SetBit(Button.North_Euphoria, value);
+        }
 
-        public bool leftGreen => (buttons & 0x0400) != 0;
-        public bool leftRed => (buttons & 0x0800) != 0;
-        public bool leftBlue => (buttons & 0x1000) != 0;
+        public bool select
+        {
+            get => (buttons & Button.Select) != 0;
+            set => buttons.SetBit(Button.Select, value);
+        }
 
-        public sbyte leftVelocity => (sbyte)(m_LeftTableVelocity - 0x80);
-        public sbyte rightVelocity => (sbyte)(m_RightTableVelocity - 0x80);
+        public bool start
+        {
+            get => (buttons & Button.Start) != 0;
+            set => buttons.SetBit(Button.Start, value);
+        }
 
-        public ushort effectsDial => (ushort)(m_EffectsDial << 8);
-        public sbyte crossfader => (sbyte)(m_Crossfader - 0x80);
+        public bool system
+        {
+            get => (buttons & Button.System) != 0;
+            set => buttons.SetBit(Button.System, value);
+        }
+
+        public bool dpadUp
+        {
+            get => dpad.IsUp();
+            set => dpad.SetUp(value);
+        }
+
+        public bool dpadRight
+        {
+            get => dpad.IsRight();
+            set => dpad.SetRight(value);
+        }
+
+        public bool dpadDown
+        {
+            get => dpad.IsDown();
+            set => dpad.SetDown(value);
+        }
+
+        public bool dpadLeft
+        {
+            get => dpad.IsLeft();
+            set => dpad.SetLeft(value);
+        }
+
+        public bool leftGreen
+        {
+            get => (buttons & Button.LeftGreen) != 0;
+            set => buttons.SetBit(Button.LeftGreen, value);
+        }
+
+        public bool leftRed
+        {
+            get => (buttons & Button.LeftRed) != 0;
+            set => buttons.SetBit(Button.LeftRed, value);
+        }
+
+        public bool leftBlue
+        {
+            get => (buttons & Button.LeftBlue) != 0;
+            set => buttons.SetBit(Button.LeftBlue, value);
+        }
+
+        public bool rightGreen
+        {
+            get => (buttons & Button.RightGreen) != 0;
+            set => buttons.SetBit(Button.RightGreen, value);
+        }
+
+        public bool rightRed
+        {
+            get => (buttons & Button.RightRed) != 0;
+            set => buttons.SetBit(Button.RightRed, value);
+        }
+
+        public bool rightBlue
+        {
+            get => (buttons & Button.RightBlue) != 0;
+            set => buttons.SetBit(Button.RightBlue, value);
+        }
+
+        public sbyte leftVelocity
+        {
+            get => (sbyte)(m_LeftTableVelocity - 0x80);
+            set => m_LeftTableVelocity = (byte)(value + 0x80);
+        }
+
+        public sbyte rightVelocity
+        {
+            get => (sbyte)(m_RightTableVelocity - 0x80);
+            set => m_RightTableVelocity = (byte)(value + 0x80);
+        }
+
+        public ushort effectsDial
+        {
+            get => (ushort)(m_EffectsDial << 8);
+            set => m_EffectsDial = (byte)(value >> 8);
+        }
+
+        public sbyte crossfader
+        {
+            get => (sbyte)(m_Crossfader - 0x80);
+            set => m_Crossfader = (byte)(value + 0x80);
+        }
     }
 
     /// <summary>

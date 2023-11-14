@@ -46,37 +46,6 @@ namespace PlasticBand.Devices
         System = 1 << TranslatedTurntableButton.System,
     }
 
-    internal interface ITurntableState : IInputStateTypeInfo
-    {
-        bool south { get; }
-        bool east { get; }
-        bool west { get; }
-        bool north_euphoria { get; }
-
-        bool dpadUp { get; }
-        bool dpadDown { get; }
-        bool dpadLeft { get; }
-        bool dpadRight { get; }
-
-        bool start { get; }
-        bool select { get; }
-        bool system { get; }
-
-        bool leftGreen { get; }
-        bool leftRed { get; }
-        bool leftBlue { get; }
-
-        bool rightGreen { get; }
-        bool rightRed { get; }
-        bool rightBlue { get; }
-
-        sbyte leftVelocity { get; }
-        sbyte rightVelocity { get; }
-
-        sbyte crossfader { get; }
-        ushort effectsDial { get; }
-    }
-
     /// <summary>
     /// The format which <see cref="TranslatingTurntable{TState}"/>s translate state into.
     /// </summary>

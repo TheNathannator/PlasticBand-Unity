@@ -19,14 +19,6 @@ namespace PlasticBand.Tests.Devices
             // DpadDirection is equivalent to HidDpad
             => (HidDpad)dpad;
 
-        public static void SetBit(ref this ushort value, ushort mask, bool set)
-        {
-            if (set)
-                value |= mask;
-            else
-                value &= (ushort)~mask;
-        }
-
         public static byte DenormalizeByteSigned(float value)
         {
             return (byte)IntegerAxisControl.Denormalize(value, byte.MinValue, byte.MaxValue, 0x80);
@@ -45,6 +37,11 @@ namespace PlasticBand.Tests.Devices
         public static short DenormalizeInt16(float value)
         {
             return (short)IntegerAxisControl.Denormalize(value, short.MinValue, short.MaxValue, 0);
+        }
+
+        public static ushort DenormalizeUInt16(float value)
+        {
+            return (ushort)IntegerAxisControl.Denormalize(value, ushort.MinValue, ushort.MaxValue, ushort.MinValue);
         }
     }
 

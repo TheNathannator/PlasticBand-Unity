@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -40,5 +39,29 @@ namespace PlasticBand
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsPressedInEvent(this ButtonControl control, InputEventPtr eventPtr)
             => control.ReadValueFromEvent(eventPtr, out float value) && control.IsValueConsideredPressed(value);
+
+        public static void SetBit(ref this byte value, byte mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= (byte)~mask;
+        }
+
+        public static void SetBit(ref this short value, short mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= (short)~mask;
+        }
+
+        public static void SetBit(ref this ushort value, ushort mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= (ushort)~mask;
+        }
     }
 }

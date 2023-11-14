@@ -24,47 +24,145 @@ namespace PlasticBand.Devices
         public HidDpad dpad;
 
         [FieldOffset(5)]
-        private readonly byte m_LeftTableVelocity;
+        private byte m_LeftTableVelocity;
 
         [FieldOffset(6)]
-        private readonly byte m_RightTableVelocity;
+        private byte m_RightTableVelocity;
 
         [FieldOffset(19)]
-        private readonly short m_EffectsDial;
+        private short m_EffectsDial;
 
         [FieldOffset(21)]
-        private readonly short m_Crossfader;
+        private short m_Crossfader;
 
         [FieldOffset(23)]
         public short tableButtons;
 
-        public bool west => (buttons & PS3Button.Square) != 0;
-        public bool south => (buttons & PS3Button.Cross) != 0;
-        public bool east => (buttons & PS3Button.Circle) != 0;
-        public bool north_euphoria => (buttons & PS3Button.Triangle) != 0;
+        public bool west
+        {
+            get => (buttons & PS3Button.Square) != 0;
+            set => buttons.SetBit(PS3Button.Square, value);
+        }
 
-        public bool select => (buttons & PS3Button.Select) != 0;
-        public bool start => (buttons & PS3Button.Start) != 0;
-        public bool system => (buttons & PS3Button.PlayStation) != 0;
+        public bool south
+        {
+            get => (buttons & PS3Button.Cross) != 0;
+            set => buttons.SetBit(PS3Button.Cross, value);
+        }
 
-        public bool dpadUp => dpad.IsUp();
-        public bool dpadRight => dpad.IsRight();
-        public bool dpadDown => dpad.IsDown();
-        public bool dpadLeft => dpad.IsLeft();
+        public bool east
+        {
+            get => (buttons & PS3Button.Circle) != 0;
+            set => buttons.SetBit(PS3Button.Circle, value);
+        }
 
-        public bool rightGreen => (tableButtons & 0x001) != 0;
-        public bool rightRed => (tableButtons & 0x002) != 0;
-        public bool rightBlue => (tableButtons & 0x004) != 0;
+        public bool north_euphoria
+        {
+            get => (buttons & PS3Button.Triangle) != 0;
+            set => buttons.SetBit(PS3Button.Triangle, value);
+        }
 
-        public bool leftGreen => (tableButtons & 0x010) != 0;
-        public bool leftRed => (tableButtons & 0x020) != 0;
-        public bool leftBlue => (tableButtons & 0x040) != 0;
+        public bool select
+        {
+            get => (buttons & PS3Button.Select) != 0;
+            set => buttons.SetBit(PS3Button.Select, value);
+        }
 
-        public sbyte leftVelocity => (sbyte)(m_LeftTableVelocity - 0x80);
-        public sbyte rightVelocity => (sbyte)(m_RightTableVelocity - 0x80);
+        public bool start
+        {
+            get => (buttons & PS3Button.Start) != 0;
+            set => buttons.SetBit(PS3Button.Start, value);
+        }
 
-        public ushort effectsDial => (ushort)(m_EffectsDial << 6);
-        public sbyte crossfader => (sbyte)((m_Crossfader >> 2) - 0x80);
+        public bool system
+        {
+            get => (buttons & PS3Button.PlayStation) != 0;
+            set => buttons.SetBit(PS3Button.PlayStation, value);
+        }
+
+        public bool dpadUp
+        {
+            get => dpad.IsUp();
+            set => dpad.SetUp(value);
+        }
+
+        public bool dpadRight
+        {
+            get => dpad.IsRight();
+            set => dpad.SetRight(value);
+        }
+
+        public bool dpadDown
+        {
+            get => dpad.IsDown();
+            set => dpad.SetDown(value);
+        }
+
+        public bool dpadLeft
+        {
+            get => dpad.IsLeft();
+            set => dpad.SetLeft(value);
+        }
+
+        public bool rightGreen
+        {
+            get => (tableButtons & 0x001) != 0;
+            set => tableButtons.SetBit(0x001, value);
+        }
+
+        public bool rightRed
+        {
+            get => (tableButtons & 0x002) != 0;
+            set => tableButtons.SetBit(0x002, value);
+        }
+
+        public bool rightBlue
+        {
+            get => (tableButtons & 0x004) != 0;
+            set => tableButtons.SetBit(0x004, value);
+        }
+
+        public bool leftGreen
+        {
+            get => (tableButtons & 0x010) != 0;
+            set => tableButtons.SetBit(0x010, value);
+        }
+
+        public bool leftRed
+        {
+            get => (tableButtons & 0x020) != 0;
+            set => tableButtons.SetBit(0x020, value);
+        }
+
+        public bool leftBlue
+        {
+            get => (tableButtons & 0x040) != 0;
+            set => tableButtons.SetBit(0x040, value);
+        }
+
+        public sbyte leftVelocity
+        {
+            get => (sbyte)(m_LeftTableVelocity - 0x80);
+            set => m_LeftTableVelocity = (byte)(value + 0x80);
+        }
+
+        public sbyte rightVelocity
+        {
+            get => (sbyte)(m_RightTableVelocity - 0x80);
+            set => m_RightTableVelocity = (byte)(value + 0x80);
+        }
+
+        public ushort effectsDial
+        {
+            get => (ushort)(m_EffectsDial << 6);
+            set => m_EffectsDial = (short)(value >> 6);
+        }
+
+        public sbyte crossfader
+        {
+            get => (sbyte)((m_Crossfader >> 2) - 0x80);
+            set => m_Crossfader = (short)((value + 0x80) << 2);
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -75,33 +173,33 @@ namespace PlasticBand.Devices
         public byte reportId;
         public PS3TurntableState_NoReportId state;
 
-        public bool west => state.west;
-        public bool south => state.south;
-        public bool east => state.east;
-        public bool north_euphoria => state.north_euphoria;
+        public bool west { get => state.west; set => state.west = value; }
+        public bool south { get => state.south; set => state.south = value; }
+        public bool east { get => state.east; set => state.east = value; }
+        public bool north_euphoria { get => state.north_euphoria; set => state.north_euphoria = value; }
 
-        public bool select => state.select;
-        public bool start => state.start;
-        public bool system => state.system;
+        public bool select { get => state.select; set => state.select = value; }
+        public bool start { get => state.start; set => state.start = value; }
+        public bool system { get => state.system; set => state.system = value; }
 
-        public bool dpadUp => state.dpadUp;
-        public bool dpadRight => state.dpadRight;
-        public bool dpadDown => state.dpadDown;
-        public bool dpadLeft => state.dpadLeft;
+        public bool dpadUp { get => state.dpadUp; set => state.dpadUp = value; }
+        public bool dpadRight { get => state.dpadRight; set => state.dpadRight = value; }
+        public bool dpadDown { get => state.dpadDown; set => state.dpadDown = value; }
+        public bool dpadLeft { get => state.dpadLeft; set => state.dpadLeft = value; }
 
-        public bool leftGreen => state.leftGreen;
-        public bool leftRed => state.leftRed;
-        public bool leftBlue => state.leftBlue;
+        public bool leftGreen { get => state.leftGreen; set => state.leftGreen = value; }
+        public bool leftRed { get => state.leftRed; set => state.leftRed = value; }
+        public bool leftBlue { get => state.leftBlue; set => state.leftBlue = value; }
 
-        public bool rightGreen => state.rightGreen;
-        public bool rightRed => state.rightRed;
-        public bool rightBlue => state.rightBlue;
+        public bool rightGreen { get => state.rightGreen; set => state.rightGreen = value; }
+        public bool rightRed { get => state.rightRed; set => state.rightRed = value; }
+        public bool rightBlue { get => state.rightBlue; set => state.rightBlue = value; }
 
-        public sbyte leftVelocity => state.leftVelocity;
-        public sbyte rightVelocity => state.rightVelocity;
+        public sbyte leftVelocity { get => state.leftVelocity; set => state.leftVelocity = value; }
+        public sbyte rightVelocity { get => state.rightVelocity; set => state.rightVelocity = value; }
 
-        public ushort effectsDial => state.effectsDial;
-        public sbyte crossfader => state.crossfader;
+        public ushort effectsDial { get => state.effectsDial; set => state.effectsDial = value; }
+        public sbyte crossfader { get => state.crossfader; set => state.crossfader = value; }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
