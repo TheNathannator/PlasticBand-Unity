@@ -42,13 +42,8 @@ namespace PlasticBand.Tests.Devices
         where TState : unmanaged, IInputStateTypeInfo
     {
         protected override AxisMode tiltMode => AxisMode.Signed;
-        protected virtual bool supportsAccelerometers => true;
 
         protected abstract void SetSliderValue(ref TState state, byte value);
-
-        protected abstract void SetAccelerometerX(ref TState state, float value);
-        protected abstract void SetAccelerometerY(ref TState state, float value);
-        protected abstract void SetAccelerometerZ(ref TState state, float value);
 
         [Test]
         public void TiltAndAccelerometerXAreEquivalent()
@@ -73,14 +68,19 @@ namespace PlasticBand.Tests.Devices
             => CreateAndRun((guitar) =>
                 GuitarHeroSliderControlTests._HandlesGH5Slider(guitar, CreateState(), SetSliderValue,
                 guitar.touchGreen, guitar.touchRed, guitar.touchYellow, guitar.touchBlue, guitar.touchOrange));
+    }
+
+    public abstract class GuitarHeroGuitarTests_Accelerometer<TGuitar, TState> : GuitarHeroGuitarTests<TGuitar, TState>
+        where TGuitar : GuitarHeroGuitar
+        where TState : unmanaged, IInputStateTypeInfo
+    {
+        protected abstract void SetAccelerometerX(ref TState state, float value);
+        protected abstract void SetAccelerometerY(ref TState state, float value);
+        protected abstract void SetAccelerometerZ(ref TState state, float value);
 
         [Test]
         public void HandlesAccelerometers() => CreateAndRun((guitar) =>
         {
-            // Santroller guitars don't support the accelerometers, so we need to skip on those
-            if (!supportsAccelerometers)
-                return;
-
             RecognizesSignedAxis(guitar, CreateState(), guitar.accelX, SetAccelerometerX);
             RecognizesSignedAxis(guitar, CreateState(), guitar.accelY, SetAccelerometerY);
             RecognizesSignedAxis(guitar, CreateState(), guitar.accelZ, SetAccelerometerZ);

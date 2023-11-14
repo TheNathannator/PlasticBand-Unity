@@ -8,7 +8,7 @@ namespace PlasticBand.Tests.Devices
     using SantrollerHIDButton = SantrollerHIDGuitarHeroGuitarState.Button;
 
     internal class XInputGuitarHeroGuitarTests
-        : GuitarHeroGuitarTests<XInputGuitarHeroGuitar, XInputGuitarHeroGuitarState>
+        : GuitarHeroGuitarTests_Accelerometer<XInputGuitarHeroGuitar, XInputGuitarHeroGuitarState>
     {
         protected override XInputGuitarHeroGuitarState CreateState()
             => new XInputGuitarHeroGuitarState()
@@ -61,8 +61,6 @@ namespace PlasticBand.Tests.Devices
     internal class SantrollerXInputGuitarHeroGuitarTests
         : GuitarHeroGuitarTests<SantrollerXInputGuitarHeroGuitar, SantrollerXInputGuitarHeroGuitarState>
     {
-        protected override bool supportsAccelerometers => false;
-
         protected override SantrollerXInputGuitarHeroGuitarState CreateState()
             => new SantrollerXInputGuitarHeroGuitarState()
         {
@@ -94,19 +92,10 @@ namespace PlasticBand.Tests.Devices
         {
             state.slider = (short)-((sbyte)value * -0x0101);
         }
-
-        protected override void SetAccelerometerX(ref SantrollerXInputGuitarHeroGuitarState state, float value)
-            => throw new NotSupportedException($"{nameof(SantrollerXInputGuitarHeroGuitar)} does not support the accelerometer axes!");
-
-        protected override void SetAccelerometerY(ref SantrollerXInputGuitarHeroGuitarState state, float value)
-            => throw new NotSupportedException($"{nameof(SantrollerXInputGuitarHeroGuitar)} does not support the accelerometer axes!");
-
-        protected override void SetAccelerometerZ(ref SantrollerXInputGuitarHeroGuitarState state, float value)
-            => throw new NotSupportedException($"{nameof(SantrollerXInputGuitarHeroGuitar)} does not support the accelerometer axes!");
     }
 
     internal class PS3GuitarHeroGuitarTests_NoReportId
-        : GuitarHeroGuitarTests<PS3GuitarHeroGuitar, PS3GuitarHeroGuitarState_NoReportId>
+        : GuitarHeroGuitarTests_Accelerometer<PS3GuitarHeroGuitar, PS3GuitarHeroGuitarState_NoReportId>
     {
         protected override PS3GuitarHeroGuitarState_NoReportId CreateState()
             => new PS3GuitarHeroGuitarState_NoReportId()
@@ -158,7 +147,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class PS3GuitarHeroGuitarTests_ReportId
-        : GuitarHeroGuitarTests<PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitarState_ReportId>
+        : GuitarHeroGuitarTests_Accelerometer<PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitarState_ReportId>
     {
         protected override PS3GuitarHeroGuitarState_ReportId CreateState()
             => new PS3GuitarHeroGuitarState_ReportId()
@@ -215,8 +204,6 @@ namespace PlasticBand.Tests.Devices
     internal class SantrollerHIDGuitarHeroGuitarTests
         : GuitarHeroGuitarTests<SantrollerHIDGuitarHeroGuitar, SantrollerHIDGuitarHeroGuitarState>
     {
-        protected override bool supportsAccelerometers => false;
-
         protected override SantrollerHIDGuitarHeroGuitarState CreateState()
             => new SantrollerHIDGuitarHeroGuitarState()
         {
@@ -259,15 +246,6 @@ namespace PlasticBand.Tests.Devices
         {
             state.slider = value;
         }
-
-        protected override void SetAccelerometerX(ref SantrollerHIDGuitarHeroGuitarState state, float value)
-            => throw new NotSupportedException($"{nameof(SantrollerHIDGuitarHeroGuitar)} does not support the accelerometer axes!");
-
-        protected override void SetAccelerometerY(ref SantrollerHIDGuitarHeroGuitarState state, float value)
-            => throw new NotSupportedException($"{nameof(SantrollerHIDGuitarHeroGuitar)} does not support the accelerometer axes!");
-
-        protected override void SetAccelerometerZ(ref SantrollerHIDGuitarHeroGuitarState state, float value)
-            => throw new NotSupportedException($"{nameof(SantrollerHIDGuitarHeroGuitar)} does not support the accelerometer axes!");
     }
 
     public static class PS3GuitarHeroGuitarHandling
