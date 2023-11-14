@@ -295,8 +295,8 @@ namespace PlasticBand.Devices
             int mask = 0;
             for (int i = 0; i < KeyCount; i++)
             {
-                mask <<= 1;
-                mask |= GetKey(i).isPressed ? 1 : 0;
+                if (GetKey(i).isPressed)
+                    mask |= 1 << i;
             }
             return mask;
         }
@@ -310,8 +310,8 @@ namespace PlasticBand.Devices
             int mask = 0;
             for (int i = 0; i < KeyCount; i++)
             {
-                mask <<= 1;
-                mask |= GetKey(i).IsPressedInEvent(eventPtr) ? 1 : 0;
+                if (GetKey(i).IsPressedInEvent(eventPtr))
+                    mask |= 1 << i;
             }
             return mask;
         }
