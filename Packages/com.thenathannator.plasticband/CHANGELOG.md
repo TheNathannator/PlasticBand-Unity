@@ -14,6 +14,10 @@ Dates are relative to UTC.
 - Pro Guitars no longer forget to assign their digital pedal control.
 - 6-fret guitars were using the entirely wrong state layout lol, copy-paste error I missed during review.
 - Fixed turntables failing to initialize due to `sbyte`s not being considered integers by `InputState.IsIntegerFormat` for some reason.
+- Fixed turntable platter buttons and Pro Guitar digital pedal not working correctly; private fields in layout structs aren't checked during layout creation it seems.
+- Fixed Pro Guitar strumming not registering in the first input event received for one.
+- Fixed Pro Keyboard `GetKeyMask` returning an inverted mask (i.e. bit 24 was key 1 rather than bit 0).
+- Fixed Santroller guitars not having the correct default state value set.
 
 ### Changed
 
