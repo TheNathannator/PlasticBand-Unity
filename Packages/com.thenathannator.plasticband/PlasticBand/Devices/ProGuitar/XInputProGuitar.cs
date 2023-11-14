@@ -234,7 +234,7 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(XInputProGuitarLayout), displayName = "XInput Rock Band Pro Guitar")]
-    internal class XInputProGuitar : ProGuitar
+    internal class XInputProGuitar : TranslatingProGuitar<XInputProGuitarState>
     {
         internal new static void Initialize()
         {

@@ -147,19 +147,7 @@ namespace PlasticBand.Devices
 
         // [InputControl(name = "analogPedal", layout = "Axis", format = "BIT", sizeInBits = 7)] // TODO: is this a thing?
         [InputControl(name = "digitalPedal", layout = "Button", bit = 7)]
-        private byte m_Pedal;
-
-        public bool digitalPedal
-        {
-            get => (m_Pedal & 0x80) != 0;
-            set => m_Pedal = (byte)((value ? 0x80 : 0x00) | (m_Pedal & 0x7F));
-        }
-
-        // public byte analogPedal
-        // {
-        //     get => (byte)(m_Pedal & 0x7F);
-        //     set => m_Pedal = (byte)((m_Pedal & 0x80) | (value & 0x7F));
-        // }
+        public byte pedal;
     }
 
     /// <summary>
@@ -171,12 +159,12 @@ namespace PlasticBand.Devices
     {
         private TranslateStateHandler<TState, TranslatedProGuitarState> m_Translator;
 
-        private byte? m_PreviousVelocity1;
-        private byte? m_PreviousVelocity2;
-        private byte? m_PreviousVelocity3;
-        private byte? m_PreviousVelocity4;
-        private byte? m_PreviousVelocity5;
-        private byte? m_PreviousVelocity6;
+        private byte m_PreviousVelocity1;
+        private byte m_PreviousVelocity2;
+        private byte m_PreviousVelocity3;
+        private byte m_PreviousVelocity4;
+        private byte m_PreviousVelocity5;
+        private byte m_PreviousVelocity6;
 
         protected override void FinishSetup()
         {
@@ -237,12 +225,12 @@ namespace PlasticBand.Devices
 
             // The string velocity is apparently not very reliable and can be confusing to work with,
             // so only whether or not the strum has changed is exposed until more research can be done
-            bool strum1 = m_PreviousVelocity1.HasValue && velocity1 != m_PreviousVelocity1 && velocity1 != 0;
-            bool strum2 = m_PreviousVelocity2.HasValue && velocity2 != m_PreviousVelocity2 && velocity2 != 0;
-            bool strum3 = m_PreviousVelocity3.HasValue && velocity3 != m_PreviousVelocity3 && velocity3 != 0;
-            bool strum4 = m_PreviousVelocity4.HasValue && velocity4 != m_PreviousVelocity4 && velocity4 != 0;
-            bool strum5 = m_PreviousVelocity5.HasValue && velocity5 != m_PreviousVelocity5 && velocity5 != 0;
-            bool strum6 = m_PreviousVelocity6.HasValue && velocity6 != m_PreviousVelocity6 && velocity6 != 0;
+            bool strum1 = velocity1 != m_PreviousVelocity1 && velocity1 != 0;
+            bool strum2 = velocity2 != m_PreviousVelocity2 && velocity2 != 0;
+            bool strum3 = velocity3 != m_PreviousVelocity3 && velocity3 != 0;
+            bool strum4 = velocity4 != m_PreviousVelocity4 && velocity4 != 0;
+            bool strum5 = velocity5 != m_PreviousVelocity5 && velocity5 != 0;
+            bool strum6 = velocity6 != m_PreviousVelocity6 && velocity6 != 0;
 
             m_PreviousVelocity1 = velocity1;
             m_PreviousVelocity2 = velocity2;
@@ -286,8 +274,8 @@ namespace PlasticBand.Devices
             translated.buttons = (uint)buttons;
 
             // Pedal port
-            translated.digitalPedal = state.digitalPedal;
-            // translated.analogPedal = state.analogPedal;
+            translated.pedal.SetBit(0x80, state.digitalPedal);
+            // translated.pedal.SetMask(0x7F, state.analogPedal);
 
             return translated;
         }
