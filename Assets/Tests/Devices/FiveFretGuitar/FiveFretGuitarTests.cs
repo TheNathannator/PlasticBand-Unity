@@ -121,7 +121,7 @@ namespace PlasticBand.Tests.Devices
             for (var frets = FiveFret.None; frets <= AllFrets; frets++)
             {
                 setFret(ref state, frets);
-                AssertButtonsWithEventUpdate(device, state, frets, getMask, getMaskFromEvent, AssertMask);
+                AssertButtonMask(device, state, frets, getMask, getMaskFromEvent, AssertMask);
             }
 
             void AssertMask(FiveFret mask, FiveFret targetMask, Func<ButtonControl, bool> buttonPressed)

@@ -139,7 +139,7 @@ namespace PlasticBand.Tests.Devices
                 for (int keys = maskStart; keys < maxMask; keys += 1 << keyStart)
                 {
                     SetKeys(ref state, keys);
-                    AssertButtonsWithEventUpdate(keyboard, state, keys, keyboard.GetKeyMask, keyboard.GetKeyMask, AssertMask);
+                    AssertButtonMask(keyboard, state, keys, keyboard.GetKeyMask, keyboard.GetKeyMask, AssertMask);
                 }
             }
 

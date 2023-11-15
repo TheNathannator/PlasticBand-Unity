@@ -190,7 +190,7 @@ namespace PlasticBand.Tests.Devices
             for (var frets = SixFret.None; frets <= SixFretGuitarTests.AllFrets; frets++)
             {
                 SetFrets(ref state, frets);
-                AssertButtonsWithEventUpdate(guitar, state, frets, guitar.GetFretMask, guitar.GetFretMask, AssertMask);
+                AssertButtonMask(guitar, state, frets, guitar.GetFretMask, guitar.GetFretMask, AssertMask);
             }
 
             void AssertMask(SixFret mask, SixFret targetMask, Func<ButtonControl, bool> buttonPressed)

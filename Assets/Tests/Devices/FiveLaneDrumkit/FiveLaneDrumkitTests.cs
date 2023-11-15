@@ -225,13 +225,7 @@ namespace PlasticBand.Tests.Devices
                 foreach (float velocity in velocityList)
                 {
                     SetPad(ref state, pad, velocity);
-
-                    if (velocity > 0f)
-                        AssertButtonPress(drumkit, state, button);
-                    else
-                        AssertButtonPress(drumkit, state);
-
-                    AssertAxisValue(drumkit, velocity, 1 / 100f, button);
+                    AssertButtonValue(drumkit, state, velocity, 1 / 100f, button);
                 }
             }
         });
@@ -282,7 +276,7 @@ namespace PlasticBand.Tests.Devices
                     SetPad(ref state, pad, (pads & pad) != 0 ? 1f : 0f);
                 }
 
-                AssertButtonsWithEventUpdate(drumkit, state, pads, drumkit.GetPadMask, drumkit.GetPadMask, AssertMask);
+                AssertButtonMask(drumkit, state, pads, drumkit.GetPadMask, drumkit.GetPadMask, AssertMask);
             }
 
             void AssertMask(FiveLanePad mask, FiveLanePad targetMask, Func<ButtonControl, bool> buttonPressed)

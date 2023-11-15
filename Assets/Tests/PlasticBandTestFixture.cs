@@ -71,30 +71,130 @@ namespace PlasticBand.Tests
 
         protected virtual void InitializeDevice(TDevice device) { }
 
+        public static void AssertEventUpdate<TState>(InputDevice device, TState state,
+            Action onAfterUpdate, Action<InputEventPtr> onInputEvent)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            // Input event assert
+            using (InputSystem.onEvent.Assert(onInputEvent))
+            {
+                InputSystem.QueueStateEvent(device, state);
+                InputSystem.Update();
+            }
+
+            // Post-update assert
+            onAfterUpdate();
+
+            // Input event assert using post-update state
+            // Not strictly necessary, but might as well to be thorough
+            using (StateEvent.From(device, out var eventPtr))
+            {
+                onInputEvent(eventPtr);
+            }
+        }
+
+        public static new void AssertButtonPress<TState>(InputDevice device, TState state, params ButtonControl[] buttons)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            void UpdateAssert() => AssertButton((button) => button.isPressed);
+            void EventAssert(InputEventPtr eventPtr)
+                => AssertButton((button) => button.IsPressedInEvent(eventPtr));
+
+            AssertEventUpdate(device, state, UpdateAssert, EventAssert);
+
+            void AssertButton(Func<ButtonControl, bool> getPressed)
+            {
+                foreach (var control in device.allControls)
+                {
+                    if (!(control is ButtonControl button))
+                        continue;
+
+                    if (buttons.Contains(button))
+                        Assert.That(getPressed(button), Is.True, $"Expected button {button} to be pressed");
+                    else
+                        Assert.That(getPressed(button), Is.False, $"Expected button {button} to NOT be pressed");
+                }
+            }
+        }
+
+        public static void AssertButtonValue<TState>(InputDevice device, TState state,
+            float value, float epsilon, params ButtonControl[] buttons)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            void UpdateAssert() => AssertButton((button) => button.isPressed, (button) => button.value);
+            void EventAssert(InputEventPtr eventPtr)
+                => AssertButton((button) => button.IsPressedInEvent(eventPtr), (button) => button.ReadValueFromEvent(eventPtr));
+
+            AssertEventUpdate(device, state, UpdateAssert, EventAssert);
+
+            void AssertButton(Func<ButtonControl, bool> getPressed, Func<ButtonControl, float> getValue)
+            {
+                foreach (var control in device.allControls)
+                {
+                    if (!(control is ButtonControl button))
+                        continue;
+
+                    if (buttons.Contains(button))
+                    {
+                        Assert.That(getValue(button), Is.InRange(value - epsilon, value + epsilon), $"Value for button '{button}' is not in range!");
+                        if (value >= button.pressPointOrDefault)
+                            Assert.That(getPressed(button), Is.True, $"Expected button {button} to be pressed");
+                        else
+                            Assert.That(getPressed(button), Is.False, $"Expected button {button} to NOT be pressed");
+                    }
+                    else
+                    {
+                        Assert.That(getPressed(button), Is.False, $"Expected button {button} to NOT be pressed");
+                        float defaultValue = button.ReadDefaultValue();
+                        Assert.That(getValue(button), Is.InRange(defaultValue - epsilon, defaultValue + epsilon), $"Expected default value for button '{button}'!");
+                    }
+                }
+            }
+        }
+
+        public delegate void AssertMaskAction<TMask>(TMask result, TMask expected, Func<ButtonControl, bool> getPressed);
+
+        /// <summary>
+        /// Asserts the state of buttons across both input events and post-update properties.
+        /// </summary>
+        public static void AssertButtonMask<TState, TMask>(InputDevice device, TState state,
+            TMask targetMask, Func<TMask> getMask, Func<InputEventPtr, TMask> getMaskFromEvent,
+            AssertMaskAction<TMask> assertMask)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            void UpdateAssert() => assertMask(getMask(), targetMask, (button) => button.isPressed);
+            void EventAssert(InputEventPtr eventPtr)
+                => assertMask(getMaskFromEvent(eventPtr), targetMask, (button) => button.IsPressedInEvent(eventPtr));
+
+            AssertEventUpdate(device, state, UpdateAssert, EventAssert);
+        }
+
         public static void AssertAxisValue<TState>(InputDevice device, TState state,
             float value, float epsilon, params AxisControl[] axes)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            InputSystem.QueueStateEvent(device, state);
-            InputSystem.Update();
-            AssertAxisValue(device, value, epsilon, axes);
-        }
+            void UpdateAssert() => AssertButton((axis) => axis.value);
+            void EventAssert(InputEventPtr eventPtr)
+                => AssertButton((axis) => axis.ReadValueFromEvent(eventPtr));
 
-        public static void AssertAxisValue(InputDevice device, float value, float epsilon, params AxisControl[] axes)
-        {
-            foreach (var control in device.allControls)
+            AssertEventUpdate(device, state, UpdateAssert, EventAssert);
+
+            void AssertButton(Func<AxisControl, float> getValue)
             {
-                if (!(control is AxisControl axis))
-                    continue;
+                foreach (var control in device.allControls)
+                {
+                    if (!(control is AxisControl axis))
+                        continue;
 
-                if (axes.Contains(axis))
-                {
-                    Assert.That(axis.value, Is.InRange(value - epsilon, value + epsilon), $"Value for axis '{axis}' is not in range!");
-                }
-                else
-                {
-                    float defaultValue = axis.ReadDefaultValue();
-                    Assert.That(axis.value, Is.InRange(defaultValue - epsilon, defaultValue + epsilon), $"Expected default value for axis '{axis}'!");
+                    if (axes.Contains(axis))
+                    {
+                        Assert.That(getValue(axis), Is.InRange(value - epsilon, value + epsilon), $"Value for axis '{axis}' is not in range!");
+                    }
+                    else
+                    {
+                        float defaultValue = axis.ReadDefaultValue();
+                        Assert.That(getValue(axis), Is.InRange(defaultValue - epsilon, defaultValue + epsilon), $"Expected default value for axis '{axis}'!");
+                    }
                 }
             }
         }
@@ -103,22 +203,28 @@ namespace PlasticBand.Tests
             int value, params IntegerControl[] integers)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            InputSystem.QueueStateEvent(device, state);
-            InputSystem.Update();
+            void UpdateAssert() => AssertInteger((axis) => axis.value);
+            void EventAssert(InputEventPtr eventPtr)
+                => AssertInteger((axis) => axis.ReadValueFromEvent(eventPtr));
 
-            foreach (var control in device.allControls)
+            AssertEventUpdate(device, state, UpdateAssert, EventAssert);
+
+            void AssertInteger(Func<IntegerControl, int> getValue)
             {
-                if (!(control is IntegerControl integer))
-                    continue;
+                foreach (var control in device.allControls)
+                {
+                    if (!(control is IntegerControl integer))
+                        continue;
 
-                if (integers.Contains(integer))
-                {
-                    Assert.That(integer.value, Is.EqualTo(value), $"Value for integer '{integer}' is not correct!");
-                }
-                else
-                {
-                    float defaultValue = integer.ReadDefaultValue();
-                    Assert.That(integer.value, Is.EqualTo(defaultValue), $"Expected default value for integer '{integer}'!");
+                    if (integers.Contains(integer))
+                    {
+                        Assert.That(getValue(integer), Is.EqualTo(value), $"Value for integer '{integer}' is not correct!");
+                    }
+                    else
+                    {
+                        float defaultValue = integer.ReadDefaultValue();
+                        Assert.That(getValue(integer), Is.EqualTo(defaultValue), $"Expected default value for integer '{integer}'!");
+                    }
                 }
             }
         }
@@ -180,38 +286,6 @@ namespace PlasticBand.Tests
 
             setButton(ref state, 0f);
             AssertAxisValue(device, state, 0f, 0.001f, button);
-        }
-
-        public delegate void AssertButtonsAction<TMask>(TMask result, TMask expected, Func<ButtonControl, bool> getPressed);
-
-        /// <summary>
-        /// Asserts the state of buttons across both input events and post-update properties.
-        /// </summary>
-        public static void AssertButtonsWithEventUpdate<TState, TMask>(InputDevice device, TState state,
-            TMask targetMask, Func<TMask> getMask, Func<InputEventPtr, TMask> getMaskFromEvent,
-            AssertButtonsAction<TMask> assertMask)
-            where TState : unmanaged, IInputStateTypeInfo
-        {
-            void UpdateAssert() => assertMask(getMask(), targetMask, (button) => button.isPressed);
-            void EventAssert(InputEventPtr eventPtr)
-                => assertMask(getMaskFromEvent(eventPtr), targetMask, (button) => button.IsPressedInEvent(eventPtr));
-
-            // Input event assert
-            using (InputSystem.onEvent.Assert(EventAssert))
-            {
-                InputSystem.QueueStateEvent(device, state);
-                InputSystem.Update();
-            }
-
-            // Post-update assert
-            UpdateAssert();
-
-            // Input event assert using post-update state
-            // Not strictly necessary, but might as well to be thorough
-            using (StateEvent.From(device, out var eventPtr))
-            {
-                EventAssert(eventPtr);
-            }
         }
     }
 }
