@@ -113,7 +113,7 @@ namespace PlasticBand.Devices
         void IInputStateCallbackReceiver.OnNextUpdate() {}
 
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedTurntableState>.UpdateState(this, eventPtr, m_Translator);
+            => StateTranslator<TState, TranslatedTurntableState>.OnStateEvent(this, eventPtr, m_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
             => StateTranslator<TState, TranslatedTurntableState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
 

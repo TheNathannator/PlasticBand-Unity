@@ -259,7 +259,7 @@ namespace PlasticBand.Devices
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedFourLaneState>.UpdateState(this, eventPtr, m_Translator);
+            => StateTranslator<TState, TranslatedFourLaneState>.OnStateEvent(this, eventPtr, m_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
             => StateTranslator<TState, TranslatedFourLaneState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
 
@@ -306,7 +306,7 @@ namespace PlasticBand.Devices
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedFourLaneState>.UpdateState(this, eventPtr, s_Translator);
+            => StateTranslator<TState, TranslatedFourLaneState>.OnStateEvent(this, eventPtr, s_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
             => StateTranslator<TState, TranslatedFourLaneState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
 
