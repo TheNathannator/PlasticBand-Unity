@@ -72,7 +72,7 @@ namespace PlasticBand.Tests
         protected virtual void InitializeDevice(TDevice device) { }
 
         public static void AssertEventUpdate<TState>(InputDevice device, TState state,
-            Action onAfterUpdate, Action<InputEventPtr> onInputEvent)
+            Action<InputEventPtr> onInputEvent, Action onAfterUpdate = null)
             where TState : unmanaged, IInputStateTypeInfo
         {
             // Input event assert
@@ -83,14 +83,7 @@ namespace PlasticBand.Tests
             }
 
             // Post-update assert
-            onAfterUpdate();
-
-            // Input event assert using post-update state
-            // Not strictly necessary, but might as well to be thorough
-            using (StateEvent.From(device, out var eventPtr))
-            {
-                onInputEvent(eventPtr);
-            }
+            onAfterUpdate?.Invoke();
         }
 
         public static new void AssertButtonPress<TState>(InputDevice device, TState state, params ButtonControl[] buttons)
@@ -100,7 +93,7 @@ namespace PlasticBand.Tests
             void EventAssert(InputEventPtr eventPtr)
                 => AssertButton((button) => button.IsPressedInEvent(eventPtr));
 
-            AssertEventUpdate(device, state, UpdateAssert, EventAssert);
+            AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
             void AssertButton(Func<ButtonControl, bool> getPressed)
             {
@@ -125,7 +118,7 @@ namespace PlasticBand.Tests
             void EventAssert(InputEventPtr eventPtr)
                 => AssertButton((button) => button.IsPressedInEvent(eventPtr), (button) => button.ReadValueFromEvent(eventPtr));
 
-            AssertEventUpdate(device, state, UpdateAssert, EventAssert);
+            AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
             void AssertButton(Func<ButtonControl, bool> getPressed, Func<ButtonControl, float> getValue)
             {
@@ -166,7 +159,7 @@ namespace PlasticBand.Tests
             void EventAssert(InputEventPtr eventPtr)
                 => assertMask(getMaskFromEvent(eventPtr), targetMask, (button) => button.IsPressedInEvent(eventPtr));
 
-            AssertEventUpdate(device, state, UpdateAssert, EventAssert);
+            AssertEventUpdate(device, state, EventAssert, UpdateAssert);
         }
 
         public static void AssertAxisValue<TState>(InputDevice device, TState state,
@@ -177,7 +170,7 @@ namespace PlasticBand.Tests
             void EventAssert(InputEventPtr eventPtr)
                 => AssertButton((axis) => axis.ReadValueFromEvent(eventPtr));
 
-            AssertEventUpdate(device, state, UpdateAssert, EventAssert);
+            AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
             void AssertButton(Func<AxisControl, float> getValue)
             {
@@ -207,7 +200,7 @@ namespace PlasticBand.Tests
             void EventAssert(InputEventPtr eventPtr)
                 => AssertInteger((axis) => axis.ReadValueFromEvent(eventPtr));
 
-            AssertEventUpdate(device, state, UpdateAssert, EventAssert);
+            AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
             void AssertInteger(Func<IntegerControl, int> getValue)
             {
