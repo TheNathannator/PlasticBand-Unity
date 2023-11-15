@@ -214,7 +214,6 @@ namespace PlasticBand.Tests.Devices
         public void RecognizesPads() => CreateAndRun((drumkit) =>
         {
             var padMap = CreatePadMap(drumkit);
-            var velocityList = new List<float> { 1f, 0.75f, 0.5f, 0.25f, 0f };
 
             var state = CreateState();
             foreach (var (pad, button) in padMap)
@@ -231,8 +230,9 @@ namespace PlasticBand.Tests.Devices
                     continue;
                 }
 
-                foreach (float velocity in velocityList)
+                for (int i = 10; i >= 0; i--)
                 {
+                    float velocity = i / 10f;
                     SetPad(ref state, pad, velocity);
                     AssertButtonValue(drumkit, state, velocity, 1 / 100f, button);
                 }
