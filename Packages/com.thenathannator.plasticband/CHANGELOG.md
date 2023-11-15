@@ -19,6 +19,7 @@ Dates are relative to UTC.
 - Fixed Pro Keyboard `GetKeyMask` returning an inverted mask (i.e. bit 24 was key 1 rather than bit 0).
 - Fixed Santroller guitars not having the correct default state value set.
 - Fixed various input control extensions not working on devices that use the new state translation infrastructure.
+- Fixed yellow/green pad/cymbal velocities on XInput 4-lane drumkits being inverted.
 
 ### Removed
 

@@ -118,51 +118,57 @@ namespace PlasticBand.Devices
 
         byte IFourLaneDrumkitState_Flags.redPadVelocity
         {
-            get => GetVelocity(redVelocity);
-            set => SetVelocity(ref redVelocity, value);
+            get => GetVelocity_Positive(redVelocity);
+            set => SetVelocity_Positive(ref redVelocity, value);
         }
 
         byte IFourLaneDrumkitState_Flags.yellowPadVelocity
         {
-            get => GetVelocity(yellowVelocity);
-            set => SetVelocity(ref yellowVelocity, value);
+            get => GetVelocity_Negative(yellowVelocity);
+            set => SetVelocity_Negative(ref yellowVelocity, value);
         }
 
         byte IFourLaneDrumkitState_Flags.bluePadVelocity
         {
-            get => GetVelocity(blueVelocity);
-            set => SetVelocity(ref blueVelocity, value);
+            get => GetVelocity_Positive(blueVelocity);
+            set => SetVelocity_Positive(ref blueVelocity, value);
         }
 
         byte IFourLaneDrumkitState_Flags.greenPadVelocity
         {
-            get => GetVelocity(greenVelocity);
-            set => SetVelocity(ref greenVelocity, value);
+            get => GetVelocity_Negative(greenVelocity);
+            set => SetVelocity_Negative(ref greenVelocity, value);
         }
 
         byte IFourLaneDrumkitState_Flags.yellowCymbalVelocity
         {
-            get => GetVelocity(yellowVelocity);
-            set => SetVelocity(ref yellowVelocity, value);
+            get => GetVelocity_Negative(yellowVelocity);
+            set => SetVelocity_Negative(ref yellowVelocity, value);
         }
 
         byte IFourLaneDrumkitState_Flags.blueCymbalVelocity
         {
-            get => GetVelocity(blueVelocity);
-            set => SetVelocity(ref blueVelocity, value);
+            get => GetVelocity_Positive(blueVelocity);
+            set => SetVelocity_Positive(ref blueVelocity, value);
         }
 
         byte IFourLaneDrumkitState_Flags.greenCymbalVelocity
         {
-            get => GetVelocity(greenVelocity);
-            set => SetVelocity(ref greenVelocity, value);
+            get => GetVelocity_Negative(greenVelocity);
+            set => SetVelocity_Negative(ref greenVelocity, value);
         }
 
-        private static byte GetVelocity(short velocity)
+        private static byte GetVelocity_Positive(short velocity)
             => (byte)((~velocity & 0x7FFF) >> 7);
 
-        private static void SetVelocity(ref short velocity, byte value)
+        private static byte GetVelocity_Negative(short velocity)
+            => (byte)((velocity & 0x7FFF) >> 7);
+
+        private static void SetVelocity_Positive(ref short velocity, byte value)
             => velocity = (short)(~value << 7);
+
+        private static void SetVelocity_Negative(ref short velocity, byte value)
+            => velocity = (short)(value << 7);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
