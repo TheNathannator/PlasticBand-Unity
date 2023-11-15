@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
-## [Unreleased]
+## [0.4.2] - 15/11/2023
 
 ### Fixed
 
@@ -18,8 +18,9 @@ Dates are relative to UTC.
 - Fixed Pro Guitar strumming not registering in the first input event received for one.
 - Fixed Pro Keyboard `GetKeyMask` returning an inverted mask (i.e. bit 24 was key 1 rather than bit 0).
 - Fixed Santroller guitars not having the correct default state value set.
+- Fixed various input control extensions not working on devices that use the new state translation infrastructure.
 
-### Changed
+### Removed
 
 - The redundant `SoloFretCount`, `TouchFretCount`, and `EmulatedSoloFretCount` constants on `RockBandGuitar`, `GuitarHeroGuitar`, and `ProGuitar` respectively have been removed, in favor of having the one `FiveFretGuitar.FretCount` constant for everything.
   - The `EmulatedFretCount` constant on `ProGuitar` remains for convenience, but is otherwise now directly equivalent to `FiveFretGuitar.FretCount`.
