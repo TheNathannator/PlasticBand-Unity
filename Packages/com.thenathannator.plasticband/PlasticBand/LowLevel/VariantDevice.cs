@@ -1,9 +1,22 @@
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
+    // While we can technically just do something like `stateFormat = "BYTE"` for variant device layouts,
+    // it ends up tripping an assert since there are no control items present in the layout.
+    // So, this will have to do.
+    internal struct VariantDeviceDummyState : IInputStateTypeInfo
+    {
+        public static readonly FourCC Format = new FourCC('V', 'A', 'R', 'I');
+        public FourCC format => Format;
+
+        [InputControl(layout = "Integer")]
+        public byte dummy;
+    }
+
     /// <summary>
     /// An input device which can vary in layout based on state information.
     /// </summary>
