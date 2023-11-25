@@ -276,14 +276,14 @@ namespace PlasticBand.Devices
             {
                 buttons = (ushort)buttons,
 
-                redPad    = (pads & FourLanePad.RedPad)    != 0 ? state.redPadVelocity : (byte)0,
-                yellowPad = (pads & FourLanePad.YellowPad) != 0 ? state.yellowPadVelocity : (byte)0,
-                bluePad   = (pads & FourLanePad.BluePad)   != 0 ? state.bluePadVelocity : (byte)0,
-                greenPad  = (pads & FourLanePad.GreenPad)  != 0 ? state.greenPadVelocity : (byte)0,
+                redPad    = (pads & FourLanePad.RedPad)    != 0 ? Math.Max(state.redPadVelocity, (byte)1) : (byte)0,
+                yellowPad = (pads & FourLanePad.YellowPad) != 0 ? Math.Max(state.yellowPadVelocity, (byte)1) : (byte)0,
+                bluePad   = (pads & FourLanePad.BluePad)   != 0 ? Math.Max(state.bluePadVelocity, (byte)1) : (byte)0,
+                greenPad  = (pads & FourLanePad.GreenPad)  != 0 ? Math.Max(state.greenPadVelocity, (byte)1) : (byte)0,
 
-                yellowCymbal = (pads & FourLanePad.YellowCymbal) != 0 ? state.yellowCymbalVelocity : (byte)0,
-                blueCymbal   = (pads & FourLanePad.BlueCymbal)   != 0 ? state.blueCymbalVelocity : (byte)0,
-                greenCymbal  = (pads & FourLanePad.GreenCymbal)  != 0 ? state.greenCymbalVelocity : (byte)0,
+                yellowCymbal = (pads & FourLanePad.YellowCymbal) != 0 ? Math.Max(state.yellowCymbalVelocity, (byte)1) : (byte)0,
+                blueCymbal   = (pads & FourLanePad.BlueCymbal)   != 0 ? Math.Max(state.blueCymbalVelocity, (byte)1) : (byte)0,
+                greenCymbal  = (pads & FourLanePad.GreenCymbal)  != 0 ? Math.Max(state.greenCymbalVelocity, (byte)1) : (byte)0,
             };
         }
     }
