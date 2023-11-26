@@ -17,14 +17,12 @@ namespace PlasticBand.Devices
         public byte dummy;
     }
 
+    // Non-generic version to make uninitialization simpler
     /// <summary>
     /// An input device which can vary in layout based on state information.
     /// </summary>
-    internal abstract class VariantDevice<TState> : InputDevice, IInputStateCallbackReceiver
-        where TState : unmanaged, IInputStateTypeInfo
+    internal abstract class VariantDevice : InputDevice, IInputStateCallbackReceiver
     {
-        public static readonly FourCC StateFormat = default(TState).format;
-
         protected string m_CurrentLayout;
         protected InputDevice m_RealDevice;
         protected IInputStateCallbackReceiver m_RealDeviceCallbacks;
@@ -34,14 +32,7 @@ namespace PlasticBand.Devices
             if (eventPtr.type != StateEvent.Type)
                 return;
 
-            var stateEvent = StateEvent.From(eventPtr);
-            // Ensure the format matches and the buffer is big enough for each state type
-            if (stateEvent->stateFormat != StateFormat || stateEvent->stateSizeInBytes < sizeof(TState))
-                return;
-
-            // Always check for a new layout so it can change on-the-fly
-            ref TState state = ref *(TState*)stateEvent->state;
-            string layout = DetermineLayout(ref state);
+            string layout = DetermineLayout(eventPtr);
             if (!string.IsNullOrEmpty(layout))
             {
                 m_CurrentLayout = layout;
@@ -70,7 +61,7 @@ namespace PlasticBand.Devices
                 return false;
         }
 
-        protected abstract string DetermineLayout(ref TState state);
+        protected abstract string DetermineLayout(InputEventPtr eventPtr);
 
         protected override void OnAdded()
         {
@@ -90,5 +81,34 @@ namespace PlasticBand.Devices
             if (m_RealDevice != null)
                 InputSystem.RemoveDevice(m_RealDevice);
         }
+
+        internal void OnDomainReload()
+        {
+            if (m_RealDevice != null)
+                InputSystem.RemoveDevice(m_RealDevice);
+        }
+    }
+
+    /// <summary>
+    /// An input device which can vary in layout based on state information.
+    /// </summary>
+    internal abstract class VariantDevice<TState> : VariantDevice
+        where TState : unmanaged, IInputStateTypeInfo
+    {
+        public static readonly FourCC StateFormat = default(TState).format;
+
+        protected override unsafe string DetermineLayout(InputEventPtr eventPtr)
+        {
+            var stateEvent = StateEvent.From(eventPtr);
+            // Ensure the format matches and the buffer is big enough for each state type
+            if (stateEvent->stateFormat != StateFormat || stateEvent->stateSizeInBytes < sizeof(TState))
+                return null;
+
+            // Always check for a new layout so it can change on-the-fly
+            ref TState state = ref *(TState*)stateEvent->state;
+            return DetermineLayout(ref state);
+        }
+
+        protected abstract string DetermineLayout(ref TState state);
     }
 }

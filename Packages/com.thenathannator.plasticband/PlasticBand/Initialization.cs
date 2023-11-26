@@ -2,7 +2,11 @@ using PlasticBand.Controls;
 using PlasticBand.Devices;
 using PlasticBand.LowLevel;
 using UnityEditor;
+using UnityEngine.InputSystem;
+
+#if !UNITY_EDITOR
 using UnityEngine;
+#endif
 
 namespace PlasticBand
 {
@@ -26,6 +30,10 @@ namespace PlasticBand
 #endif
         internal static void Initialize()
         {
+#if UNITY_EDITOR
+            AssemblyReloadEvents.beforeAssemblyReload += OnDomainReload;
+#endif
+
             // Layout finders
             HidLayoutFinder.Initialize();
             XInputLayoutFinder.Initialize();
@@ -109,5 +117,18 @@ namespace PlasticBand
             SantrollerHidStageKit.Initialize();
             SantrollerXInputStageKit.Initialize();
         }
+
+#if UNITY_EDITOR
+        internal static void OnDomainReload()
+        {
+            // We need to be sure any VariantDevices remove their inner devices from the input system
+            // before a domain reload occurs, otherwise they persist beyond when they should
+            foreach (var device in InputSystem.devices)
+            {
+                if (device is VariantDevice variant)
+                    variant.OnDomainReload();
+            }
+        }
+#endif
     }
 }
