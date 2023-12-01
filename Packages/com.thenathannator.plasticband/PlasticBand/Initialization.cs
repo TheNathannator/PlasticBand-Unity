@@ -102,6 +102,8 @@ namespace PlasticBand
             // Rock Band stage kit
             StageKit.Initialize();
             XInputStageKit.Initialize();
+            SantrollerHidStageKit.Initialize();
+            SantrollerXInputStageKit.Initialize();
         }
     }
 }
