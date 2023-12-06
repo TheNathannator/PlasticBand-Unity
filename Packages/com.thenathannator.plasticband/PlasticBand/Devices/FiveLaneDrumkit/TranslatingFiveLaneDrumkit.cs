@@ -119,12 +119,21 @@ namespace PlasticBand.Devices
         {
             var translated = new TranslatedFiveLaneState()
             {
-                redPad       = state.red_east ? Math.Max(state.redVelocity, (byte)1) : (byte)0,
-                yellowCymbal = state.yellow_north ? Math.Max(state.yellowVelocity, (byte)1) : (byte)0,
-                bluePad      = state.blue_west ? Math.Max(state.blueVelocity, (byte)1) : (byte)0,
-                orangeCymbal = state.orange ? Math.Max(state.orangeVelocity, (byte)1) : (byte)0,
-                greenPad     = state.green_south ? Math.Max(state.greenVelocity, (byte)1) : (byte)0,
-                kick         = state.kick ? Math.Max(state.kickVelocity, (byte)1) : (byte)0,
+                redPad       = state.red_east ? state.redVelocity : (byte)0,
+                yellowCymbal = state.yellow_north ? state.yellowVelocity : (byte)0,
+                bluePad      = state.blue_west ? state.blueVelocity : (byte)0,
+                orangeCymbal = state.orange ? state.orangeVelocity : (byte)0,
+                greenPad     = state.green_south ? state.greenVelocity : (byte)0,
+                kick         = state.kick ? state.kickVelocity : (byte)0,
+
+                // TODO: Determine if these kits need the same velocity limit as RB kits do
+                // If they do, we can't reliably detect face button presses and will have to remove them from the layout
+                // redPad       = state.red_east ? Math.Max(state.redVelocity, (byte)1) : (byte)0,
+                // yellowCymbal = state.yellow_north ? Math.Max(state.yellowVelocity, (byte)1) : (byte)0,
+                // bluePad      = state.blue_west ? Math.Max(state.blueVelocity, (byte)1) : (byte)0,
+                // orangeCymbal = state.orange ? Math.Max(state.orangeVelocity, (byte)1) : (byte)0,
+                // greenPad     = state.green_south ? Math.Max(state.greenVelocity, (byte)1) : (byte)0,
+                // kick         = state.kick ? Math.Max(state.kickVelocity, (byte)1) : (byte)0,
             };
 
             // Face buttons; these are ignored if the corresponding pad/cymbal is also active
