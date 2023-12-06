@@ -57,11 +57,17 @@ namespace PlasticBand.Tests
 
         public void CreateAndRun(Action<TDevice> action)
         {
-            TDevice device = InputSystem.AddDevice<TDevice>();
+            var device = InputSystem.AddDevice(typeof(TDevice).Name);
             try
             {
-                InitializeDevice(device);
-                action(device);
+                if (!(device is TDevice tDevice))
+                {
+                    Assert.Fail($"Expected device of type {typeof(TDevice)}, but got {device.GetType()} instead!");
+                    return;
+                }
+
+                InitializeDevice(tDevice);
+                action(tDevice);
             }
             finally
             {
