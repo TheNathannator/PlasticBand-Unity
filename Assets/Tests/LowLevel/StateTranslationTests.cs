@@ -93,7 +93,7 @@ namespace PlasticBand.Tests.LowLevel
         }
     }
 
-    internal class StateTranslationControlTests : PlasticBandTestFixture<StateTranslationDevice>
+    internal class StateTranslationTests : PlasticBandTestFixture<StateTranslationDevice>
     {
         private const float kEpsilon = 1f / byte.MaxValue;
 
