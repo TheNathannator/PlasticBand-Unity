@@ -11,7 +11,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.RegisterXInputLayout<XInputSixFretGuitar>(
+            SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputSixFretGuitar>(
                 XInputController.DeviceSubType.GuitarAlternate, SantrollerDeviceType.LiveGuitar);
         }
 
