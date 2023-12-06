@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.4.3] - 05/12-2023
+
+### Fixed
+
+- The 4-lane drumkit layouts now ensure they report a non-zero velocity for all pad/cymbal hits.
+  - The 5-lane drumkit layouts don't make the same guarantee currently, as a velocity value of 0 is used to differentiate between pads/cymbals and face buttons.
+- Santroller stage kit layouts are now registered correctly.
+- Santroller XInput 6-fret guitars are also now registered correctly, they were incorrectly being registered as regular XInput 6-fret guitars.
+
 ## [0.4.2] - 15/11/2023
 
 ### Fixed
