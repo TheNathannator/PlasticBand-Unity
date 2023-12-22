@@ -6,7 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
-## [0.4.3] - 05/12-2023
+## [0.4.4] - 22/12/2023
+
+### Fixed
+
+- PS4 Rock Band guitars were not registering whammy/tilt/the pickup switch correctly due to an off-by-one error in the layout.
+
+## [0.4.3] - 05/12/2023
 
 ### Fixed
 
