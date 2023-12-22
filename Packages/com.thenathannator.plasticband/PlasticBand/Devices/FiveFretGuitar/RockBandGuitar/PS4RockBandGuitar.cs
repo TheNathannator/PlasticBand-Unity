@@ -45,15 +45,15 @@ namespace PlasticBand.Devices
         public byte buttons2;
 
         [InputControl(name = "pickupSwitch", layout = "Integer")]
-        [FieldOffset(43)]
+        [FieldOffset(42)]
         public byte pickupSwitch;
 
         [InputControl(name = "whammy", layout = "Axis")]
-        [FieldOffset(44)]
+        [FieldOffset(43)]
         public byte whammy;
 
         [InputControl(name = "tilt", layout = "Axis")]
-        [FieldOffset(45)]
+        [FieldOffset(44)]
         public byte tilt;
     }
 
