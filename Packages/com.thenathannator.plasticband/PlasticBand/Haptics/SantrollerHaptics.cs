@@ -92,7 +92,7 @@ namespace PlasticBand.Haptics
             else if (multiplier < 1)
                 multiplier = 1;
 
-            SendCommand(SantrollerCommandId.StarPowerActive, (byte)(multiplier + 10));
+            SendCommand(SantrollerCommandId.Multiplier, (byte)(multiplier + 10));
         }
 
         private void SendSolo(bool enabled)
