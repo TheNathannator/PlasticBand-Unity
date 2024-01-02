@@ -37,6 +37,7 @@ namespace PlasticBand
 
             // 5-fret guitars
             FiveFretGuitar.Initialize();
+            GuitarPraiseGuitar.Initialize();
 
             // Guitar Hero guitars
             GuitarHeroSliderControl.Initialize();
