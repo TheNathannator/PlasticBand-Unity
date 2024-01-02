@@ -70,34 +70,36 @@ namespace PlasticBand.Controls
         {
             if (value >= maxValue)
                 return 1f;
-            else if (value <= minValue && minValue != zeroPoint)
-                return -1f;
+            else if (value <= minValue)
+                return minValue != zeroPoint ? -1f : 0f;
 
-            float max;
-            float min;
+            int max;
+            int min;
             float @base;
-            if (value > zeroPoint)
+            if (value >= zeroPoint)
             {
                 max = maxValue;
                 min = zeroPoint;
-                @base = 0;
+                @base = 0f;
             }
-            else if (value < zeroPoint)
+            else
             {
                 max = zeroPoint;
                 min = minValue;
-                @base = -1;
+                @base = -1f;
             }
-            else // intValue == zeroPoint
+
+            float percentage;
+            if (max == min) // Prevent divide-by-0
             {
-                return 0f;
+                percentage = value >= max ? 1f : 0f;
+            }
+            else
+            {
+                percentage = (float) (value - min) / (max - min);
             }
 
-            float percentage = (value - min) / (max - min);
             float normalized = @base + percentage;
-            if (float.IsNaN(normalized))
-                normalized = 0;
-
             return normalized;
         }
 
@@ -111,22 +113,17 @@ namespace PlasticBand.Controls
             int max;
             int min;
             float @base;
-
-            if (value > 0f)
+            if (value >= 0f)
             {
                 max = maxValue;
                 min = zeroPoint;
                 @base = 0f;
             }
-            else if (value < 0f)
+            else
             {
                 max = zeroPoint;
                 min = minValue;
                 @base = 1f;
-            }
-            else // value == 0f
-            {
-                return zeroPoint;
             }
 
             int denormalized = min + (int)((max - min) * (@base + value));
