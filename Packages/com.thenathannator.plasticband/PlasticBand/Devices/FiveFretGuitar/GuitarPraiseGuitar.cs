@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
@@ -10,6 +11,74 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
+    [Flags]
+    internal enum GuitarPraiseButton : ushort
+    {
+        None = 0x0008, // D-pad neutral state is 8
+
+        DpadMask = 0x000F,
+
+        Green = 0x0010,
+        Red = 0x0020,
+        Yellow = 0x0040,
+        Blue = 0x0080,
+        Orange = 0x0100,
+
+        Tilt = 0x0200,
+
+        Start = 0x0400,
+        Select = 0x0800,
+    }
+
+    internal static class GuitarPraiseExtensions
+    {
+        public static HidDpad GetDpad(this GuitarPraiseButton buttons)
+        {
+            return (HidDpad)(buttons & GuitarPraiseButton.DpadMask);
+        }
+
+        public static void SetDpad(ref this GuitarPraiseButton buttons, HidDpad dpad)
+        {
+            buttons = (buttons & ~GuitarPraiseButton.DpadMask) | ((GuitarPraiseButton)dpad & GuitarPraiseButton.DpadMask);
+        }
+
+        public static void SetDpadUp(ref this GuitarPraiseButton buttons, bool pressed)
+        {
+            var dpad = buttons.GetDpad();
+            dpad.SetUp(pressed);
+            buttons.SetDpad(dpad);
+        }
+
+        public static void SetDpadRight(ref this GuitarPraiseButton buttons, bool pressed)
+        {
+            var dpad = buttons.GetDpad();
+            dpad.SetRight(pressed);
+            buttons.SetDpad(dpad);
+        }
+
+        public static void SetDpadDown(ref this GuitarPraiseButton buttons, bool pressed)
+        {
+            var dpad = buttons.GetDpad();
+            dpad.SetDown(pressed);
+            buttons.SetDpad(dpad);
+        }
+
+        public static void SetDpadLeft(ref this GuitarPraiseButton buttons, bool pressed)
+        {
+            var dpad = buttons.GetDpad();
+            dpad.SetLeft(pressed);
+            buttons.SetDpad(dpad);
+        }
+
+        public static void SetBit(ref this GuitarPraiseButton value, GuitarPraiseButton mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= ~mask;
+        }
+    }
+
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 7)]
     internal unsafe struct GuitarPraiseGuitarState_NoReportId : IInputStateTypeInfo
     {

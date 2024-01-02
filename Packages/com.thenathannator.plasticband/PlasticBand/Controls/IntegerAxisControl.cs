@@ -27,6 +27,10 @@ namespace PlasticBand.Controls
         public bool hasNullValue; 
         public int nullValue;
 
+        public new bool invert;
+
+        private float m_InvertBase;
+
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -44,6 +48,8 @@ namespace PlasticBand.Controls
 
             if (maxValue < zeroPoint)
                 throw new NotSupportedException($"Max value ({maxValue}) is less than zero point ({zeroPoint}) on {nameof(IntegerAxisControl)} '{this}'!");
+
+            m_InvertBase = invert && minValue == zeroPoint ? 1f : 0f;
         }
 
         private float m_LastValue;
@@ -57,7 +63,7 @@ namespace PlasticBand.Controls
 
             float normalized = Normalize(value, minValue, maxValue, zeroPoint);
             m_LastValue = Preprocess(normalized);
-            return m_LastValue;
+            return !invert ? m_LastValue : m_InvertBase - m_LastValue;
         }
 
         public static float Normalize(int value, int minValue, int maxValue, int zeroPoint)
