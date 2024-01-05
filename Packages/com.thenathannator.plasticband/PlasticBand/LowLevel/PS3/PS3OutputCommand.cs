@@ -45,6 +45,11 @@ namespace PlasticBand.Devices.LowLevel
             }
         }
 
+        public PS3OutputCommand(byte reportId, byte type) : this(type)
+        {
+            this.reportId = reportId;
+        }
+
         public PS3OutputCommand(byte reportId, byte type, byte[] data) : this(type, data)
         {
             this.reportId = reportId;

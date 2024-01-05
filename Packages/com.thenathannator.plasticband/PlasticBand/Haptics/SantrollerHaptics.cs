@@ -114,7 +114,7 @@ namespace PlasticBand.Haptics
 
         protected static unsafe void SendCommand_Hid(InputDevice device, byte commandId, byte parameter = 0)
         {
-            var command = new PS3OutputCommand(0x5A);
+            var command = new PS3OutputCommand(1, 0x5A);
             command.data[0] = parameter;
             command.data[1] = commandId;
             device.LoggedExecuteCommand(ref command);
