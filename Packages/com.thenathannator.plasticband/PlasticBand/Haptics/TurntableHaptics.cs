@@ -104,7 +104,7 @@ namespace PlasticBand.Haptics
                 brightness = 0;
 
             var command = new XInputVibrationCommand(0, brightness);
-            device.ExecuteCommand(ref command);
+            device.LoggedExecuteCommand(ref command);
         }
     }
 
@@ -132,7 +132,7 @@ namespace PlasticBand.Haptics
             if (enable != m_PreviousState)
             {
                 m_PreviousState = enable;
-                device.ExecuteCommand(ref command);
+                device.LoggedExecuteCommand(ref command);
             }
         }
     }

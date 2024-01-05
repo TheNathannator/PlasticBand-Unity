@@ -109,7 +109,7 @@ namespace PlasticBand.Haptics
         protected static void SendCommand_XInput(InputDevice device, byte commandId, byte parameter = 0)
         {
             var command = new XInputVibrationCommand(parameter, commandId);
-            device.ExecuteCommand(ref command);
+            device.LoggedExecuteCommand(ref command);
         }
 
         protected static unsafe void SendCommand_Hid(InputDevice device, byte commandId, byte parameter = 0)
@@ -117,7 +117,7 @@ namespace PlasticBand.Haptics
             var command = new PS3OutputCommand(0x5A);
             command.data[0] = parameter;
             command.data[1] = commandId;
-            device.ExecuteCommand(ref command);
+            device.LoggedExecuteCommand(ref command);
         }
     }
 

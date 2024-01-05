@@ -148,7 +148,7 @@ namespace PlasticBand.LowLevel
             string layoutName = typeof(TDevice).Name;
             if (overrides.Any((entry) => entry.matcher == matcher))
             {
-                Debug.LogError($"Matcher {matcher} is already registered for subtype {subType}!");
+                Debug.LogError($"[XInputLayoutFinder] Matcher {matcher} is already registered for subtype {subType}!");
                 return;
             }
 

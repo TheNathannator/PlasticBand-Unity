@@ -33,6 +33,16 @@ namespace PlasticBand
             return false;
         }
 
+        public static void LoggedExecuteCommand<TCommand>(this InputDevice device, ref TCommand command)
+            where TCommand : struct, IInputDeviceCommandInfo
+        {
+            long result = device.ExecuteCommand(ref command);
+#if UNITY_EDITOR || PLASTICBAND_VERBOSE_LOGGING
+            if (result < 0)
+                Debug.LogError($"[Device {device}] Failed to execute command {command.typeStatic}! Error value: {result}");
+#endif
+        }
+
         /// <summary>
         /// Determines whether or not the button is pressed in the given state event.
         /// </summary>

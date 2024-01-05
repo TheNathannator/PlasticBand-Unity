@@ -33,7 +33,7 @@ namespace PlasticBand.Haptics
                 m_PokeTimer.Restart();
                 // Avoid modifications to the command data
                 var command = m_PokeData;
-                m_Device.ExecuteCommand(ref command);
+                m_Device.LoggedExecuteCommand(ref command);
             }
         }
     }

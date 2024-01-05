@@ -190,7 +190,7 @@ namespace PlasticBand.Haptics
         protected override void SendCommand(InputDevice device, byte commandId, byte parameter)
         {
             var command = new XInputVibrationCommand(parameter, commandId);
-            device.ExecuteCommand(ref command);
+            device.LoggedExecuteCommand(ref command);
         }
     }
 }

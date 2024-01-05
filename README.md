@@ -13,6 +13,15 @@ This package is a work-in-progress. Contributions are welcome!
 - Xbox 360 devices can only be confirmed working on Windows currently. Mac does not support them, and the driver that was made to support them is no longer in development. Linux will likely need special layouts, but it is theoretically doable.
 - Xbox One instruments are not natively supported on any platform, and are not currently supported through this package. Like with Xbox 360 devices, these also cannot be supported on Mac currently, unless there is some way to interact with them without the need for a special kernel driver.
 
+### Configuration
+
+Some configuration is available through compile defines:
+
+- `PLASTICBAND_VERBOSE_LOGGING`: Enables certain, more potentially repetitive logging to help debug issues with devices.
+  - Currently, only enables error logging for sending device commands.
+- `PLASTICBAND_DEBUG_CONTROLS`: Enables verbose logging for custom control types to help debug issues with devices.
+  - Independent from verbose logging, since this is strictly meant for active development and debugging.
+
 ## Installing
 
 ### From the Releases Page
