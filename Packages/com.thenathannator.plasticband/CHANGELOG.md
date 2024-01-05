@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.4.5] - 05/01/2023
+
+### Added
+
+- The Guitar Praise guitar is now supported. This is the first guitar to be neither a `GuitarHeroGuitar` nor a `RockBandGuitar`, it is simply a `FiveFretGuitar`.
+
+### Fixed
+
+- Fixed the `SetMultiplier` method on `ISantrollerHaptics` using the wrong command ID when sending the command to the device.
+
 ## [0.4.4] - 22/12/2023
 
 ### Fixed
