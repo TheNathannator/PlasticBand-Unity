@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.4.6] - 05/01/2023
+
+### Added
+
+- A new `PLASTICBAND_VERBOSE_LOGGING` compile define has been added to enable certain, potentially repetitive logging in game builds. This define is not required inside the editor, as the logging is always enabled there.
+  - Currently the only logging this enables is for device command errors.
+
+### Fixed
+
+- Santroller HID haptics were not using the correct report ID, and wouldn't send as a result. Other fixes in the Santroller firmware made alongside this change now mean that HID haptics are properly functioning finally.
+
 ## [0.4.5] - 05/01/2023
 
 ### Added
