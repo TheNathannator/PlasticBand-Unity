@@ -82,7 +82,10 @@ namespace PlasticBand.LowLevel
 #endif
 
             // Register default layout
-            InputSystem.RegisterLayout(TDefault, matches: GetMatcher(vendorId, productId));
+            InputSystem.RegisterLayout(TDefault, matches:
+                GetMatcher(vendorId, productId, (int)UsagePage.GenericDesktop, (int)GenericDesktop.Joystick));
+            InputSystem.RegisterLayout(TDefault, matches:
+                GetMatcher(vendorId, productId, (int)UsagePage.GenericDesktop, (int)GenericDesktop.Gamepad));
 
             // Register report ID/no report ID variants
             if (!s_AvailableLayouts.ContainsKey(TDefault.Name))
