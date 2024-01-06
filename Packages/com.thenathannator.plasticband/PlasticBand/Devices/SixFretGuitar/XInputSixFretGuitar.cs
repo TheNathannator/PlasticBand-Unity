@@ -143,7 +143,7 @@ namespace PlasticBand.Devices
             XInputLayoutFinder.RegisterLayout<XInputSixFretGuitar>(XInputController.DeviceSubType.GuitarAlternate,
                 // Strangely, they report the No Navigation flag. Most likely none of the other guitars report this information,
                 // so we check for it here.
-                (capabilities, state) => (capabilities.flags & XInputController.DeviceFlags.NoNavigation) != 0);
+                (capabilities) => (capabilities.flags & XInputController.DeviceFlags.NoNavigation) != 0);
         }
     }
 }

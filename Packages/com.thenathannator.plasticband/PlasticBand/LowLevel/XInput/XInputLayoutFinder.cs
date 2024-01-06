@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -20,25 +19,8 @@ namespace PlasticBand.LowLevel
     {
         public const string InterfaceName = "XInput";
 
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        private struct XInputState
-        {
-            public uint packetCount;
-            public XInputGamepad gamepad;
-        }
-
-        // 9_1_0 is used for best compatibility across all versions of Windows
-        // Nothing important in the new versions that requires their use
-        [DllImport("xinput9_1_0.dll")]
-        private static extern int XInputGetState(
-            int UserIndex, // DWORD
-            out XInputState State // XINPUT_STATE*
-        );
-#endif
-
         // Layout resolution info
-        internal delegate bool XInputOverrideDetermineMatch(XInputCapabilities capabilities, XInputGamepad state);
+        internal delegate bool XInputOverrideDetermineMatch(XInputCapabilities capabilities);
         private class XInputLayoutOverride
         {
             public XInputOverrideDetermineMatch resolve;
@@ -75,22 +57,13 @@ namespace PlasticBand.LowLevel
             if (!s_LayoutOverrides.TryGetValue((int)capabilities.subType, out var overrides))
                 return DefaultLayoutIfNull(matchedLayout);
 
-            // Get device state
-            XInputGamepad state = default;
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            if (XInputGetState(capabilities.userIndex, out var packet) != 0)
-                return DefaultLayoutIfNull(matchedLayout);
-
-            state = packet.gamepad;
-#endif
-
             // Go through device matchers
             XInputLayoutOverride matchedEntry = null;
             float greatestMatch = 0f;
             foreach (var entry in overrides)
             {
                 // Ignore invalid overrides and non-matching resolvers
-                if (string.IsNullOrEmpty(entry.layoutName) || !entry.resolve(capabilities, state))
+                if (string.IsNullOrEmpty(entry.layoutName) || !entry.resolve(capabilities))
                     continue;
 
                 // Keep track of the best match
