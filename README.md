@@ -6,7 +6,16 @@ This project is a companion to the [PlasticBand](https://github.com/TheNathannat
 
 This package is a work-in-progress. Contributions are welcome!
 
-## Notes
+## Usage
+
+After installation, this package integrates and operates on its own. No manual initialization is required.
+
+Device layouts from this package are used just like the built-in ones. You can use them in input actions, poll them manually through the provided static `current` and `all` properties on each layout, receive low-level `InputEventPtr`s through `InputState.onChange`, etc.
+
+> [!WARNING]
+> Usage of `InputSystem.onEvent` for low-level state handling is *not* recommended, as many layouts in this package have their own manual state handling requirements (see `IInputStateCallbackReceiver`) which will be bypassed if you use it. Use `InputState.onChange` or `IInputStateChangeMonitor`s instead.
+
+### Notes
 
 - **Unity 2022.2 currently has issues with Xbox 360 controllers on Windows, and only the standard gamepad controllers will be picked up.** The only workarounds currently are to downgrade Unity or write your own XInput backend for the input system.
 - HID devices on Windows and Mac should work without any issues. However, Linux requires special implementation, as the native backend there just uses SDL for inputs rather than providing raw HID data. Because of this, I created the [HIDrogen](https://github.com/TheNathannator/HIDrogen) package to go alongside this project.
