@@ -132,34 +132,6 @@ namespace PlasticBand.Devices
             return mask;
         }
 
-        /// <summary>
-        /// Retrives a bitmask of the current fret states, excluding the solo frets.
-        /// </summary>
-        public FiveFret GetFretMaskExcludingSolo()
-        {
-            var mask = FiveFret.None;
-            if (greenFret.isPressed) mask |= FiveFret.Green;
-            if (redFret.isPressed) mask |= FiveFret.Red;
-            if (yellowFret.isPressed) mask |= FiveFret.Yellow;
-            if (blueFret.isPressed) mask |= FiveFret.Blue;
-            if (orangeFret.isPressed) mask |= FiveFret.Orange;
-            return mask & ~GetSoloFretMask();
-        }
-
-        /// <summary>
-        /// Retrives a bitmask of the fret states in the given state event, excluding the solo frets.
-        /// </summary>
-        public FiveFret GetFretMaskExcludingSolo(InputEventPtr eventPtr)
-        {
-            var mask = FiveFret.None;
-            if (greenFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Green;
-            if (redFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Red;
-            if (yellowFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Yellow;
-            if (blueFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Blue;
-            if (orangeFret.IsPressedInEvent(eventPtr)) mask |= FiveFret.Orange;
-            return mask & ~GetSoloFretMask(eventPtr);
-        }
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
