@@ -14,6 +14,8 @@ Device layouts from this package are used just like the built-in ones. You can u
 
 > [!WARNING]
 > Usage of `InputSystem.onEvent` for low-level state handling is *not* recommended, as many layouts in this package have their own manual state handling requirements (see `IInputStateCallbackReceiver`) which will be bypassed if you use it. Use `InputState.onChange` or `IInputStateChangeMonitor`s instead.
+>
+> I've done my best to keep compatibility where I can, but certain spots are just inherently incompatible, and there's not much I can do.
 
 ### Notes
 

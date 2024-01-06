@@ -8,6 +8,18 @@ Dates are relative to UTC.
 
 ## Unreleased
 
+### Added
+
+- A new system has been put into place to effectively allow the layout assigned to a device to be changed at runtime. This system gives some much-needed flexibility for certain future device types, and avoids the need for hacks like manually retrieving the current state for XInput drumkits to distinguish between 4-lane and 5-lane drumkits, which proved to be unreliable.
+  - **NOTE:** This system is *incompatible* with `InputSystem.onEvent` and `InputControlExtensions.EnumerateControls`/`EnumerateChangedControls`! It involves forwarding state events from one `InputDevice` to another, so the device ID present in the `InputEventPtr` will not match the device instance the state is ultimately used for. Use `InputState.onChange` or `IInputStateChangeMonitor`s instead.
+
+### Fixed
+
+- The XInput GuitarBass subtype was being matched to the Guitar Hero guitar layout instead of the Rock Band guitar layout.
+- Guitar Praise guitars weren't being recognized correctly, since they use the joystick HID usage and not the gamepad usage.
+  - The joystick usage is now matched against on all HID device layouts, so this won't affect any other layouts in the future.
+- Distinguishing between 4-lane and 5-lane XInput drumkits should be much more reliable now.
+
 ### Removed
 
 - The `GetFretMaskExcludingSolo` method on `RockBandGuitar`s has been removed, as not all Rock Band guitars report the solo frets independently from the main frets, which could make the results from the API confusing. If this behavior is required, `GetFretMask() & ~GetSoloFretMask()` will attain the same results.
