@@ -190,10 +190,8 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // No matcher since special differentiation must be done
             InputSystem.RegisterLayout<XInputFourLaneDrumkit>();
-
-            // Handled by XInputVariantDrumkit
-            // XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(XInputController.DeviceSubType.DrumKit);
         }
     }
 }

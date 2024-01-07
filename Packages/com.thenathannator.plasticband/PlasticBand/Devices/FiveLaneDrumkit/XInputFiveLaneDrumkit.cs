@@ -164,15 +164,8 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // No matcher since special differentiation must be done
             InputSystem.RegisterLayout<XInputFiveLaneDrumkit>();
-
-            // Handled by XInputVariantDrumkit
-            // 4-lane kits and 5-lane kits share the same subtype, they need to be differentiated in another way
-            // 5-lane kits always hold the left-stick click input, 4-lane kits use that for the second kick but
-            // realistically that isn't likely to be held when powering on
-            // May be some more specific capability data that also distinguishes them, but that probably isn't reliable
-            // XInputLayoutFinder.RegisterLayout<XInputFiveLaneDrumkit>(XInputController.DeviceSubType.DrumKit,
-            //     (capabilities, state) => (state.buttons & (ushort)XInputButton.LeftThumb) != 0);
         }
     }
 }

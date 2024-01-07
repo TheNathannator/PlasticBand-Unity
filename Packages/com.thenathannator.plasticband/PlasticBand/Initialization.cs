@@ -95,9 +95,6 @@ namespace PlasticBand
             SantrollerHIDFiveLaneDrumkit.Initialize();
             SantrollerXInputFiveLaneDrumkit.Initialize();
 
-            // XInput drumkits require additional logic to differentiate 4-lane and 5-lane
-            XInputVariantDrumkit.Initialize();
-
             // Turntables
             Turntable.Initialize();
             XInputTurntable.Initialize();
@@ -116,6 +113,9 @@ namespace PlasticBand
             XInputStageKit.Initialize();
             SantrollerHidStageKit.Initialize();
             SantrollerXInputStageKit.Initialize();
+
+            // Variant devices
+            XInputVariantDrumkit.Initialize();
         }
 
 #if UNITY_EDITOR
