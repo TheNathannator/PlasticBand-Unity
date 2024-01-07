@@ -23,6 +23,8 @@ Device layouts from this package are used just like the built-in ones. You can u
 - HID devices on Windows and Mac should work without any issues. However, Linux requires special implementation, as the native backend there just uses SDL for inputs rather than providing raw HID data. Because of this, I created the [HIDrogen](https://github.com/TheNathannator/HIDrogen) package to go alongside this project.
 - Xbox 360 devices can only be confirmed working on Windows currently. Mac does not support them, and the driver that was made to support them is no longer in development. Linux will likely need special layouts, but it is theoretically doable.
 - Xbox One instruments are not natively supported on any platform, and are not currently supported through this package. Like with Xbox 360 devices, these also cannot be supported on Mac currently, unless there is some way to interact with them without the need for a special kernel driver.
+- Pre-compiling the layouts from this package is not currently possible without breaking things. A large number of them have to determine or construct things at runtime, and pre-compilation circumvents the mechanisms that allow these layouts to determine things in the first place.
+  - At some point I could consider looking into workarounds for this (e.g. initializing everything in an `OnAdded` override), but for the time being it's not a priority. (PRs welcome if you can get it worked out!)
 
 ### Configuration
 
