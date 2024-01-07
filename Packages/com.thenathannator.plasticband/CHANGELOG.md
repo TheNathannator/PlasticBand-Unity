@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
-## Unreleased
+## [0.5.0] - 07/01/2023
 
 ### Added
 
@@ -18,7 +18,7 @@ Dates are relative to UTC.
 - The XInput GuitarBass subtype was being matched to the Guitar Hero guitar layout instead of the Rock Band guitar layout.
 - Guitar Praise guitars weren't being recognized correctly, since they use the joystick HID usage and not the gamepad usage.
   - The joystick usage is now matched against on all HID device layouts, so this won't affect any other layouts in the future.
-- Distinguishing between 4-lane and 5-lane XInput drumkits should be much more reliable now.
+- Distinguishing between 4-lane and 5-lane XInput drumkits should be much more reliable now due to the new variant device system.
 
 ### Removed
 
