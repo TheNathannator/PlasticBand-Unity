@@ -1,5 +1,6 @@
 using System;
 using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -55,7 +56,10 @@ namespace PlasticBand.LowLevel
             TranslateStateHandler<TFromState, TToState> translator)
         {
             if (eventPtr.type != StateEvent.Type)
+            {
+                Debug.LogError($"Non-state event {eventPtr.type} received on translating device {device}!");
                 return false;
+            }
 
             var stateEvent = StateEvent.From(eventPtr);
             // Skip if this event has already been translated
@@ -63,12 +67,19 @@ namespace PlasticBand.LowLevel
                 return true;
 
             // Ensure the format matches and the buffer is big enough for each state type
-            if (stateEvent->stateFormat != FromStateFormat ||
-                stateEvent->stateSizeInBytes < sizeof(TFromState) || stateEvent->stateSizeInBytes < sizeof(TToState))
+            if (stateEvent->stateFormat != FromStateFormat)
+            {
+                Debug.LogError($"Wrong state format {stateEvent->stateFormat} for translating device {device}! Expected {FromStateFormat}");
                 return false;
+            }
+
+            if (stateEvent->stateSizeInBytes < sizeof(TFromState) || stateEvent->stateSizeInBytes < sizeof(TToState))
+            {
+                Debug.LogError($"State size {stateEvent->stateSizeInBytes} for translating device {device} is too small for input size {sizeof(TFromState)} and output size {sizeof(TToState)}!");
+                return false;
+            }
 
             // Read and translate state data
-            // Yes, this works! It's exactly what Unsafe.AsRef does under the hood
             ref TFromState fromState = ref *(TFromState*)stateEvent->state;
             var translated = translator(ref fromState);
 
