@@ -11,7 +11,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 63)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct PS4SixFretGuitarState_NoReportId : ISixFretGuitarState
     {
         public FourCC format => HidDefinitions.InputFormat;

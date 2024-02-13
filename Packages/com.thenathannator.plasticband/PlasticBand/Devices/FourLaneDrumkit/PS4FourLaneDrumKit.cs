@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Explicit, Pack = 1, Size = 77)]
+    [StructLayout(LayoutKind.Explicit, Pack = 1)]
     internal struct PS4FourLaneDrumkitState_NoReportId : IFourLaneDrumkitState_Distinct
     {
         public FourCC format => HidDefinitions.InputFormat;

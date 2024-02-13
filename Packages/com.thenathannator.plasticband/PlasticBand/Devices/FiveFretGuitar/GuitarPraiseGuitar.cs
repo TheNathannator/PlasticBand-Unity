@@ -79,7 +79,7 @@ namespace PlasticBand.Devices
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 7)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct GuitarPraiseGuitarState_NoReportId : IInputStateTypeInfo
     {
         public FourCC format => HidDefinitions.InputFormat;

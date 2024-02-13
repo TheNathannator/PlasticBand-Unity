@@ -11,7 +11,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 27)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct PS3WiiFourLaneDrumkitState_NoReportId : IFourLaneDrumkitState_Flags
     {
         public FourCC format => HidDefinitions.InputFormat;
