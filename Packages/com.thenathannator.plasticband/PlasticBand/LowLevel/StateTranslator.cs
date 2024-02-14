@@ -57,7 +57,9 @@ namespace PlasticBand.LowLevel
         {
             if (eventPtr.type != StateEvent.Type)
             {
+#if UNITY_EDITOR || PLASTICBAND_VERBOSE_LOGGING
                 Debug.LogError($"Non-state event {eventPtr.type} received on translating device {device}!");
+#endif
                 return false;
             }
 
@@ -66,16 +68,21 @@ namespace PlasticBand.LowLevel
             if (stateEvent->stateFormat == ToStateFormat)
                 return true;
 
-            // Ensure the format matches and the buffer is big enough for each state type
+            // Ensure that the state format matches
             if (stateEvent->stateFormat != FromStateFormat)
             {
+#if UNITY_EDITOR || PLASTICBAND_VERBOSE_LOGGING
                 Debug.LogError($"Wrong state format {stateEvent->stateFormat} for translating device {device}! Expected {FromStateFormat}");
+#endif
                 return false;
             }
 
+            // ...and that the buffer is big enough for each state type
             if (stateEvent->stateSizeInBytes < sizeof(TFromState) || stateEvent->stateSizeInBytes < sizeof(TToState))
             {
+#if UNITY_EDITOR || PLASTICBAND_VERBOSE_LOGGING
                 Debug.LogError($"State size {stateEvent->stateSizeInBytes} for translating device {device} is too small for input size {sizeof(TFromState)} and output size {sizeof(TToState)}!");
+#endif
                 return false;
             }
 
