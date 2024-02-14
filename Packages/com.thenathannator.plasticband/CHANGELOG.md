@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.5.1] - 14/02/2023
+
+### Fixed
+
+- The PS3 ION drumkit, as well as any other PS3 instruments that don't send the full expected state report, should now work correctly.
+  - Explicit sizes were set on the state layout structs, which causes state translation to fail if the instrument doesn't send the right size. However, the extra data within those sizes isn't actually used, so they have been removed.
+
 ## [0.5.0] - 07/01/2023
 
 ### Added
