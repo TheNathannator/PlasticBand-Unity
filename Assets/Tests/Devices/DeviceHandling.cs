@@ -136,7 +136,7 @@ namespace PlasticBand.Tests.Devices
 
         public static short DenormalizeAccelerometer(float value)
         {
-            return (short)IntegerAxisControl.Denormalize(value, 0, 0x3FF, 0x200);
+            return (short)IntegerAxisControl.Denormalize(-value, 0, 0x3FF, 0x200);
         }
     }
 

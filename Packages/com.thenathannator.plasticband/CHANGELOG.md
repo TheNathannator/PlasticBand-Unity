@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [Unreleased]
+
+### Fixed
+
+- PS3 Guitar Hero guitars no longer have inverted accelerometer axes.
+
 ## [0.5.1] - 14/02/2023
 
 ### Fixed
