@@ -17,6 +17,7 @@ Dates are relative to UTC.
 ### Fixed
 
 - PS3 Guitar Hero guitars no longer have inverted accelerometer axes.
+- Xbox 360 ION drumkits should no longer be falsely detected as GH drumkits due to a hardware quirk, they are now specially identified and bypass the normal differentiation process.
 
 ## [0.5.1] - 14/02/2023
 

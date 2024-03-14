@@ -31,8 +31,8 @@ namespace PlasticBand.LowLevel
         internal static SantrollerDeviceType GetDeviceType(ushort version)
             => (SantrollerDeviceType)(version >> 8);
 
-        internal static int GetRevisionValue(SantrollerDeviceType deviceType)
-            => ((int)deviceType & 0xFF) << 8;
+        internal static short GetRevisionValue(SantrollerDeviceType deviceType)
+            => (short)(((int)deviceType & 0xFF) << 8);
 
         internal static void RegisterHIDLayout<TDevice>(SantrollerDeviceType deviceType)
             where TDevice : InputDevice
@@ -44,21 +44,15 @@ namespace PlasticBand.LowLevel
         internal static void RegisterXInputLayout<TDevice>(XInputController.DeviceSubType subType,
             SantrollerDeviceType deviceType)
             where TDevice : InputDevice
-            => RegisterXInputLayout<TDevice>((int)subType, deviceType);
+        {
+            InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType, deviceType));
+        }
 
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(XInputNonStandardSubType subType,
             SantrollerDeviceType deviceType)
             where TDevice : InputDevice
-            => RegisterXInputLayout<TDevice>((int)subType, deviceType);
-
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
-        internal static void RegisterXInputLayout<TDevice>(int subType,
-            SantrollerDeviceType deviceType)
-            where TDevice : InputDevice
-        {
-            InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType, deviceType));
-        }
+            => RegisterXInputLayout<TDevice>((XInputController.DeviceSubType)subType, deviceType);
 
         internal static InputDeviceMatcher GetHidMatcher(SantrollerDeviceType deviceType)
         {
@@ -66,15 +60,10 @@ namespace PlasticBand.LowLevel
                 .WithVersion(GetRevisionValue(deviceType).ToString());
         }
 
-        internal static InputDeviceMatcher GetXInputMatcher(int subType,
+        internal static InputDeviceMatcher GetXInputMatcher(XInputController.DeviceSubType subType,
             SantrollerDeviceType deviceType)
         {
-            int revision = GetRevisionValue(deviceType);
-
-            return XInputLayoutFinder.GetMatcher(subType)
-                .WithCapability("gamepad/leftStickX", VendorID)
-                .WithCapability("gamepad/leftStickY", ProductID)
-                .WithCapability("gamepad/rightStickX", revision);
+            return XInputLayoutFinder.GetMatcher(subType, VendorID, ProductID, GetRevisionValue(deviceType));
         }
     }
 }

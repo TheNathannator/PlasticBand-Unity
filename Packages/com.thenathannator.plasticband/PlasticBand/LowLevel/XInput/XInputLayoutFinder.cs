@@ -29,8 +29,8 @@ namespace PlasticBand.LowLevel
         }
 
         // Registered layout resolvers
-        private static readonly Dictionary<int, List<XInputLayoutOverride>> s_LayoutOverrides
-            = new Dictionary<int, List<XInputLayoutOverride>>();
+        private static readonly Dictionary<DeviceSubType, List<XInputLayoutOverride>> s_LayoutOverrides
+            = new Dictionary<DeviceSubType, List<XInputLayoutOverride>>();
 
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void Initialize()
@@ -54,7 +54,7 @@ namespace PlasticBand.LowLevel
                 return DefaultLayoutIfNull(matchedLayout);
 
             // Check if the subtype has any overrides registered
-            if (!s_LayoutOverrides.TryGetValue((int)capabilities.subType, out var overrides))
+            if (!s_LayoutOverrides.TryGetValue(capabilities.subType, out var overrides))
                 return DefaultLayoutIfNull(matchedLayout);
 
             // Go through device matchers
@@ -95,18 +95,6 @@ namespace PlasticBand.LowLevel
         internal static void RegisterLayout<TDevice>(DeviceSubType subType, XInputOverrideDetermineMatch resolveLayout,
             InputDeviceMatcher matcher = default)
             where TDevice : InputDevice
-            => RegisterLayout<TDevice>((int)subType, resolveLayout, matcher);
-
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
-        internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType, XInputOverrideDetermineMatch resolveLayout,
-            InputDeviceMatcher matcher = default)
-            where TDevice : InputDevice
-            => RegisterLayout<TDevice>((int)subType, resolveLayout, matcher);
-
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
-        internal static void RegisterLayout<TDevice>(int subType, XInputOverrideDetermineMatch resolveLayout,
-            InputDeviceMatcher matcher = default)
-            where TDevice : InputDevice
         {
             // Register to the input system
             InputSystem.RegisterLayout<TDevice>();
@@ -137,25 +125,57 @@ namespace PlasticBand.LowLevel
         [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(DeviceSubType subType)
             where TDevice : InputDevice
-            => RegisterLayout<TDevice>((int)subType);
-
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
-        internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType)
-            where TDevice : InputDevice
-            => RegisterLayout<TDevice>((int)subType);
-
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
-        internal static void RegisterLayout<TDevice>(int subType)
-            where TDevice : InputDevice
         {
             InputSystem.RegisterLayout<TDevice>(matches: GetMatcher(subType));
         }
 
-        internal static InputDeviceMatcher GetMatcher(int subType)
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
+        internal static void RegisterLayout<TDevice>(DeviceSubType subType, short vendorId, short productId)
+            where TDevice : InputDevice
+        {
+            InputSystem.RegisterLayout<TDevice>(matches: GetMatcher(subType, vendorId, productId));
+        }
+
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
+        internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType, XInputOverrideDetermineMatch resolveLayout,
+            InputDeviceMatcher matcher = default)
+            where TDevice : InputDevice
+            => RegisterLayout<TDevice>(subType, resolveLayout, matcher);
+
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
+        internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType)
+            where TDevice : InputDevice
+            => RegisterLayout<TDevice>((DeviceSubType)subType);
+
+        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
+        internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType, short vendorId, short productId)
+            where TDevice : InputDevice
+            => RegisterLayout<TDevice>((DeviceSubType)subType, vendorId, productId);
+
+        internal static InputDeviceMatcher GetMatcher(DeviceSubType subType)
         {
             return new InputDeviceMatcher()
                 .WithInterface(InterfaceName)
-                .WithCapability("subType", subType);
+                .WithCapability("subType", (int)subType);
+        }
+
+        internal static InputDeviceMatcher GetMatcher(DeviceSubType subType, short vendorId, short productId)
+        {
+            return new InputDeviceMatcher()
+                .WithInterface(InterfaceName)
+                .WithCapability("subType", (int)subType)
+                .WithCapability("gamepad/leftStickX", vendorId)
+                .WithCapability("gamepad/leftStickY", productId);
+        }
+
+        internal static InputDeviceMatcher GetMatcher(DeviceSubType subType, short vendorId, short productId, short revision)
+        {
+            return new InputDeviceMatcher()
+                .WithInterface(InterfaceName)
+                .WithCapability("subType", (int)subType)
+                .WithCapability("gamepad/leftStickX", vendorId)
+                .WithCapability("gamepad/leftStickY", productId)
+                .WithCapability("gamepad/rightStickX", revision);
         }
     }
 }

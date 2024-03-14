@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
+using UnityEngine.InputSystem.XInput;
 
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/Xbox%20360.md
@@ -192,6 +193,12 @@ namespace PlasticBand.Devices
         {
             // No matcher since special differentiation must be done
             InputSystem.RegisterLayout<XInputFourLaneDrumkit>();
+
+            // Except for the ION drumkit, which reports capability info we can rely on to match it
+            // This is necessary to prevent it from being identified as a 5-lane drumkit, due to a hardware
+            // quirk where it constantly holds the right-stick click input while a pedal is plugged in
+            XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(
+                XInputController.DeviceSubType.DrumKit, 0x15E4, 0x0130);
         }
     }
 }
