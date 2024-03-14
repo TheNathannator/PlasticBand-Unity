@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Processors;
 
 namespace PlasticBand.Tests
 {
@@ -23,6 +26,12 @@ namespace PlasticBand.Tests
 
         public delegate void SetAxisAction<TState>(ref TState state, float value)
             where TState : unmanaged, IInputStateTypeInfo;
+
+        public delegate void SetStickAction<TState>(ref TState state, float x, float y)
+            where TState : unmanaged, IInputStateTypeInfo;
+
+        public delegate void AssertAxisValueAction(AxisControl axis, Func<AxisControl, float> getValue,
+            float value, float epsilon);
 
         public override void Setup()
         {
@@ -44,9 +53,9 @@ namespace PlasticBand.Tests
                 if (!property.PropertyType.IsSubclassOf(typeof(InputControl)))
                     continue;
 
-                // Ignore the `parent` property
+                // Ignore the `parent` property and any indexers
                 string name = property.Name;
-                if (name == nameof(InputDevice.parent))
+                if (name == nameof(InputDevice.parent) || name == "Item")
                     continue;
 
                 // Ensure the returned control is not null
@@ -187,15 +196,56 @@ namespace PlasticBand.Tests
 
                     if (axes.Contains(axis))
                     {
-                        Assert.That(getValue(axis), Is.InRange(value - epsilon, value + epsilon), $"Value for axis '{axis}' is not in range!");
+                        AssertAxisValue(axis, getValue, value, epsilon);
                     }
                     else
                     {
-                        float defaultValue = axis.ReadDefaultValue();
-                        Assert.That(getValue(axis), Is.InRange(defaultValue - epsilon, defaultValue + epsilon), $"Expected default value for axis '{axis}'!");
+                        AssertAxisIsDefault(axis, getValue, epsilon);
                     }
                 }
             }
+        }
+
+        public static void AssertAxisValues<TState>(InputDevice device, TState state,
+            float epsilon, List<(AxisControl axis, float value)> axes)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            void UpdateAssert() => AssertButton((axis) => axis.value);
+            void EventAssert(InputEventPtr eventPtr)
+                => AssertButton((axis) => axis.ReadValueFromEvent(eventPtr));
+
+            AssertEventUpdate(device, state, EventAssert, UpdateAssert);
+
+            void AssertButton(Func<AxisControl, float> getValue)
+            {
+                foreach (var control in device.allControls)
+                {
+                    if (!(control is AxisControl axis))
+                        continue;
+
+                    var (found, value) = axes.FirstOrDefault((v) => v.axis == axis);
+                    if (found != null)
+                    {
+                        AssertAxisValue(axis, getValue, value, epsilon);
+                    }
+                    else
+                    {
+                        AssertAxisIsDefault(axis, getValue, epsilon);
+                    }
+                }
+            }
+        }
+
+        public static void AssertAxisValue(AxisControl axis, Func<AxisControl, float> getValue,
+            float value, float epsilon)
+        {
+            Assert.That(getValue(axis), Is.InRange(value - epsilon, value + epsilon), $"Value for axis '{axis}' is not in range!");
+        }
+
+        public static void AssertAxisIsDefault(AxisControl axis, Func<AxisControl, float> getValue, float epsilon)
+        {
+            float defaultValue = axis.ReadDefaultValue();
+            Assert.That(getValue(axis), Is.InRange(defaultValue - epsilon, defaultValue + epsilon), $"Expected default value for axis '{axis}'!");
         }
 
         public static void AssertIntegerValue<TState>(InputDevice device, TState state,
@@ -285,6 +335,65 @@ namespace PlasticBand.Tests
 
             setButton(ref state, 0f);
             AssertAxisValue(device, state, 0f, 0.001f, button);
+        }
+
+        public static void RecognizesStick<TState>(InputDevice device, TState state, StickControl stick,
+            SetStickAction<TState> setStick)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            // Sticks automatically have deadzones applied to them,
+            // so we must account for it
+            var axisDeadzone = new AxisDeadzoneProcessor()
+            {
+                min = InputSystem.settings.defaultDeadzoneMin,
+                max = InputSystem.settings.defaultDeadzoneMax,
+            };
+
+            void AddAxes(List<(AxisControl, float)> axisList, float value,
+                AxisControl axis, AxisControl pos, AxisControl neg)
+            {
+                axisList.Add((axis, value));
+
+                if (value > 0f) axisList.Add((pos, value));
+                else if (value < 0f) axisList.Add((neg, -value));
+            }
+
+            void AddX(List<(AxisControl, float)> axisList, float value)
+                => AddAxes(axisList, value, stick.x, stick.right, stick.left);
+
+            void AddY(List<(AxisControl, float)> axisList, float value)
+                => AddAxes(axisList, value, stick.y, stick.up, stick.down);
+
+            const int range = 100;
+            const float division = range;
+            const float epsilon = 1 / division;
+
+            var axes = new List<(AxisControl axis, float value)>();
+            for (int i = -range; i <= range; i++)
+            {
+                float value = i / division;
+                // TODO: why in the world does this add 5 whole minutes to the execution time???
+                float deadzoned = axisDeadzone.Process(value);
+
+                // X axis
+                setStick(ref state, value, 0f);
+                AddX(axes, deadzoned);
+                AssertAxisValues(device, state, epsilon, axes);
+                axes.Clear();
+
+                // Y axis
+                setStick(ref state, 0f, value);
+                AddY(axes, deadzoned);
+                AssertAxisValues(device, state, epsilon, axes);
+                axes.Clear();
+
+                // Both axes
+                setStick(ref state, value, value);
+                AddX(axes, deadzoned);
+                AddY(axes, deadzoned);
+                AssertAxisValues(device, state, epsilon, axes);
+                axes.Clear();
+            }
         }
     }
 }
