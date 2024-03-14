@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using PlasticBand.Haptics;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
 
@@ -11,12 +11,12 @@ namespace PlasticBand.Devices
     /// A Rock Band stage kit.
     /// </summary>
     [InputControlLayout(displayName = "Rock Band Stage Kit")]
-    public class StageKit : InputDevice, IStageKitHaptics
+    public class StageKit : Gamepad, IStageKitHaptics
     {
         /// <summary>
         /// The current <see cref="StageKit"/>.
         /// </summary>
-        public static StageKit current { get; private set; }
+        public static new StageKit current { get; private set; }
 
         /// <summary>
         /// A collection of all <see cref="StageKit"/>s currently connected to the system.
@@ -30,63 +30,6 @@ namespace PlasticBand.Devices
         internal static void Initialize()
         {
             InputSystem.RegisterLayout<StageKit>();
-        }
-
-        /// <summary>
-        /// The stage kit's d-pad.
-        /// </summary>
-        [InputControl(displayName = "D-Pad", usage = "Hatswitch")]
-        public DpadControl dpad { get; private set; }
-
-        /// <summary>
-        /// The bottom face button on the stage kit.
-        /// </summary>
-        [InputControl(displayName = "Button South", usages = new[] { "PrimaryAction", "Submit" })]
-        public ButtonControl buttonSouth { get; private set; }
-
-        /// <summary>
-        /// The right face button on the stage kit.
-        /// </summary>
-        [InputControl(displayName = "Button East", usages = new[] { "Back", "Cancel" })]
-        public ButtonControl buttonEast { get; private set; }
-
-        /// <summary>
-        /// The left face button on the stage kit.
-        /// </summary>
-        [InputControl(displayName = "Button West")]
-        public ButtonControl buttonWest { get; private set; }
-
-        /// <summary>
-        /// The top face button on the stage kit.
-        /// </summary>
-        [InputControl(displayName = "Button North")]
-        public ButtonControl buttonNorth { get; private set; }
-
-        /// <summary>
-        /// The Start button on the stage kit.
-        /// </summary>
-        [InputControl(displayName = "Start", usage = "Menu")]
-        public ButtonControl startButton { get; private set; }
-
-        /// <summary>
-        /// The Select button on the stage kit.
-        /// </summary>
-        [InputControl(displayName = "Select")]
-        public ButtonControl selectButton { get; private set; }
-
-        protected override void FinishSetup()
-        {
-            base.FinishSetup();
-
-            dpad = GetChildControl<DpadControl>(nameof(dpad));
-
-            buttonSouth = GetChildControl<ButtonControl>(nameof(buttonSouth));
-            buttonEast = GetChildControl<ButtonControl>(nameof(buttonEast));
-            buttonWest = GetChildControl<ButtonControl>(nameof(buttonWest));
-            buttonNorth = GetChildControl<ButtonControl>(nameof(buttonNorth));
-
-            startButton = GetChildControl<ButtonControl>(nameof(startButton));
-            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
         }
 
         /// <inheritdoc/>
@@ -113,13 +56,27 @@ namespace PlasticBand.Devices
         private protected StageKitHaptics m_Haptics;
 
         /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
-        public virtual void PauseHaptics() => m_Haptics?.PauseHaptics();
+        public override void PauseHaptics() => m_Haptics?.PauseHaptics();
 
         /// <inheritdoc cref="IHaptics.ResumeHaptics()"/>
-        public virtual void ResumeHaptics() => m_Haptics?.ResumeHaptics();
+        public override void ResumeHaptics() => m_Haptics?.ResumeHaptics();
 
         /// <inheritdoc cref="IHaptics.ResetHaptics()"/>
-        public virtual void ResetHaptics() => m_Haptics?.ResetHaptics();
+        public override void ResetHaptics() => m_Haptics?.ResetHaptics();
+
+        // Override to prevent standard rumble commands from being sent
+        /// <summary>
+        /// Stage kits do not support rumble, do not use this method.
+        /// </summary>
+        [Obsolete("Stage kits do not support rumble, do not use this method.", error: true)]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
+        public override void SetMotorSpeeds(float lowFrequency, float highFrequency)
+        {
+            // Explicitly do nothing, stage kits use rumble for their own features
+            // No exceptions are thrown or errors logged, as this is accessible from
+            // an interface where device type most likely won't be known ahead of time
+        }
+#pragma warning restore CS0809
 
         /// <inheritdoc cref="IStageKitHaptics.SetFogMachine(bool)"/>
         public virtual void SetFogMachine(bool enabled) => m_Haptics?.SetFogMachine(enabled);

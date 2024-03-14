@@ -25,9 +25,18 @@ namespace PlasticBand.Devices
             West = 0x0004,
             North = 0x0008,
 
-            Select = 0x0010,
-            Start = 0x0020,
-            System = 0x0040,
+            LeftShoulder = 0x0010,
+            RightShoulder = 0x0020,
+            LeftTriggerPress = 0x0040,
+            RightTriggerPress = 0x0080,
+
+            Select = 0x0100,
+            Start = 0x0200,
+            LeftStickClick = 0x0400,
+            RightStickClick = 0x0800,
+
+            System = 0x1000,
+            Capture = 0x2000,
         }
 
         public FourCC format => HidDefinitions.InputFormat;
@@ -39,9 +48,19 @@ namespace PlasticBand.Devices
         [InputControl(name = "buttonWest", layout = "Button", bit = 2)]
         [InputControl(name = "buttonNorth", layout = "Button", bit = 3)]
 
-        [InputControl(name = "selectButton", layout = "Button", bit = 4)]
-        [InputControl(name = "startButton", layout = "Button", bit = 5)]
-        [InputControl(name = "systemButton", layout = "Button", bit = 6, displayName = "System")]
+        [InputControl(name = "leftShoulder", layout = "Button", bit = 4)]
+        [InputControl(name = "rightShoulder", layout = "Button", bit = 5)]
+        // May conflict with the regular trigger axes
+        // [InputControl(name = "leftTriggerPress", layout = "Button", bit = 6)]
+        // [InputControl(name = "rightTriggerPress", layout = "Button", bit = 7)]
+
+        [InputControl(name = "select", layout = "Button", bit = 8)]
+        [InputControl(name = "start", layout = "Button", bit = 9)]
+        [InputControl(name = "leftStickPress", layout = "Button", bit = 10)]
+        [InputControl(name = "rightStickPress", layout = "Button", bit = 11)]
+
+        [InputControl(name = "systemButton", layout = "Button", bit = 12)]
+        [InputControl(name = "captureButton", layout = "Button", bit = 13)]
         public ushort buttons;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
@@ -50,6 +69,32 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
         public byte dpad;
+
+        [InputControl(name = "leftStick", layout = "Stick", format = "VC2B")]
+        [InputControl(name = "leftStick/x", format = "BYTE", offset = 0, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [InputControl(name = "leftStick/left", format = "BYTE", offset = 0, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        [InputControl(name = "leftStick/right", format = "BYTE", offset = 0, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
+        [InputControl(name = "leftStick/y", format = "BYTE", offset = 1, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,invert")]
+        [InputControl(name = "leftStick/up", format = "BYTE", offset = 1, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        [InputControl(name = "leftStick/down", format = "BYTE", offset = 1, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
+        public byte leftStickX;
+        public byte leftStickY;
+
+        [InputControl(name = "rightStick", layout = "Stick", format = "VC2B")]
+        [InputControl(name = "rightStick/x", format = "BYTE", offset = 0, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [InputControl(name = "rightStick/left", format = "BYTE", offset = 0, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        [InputControl(name = "rightStick/right", format = "BYTE", offset = 0, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
+        [InputControl(name = "rightStick/y", format = "BYTE", offset = 1, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,invert")]
+        [InputControl(name = "rightStick/up", format = "BYTE", offset = 1, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        [InputControl(name = "rightStick/down", format = "BYTE", offset = 1, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
+        public byte rightStickX;
+        public byte rightStickY;
+
+        [InputControl(name = "leftTrigger", layout = "Button", format = "BYTE")]
+        public byte leftTrigger;
+
+        [InputControl(name = "rightTrigger", layout = "Button", format = "BYTE")]
+        public byte rightTrigger;
     }
 
     [InputControlLayout(stateType = typeof(SantrollerHidStageKitState), displayName = "Santroller HID Stage Kit")]

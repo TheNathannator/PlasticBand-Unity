@@ -8,6 +8,12 @@ Dates are relative to UTC.
 
 ## [Unreleased]
 
+## Changed
+
+- Stage kits are now a specialized type of gamepad rather than a completely bespoke device type.
+  - This was done to better support Santroller stage kits, which allow mapping all gamepad inputs.
+- Santroller HID stage kit support has been updated to use the new input report format.
+
 ### Fixed
 
 - PS3 Guitar Hero guitars no longer have inverted accelerometer axes.
