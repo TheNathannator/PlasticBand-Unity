@@ -6,9 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
-## [Unreleased]
+## [0.6.0] - 18/03/2024
 
-## Changed
+### Changed
 
 - Stage kits are now a specialized type of gamepad rather than a completely bespoke device type.
   - This was done to better support Santroller stage kits, which allow mapping all gamepad inputs.
