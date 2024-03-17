@@ -19,14 +19,14 @@ Dates are relative to UTC.
 - PS3 Guitar Hero guitars no longer have inverted accelerometer axes.
 - Xbox 360 ION drumkits should no longer be falsely detected as GH drumkits due to a hardware quirk, they are now specially identified and bypass the normal differentiation process.
 
-## [0.5.1] - 14/02/2023
+## [0.5.1] - 14/02/2024
 
 ### Fixed
 
 - The PS3 ION drumkit, as well as any other PS3 instruments that don't send the full expected state report, should now work correctly.
   - Explicit sizes were set on the state layout structs, which causes state translation to fail if the instrument doesn't send the right size. However, the extra data within those sizes isn't actually used, so they have been removed.
 
-## [0.5.0] - 07/01/2023
+## [0.5.0] - 07/01/2024
 
 ### Added
 
@@ -44,7 +44,7 @@ Dates are relative to UTC.
 
 - The `GetFretMaskExcludingSolo` method on `RockBandGuitar`s has been removed, as not all Rock Band guitars report the solo frets independently from the main frets, which could make the results from the API confusing. If this behavior is required, `GetFretMask() & ~GetSoloFretMask()` will attain the same results.
 
-## [0.4.6] - 05/01/2023
+## [0.4.6] - 05/01/2024
 
 ### Added
 
@@ -55,7 +55,7 @@ Dates are relative to UTC.
 
 - Santroller HID haptics were not using the correct report ID, and wouldn't send as a result. Other fixes in the Santroller firmware made alongside this change now mean that HID haptics are properly functioning finally.
 
-## [0.4.5] - 05/01/2023
+## [0.4.5] - 05/01/2024
 
 ### Added
 
