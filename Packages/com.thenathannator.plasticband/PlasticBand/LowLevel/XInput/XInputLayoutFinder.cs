@@ -161,21 +161,17 @@ namespace PlasticBand.LowLevel
 
         internal static InputDeviceMatcher GetMatcher(DeviceSubType subType, short vendorId, short productId)
         {
-            return new InputDeviceMatcher()
-                .WithInterface(InterfaceName)
-                .WithCapability("subType", (int)subType)
-                .WithCapability("gamepad/leftStickX", vendorId)
-                .WithCapability("gamepad/leftStickY", productId);
+            return GetMatcher(subType)
+                // `int` cast is required for the input system's JSON parser to match these values correctly
+                // The `short` parameters already ensure proper ranges, so no big deal
+                .WithCapability("gamepad/leftStickX", (int)vendorId)
+                .WithCapability("gamepad/leftStickY", (int)productId);
         }
 
         internal static InputDeviceMatcher GetMatcher(DeviceSubType subType, short vendorId, short productId, short revision)
         {
-            return new InputDeviceMatcher()
-                .WithInterface(InterfaceName)
-                .WithCapability("subType", (int)subType)
-                .WithCapability("gamepad/leftStickX", vendorId)
-                .WithCapability("gamepad/leftStickY", productId)
-                .WithCapability("gamepad/rightStickX", revision);
+            return GetMatcher(subType, vendorId, productId)
+                .WithCapability("gamepad/rightStickX", (int)revision);
         }
     }
 }
