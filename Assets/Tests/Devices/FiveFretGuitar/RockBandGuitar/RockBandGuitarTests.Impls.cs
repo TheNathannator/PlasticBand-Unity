@@ -253,7 +253,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class PS4RockBandGuitarTests_ReportId
-        : RockBandGuitarTests_SoloFlag<PS4RockBandGuitar, PS4RockBandGuitarState_ReportId>
+        : RockBandGuitarTests_SoloDistinct<PS4RockBandGuitar, PS4RockBandGuitarState_ReportId>
     {
         protected override AxisMode tiltMode => AxisMode.Unsigned;
 
@@ -275,10 +275,10 @@ namespace PlasticBand.Tests.Devices
             => PS4DeviceHandling.SetMenuButtons(ref state.state.buttons1, buttons);
 
         protected override void SetFrets(ref PS4RockBandGuitarState_ReportId state, FiveFret frets)
-            => PS4RockBandGuitarHandling.SetFrets(ref state.state.buttons1, frets);
+            => PS4RockBandGuitarHandling.SetFrets(ref state.state.frets, frets);
 
         protected override void SetSoloFrets(ref PS4RockBandGuitarState_ReportId state, FiveFret frets)
-            => PS4RockBandGuitarHandling.SetSoloFrets(ref state.state.buttons1, frets);
+            => PS4RockBandGuitarHandling.SetFrets(ref state.state.soloFrets, frets);
 
         protected override void SetTilt(ref PS4RockBandGuitarState_ReportId state, float value)
         {
@@ -297,7 +297,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class PS4RockBandGuitarTests_NoReportId
-        : RockBandGuitarTests_SoloFlag<PS4RockBandGuitar_NoReportId, PS4RockBandGuitarState_NoReportId>
+        : RockBandGuitarTests_SoloDistinct<PS4RockBandGuitar_NoReportId, PS4RockBandGuitarState_NoReportId>
     {
         protected override AxisMode tiltMode => AxisMode.Unsigned;
 
@@ -316,10 +316,10 @@ namespace PlasticBand.Tests.Devices
             => PS4DeviceHandling.SetMenuButtons(ref state.buttons1, buttons);
 
         protected override void SetFrets(ref PS4RockBandGuitarState_NoReportId state, FiveFret frets)
-            => PS4RockBandGuitarHandling.SetFrets(ref state.buttons1, frets);
+            => PS4RockBandGuitarHandling.SetFrets(ref state.frets, frets);
 
         protected override void SetSoloFrets(ref PS4RockBandGuitarState_NoReportId state, FiveFret frets)
-            => PS4RockBandGuitarHandling.SetSoloFrets(ref state.buttons1, frets);
+            => PS4RockBandGuitarHandling.SetFrets(ref state.soloFrets, frets);
 
         protected override void SetTilt(ref PS4RockBandGuitarState_NoReportId state, float value)
         {
@@ -455,19 +455,13 @@ namespace PlasticBand.Tests.Devices
 
     public static class PS4RockBandGuitarHandling
     {
-        public static void SetFrets(ref ushort buttonField, FiveFret frets)
+        public static void SetFrets(ref byte buttonField, FiveFret frets)
         {
-            buttonField.SetBit((ushort)PS4Button1.Cross, (frets & FiveFret.Green) != 0);
-            buttonField.SetBit((ushort)PS4Button1.Circle, (frets & FiveFret.Red) != 0);
-            buttonField.SetBit((ushort)PS4Button1.Triangle, (frets & FiveFret.Yellow) != 0);
-            buttonField.SetBit((ushort)PS4Button1.Square, (frets & FiveFret.Blue) != 0);
-            buttonField.SetBit((ushort)PS4Button1.L2, (frets & FiveFret.Orange) != 0);
-        }
-
-        public static void SetSoloFrets(ref ushort buttonField, FiveFret frets)
-        {
-            buttonField.SetBit((ushort)PS4Button1.L3, frets != FiveFret.None);
-            SetFrets(ref buttonField, frets);
+            buttonField.SetBit(0x01, (frets & FiveFret.Green) != 0);
+            buttonField.SetBit(0x02, (frets & FiveFret.Red) != 0);
+            buttonField.SetBit(0x04, (frets & FiveFret.Yellow) != 0);
+            buttonField.SetBit(0x08, (frets & FiveFret.Blue) != 0);
+            buttonField.SetBit(0x10, (frets & FiveFret.Orange) != 0);
         }
     }
 }
