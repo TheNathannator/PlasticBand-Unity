@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -11,57 +11,155 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3RockBandGuitarState_NoReportId : IInputStateTypeInfo
+    internal unsafe struct PS3WiiRockBandGuitarState_NoReportId : IRockBandGuitarState_Flags
     {
         public FourCC format => HidDefinitions.InputFormat;
 
-        [InputControl(name = "blueFret", layout = "Button", bit = 0)]
-        [InputControl(name = "greenFret", layout = "Button", bit = 1)]
-        [InputControl(name = "redFret", layout = "Button", bit = 2)]
-        [InputControl(name = "yellowFret", layout = "Button", bit = 3)]
+        public PS3Button buttons;
+        public HidDpad dpad;
 
-        [InputControl(name = "orangeFret", layout = "Button", bit = 4)]
-        [InputControl(name = "tilt", layout = "Button", bit = 5)]
+        private fixed byte unused1[2];
 
-        [InputControl(name = "selectButton", layout = "Button", bit = 8)]
-        [InputControl(name = "startButton", layout = "Button", bit = 9)]
+        private byte m_Whammy;
+        private byte m_PickupSwitch;
 
-        [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "PlayStation")]
+        public bool green
+        {
+            get => (buttons & PS3Button.Cross) != 0;
+            set => buttons.SetBit(PS3Button.Cross, value);
+        }
 
-        [InputControl(name = "soloGreen", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x0042")]
-        [InputControl(name = "soloRed", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x0044")]
-        [InputControl(name = "soloYellow", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x0048")]
-        [InputControl(name = "soloBlue", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x0041")]
-        [InputControl(name = "soloOrange", layout = "MaskButton", format = "USHT", bit = 0, parameters = "mask=0x0050")]
-        public ushort buttons;
+        public bool red
+        {
+            get => (buttons & PS3Button.Circle) != 0;
+            set => buttons.SetBit(PS3Button.Circle, value);
+        }
 
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
-        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7")]
-        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
-        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
-        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
-        public byte dpad;
+        public bool yellow
+        {
+            get => (buttons & PS3Button.Triangle) != 0;
+            set => buttons.SetBit(PS3Button.Triangle, value);
+        }
 
-        public fixed byte unused1[2];
+        public bool blue
+        {
+            get => (buttons & PS3Button.Square) != 0;
+            set => buttons.SetBit(PS3Button.Square, value);
+        }
 
-        [InputControl(name = "whammy", layout = "IntAxis", parameters = "minValue=0x00,maxValue=0xFF,zeroPoint=0x00,hasNullValue,nullValue=0x7F")]
-        public byte whammy;
+        public bool orange
+        {
+            get => (buttons & PS3Button.L2) != 0;
+            set => buttons.SetBit(PS3Button.L2, value);
+        }
 
-        [InputControl(name = "pickupSwitch", layout = "RockBandPickupSwitch", parameters = "hasNullValue")]
-        public byte pickupSwitch;
+        public bool solo
+        {
+            get => (buttons & PS3Button.L1) != 0;
+            set => buttons.SetBit(PS3Button.L1, value);
+        }
+
+        public bool dpadUp
+        {
+            get => dpad.IsUp();
+            set => dpad.SetUp(value);
+        }
+
+        public bool dpadRight
+        {
+            get => dpad.IsRight();
+            set => dpad.SetRight(value);
+        }
+
+        public bool dpadDown
+        {
+            get => dpad.IsDown();
+            set => dpad.SetDown(value);
+        }
+
+        public bool dpadLeft
+        {
+            get => dpad.IsLeft();
+            set => dpad.SetLeft(value);
+        }
+
+        public bool select
+        {
+            get => (buttons & PS3Button.Select) != 0;
+            set => buttons.SetBit(PS3Button.Select, value);
+        }
+
+        public bool start
+        {
+            get => (buttons & PS3Button.Start) != 0;
+            set => buttons.SetBit(PS3Button.Start, value);
+        }
+
+        public bool system
+        {
+            get => (buttons & PS3Button.PlayStation) != 0;
+            set => buttons.SetBit(PS3Button.PlayStation, value);
+        }
+
+        public byte whammy
+        {
+            get => m_Whammy;
+            set => m_Whammy = RockBandGuitarState.EnsureNotNull(value);
+        }
+
+        public sbyte tilt
+        {
+            get => (buttons & PS3Button.R2) != 0 ? sbyte.MaxValue : (sbyte)0;
+            set => buttons.SetBit(PS3Button.R2, value >= 64);
+        }
+
+        public int pickupSwitch
+        {
+            get => RockBandGuitarState.GetPickupSwitchNotch_NullState(m_PickupSwitch);
+            set => m_PickupSwitch = RockBandGuitarState.SetPickupSwitchNotch_NullState(value);
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS3RockBandGuitarState_ReportId : IInputStateTypeInfo
+    internal unsafe struct PS3WiiRockBandGuitarState_ReportId : IRockBandGuitarState_Flags
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
-        public PS3RockBandGuitarState_NoReportId state;
+        public PS3WiiRockBandGuitarState_NoReportId state;
+
+        public bool green { get => state.green; set => state.green = value; }
+        public bool red { get => state.red; set => state.red = value; }
+        public bool yellow { get => state.yellow; set => state.yellow = value; }
+        public bool blue { get => state.blue; set => state.blue = value; }
+        public bool orange { get => state.orange; set => state.orange = value; }
+        public bool solo { get => state.solo; set => state.solo = value; }
+
+        public bool dpadUp { get => state.dpadUp; set => state.dpadUp = value; }
+        public bool dpadDown { get => state.dpadDown; set => state.dpadDown = value; }
+        public bool dpadLeft { get => state.dpadLeft; set => state.dpadLeft = value; }
+        public bool dpadRight { get => state.dpadRight; set => state.dpadRight = value; }
+
+        public bool start { get => state.start; set => state.start = value; }
+        public bool select { get => state.select; set => state.select = value; }
+        public bool system { get => state.system; set => state.system = value; }
+
+        public byte whammy { get => state.whammy; set => state.whammy = value; }
+        public sbyte tilt { get => state.tilt; set => state.tilt = value; }
+        public int pickupSwitch { get => state.pickupSwitch; set => state.pickupSwitch = value; }
     }
 
-    [InputControlLayout(stateType = typeof(PS3RockBandGuitarState_NoReportId), displayName = "PlayStation 3 Rock Band Guitar")]
-    internal class PS3RockBandGuitar : RockBandGuitar
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal struct PSRockBandGuitarLayout : IInputStateTypeInfo
+    {
+        public FourCC format => TranslatedRockBandGuitarState.Format;
+
+        [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.System, displayName = "PlayStation")]
+        public TranslatedRockBandGuitarState state;
+    }
+
+    [InputControlLayout(stateType = typeof(PSRockBandGuitarLayout), displayName = "PlayStation 3 Rock Band Guitar")]
+    internal class PS3RockBandGuitar : TranslatingRockBandGuitar_Flags_NullState<PS3WiiRockBandGuitarState_NoReportId>
     {
         internal new static void Initialize()
         {
@@ -69,6 +167,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(PS3RockBandGuitarState_ReportId), displayName = "PlayStation 3 Rock Band Guitar", hideInUI = true)]
-    internal class PS3RockBandGuitar_ReportId : PS3RockBandGuitar { }
+    [InputControlLayout(stateType = typeof(PSRockBandGuitarLayout), displayName = "PlayStation 3 Rock Band Guitar", hideInUI = true)]
+    internal class PS3RockBandGuitar_ReportId : TranslatingRockBandGuitar_Flags_NullState<PS3WiiRockBandGuitarState_ReportId> { }
 }

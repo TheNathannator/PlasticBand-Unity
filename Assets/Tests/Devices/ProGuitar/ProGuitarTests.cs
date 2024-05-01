@@ -297,8 +297,7 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void RecognizesEmulatedSoloFrets() => CreateAndRun((guitar) =>
         {
-            RockBandGuitarTests.HandlesSoloFrets_Flags(guitar, CreateState(), SetEmulatedSoloFrets,
-                guitar.greenFret, guitar.redFret, guitar.yellowFret, guitar.blueFret, guitar.orangeFret,
+            FiveFretGuitarTests._RecognizesFrets(guitar, CreateState(), SetEmulatedSoloFrets,
                 guitar.soloGreen, guitar.soloRed, guitar.soloYellow, guitar.soloBlue, guitar.soloOrange);
         });
 
@@ -315,7 +314,29 @@ namespace PlasticBand.Tests.Devices
         {
             FiveFretGuitarTests._GetFretMaskReturnsCorrectFrets(guitar, CreateState(),
                 SetEmulatedSoloFrets, guitar.GetEmulatedSoloFretMask, guitar.GetEmulatedSoloFretMask,
+                guitar.soloGreen, guitar.soloRed, guitar.soloYellow, guitar.soloBlue, guitar.soloOrange);
+        });
+
+        [Test]
+        public void EmulatedSoloFretsAreNotMirrored() => CreateAndRun((guitar) =>
+        {
+            var state = CreateState();
+
+            // Only regular frets
+            SetEmulatedFrets(ref state, FiveFret.Green | FiveFret.Red | FiveFret.Yellow | FiveFret.Blue | FiveFret.Orange);
+            AssertButtonPress(guitar, state,
                 guitar.greenFret, guitar.redFret, guitar.yellowFret, guitar.blueFret, guitar.orangeFret);
+            SetEmulatedFrets(ref state, FiveFret.None);
+
+            // Only solo frets
+            SetEmulatedSoloFrets(ref state, FiveFret.Green | FiveFret.Red | FiveFret.Yellow | FiveFret.Blue | FiveFret.Orange);
+            AssertButtonPress(guitar, state,
+                guitar.soloGreen, guitar.soloRed, guitar.soloYellow, guitar.soloBlue, guitar.soloOrange);
+
+            // Both regular and solo frets; solo frets should take precedence
+            SetEmulatedFrets(ref state, FiveFret.Green | FiveFret.Red | FiveFret.Yellow | FiveFret.Blue | FiveFret.Orange);
+            AssertButtonPress(guitar, state,
+                guitar.soloGreen, guitar.soloRed, guitar.soloYellow, guitar.soloBlue, guitar.soloOrange);
         });
     }
 

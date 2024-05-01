@@ -21,6 +21,27 @@ namespace PlasticBand.Devices
         Orange = 0x10
     }
 
+    internal interface IFiveFretGuitarState : IInputStateTypeInfo
+    {
+        bool green { get; set; }
+        bool red { get; set; }
+        bool yellow { get; set; }
+        bool blue { get; set; }
+        bool orange { get; set; }
+
+        bool dpadUp { get; set; }
+        bool dpadDown { get; set; }
+        bool dpadLeft { get; set; }
+        bool dpadRight { get; set; }
+
+        bool start { get; set; }
+        bool select { get; set; }
+        bool system { get; set; }
+
+        byte whammy { get; set; }
+        sbyte tilt { get; set; }
+    }
+
     /// <summary>
     /// A 5-fret guitar controller.
     /// </summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PlasticBand.Devices.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -7,10 +8,102 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
+    internal interface IRockBandGuitarState_Base : IFiveFretGuitarState
+    {
+        int pickupSwitch { get; set; }
+    }
+
+    internal interface IRockBandGuitarState_Flags : IRockBandGuitarState_Base
+    {
+        bool solo { get; set; }
+    }
+
+    internal interface IRockBandGuitarState_Distinct : IRockBandGuitarState_Base
+    {
+        bool soloGreen { get; set; }
+        bool soloRed { get; set; }
+        bool soloYellow { get; set; }
+        bool soloBlue { get; set; }
+        bool soloOrange { get; set; }
+    }
+
+    internal static class RockBandGuitarState
+    {
+        internal const int kNullValue = PS3DeviceState.StickCenter;
+
+        // Normally this value would be byte.MaxValue / 5f, the + 1 is to
+        // avoid having to call Math.Clamp at the expense of a small amount of range
+        internal const float kNotchSize = (byte.MaxValue + 1) / 5f;
+
+        public static byte EnsureNotNull(byte value)
+        {
+            return value == kNullValue ? (byte)(kNullValue + 1) : value;
+        }
+
+        /// <summary>
+        /// Calculates the notch for the given pickup switch value, ranging from 0 to 4 inclusively.
+        /// </summary>
+        public static int GetPickupSwitchNotch(byte value)
+        {
+            return (int)(value / kNotchSize);
+        }
+
+        /// <summary>
+        /// Calculates the notch for the given pickup switch value, ranging from 0 to 4 inclusively.
+        /// This variant handles the null value on PS3/Wii RB guitars and returns -1 if it's passed in.
+        /// </summary>
+        public static int GetPickupSwitchNotch_NullState(byte value)
+        {
+            if (value == kNullValue)
+                return -1;
+
+            return GetPickupSwitchNotch(value);
+        }
+
+        /// <summary>
+        /// Calculates the value to set for the given pickup switch notch.
+        /// This excludes the null value on PS3/Wii RB guitars.
+        /// </summary>
+        public static byte SetPickupSwitchNotch(int notch)
+        {
+            // Multiply by size to get the notch range's edge, then add half to get the range center
+            byte value = (byte)((notch * kNotchSize) + (kNotchSize / 2));
+
+            // PS3/Wii Rock Band guitars reset the pickup switch to a neutral value
+            // after some time of no movement, need to avoid setting that value
+            if (value == kNullValue)
+                value--;
+
+            return value;
+        }
+
+        /// <summary>
+        /// Calculates the value to set for the given pickup switch notch.
+        /// This variant handles the null notch state and returns the null value for PS3/Wii RB guitars if it's passed in.
+        /// </summary>
+        public static byte SetPickupSwitchNotch_NullState(int notch)
+        {
+            if (notch < 0)
+                return kNullValue;
+
+            return SetPickupSwitchNotch(notch);
+        }
+    }
+
     /// <summary>
     /// A Rock Band 5-fret guitar.
-    /// Has some additional features that aren't available on all 5-fret guitars.
+    /// Has some additional features that aren't available on all 5-fret guitars,
+    /// such as a second set of "solo" frets and a pickup switch.
     /// </summary>
+    /// <remarks>
+    /// To better facilitate their original use, and to prevent duplicate control issues,
+    /// the state of the solo frets are *not* mirrored onto the normal frets.
+    /// If the normal and solo frets should have the same function, they must be read together.
+    /// <br/>
+    /// For guitars that report the solo frets fully independently, this behavior allows the frets to be used as such.
+    /// For guitars that use a flag strategy to report solo frets (i.e. five color flags and a sixth "solo fret pressed" flag),
+    /// the solo flag takes precedence, which means pressing a solo fret will make all normal frets also behave as solo frets.
+    /// </remarks>
     [InputControlLayout(displayName = "Rock Band 5-Fret Guitar")]
     public class RockBandGuitar : FiveFretGuitar
     {

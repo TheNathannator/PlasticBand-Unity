@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(XInputRockBandGuitarState), displayName = "Santroller XInput Rock Band Guitar")]
+    [InputControlLayout(stateType = typeof(TranslatedRockBandGuitarState), displayName = "Santroller XInput Rock Band Guitar")]
     internal class SantrollerXInputRockBandGuitar : XInputRockBandGuitar, ISantrollerFiveFretGuitarHaptics
     {
         internal new static void Initialize()

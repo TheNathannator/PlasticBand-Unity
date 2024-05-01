@@ -252,22 +252,23 @@ namespace PlasticBand.Devices
             bool yellow = state.yellow;
             bool blue = state.blue;
             bool orange = state.orange;
-            bool solo = state.solo;
 
-            if (green) buttons |= TranslatedProGuitarButtonMask.Green;
-            if (green & solo) buttons |= TranslatedProGuitarButtonMask.SoloGreen;
-
-            if (red) buttons |= TranslatedProGuitarButtonMask.Red;
-            if (red & solo) buttons |= TranslatedProGuitarButtonMask.SoloRed;
-
-            if (yellow) buttons |= TranslatedProGuitarButtonMask.Yellow;
-            if (yellow & solo) buttons |= TranslatedProGuitarButtonMask.SoloYellow;
-
-            if (blue) buttons |= TranslatedProGuitarButtonMask.Blue;
-            if (blue & solo) buttons |= TranslatedProGuitarButtonMask.SoloBlue;
-
-            if (orange) buttons |= TranslatedProGuitarButtonMask.Orange;
-            if (orange & solo) buttons |= TranslatedProGuitarButtonMask.SoloOrange;
+            if (!state.solo)
+            {
+                if (green) buttons |= TranslatedProGuitarButtonMask.Green;
+                if (red) buttons |= TranslatedProGuitarButtonMask.Red;
+                if (yellow) buttons |= TranslatedProGuitarButtonMask.Yellow;
+                if (blue) buttons |= TranslatedProGuitarButtonMask.Blue;
+                if (orange) buttons |= TranslatedProGuitarButtonMask.Orange;
+            }
+            else
+            {
+                if (green) buttons |= TranslatedProGuitarButtonMask.SoloGreen;
+                if (red) buttons |= TranslatedProGuitarButtonMask.SoloRed;
+                if (yellow) buttons |= TranslatedProGuitarButtonMask.SoloYellow;
+                if (blue) buttons |= TranslatedProGuitarButtonMask.SoloBlue;
+                if (orange) buttons |= TranslatedProGuitarButtonMask.SoloOrange;
+            }
 
             if (state.tilt) buttons |= TranslatedProGuitarButtonMask.Tilt;
 
