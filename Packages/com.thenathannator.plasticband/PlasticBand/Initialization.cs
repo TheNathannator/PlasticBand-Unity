@@ -65,6 +65,11 @@ namespace PlasticBand
             SantrollerHIDRockBandGuitar.Initialize();
             SantrollerXInputRockBandGuitar.Initialize();
 
+            // Riffmaster guitars
+            RiffmasterGuitar.Initialize();
+            PS4RiffmasterGuitar.Initialize();
+            PS5RiffmasterGuitar.Initialize();
+
             // 6-fret guitars
             SixFretGuitar.Initialize();
             XInputSixFretGuitar.Initialize();
