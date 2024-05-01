@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.7.0] - 01/05/2024
+
+### Added
+
+- PS4/5 Riffmaster guitars are now supported, with a new dedicated layout added to expose the joystick on their headstock.
+
+### Changed
+
+- Rock Band PS4 guitar layouts now use the independent fret bits sent by the guitar, rather than the fret flags.
+- The handling for Rock Band guitar solo frets has been made a lot more reasonable (in my opinion):
+  - For guitars that use a flag-based system to report frets (Xbox 360, PS3, Wii), the solo frets are no longer mirrored onto the normal frets; pressing a solo fret will make the normal frets also act as solo frets.
+  - For guitars that send the normal and solo frets independently (PS4), it is now ensured that they will be usable independently.
+
 ## [0.6.0] - 18/03/2024
 
 ### Changed
