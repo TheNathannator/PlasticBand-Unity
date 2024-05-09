@@ -235,6 +235,8 @@ namespace PlasticBand.Devices
     {
         public FourCC format => TranslatedRiffmasterGuitarState.Format;
 
+        [InputControl(name = "startButton", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.Start, displayName = "Options")]
+        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.Select, displayName = "Share")]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.System, displayName = "PlayStation")]
         public TranslatedRiffmasterGuitarState state;
     }

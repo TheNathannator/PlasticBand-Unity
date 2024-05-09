@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
@@ -195,10 +196,21 @@ namespace PlasticBand.Devices
         public int pickupSwitch { get => state.pickupSwitch; set => state.pickupSwitch = (byte)value; }
     }
 
-    [InputControlLayout(stateType = typeof(PSRockBandGuitarLayout), displayName = "PlayStation 4 Rock Band Guitar", hideInUI = true)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal struct PS4RockBandGuitarLayout : IInputStateTypeInfo
+    {
+        public FourCC format => TranslatedRockBandGuitarState.Format;
+
+        [InputControl(name = "startButton", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.Start, displayName = "Options")]
+        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.Select, displayName = "Share")]
+        [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.System, displayName = "PlayStation")]
+        public TranslatedRockBandGuitarState state;
+    }
+
+    [InputControlLayout(stateType = typeof(PS4RockBandGuitarLayout), displayName = "PlayStation 4 Rock Band Guitar", hideInUI = true)]
     internal class PS4RockBandGuitar_NoReportId : TranslatingRockBandGuitar_Distinct<PS4RockBandGuitarState_NoReportId> { }
 
-    [InputControlLayout(stateType = typeof(PSRockBandGuitarLayout), displayName = "PlayStation 4 Rock Band Guitar")]
+    [InputControlLayout(stateType = typeof(PS4RockBandGuitarLayout), displayName = "PlayStation 4 Rock Band Guitar")]
     internal class PS4RockBandGuitar : TranslatingRockBandGuitar_Distinct<PS4RockBandGuitarState_ReportId>
     {
         internal new static void Initialize()

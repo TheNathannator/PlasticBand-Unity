@@ -150,7 +150,7 @@ namespace PlasticBand.Devices
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct PSRockBandGuitarLayout : IInputStateTypeInfo
+    internal struct PS3RockBandGuitarLayout : IInputStateTypeInfo
     {
         public FourCC format => TranslatedRockBandGuitarState.Format;
 
@@ -158,7 +158,7 @@ namespace PlasticBand.Devices
         public TranslatedRockBandGuitarState state;
     }
 
-    [InputControlLayout(stateType = typeof(PSRockBandGuitarLayout), displayName = "PlayStation 3 Rock Band Guitar")]
+    [InputControlLayout(stateType = typeof(PS3RockBandGuitarLayout), displayName = "PlayStation 3 Rock Band Guitar")]
     internal class PS3RockBandGuitar : TranslatingRockBandGuitar_Flags_NullState<PS3WiiRockBandGuitarState_NoReportId>
     {
         internal new static void Initialize()
@@ -167,6 +167,6 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(PSRockBandGuitarLayout), displayName = "PlayStation 3 Rock Band Guitar", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(PS3RockBandGuitarLayout), displayName = "PlayStation 3 Rock Band Guitar", hideInUI = true)]
     internal class PS3RockBandGuitar_ReportId : TranslatingRockBandGuitar_Flags_NullState<PS3WiiRockBandGuitarState_ReportId> { }
 }
