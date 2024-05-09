@@ -16,21 +16,21 @@ namespace PlasticBand.Devices
     {
         public FourCC format => HidDefinitions.InputFormat;
 
-        [FieldOffset(1)]
+        [FieldOffset(0)]
         private byte m_JoystickX;
-        [FieldOffset(2)]
+        [FieldOffset(1)]
         private byte m_JoystickY;
 
-        [FieldOffset(8)]
+        [FieldOffset(7)]
         public PS4Button1 buttons1;
-        [FieldOffset(10)]
+        [FieldOffset(9)]
         public PS4Button2 buttons2;
 
-        [FieldOffset(40)]
+        [FieldOffset(39)]
         public byte pickupSwitch; // Assumed based on PS4, needed for our interface
-        [FieldOffset(41)]
+        [FieldOffset(40)]
         public byte whammy;
-        [FieldOffset(42)]
+        [FieldOffset(41)]
         private byte m_Tilt;
 
         [InputControl(name = "greenFret", layout = "Button", bit = 0)]
@@ -38,7 +38,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "yellowFret", layout = "Button", bit = 2)]
         [InputControl(name = "blueFret", layout = "Button", bit = 3)]
         [InputControl(name = "orangeFret", layout = "Button", bit = 4)]
-        [FieldOffset(43)]
+        [FieldOffset(42)]
         public byte frets;
 
         [InputControl(name = "soloGreen", layout = "Button", bit = 0)]
@@ -46,7 +46,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "soloYellow", layout = "Button", bit = 2)]
         [InputControl(name = "soloBlue", layout = "Button", bit = 3)]
         [InputControl(name = "soloOrange", layout = "Button", bit = 4)]
-        [FieldOffset(44)]
+        [FieldOffset(43)]
         public byte soloFrets;
 
         public bool green

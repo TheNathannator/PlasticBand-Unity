@@ -17,9 +17,9 @@ namespace PlasticBand.Devices
     {
         public FourCC format => HidDefinitions.InputFormat;
 
-        [FieldOffset(1)]
+        [FieldOffset(0)]
         private byte m_JoystickX;
-        [FieldOffset(2)]
+        [FieldOffset(1)]
         private byte m_JoystickY;
 
         [FieldOffset(4)]
