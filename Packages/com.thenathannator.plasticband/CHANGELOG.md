@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.7.1] - 09/05/2024
+
+### Changed
+
+- The display names for start/select on PS4/5 guitars have been corrected to be "Options"/"Share", respectively.
+
+### Fixed
+
+- Fixed an off-by-one error on PS4/5 Riffmasters, causing incorrect input recognition.
+
 ## [0.7.0] - 01/05/2024
 
 ### Added
