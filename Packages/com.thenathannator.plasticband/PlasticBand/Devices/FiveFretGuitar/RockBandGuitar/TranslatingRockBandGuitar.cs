@@ -194,16 +194,14 @@ namespace PlasticBand.Devices
 
         private TranslatedRockBandGuitarState TranslateState(ref TState state)
         {
-            byte whammy = state.whammy;
-            if (whammy == RockBandGuitarState.kNullValue)
+            if (state.whammy == RockBandGuitarState.kNullValue)
                 state.whammy = m_LastWhammy;
 
-            int pickupSwitch = state.pickupSwitch;
-            if (pickupSwitch < 0)
+            if (state.pickupSwitch < 0)
                 state.pickupSwitch = m_LastPickupSwitch;
 
-            m_LastWhammy = whammy;
-            m_LastPickupSwitch = pickupSwitch;
+            m_LastWhammy = state.whammy;
+            m_LastPickupSwitch = state.pickupSwitch;
 
             return TranslatingRockBandGuitar_Flags<TState>.TranslateState(ref state);
         }
