@@ -69,22 +69,24 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "leftStick/x", format = "BYTE", defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         [InputControl(name = "leftStick/left", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
         [InputControl(name = "leftStick/right", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
-        public byte leftStickX;
 
-        [InputControl(name = "leftStick/y", format = "BYTE", defaultState = 0x80, parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        [InputControl(name = "leftStick/up", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
-        [InputControl(name = "leftStick/down", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
+        // These must be placed up here, otherwise a stack overflow will occur when building the layout
+        [InputControl(name = "leftStick/y", format = "BYTE", offset = 2, defaultState = 0x80, parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [InputControl(name = "leftStick/up", format = "BYTE", offset = 2, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        [InputControl(name = "leftStick/down", format = "BYTE", offset = 2, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
+        public byte leftStickX;
         public byte leftStickY;
 
         [InputControl(name = "rightStick", layout = "Stick", format = "VC2B")]
         [InputControl(name = "rightStick/x", format = "BYTE", defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         [InputControl(name = "rightStick/left", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
         [InputControl(name = "rightStick/right", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
-        public byte rightStickX;
 
-        [InputControl(name = "rightStick/y", format = "BYTE", defaultState = 0x80, parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        [InputControl(name = "rightStick/up", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
-        [InputControl(name = "rightStick/down", format = "BYTE", parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
+        // These must be placed up here, otherwise a stack overflow will occur when building the layout
+        [InputControl(name = "rightStick/y", format = "BYTE", offset = 2, defaultState = 0x80, parameters = "invert,normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
+        [InputControl(name = "rightStick/up", format = "BYTE", offset = 2, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
+        [InputControl(name = "rightStick/down", format = "BYTE", offset = 2, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
+        public byte rightStickX;
         public byte rightStickY;
 
         [InputControl(name = "pressure_dpadUp", layout = "Axis")]

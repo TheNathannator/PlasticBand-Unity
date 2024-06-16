@@ -74,6 +74,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "leftStick/x", format = "BYTE", offset = 0, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         [InputControl(name = "leftStick/left", format = "BYTE", offset = 0, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
         [InputControl(name = "leftStick/right", format = "BYTE", offset = 0, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
+
+        // These must be included up here, otherwise a stack overflow will occur when building the layout
         [InputControl(name = "leftStick/y", format = "BYTE", offset = 1, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,invert")]
         [InputControl(name = "leftStick/up", format = "BYTE", offset = 1, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
         [InputControl(name = "leftStick/down", format = "BYTE", offset = 1, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]
@@ -84,6 +86,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "rightStick/x", format = "BYTE", offset = 0, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
         [InputControl(name = "rightStick/left", format = "BYTE", offset = 0, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
         [InputControl(name = "rightStick/right", format = "BYTE", offset = 0, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1")]
+
+        // These must be included up here, otherwise a stack overflow will occur when building the layout
         [InputControl(name = "rightStick/y", format = "BYTE", offset = 1, defaultState = 0x80, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,invert")]
         [InputControl(name = "rightStick/up", format = "BYTE", offset = 1, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0,clampMax=0.5,invert")]
         [InputControl(name = "rightStick/down", format = "BYTE", offset = 1, parameters = "normalize,normalizeMin=0,normalizeMax=1,normalizeZero=0.5,clamp=1,clampMin=0.5,clampMax=1,invert=false")]

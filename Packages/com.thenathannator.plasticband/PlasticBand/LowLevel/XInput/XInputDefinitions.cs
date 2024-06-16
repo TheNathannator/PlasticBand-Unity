@@ -67,22 +67,24 @@ namespace PlasticBand.LowLevel
         [InputControl(name = "leftStick/x", format = "SHRT", parameters = "clamp=false,invert=false,normalize=false")]
         [InputControl(name = "leftStick/left", format = "SHRT")]
         [InputControl(name = "leftStick/right", format = "SHRT")]
-        public short leftStickX;
 
-        [InputControl(name = "leftStick/y", format = "SHRT", parameters = "clamp=false,invert=false,normalize=false")]
-        [InputControl(name = "leftStick/up", format = "SHRT")]
-        [InputControl(name = "leftStick/down", format = "SHRT")]
+        // These must be placed up here, otherwise a stack overflow will occur when building the layout
+        [InputControl(name = "leftStick/y", format = "SHRT", offset = 2, parameters = "clamp=false,invert=false,normalize=false")]
+        [InputControl(name = "leftStick/up", format = "SHRT", offset = 2)]
+        [InputControl(name = "leftStick/down", format = "SHRT", offset = 2)]
+        public short leftStickX;
         public short leftStickY;
 
         [InputControl(name = "rightStick", layout = "Stick", format = "VC2S", displayName = "Right Stick")]
         [InputControl(name = "rightStick/x", format = "SHRT", parameters = "clamp=false,invert=false,normalize=false")]
         [InputControl(name = "rightStick/left", format = "SHRT")]
         [InputControl(name = "rightStick/right", format = "SHRT")]
-        public short rightStickX;
 
-        [InputControl(name = "rightStick/y", format = "SHRT", parameters = "clamp=false,invert=false,normalize=false")]
-        [InputControl(name = "rightStick/up", format = "SHRT")]
-        [InputControl(name = "rightStick/down", format = "SHRT")]
+        // These must be placed up here, otherwise a stack overflow will occur when building the layout
+        [InputControl(name = "rightStick/y", format = "SHRT", offset = 2, parameters = "clamp=false,invert=false,normalize=false")]
+        [InputControl(name = "rightStick/up", format = "SHRT", offset = 2)]
+        [InputControl(name = "rightStick/down", format = "SHRT", offset = 2)]
+        public short rightStickX;
         public short rightStickY;
     }
 

@@ -45,6 +45,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "leftStick/x", format = "SHRT", offset = 0, parameters = "clamp=false,invert=false,normalize=false")]
         [InputControl(name = "leftStick/left", format = "SHRT", offset = 0)]
         [InputControl(name = "leftStick/right", format = "SHRT", offset = 0)]
+
+        // These must be included up here, otherwise a stack overflow will occur when building the layout
         [InputControl(name = "leftStick/y", format = "SHRT", offset = 2, parameters = "clamp=false,invert=false,normalize=false")]
         [InputControl(name = "leftStick/up", format = "SHRT", offset = 2)]
         [InputControl(name = "leftStick/down", format = "SHRT", offset = 2)]
@@ -55,6 +57,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "rightStick/x", format = "SHRT", offset = 0, parameters = "clamp=false,invert=false,normalize=false")]
         [InputControl(name = "rightStick/left", format = "SHRT", offset = 0)]
         [InputControl(name = "rightStick/right", format = "SHRT", offset = 0)]
+
+        // These must be included up here, otherwise a stack overflow will occur when building the layout
         [InputControl(name = "rightStick/y", format = "SHRT", offset = 2, parameters = "clamp=false,invert=false,normalize=false")]
         [InputControl(name = "rightStick/up", format = "SHRT", offset = 2)]
         [InputControl(name = "rightStick/down", format = "SHRT", offset = 2)]
