@@ -25,13 +25,13 @@ namespace PlasticBand.LowLevel
         public static void VerifyDevice(InputDevice device)
         {
             if (device.stateBlock.format != ToStateFormat)
-                throw new NotSupportedException($"State format must be {ToStateFormat} ({typeof(TToState).Name})!");
+                throw new NotSupportedException($"Device state format must be {ToStateFormat} ({typeof(TToState).Name})!");
 
             if (device.stateBlock.sizeInBits / 8 < sizeof(TToState))
-                throw new NotSupportedException($"State block is too small to accomodate reports translated into {typeof(TToState).Name}!");
+                throw new NotSupportedException($"State block is too small to accomodate reports translated into {ToStateFormat} ({typeof(TToState).Name})!");
 
             if (sizeof(TFromState) < sizeof(TToState))
-                throw new NotSupportedException($"Raw state size is too small for its input events to accomodate reports translated into {typeof(TToState).Name}!");
+                throw new NotSupportedException($"Input state size is too small to accomodate reports translated into {ToStateFormat} ({typeof(TToState).Name})!");
         }
 
         public static void OnStateEvent(InputDevice device, InputEventPtr eventPtr,

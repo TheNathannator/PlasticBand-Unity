@@ -22,7 +22,7 @@ namespace PlasticBand.LowLevel
         public static void VerifyDevice(InputDevice device)
         {
             if (FromStateFormat != GameInputDefinitions.InputFormat)
-                throw new NotSupportedException($"State format must be {GameInputDefinitions.InputFormat} ({typeof(TFromState).Name})!");
+                throw new NotSupportedException($"Input state format must be {GameInputDefinitions.InputFormat} ({typeof(TFromState).Name})!");
 
             StateTranslator<TFromState, TToState>.VerifyDevice(device);
         }
