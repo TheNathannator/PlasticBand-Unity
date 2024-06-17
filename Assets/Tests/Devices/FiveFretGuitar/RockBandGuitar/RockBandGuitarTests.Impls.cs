@@ -15,6 +15,16 @@ namespace PlasticBand.Tests.Devices
         };
     }
 
+    internal class XboxOneRockBandGuitarTests
+        : RockBandGuitarTests_Distinct<XboxOneRockBandGuitar, XboxOneRockBandGuitarState>
+    {
+        protected override XboxOneRockBandGuitarState CreateState()
+            => new XboxOneRockBandGuitarState()
+        {
+            reportId = 0x20,
+        };
+    }
+
     internal class SantrollerXInputRockBandGuitarTests
         : RockBandGuitarTests_Flags<SantrollerXInputRockBandGuitar, XInputRockBandGuitarState>
     {

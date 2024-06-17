@@ -215,7 +215,7 @@ namespace PlasticBand.Devices
     internal abstract class TranslatingRockBandGuitar_Distinct<TState> : RockBandGuitar, IInputStateCallbackReceiver
         where TState : unmanaged, IRockBandGuitarState_Distinct, IInputStateTypeInfo
     {
-        private static readonly TranslateStateHandler<TState, TranslatedRockBandGuitarState> s_Translator = TranslateState;
+        protected static readonly TranslateStateHandler<TState, TranslatedRockBandGuitarState> s_Translator = TranslateState;
 
         protected override void FinishSetup()
         {
