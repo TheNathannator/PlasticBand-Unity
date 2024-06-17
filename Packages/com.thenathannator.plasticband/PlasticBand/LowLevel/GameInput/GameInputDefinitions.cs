@@ -60,11 +60,12 @@ namespace PlasticBand.LowLevel
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct XboxOneGamepadState : IInputStateTypeInfo
+    internal struct XboxOneGamepadState : IGameInputStateTypeInfo
     {
         public FourCC format => GameInputDefinitions.InputFormat;
+        public byte reportId => 0x20;
 
-        public byte reportId;
+        private byte m_ReportId;
 
         [InputControl(name = "start", layout = "Button", format = "BIT", bit = 2, displayName = "Menu")]
         [InputControl(name = "select", layout = "Button", format = "BIT", bit = 3, displayName = "View")]
