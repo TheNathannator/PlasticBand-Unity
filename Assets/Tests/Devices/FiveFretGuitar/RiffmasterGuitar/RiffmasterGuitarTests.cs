@@ -29,7 +29,9 @@ namespace PlasticBand.Tests.Devices
         [Ignore("Currently takes minutes to execute for some forsaken reason")]
         public void HandlesJoystick() => CreateAndRun((guitar) =>
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             RecognizesStick(guitar, CreateState(), guitar.joystick, SetJoystick);
+#pragma warning restore CS0618
         });
 
         [Test]
