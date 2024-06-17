@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Processors;
+using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Tests
 {
@@ -91,7 +92,10 @@ namespace PlasticBand.Tests
             where TState : unmanaged, IInputStateTypeInfo
         {
             // Input event assert
-            using (InputSystem.onEvent.Assert(onInputEvent))
+            using (InputSystem.onEvent
+                .ForDevice(device)
+                .Where((eventPtr) => eventPtr.IsA<StateEvent>() || eventPtr.IsA<DeltaStateEvent>())
+                .Assert(onInputEvent))
             {
                 InputSystem.QueueStateEvent(device, state);
                 InputSystem.Update();

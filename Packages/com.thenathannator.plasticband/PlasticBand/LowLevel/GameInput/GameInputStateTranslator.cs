@@ -14,8 +14,8 @@ namespace PlasticBand.LowLevel
         where TFromState : unmanaged, IGameInputStateTypeInfo
         where TToState : unmanaged, IInputStateTypeInfo
     {
-        public static readonly FourCC FromStateFormat = default(TFromState).format;
-        public static readonly FourCC ToStateFormat = default(TToState).format;
+        public static readonly FourCC FromStateFormat = StateTranslator<TFromState, TToState>.FromStateFormat;
+        public static readonly FourCC ToStateFormat = StateTranslator<TFromState, TToState>.ToStateFormat;
 
         public static readonly byte FromStateReportID = default(TFromState).reportId;
 
@@ -33,10 +33,18 @@ namespace PlasticBand.LowLevel
                 return false;
 
             var stateEvent = StateEvent.From(eventPtr);
-            if (stateEvent->stateFormat != FromStateFormat || stateEvent->stateSizeInBytes < sizeof(TFromState))
-                return false;
+            if (stateEvent->stateFormat == FromStateFormat)
+            {
+                return stateEvent->stateSizeInBytes >= sizeof(TFromState) &&
+                    *(byte*)stateEvent->state == FromStateReportID;
+            }
+            else if (stateEvent->stateFormat == ToStateFormat)
+            {
+                // No extra checks to be done, this event has already been translated
+                return true;
+            }
 
-            return *(byte*)stateEvent->state == FromStateReportID;
+            return false;
         }
 
         public static void OnStateEvent(InputDevice device, InputEventPtr eventPtr,

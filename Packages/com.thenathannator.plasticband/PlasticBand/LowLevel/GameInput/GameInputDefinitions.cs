@@ -20,10 +20,10 @@ namespace PlasticBand.LowLevel
         DpadLeft = 1 << 10,
         DpadRight = 1 << 11,
 
-        LeftShoulder = 1 << 8,
-        RightShoulder = 1 << 9,
-        LeftThumb = 1 << 10,
-        RightThumb = 1 << 11,
+        LeftShoulder = 1 << 12,
+        RightShoulder = 1 << 13,
+        LeftThumb = 1 << 14,
+        RightThumb = 1 << 15,
     }
 
     internal static class GameInputDefinitions
@@ -63,9 +63,9 @@ namespace PlasticBand.LowLevel
     internal struct XboxOneGamepadState : IGameInputStateTypeInfo
     {
         public FourCC format => GameInputDefinitions.InputFormat;
-        public byte reportId => 0x20;
+        byte IGameInputStateTypeInfo.reportId => 0x20;
 
-        private byte m_ReportId;
+        public byte reportId;
 
         [InputControl(name = "start", layout = "Button", format = "BIT", bit = 2, displayName = "Menu")]
         [InputControl(name = "select", layout = "Button", format = "BIT", bit = 3, displayName = "View")]
