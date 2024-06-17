@@ -107,7 +107,7 @@ namespace PlasticBand.Devices
     internal abstract class TranslatingRiffmasterGuitar<TState> : RiffmasterGuitar, IInputStateCallbackReceiver
         where TState : unmanaged, IRiffmasterGuitarState, IInputStateTypeInfo
     {
-        private static readonly TranslateStateHandler<TState, TranslatedRiffmasterGuitarState> s_Translator = TranslateState;
+        protected static readonly TranslateStateHandler<TState, TranslatedRiffmasterGuitarState> s_Translator = TranslateState;
 
         protected override void FinishSetup()
         {

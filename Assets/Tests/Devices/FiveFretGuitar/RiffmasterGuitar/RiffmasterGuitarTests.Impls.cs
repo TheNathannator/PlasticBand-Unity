@@ -6,6 +6,18 @@ using UnityEngine.InputSystem.Controls;
 
 namespace PlasticBand.Tests.Devices
 {
+    internal class XboxOneRiffmasterGuitarTests_ReportId
+        : RiffmasterGuitarTests<XboxOneRiffmasterGuitar, XboxOneRiffmasterGuitarState>
+    {
+        protected override AxisMode tiltMode => AxisMode.Unsigned;
+
+        protected override XboxOneRiffmasterGuitarState CreateState()
+            => new XboxOneRiffmasterGuitarState()
+        {
+            reportId = 0x20,
+        };
+    }
+
     internal class PS4RiffmasterGuitarTests_ReportId
         : RiffmasterGuitarTests<PS4RiffmasterGuitar, PS4RiffmasterGuitarState_ReportId>
     {

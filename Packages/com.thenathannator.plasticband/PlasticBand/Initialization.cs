@@ -68,6 +68,7 @@ namespace PlasticBand
 
             // Riffmaster guitars
             RiffmasterGuitar.Initialize();
+            XboxOneRiffmasterGuitar.Initialize();
             PS4RiffmasterGuitar.Initialize();
             PS5RiffmasterGuitar.Initialize();
 
