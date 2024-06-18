@@ -185,13 +185,13 @@ namespace PlasticBand.Tests
             float value, float epsilon, params AxisControl[] axes)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            void UpdateAssert() => AssertButton((axis) => axis.value);
+            void UpdateAssert() => AssertAxis((axis) => axis.value);
             void EventAssert(InputEventPtr eventPtr)
-                => AssertButton((axis) => axis.ReadValueFromEvent(eventPtr));
+                => AssertAxis((axis) => axis.ReadValueFromEvent(eventPtr));
 
             AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
-            void AssertButton(Func<AxisControl, float> getValue)
+            void AssertAxis(Func<AxisControl, float> getValue)
             {
                 foreach (var control in device.allControls)
                 {
@@ -214,13 +214,13 @@ namespace PlasticBand.Tests
             float epsilon, List<(AxisControl axis, float value)> axes)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            void UpdateAssert() => AssertButton((axis) => axis.value);
+            void UpdateAssert() => AssertAxis((axis) => axis.value);
             void EventAssert(InputEventPtr eventPtr)
-                => AssertButton((axis) => axis.ReadValueFromEvent(eventPtr));
+                => AssertAxis((axis) => axis.ReadValueFromEvent(eventPtr));
 
             AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
-            void AssertButton(Func<AxisControl, float> getValue)
+            void AssertAxis(Func<AxisControl, float> getValue)
             {
                 foreach (var control in device.allControls)
                 {
