@@ -204,7 +204,7 @@ namespace PlasticBand.Tests
                     }
                     else
                     {
-                        AssertAxisIsDefault(axis, getValue, epsilon);
+                        AssertAxisIsDefault(axis, getValue);
                     }
                 }
             }
@@ -234,7 +234,7 @@ namespace PlasticBand.Tests
                     }
                     else
                     {
-                        AssertAxisIsDefault(axis, getValue, epsilon);
+                        AssertAxisIsDefault(axis, getValue);
                     }
                 }
             }
@@ -246,10 +246,9 @@ namespace PlasticBand.Tests
             Assert.That(getValue(axis), Is.InRange(value - epsilon, value + epsilon), $"Value for axis '{axis}' is not in range!");
         }
 
-        public static void AssertAxisIsDefault(AxisControl axis, Func<AxisControl, float> getValue, float epsilon)
+        public static void AssertAxisIsDefault(AxisControl axis, Func<AxisControl, float> getValue)
         {
-            float defaultValue = axis.ReadDefaultValue();
-            Assert.That(getValue(axis), Is.InRange(defaultValue - epsilon, defaultValue + epsilon), $"Expected default value for axis '{axis}'!");
+            Assert.That(getValue(axis), Is.EqualTo(axis.ReadDefaultValue()), $"Expected default value for axis '{axis}'!");
         }
 
         public static void AssertIntegerValue<TState>(InputDevice device, TState state,
