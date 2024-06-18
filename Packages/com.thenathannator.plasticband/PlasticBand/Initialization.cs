@@ -89,6 +89,7 @@ namespace PlasticBand
             // 4-lane drumkits
             FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
+            XboxOneFourLaneDrumkit.Initialize();
             PS3FourLaneDrumkit.Initialize();
             PS4FourLaneDrumkit.Initialize();
             WiiFourLaneDrumkit.Initialize();

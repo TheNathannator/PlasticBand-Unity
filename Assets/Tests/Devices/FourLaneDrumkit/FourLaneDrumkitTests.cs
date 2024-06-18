@@ -83,6 +83,8 @@ namespace PlasticBand.Tests.Devices
         where TDrumkit : FourLaneDrumkit
         where TState : unmanaged, IFourLaneDrumkitState_Base
     {
+        protected virtual int VelocityPrecision => 256;
+
         protected abstract void SetPad(ref TState state, FourLanePad pad, float velocity);
 
         protected override void SetDpad(ref TState state, DpadDirection dpad)
@@ -230,11 +232,13 @@ namespace PlasticBand.Tests.Devices
                     continue;
                 }
 
-                for (int i = 10; i >= 0; i--)
+                int precision = VelocityPrecision - 1;
+                float fPrecision = precision;
+                for (int i = precision; i >= 0; i--)
                 {
-                    float velocity = i / 10f;
+                    float velocity = i / fPrecision;
                     SetPad(ref state, pad, velocity);
-                    AssertButtonValue(drumkit, state, velocity, 1 / 100f, button);
+                    AssertButtonValue(drumkit, state, velocity, 1 / fPrecision, button);
                 }
             }
         });

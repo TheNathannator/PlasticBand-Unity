@@ -296,7 +296,7 @@ namespace PlasticBand.Devices
     internal abstract class TranslatingFourLaneDrumkit_Distinct<TState> : FourLaneDrumkit, IInputStateCallbackReceiver
         where TState : unmanaged, IFourLaneDrumkitState_Distinct, IInputStateTypeInfo
     {
-        private static readonly TranslateStateHandler<TState, TranslatedFourLaneState> s_Translator = TranslateState;
+        protected static readonly TranslateStateHandler<TState, TranslatedFourLaneState> s_Translator = TranslateState;
 
         protected override void FinishSetup()
         {
