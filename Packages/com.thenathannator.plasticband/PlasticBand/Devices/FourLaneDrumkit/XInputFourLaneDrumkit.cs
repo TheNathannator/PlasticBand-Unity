@@ -119,56 +119,61 @@ namespace PlasticBand.Devices
         byte IFourLaneDrumkitState_Flags.redPadVelocity
         {
             get => GetVelocity_Positive(redVelocity);
-            set => SetVelocity_Positive(ref redVelocity, value);
+            set => redVelocity = SetVelocity_Positive(value);
         }
 
         byte IFourLaneDrumkitState_Flags.yellowPadVelocity
         {
             get => GetVelocity_Negative(yellowVelocity);
-            set => SetVelocity_Negative(ref yellowVelocity, value);
+            set => yellowVelocity = SetVelocity_Negative(value);
         }
 
         byte IFourLaneDrumkitState_Flags.bluePadVelocity
         {
             get => GetVelocity_Positive(blueVelocity);
-            set => SetVelocity_Positive(ref blueVelocity, value);
+            set => blueVelocity = SetVelocity_Positive(value);
         }
 
         byte IFourLaneDrumkitState_Flags.greenPadVelocity
         {
             get => GetVelocity_Negative(greenVelocity);
-            set => SetVelocity_Negative(ref greenVelocity, value);
+            set => greenVelocity = SetVelocity_Negative(value);
         }
 
         byte IFourLaneDrumkitState_Flags.yellowCymbalVelocity
         {
             get => GetVelocity_Negative(yellowVelocity);
-            set => SetVelocity_Negative(ref yellowVelocity, value);
+            set => yellowVelocity = SetVelocity_Negative(value);
         }
 
         byte IFourLaneDrumkitState_Flags.blueCymbalVelocity
         {
             get => GetVelocity_Positive(blueVelocity);
-            set => SetVelocity_Positive(ref blueVelocity, value);
+            set => blueVelocity = SetVelocity_Positive(value);
         }
 
         byte IFourLaneDrumkitState_Flags.greenCymbalVelocity
         {
             get => GetVelocity_Negative(greenVelocity);
-            set => SetVelocity_Negative(ref greenVelocity, value);
+            set => greenVelocity = SetVelocity_Negative(value);
         }
 
         private static byte GetVelocity_Positive(short velocity)
-            => (byte)((~velocity & 0x7FFF) >> 7);
+            => (byte)(255 - (byte)(velocity >> 7));
 
         private static byte GetVelocity_Negative(short velocity)
-            => (byte)((velocity & 0x7FFF) >> 7);
+        {
+            if (velocity == 0)
+                return 255;
 
-        private static void SetVelocity_Positive(ref short velocity, byte value)
-            => velocity = (short)(~value << 7);
+            return (byte)(255 - (byte)((~velocity) >> 7));
+        }
 
-        private static void SetVelocity_Negative(ref short velocity, byte value)
-            => velocity = (short)(value << 7);
+        private static short SetVelocity_Positive(byte value)
+            => (short)(32767 - ((value << 7) | (value >> 1)));
+
+        private static short SetVelocity_Negative(byte value)
+            => (short)(-32767 + ((value << 7) | (value >> 1)));
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

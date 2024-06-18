@@ -16,6 +16,7 @@ Dates are relative to UTC.
 ### Fixed
 
 - PS3 Rock Band guitars now handle the whammy bar's null state value correctly. It will no longer snap to the middle after a few moments of no movement.
+- The yellow and green pads on Xbox 360 Rock Band 1 kits are now read correctly, there was an issue in the velocity conversion code.
 
 ## [0.7.1] - 2024/05/09
 
