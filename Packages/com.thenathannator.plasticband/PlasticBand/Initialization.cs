@@ -75,6 +75,7 @@ namespace PlasticBand
             // 6-fret guitars
             SixFretGuitar.Initialize();
             XInputSixFretGuitar.Initialize();
+            XboxOneSixFretGuitar.Initialize();
             PS3WiiUSixFretGuitar.Initialize();
             PS4SixFretGuitar.Initialize();
             SantrollerHIDSixFretGuitar.Initialize();

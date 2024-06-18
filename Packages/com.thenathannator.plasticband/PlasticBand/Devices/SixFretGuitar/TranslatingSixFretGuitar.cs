@@ -80,7 +80,7 @@ namespace PlasticBand.Devices
     internal abstract class TranslatingSixFretGuitar<TState> : SixFretGuitar, IInputStateCallbackReceiver
         where TState : unmanaged, ISixFretGuitarState, IInputStateTypeInfo
     {
-        private static readonly TranslateStateHandler<TState, TranslatedSixFretState> s_Translator = TranslateState;
+        protected static readonly TranslateStateHandler<TState, TranslatedSixFretState> s_Translator = TranslateState;
 
         protected override void FinishSetup()
         {

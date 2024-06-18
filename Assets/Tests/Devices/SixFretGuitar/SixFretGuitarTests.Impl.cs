@@ -11,6 +11,24 @@ namespace PlasticBand.Tests.Devices
             => new XInputSixFretGuitarState();
     }
 
+    internal class XboxOneSixFretGuitarTests
+        : SixFretGuitarTests<XboxOneSixFretGuitar, XboxOneSixFretGuitarState>
+    {
+        protected override XboxOneSixFretGuitarState CreateState()
+            => new XboxOneSixFretGuitarState()
+        {
+            reportId = 0x21,
+            baseState = new PS3WiiUSixFretGuitarState_NoReportId()
+            {
+                dpad = HidDpad.Neutral,
+                strumBar = 0x80,
+
+                // The default value for these properties is not 0, so we must set them explicitly
+                tilt = 0,
+            },
+        };
+    }
+
     internal class SantrollerXInputSixFretGuitarTests
         : SixFretGuitarTests<SantrollerXInputSixFretGuitar, XInputSixFretGuitarState>
     {
