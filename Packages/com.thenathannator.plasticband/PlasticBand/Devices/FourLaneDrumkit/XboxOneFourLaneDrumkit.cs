@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
@@ -8,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
-// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Fret%20Guitar/Rock%20Band/Xbox%20One.md
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/Xbox%20One.md
 
 namespace PlasticBand.Devices
 {
