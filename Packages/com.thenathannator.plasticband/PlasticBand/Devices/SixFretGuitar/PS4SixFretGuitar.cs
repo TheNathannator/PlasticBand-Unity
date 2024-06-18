@@ -145,113 +145,28 @@ namespace PlasticBand.Devices
         public byte reportId;
         public PS4SixFretGuitarState_NoReportId state;
 
-        public bool black1
-        {
-            get => state.black1;
-            set => state.black1 = value;
-        }
+        public bool black1 { get => state.black1; set => state.black1 = value; }
+        public bool black2 { get => state.black2; set => state.black2 = value; }
+        public bool black3 { get => state.black3; set => state.black3 = value; }
+        public bool white1 { get => state.white1; set => state.white1 = value; }
+        public bool white2 { get => state.white2; set => state.white2 = value; }
+        public bool white3 { get => state.white3; set => state.white3 = value; }
 
-        public bool black2
-        {
-            get => state.black2;
-            set => state.black2 = value;
-        }
+        public bool dpadUp { get => state.dpadUp; set => state.dpadUp = value; }
+        public bool dpadRight { get => state.dpadRight; set => state.dpadRight = value; }
+        public bool dpadDown { get => state.dpadDown; set => state.dpadDown = value; }
+        public bool dpadLeft { get => state.dpadLeft; set => state.dpadLeft = value; }
 
-        public bool black3
-        {
-            get => state.black3;
-            set => state.black3 = value;
-        }
+        public bool select { get => state.select; set => state.select = value; }
+        public bool start { get => state.start; set => state.start = value; }
+        public bool ghtv { get => state.ghtv; set => state.ghtv = value; }
+        public bool system { get => state.system; set => state.system = value; }
 
-        public bool white1
-        {
-            get => state.white1;
-            set => state.white1 = value;
-        }
+        public bool strumUp { get => state.strumUp; set => state.strumUp = value; }
+        public bool strumDown { get => state.strumDown; set => state.strumDown = value; }
 
-        public bool white2
-        {
-            get => state.white2;
-            set => state.white2 = value;
-        }
-
-        public bool white3
-        {
-            get => state.white3;
-            set => state.white3 = value;
-        }
-
-        public bool dpadUp
-        {
-            get => state.dpadUp;
-            set => state.dpadUp = value;
-        }
-
-        public bool dpadRight
-        {
-            get => state.dpadRight;
-            set => state.dpadRight = value;
-        }
-
-        public bool dpadDown
-        {
-            get => state.dpadDown;
-            set => state.dpadDown = value;
-        }
-
-        public bool dpadLeft
-        {
-            get => state.dpadLeft;
-            set => state.dpadLeft = value;
-        }
-
-        public bool select
-        {
-            get => state.select;
-            set => state.select = value;
-        }
-
-        public bool start
-        {
-            get => state.start;
-            set => state.start = value;
-        }
-
-        public bool ghtv
-        {
-            get => state.ghtv;
-            set => state.ghtv = value;
-        }
-
-        public bool system
-        {
-            get => state.system;
-            set => state.system = value;
-        }
-
-        public bool strumUp
-        {
-            get => state.strumUp;
-            set => state.strumUp = value;
-        }
-
-        public bool strumDown
-        {
-            get => state.strumDown;
-            set => state.strumDown = value;
-        }
-
-        public byte whammy
-        {
-            get => state.whammy;
-            set => state.whammy = value;
-        }
-
-        public sbyte tilt
-        {
-            get => state.tilt;
-            set => state.tilt = value;
-        }
+        public byte whammy { get => state.whammy; set => state.whammy = value; }
+        public sbyte tilt { get => state.tilt; set => state.tilt = value; }
     }
 
     [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "PlayStation 4 Guitar Hero Live Guitar", hideInUI = true)]
