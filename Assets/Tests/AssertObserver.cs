@@ -14,6 +14,7 @@ namespace PlasticBand.Tests
     public class AssertObserver : IObserver<InputEventPtr>, IDisposable
     {
         private readonly IObservable<InputEventPtr> m_Source;
+        private readonly IDisposable m_Subscription;
         private readonly Action<InputEventPtr> m_Action;
         private ExceptionDispatchInfo m_ExceptionInfo = null;
 
@@ -22,7 +23,7 @@ namespace PlasticBand.Tests
             m_Source = source;
             m_Action = action;
 
-            m_Source.Subscribe(this);
+            m_Subscription = m_Source.Subscribe(this);
         }
 
         public void OnCompleted()
@@ -51,6 +52,7 @@ namespace PlasticBand.Tests
 
         public void Dispose()
         {
+            m_Subscription.Dispose();
             m_ExceptionInfo?.Throw();
         }
     }

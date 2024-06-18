@@ -82,13 +82,10 @@ namespace PlasticBand.Tests.Devices
         });
 
         [Test]
-        [Ignore("Currently takes 4-5 minutes to execute for some forsaken reason")]
         public void RecognizesSticks() => CreateAndRun((stageKit) =>
         {
-#pragma warning disable CS0618 // Type or member is obsolete
             RecognizesStick(stageKit, CreateState(), stageKit.leftStick, SetLeftStick);
             RecognizesStick(stageKit, CreateState(), stageKit.rightStick, SetRightStick);
-#pragma warning restore CS0618
         });
 
         protected void RecognizesSideButtons(TStageKit stageKit, SetSideButtonAction setButtons,

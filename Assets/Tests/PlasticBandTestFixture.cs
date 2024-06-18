@@ -341,7 +341,6 @@ namespace PlasticBand.Tests
             AssertAxisValue(device, state, 0f, 0.001f, button);
         }
 
-        [Obsolete("Drastically slows down tests for whatever reason, mark tests that use this as [Ignored]")]
         public static void RecognizesStick<TState>(InputDevice device, TState state, StickControl stick,
             SetStickAction<TState> setStick)
             where TState : unmanaged, IInputStateTypeInfo
@@ -377,7 +376,6 @@ namespace PlasticBand.Tests
             for (int i = -range; i <= range; i++)
             {
                 float value = i / division;
-                // TODO: why in the world does this add 5 whole minutes to the execution time???
                 float deadzoned = axisDeadzone.Process(value);
 
                 // X axis
