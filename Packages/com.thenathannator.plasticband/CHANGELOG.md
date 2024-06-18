@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.8.0] - 2024/06/18
+
+### Added
+
+- Xbox One instruments are now supported through HIDrogen v0.3.0's new GameInput backend. This includes Rock Band 4 Stratocasters/Jaguars, Rock Band 4 drumkits, PDP Riffmasters, and Guitar Hero Live guitars.
+  - The Rock Band 4 wireless legacy adapter is not supported yet, but it is planned for the next release. It's more complicated to handle, so I decided to not let it hold back the support for other devices.
+
+### Fixed
+
+- PS3 Rock Band guitars now handle the whammy bar's null state value correctly. It will no longer snap to the middle after a few moments of no movement.
+
 ## [0.7.1] - 2024/05/09
 
 ### Changed

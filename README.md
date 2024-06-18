@@ -54,7 +54,7 @@ See the [Unity documentation](https://docs.unity3d.com/Manual/upm-git.html) for 
 #### Via URL
 
 1. Open the Unity Package Manager and hit the + button, then select `Add package from git URL`.
-2. Paste in `https://github.com/TheNathannator/PlasticBand-Unity.git?path=/Packages/com.thenathannator.plasticband#v0.2.3` and hit Add.
+2. Paste in `https://github.com/TheNathannator/PlasticBand-Unity.git?path=/Packages/com.thenathannator.plasticband#v0.8.0` and hit Add.
 
 To update, increment the version number at the end of the URL to the new version number and repeat these steps with the new URL. Alternatively, you can edit the URL listed in your `manifest.json` file as described in the [Via Manifest](#via-manifest) section.
 
@@ -65,7 +65,7 @@ In your Packages > `manifest.json` file, add the following line to your `depende
 ```diff
 {
   "dependencies": {
-+   "com.thenathannator.plasticband": "https://github.com/TheNathannator/PlasticBand-Unity.git?path=/Packages/com.thenathannator.plasticband#v0.2.3"
++   "com.thenathannator.plasticband": "https://github.com/TheNathannator/PlasticBand-Unity.git?path=/Packages/com.thenathannator.plasticband#v0.8.0"
   }
 }
 ```
@@ -94,19 +94,22 @@ Devices to support:
   - All:
     - [ ] Auto-calibration sensors
   - [x] Xbox 360
-  - [ ] Xbox One
+  - [x] Xbox One
   - [x] PS3
   - [x] PS4
   - [x] Wii
+- Riffmaster 5-Fret Guitars
+  - [x] Xbox One
+  - [x] PS4/5
 - 6-Fret Guitars
   - [x] Xbox 360
-  - [ ] Xbox One
+  - [x] Xbox One
   - [x] PS3/Wii U
   - [x] PS4
   - [ ] iOS
 - Rock Band Kits
   - [x] Xbox 360
-  - [ ] Xbox One
+  - [x] Xbox One
   - [x] PS2/PS3
   - [x] PS4
   - [x] Wii
