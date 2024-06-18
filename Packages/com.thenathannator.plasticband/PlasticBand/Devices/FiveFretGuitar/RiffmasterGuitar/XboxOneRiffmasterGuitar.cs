@@ -62,13 +62,13 @@ namespace PlasticBand.Devices
         public sbyte joystickX
         {
             get => (sbyte)(m_JoystickX >> 8);
-            set => m_JoystickX = (byte)((value << 8) | (byte)value);
+            set => m_JoystickX = (short)((value << 8) | (byte)value);
         }
 
         public sbyte joystickY
         {
             get => (sbyte)(m_JoystickY >> 8);
-            set => m_JoystickY = (byte)((value << 8) | (byte)value);
+            set => m_JoystickY = (short)((value << 8) | (byte)value);
         }
 
         byte IFiveFretGuitarState.whammy { get => baseState.whammy; set => baseState.whammy = value; }
