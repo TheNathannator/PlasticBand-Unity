@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
-## [0.7.1] - 09/05/2024
+## [0.7.1] - 2024/05/09
 
 ### Changed
 
@@ -16,7 +16,7 @@ Dates are relative to UTC.
 
 - Fixed an off-by-one error on PS4/5 Riffmasters, causing incorrect input recognition.
 
-## [0.7.0] - 01/05/2024
+## [0.7.0] - 2024/05/01
 
 ### Added
 
@@ -29,7 +29,7 @@ Dates are relative to UTC.
   - For guitars that use a flag-based system to report frets (Xbox 360, PS3, Wii), the solo frets are no longer mirrored onto the normal frets; pressing a solo fret will make the normal frets also act as solo frets.
   - For guitars that send the normal and solo frets independently (PS4), it is now ensured that they will be usable independently.
 
-## [0.6.0] - 18/03/2024
+## [0.6.0] - 2024/03/18
 
 ### Changed
 
@@ -42,14 +42,14 @@ Dates are relative to UTC.
 - PS3 Guitar Hero guitars no longer have inverted accelerometer axes.
 - Xbox 360 ION drumkits should no longer be falsely detected as GH drumkits due to a hardware quirk, they are now specially identified and bypass the normal differentiation process.
 
-## [0.5.1] - 14/02/2024
+## [0.5.1] - 2024/02/14
 
 ### Fixed
 
 - The PS3 ION drumkit, as well as any other PS3 instruments that don't send the full expected state report, should now work correctly.
   - Explicit sizes were set on the state layout structs, which causes state translation to fail if the instrument doesn't send the right size. However, the extra data within those sizes isn't actually used, so they have been removed.
 
-## [0.5.0] - 07/01/2024
+## [0.5.0] - 2024/01/07
 
 ### Added
 
@@ -67,7 +67,7 @@ Dates are relative to UTC.
 
 - The `GetFretMaskExcludingSolo` method on `RockBandGuitar`s has been removed, as not all Rock Band guitars report the solo frets independently from the main frets, which could make the results from the API confusing. If this behavior is required, `GetFretMask() & ~GetSoloFretMask()` will attain the same results.
 
-## [0.4.6] - 05/01/2024
+## [0.4.6] - 2024/01/05
 
 ### Added
 
@@ -78,7 +78,7 @@ Dates are relative to UTC.
 
 - Santroller HID haptics were not using the correct report ID, and wouldn't send as a result. Other fixes in the Santroller firmware made alongside this change now mean that HID haptics are properly functioning finally.
 
-## [0.4.5] - 05/01/2024
+## [0.4.5] - 2024/01/05
 
 ### Added
 
@@ -94,7 +94,7 @@ Dates are relative to UTC.
 
 - PS4 Rock Band guitars were not registering whammy/tilt/the pickup switch correctly due to an off-by-one error in the layout.
 
-## [0.4.3] - 05/12/2023
+## [0.4.3] - 2023/12/05
 
 ### Fixed
 
@@ -103,7 +103,7 @@ Dates are relative to UTC.
 - Santroller stage kit layouts are now registered correctly.
 - Santroller XInput 6-fret guitars are also now registered correctly, they were incorrectly being registered as regular XInput 6-fret guitars.
 
-## [0.4.2] - 15/11/2023
+## [0.4.2] - 2023/11/15
 
 ### Fixed
 
@@ -123,14 +123,14 @@ Dates are relative to UTC.
 - The redundant `SoloFretCount`, `TouchFretCount`, and `EmulatedSoloFretCount` constants on `RockBandGuitar`, `GuitarHeroGuitar`, and `ProGuitar` respectively have been removed, in favor of having the one `FiveFretGuitar.FretCount` constant for everything.
   - The `EmulatedFretCount` constant on `ProGuitar` remains for convenience, but is otherwise now directly equivalent to `FiveFretGuitar.FretCount`.
 
-## [0.4.1] - 2023/03/11
+## [0.4.1] - 2023/11/03
 
 ### Fixed
 
 - Drumkits no longer forget to assign their face button controls to their class instance on initialization.
 - Fixed a null-reference exception when using the `EnumerateControls` extension on an `InputEventPtr` for a device that uses the new state translation infrastructure.
 
-## [0.4.0] - 2023/31/10
+## [0.4.0] - 2023/10/31
 
 ### Fixed
 
@@ -157,14 +157,14 @@ Dates are relative to UTC.
 - Wii Rock Band instruments now have their start/select controls' display names set to `Plus` and `Minus`.
 - The effects dial on turntables is now reported as a value in rotations, ranging from 0 inclusive to 1 exclusive.
 
-## [0.3.4] - 2023/15/08
+## [0.3.4] - 2023/08/15
 
 ### Fixed
 
 - Whammy and tilt on PS4 RB4 guitars has been fixed, and the pickup switch is now implemented.
 - Xbox 360 turntables now instantiate correctly again, and are now properly scaled up.
 
-## [0.3.3] - 2023/28/07
+## [0.3.3] - 2023/07/28
 
 ### Added
 
@@ -183,7 +183,7 @@ Dates are relative to UTC.
 - The left platter buttons on PS3 turntables should now register correctly, they were off by 1 bit lol
 - Wii RB3 Pro Keyboards should now register correctly, they were registered under the PS3 keyboard's hardware IDs on accident.
 
-## [0.3.2] - 2023/27/05
+## [0.3.2] - 2023/05/27
 
 ### Changed
 
@@ -193,7 +193,7 @@ Dates are relative to UTC.
 - Reworked Santroller HID device layouts to no longer use a layout finder, instead they register multiple matchers for each variation.
   - This will allow the proper layout to persist across editor domain reloads, rather than reverting to the fallback that was previously used for the layout finder.
 
-## [0.3.1] - 2023/23/05
+## [0.3.1] - 2023/05/23
 
 ### Fixed
 
@@ -201,7 +201,7 @@ Dates are relative to UTC.
 - Fixed XInput layout overrides not being evaluated correctly due to a small logic error.
 - Temporarily disabled Santroller HID device layouts to avoid the same crash bug as with the PS4 instrument layouts on Windows.
 
-## [0.3.0] - 2023/14/05
+## [0.3.0] - 2023/05/14
 
 ### Added
 
@@ -215,7 +215,7 @@ Dates are relative to UTC.
 
 - The XInput/PS3/Wii (and other non-abstract) device classes have been made internal, as they are effectively only implementation details. There's no benefit to using them over the corresponding abstract type, and hopefully there never will be.
 
-## [0.2.3] - 2023/11/05
+## [0.2.3] - 2023/05/11
 
 ### Fixed
 
@@ -226,7 +226,7 @@ Dates are relative to UTC.
 
 - Re-added face button controls to FourLaneDrumkit since those are no longer guaranteed to be handled by the pads.
 
-## [0.2.2] - 2023/04/05
+## [0.2.2] - 2023/05/04
 
 ### Fixed
 
@@ -242,13 +242,13 @@ Dates are relative to UTC.
 - Report IDs on HID device layouts are now detected automatically instead of being hardcoded into the layout.
   - This ensures everything works correctly on all platforms, and accounts for cases where a report ID may be present where one isn't expected. (Wish the native backend would account for this automatically on all platforms, but this works too.)
 
-## [0.2.1] - 2023/14/04
+## [0.2.1] - 2023/04/14
 
 ### Fixed
 
 - I forgot to initialize some things again lol, that is now addressed.
 
-## [0.2.0] - 2023/14/04
+## [0.2.0] - 2023/04/14
 
 ### Added
 
@@ -274,7 +274,7 @@ Layout controls:
 - Rock Band keyboards now have (hopefully) the correct normalization applied to the analog pedal input.
 - Fixed some specific-platform device classes being incorrectly marked as internal instead of public.
 
-## [0.1.2] - 2023/08/04
+## [0.1.2] - 2023/04/08
 
 Minor bugfix release for other issues present in v0.1.
 
@@ -284,7 +284,7 @@ Minor bugfix release for other issues present in v0.1.
 - Fixed PS4 GHL guitar face button mappings (Start, Hero Power, GHTV button, d-pad center).
 - Changed the default report ID of PS3 output reports to 0 instead of 1.
 
-## [0.1.1] - 2023/19/01
+## [0.1.1] - 2023/01/19
 
 Hotfix release for issues present in v0.1.0.
 
@@ -304,7 +304,7 @@ Various controls did not function correctly due to assumptions I made about how 
 
 The PS3 drumkit used the wrong byte offset for its `FourLanePadsControl`.
 
-## [0.1.0] - 2023/15/01
+## [0.1.0] - 2023/01/15
 
 ### Added
 
