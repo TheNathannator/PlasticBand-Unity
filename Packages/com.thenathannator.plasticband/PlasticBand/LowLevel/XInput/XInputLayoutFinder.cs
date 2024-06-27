@@ -49,6 +49,10 @@ namespace PlasticBand.LowLevel
             if (description.interfaceName != InterfaceName)
                 return null;
 
+            // hack: pass through Santroller layouts as-is
+            if (matchedLayout.Contains("Santroller"))
+                return null;
+
             // Parse capabilities
             if (!Utilities.TryParseJson<XInputCapabilities>(description.capabilities, out var capabilities))
                 return DefaultLayoutIfNull(matchedLayout);
