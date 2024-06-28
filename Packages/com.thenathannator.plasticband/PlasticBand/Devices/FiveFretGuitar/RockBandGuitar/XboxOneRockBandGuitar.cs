@@ -13,10 +13,10 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct XboxOneRockBandGuitarState : IRockBandGuitarState_Distinct, IGameInputStateTypeInfo
+    internal unsafe struct XboxOneRockBandGuitarState : IRockBandGuitarState_Distinct, IReportIdStateTypeInfo
     {
         public FourCC format => GameInputDefinitions.InputFormat;
-        byte IGameInputStateTypeInfo.reportId => 0x20;
+        byte IReportIdStateTypeInfo.reportId => 0x20;
 
         public byte reportId;
 

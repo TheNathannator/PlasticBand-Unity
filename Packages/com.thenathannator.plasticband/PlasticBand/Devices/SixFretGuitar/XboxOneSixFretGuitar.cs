@@ -13,10 +13,10 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct XboxOneSixFretGuitarState : ISixFretGuitarState, IGameInputStateTypeInfo
+    internal unsafe struct XboxOneSixFretGuitarState : ISixFretGuitarState, IReportIdStateTypeInfo
     {
         public FourCC format => GameInputDefinitions.InputFormat;
-        byte IGameInputStateTypeInfo.reportId => 0x21;
+        byte IReportIdStateTypeInfo.reportId => 0x21;
 
         public byte reportId;
         // This state is identical to that of the PS3/Wii U GHL guitar

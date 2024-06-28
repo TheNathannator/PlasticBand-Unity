@@ -19,8 +19,8 @@ namespace PlasticBand.LowLevel
         where TFromState : unmanaged, IInputStateTypeInfo
         where TToState : unmanaged, IInputStateTypeInfo
     {
-        public static readonly FourCC FromStateFormat = default(TFromState).format;
-        public static readonly FourCC ToStateFormat = default(TToState).format;
+        public static readonly FourCC FromStateFormat = StateCache<TFromState>.StateFormat;
+        public static readonly FourCC ToStateFormat = StateCache<TToState>.StateFormat;
 
         public static void VerifyDevice(InputDevice device)
         {

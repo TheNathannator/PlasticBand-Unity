@@ -19,15 +19,8 @@ namespace PlasticBand.Devices
             // Delayed since there's no reliable way to detect 5-lane kits via capabilities
             if (m_RealDevice == null)
             {
-                if (eventPtr.type != StateEvent.Type)
+                if (!StateReader.ReadState(eventPtr, out XInputGamepad* state))
                     return;
-
-                var stateEvent = StateEvent.From(eventPtr);
-                // Ensure the format matches and the buffer is big enough
-                if (stateEvent->stateFormat != XInputGamepad.Format || stateEvent->stateSizeInBytes < sizeof(XInputGamepad))
-                    return;
-
-                var state = (XInputGamepad*)stateEvent->state;
 
                 // 4-lane kits and 5-lane kits share the same subtype, so they need to be differentiated in another way
                 // 5-lane kits always hold the left-stick click input, 4-lane kits use that for the second kick but

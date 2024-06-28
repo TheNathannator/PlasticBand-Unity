@@ -1,27 +1,16 @@
 using System;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.LowLevel
 {
-    internal interface IGameInputStateTypeInfo : IInputStateTypeInfo
-    {
-        byte reportId { get; }
-    }
-
     internal static class GameInputStateTranslator<TFromState, TToState>
-        where TFromState : unmanaged, IGameInputStateTypeInfo
+        where TFromState : unmanaged, IReportIdStateTypeInfo
         where TToState : unmanaged, IInputStateTypeInfo
     {
-        public static readonly FourCC FromStateFormat = StateTranslator<TFromState, TToState>.FromStateFormat;
-        public static readonly FourCC ToStateFormat = StateTranslator<TFromState, TToState>.ToStateFormat;
-
-        public static readonly byte FromStateReportID = default(TFromState).reportId;
-
         public static void VerifyDevice(InputDevice device)
         {
-            if (FromStateFormat != GameInputDefinitions.InputFormat)
+            if (StateCache<TFromState>.StateFormat != GameInputDefinitions.InputFormat)
                 throw new NotSupportedException($"Input state format must be {GameInputDefinitions.InputFormat} ({typeof(TFromState).Name})!");
 
             StateTranslator<TFromState, TToState>.VerifyDevice(device);
@@ -33,12 +22,12 @@ namespace PlasticBand.LowLevel
                 return false;
 
             var stateEvent = StateEvent.From(eventPtr);
-            if (stateEvent->stateFormat == FromStateFormat)
+            if (stateEvent->stateFormat == StateCache<TFromState>.StateFormat)
             {
                 return stateEvent->stateSizeInBytes >= sizeof(TFromState) &&
-                    *(byte*)stateEvent->state == FromStateReportID;
+                    *(byte*)stateEvent->state == ReportIdStateCache<TFromState>.StateReportID;
             }
-            else if (stateEvent->stateFormat == ToStateFormat)
+            else if (stateEvent->stateFormat == StateCache<TToState>.StateFormat)
             {
                 // No extra checks to be done, this event has already been translated
                 return true;
