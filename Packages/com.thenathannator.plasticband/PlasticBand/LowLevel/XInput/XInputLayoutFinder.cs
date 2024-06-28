@@ -50,7 +50,7 @@ namespace PlasticBand.LowLevel
                 return null;
 
             // hack: pass through Santroller layouts as-is
-            if (matchedLayout.Contains("Santroller"))
+            if (matchedLayout != null && matchedLayout.Contains("Santroller"))
                 return null;
 
             // Parse capabilities

@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.8.2] - 2024/06/28
+
+### Fixed
+
+- i screwed up the Santroller fix a little and there was a potential null reference bug, whoops lol
+
 ## [0.8.1] - 2024/06/28
 
 ### Fixed
