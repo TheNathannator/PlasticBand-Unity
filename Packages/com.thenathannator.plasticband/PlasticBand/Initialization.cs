@@ -134,8 +134,8 @@ namespace PlasticBand
             // before a domain reload occurs, otherwise they persist beyond when they should
             foreach (var device in InputSystem.devices)
             {
-                if (device is VariantDevice variant)
-                    variant.OnDomainReload();
+                if (device is IDomainReloadReceiver reloadable)
+                    reloadable.OnDomainReload();
             }
         }
 #endif

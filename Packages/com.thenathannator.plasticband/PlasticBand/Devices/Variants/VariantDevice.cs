@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using PlasticBand.LowLevel;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -17,51 +21,63 @@ namespace PlasticBand.Devices
         public byte dummy;
     }
 
-    // Non-generic version to make uninitialization simpler
+    internal class VariantRealDevice : IDisposable
+    {
+        private InputDevice m_Device;
+        private IInputStateCallbackReceiver m_DeviceCallbacks;
+
+        public VariantRealDevice(string layout)
+        {
+            m_Device = InputSystem.AddDevice(layout);
+            m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
+        }
+
+        ~VariantRealDevice()
+        {
+            Debug.LogError($"VariantRealDevice '{m_Device}' was not disposed! Device cannot be removed outside of the main thread");
+        }
+
+        public void Dispose()
+        {
+            InputSystem.RemoveDevice(m_Device);
+            m_Device = null;
+            m_DeviceCallbacks = null;
+
+            GC.SuppressFinalize(this);
+        }
+
+        public void OnStateEvent(InputEventPtr eventPtr)
+        {
+            if (m_DeviceCallbacks != null)
+                m_DeviceCallbacks.OnStateEvent(eventPtr);
+            else
+                InputState.Change(m_Device, eventPtr);
+        }
+
+        // The input system will update the device on its own
+        // public void OnNextUpdate()
+        //     => m_DeviceCallbacks?.OnNextUpdate();
+
+        public bool GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
+            => m_DeviceCallbacks?.GetStateOffsetForEvent(control, eventPtr, ref offset) ?? false;
+    }
+
     /// <summary>
     /// An input device which can vary in layout based on state information.
     /// </summary>
-    internal abstract class VariantDevice : InputDevice, IInputStateCallbackReceiver
+    internal abstract class VariantDevice : InputDevice, IInputStateCallbackReceiver, IDomainReloadReceiver
     {
-        protected string m_CurrentLayout;
-        protected InputDevice m_RealDevice;
-        protected IInputStateCallbackReceiver m_RealDeviceCallbacks;
-
-        unsafe void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-        {
-            if (eventPtr.type != StateEvent.Type)
-                return;
-
-            string layout = DetermineLayout(eventPtr);
-            if (!string.IsNullOrEmpty(layout))
-            {
-                m_CurrentLayout = layout;
-                if (m_RealDevice != null)
-                    InputSystem.RemoveDevice(m_RealDevice);
-                m_RealDevice = InputSystem.AddDevice(layout);
-                if (m_RealDevice is IInputStateCallbackReceiver callbacks)
-                    m_RealDeviceCallbacks = callbacks;
-            }
-
-            if (m_RealDevice != null)
-            {
-                if (m_RealDeviceCallbacks != null)
-                    m_RealDeviceCallbacks.OnStateEvent(eventPtr);
-                else
-                    InputState.Change(m_RealDevice, eventPtr);
-            }
-        }
-
-        void IInputStateCallbackReceiver.OnNextUpdate() => m_RealDeviceCallbacks?.OnNextUpdate();
+        void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
+            => OnStateEvent(eventPtr);
+        void IInputStateCallbackReceiver.OnNextUpdate()
+            => OnNextUpdate();
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-        {
-            if (m_RealDeviceCallbacks != null)
-                return m_RealDeviceCallbacks.GetStateOffsetForEvent(control, eventPtr, ref offset);
-            else
-                return false;
-        }
+            => GetStateOffsetForEvent(control, eventPtr, ref offset);
 
-        protected abstract string DetermineLayout(InputEventPtr eventPtr);
+        protected abstract void OnStateEvent(InputEventPtr eventPtr);
+        protected virtual void OnNextUpdate() {}
+        protected virtual bool GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
+            => false;
 
         protected override void OnAdded()
         {
@@ -70,45 +86,57 @@ namespace PlasticBand.Devices
             // Disable device but not its events
             // Must be done here and not in FinishSetup, we need to be added to the system first
             InputSystem.DisableDevice(this, keepSendingEvents: true);
-
-            if (m_RealDevice != null)
-                InputSystem.AddDevice(m_RealDevice);
         }
+
+        void IDomainReloadReceiver.OnDomainReload()
+            => OnDomainReload();
+
+        protected virtual void OnDomainReload() {}
+    }
+
+    /// <summary>
+    /// A variant device which contains a single device.
+    /// </summary>
+    internal abstract class VariantSingleDevice : VariantDevice
+    {
+        protected VariantRealDevice m_RealDevice;
+
+        protected override bool GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
+            => m_RealDevice?.GetStateOffsetForEvent(control, eventPtr, ref offset) ?? false;
 
         protected override void OnRemoved()
         {
             base.OnRemoved();
-            if (m_RealDevice != null)
-                InputSystem.RemoveDevice(m_RealDevice);
+            m_RealDevice?.Dispose();
         }
 
-        internal void OnDomainReload()
+        protected override void OnDomainReload()
         {
-            if (m_RealDevice != null)
-                InputSystem.RemoveDevice(m_RealDevice);
+            m_RealDevice?.Dispose();
         }
     }
 
     /// <summary>
-    /// An input device which can vary in layout based on state information.
+    /// A variant device which contains multiple devices.
     /// </summary>
-    internal abstract class VariantDevice<TState> : VariantDevice
-        where TState : unmanaged, IInputStateTypeInfo
+    internal abstract class VariantMultiDevice : VariantDevice
     {
-        public static readonly FourCC StateFormat = default(TState).format;
+        protected List<VariantRealDevice> m_RealDevices = new List<VariantRealDevice>();
 
-        protected override unsafe string DetermineLayout(InputEventPtr eventPtr)
+        protected override void OnRemoved()
         {
-            var stateEvent = StateEvent.From(eventPtr);
-            // Ensure the format matches and the buffer is big enough for each state type
-            if (stateEvent->stateFormat != StateFormat || stateEvent->stateSizeInBytes < sizeof(TState))
-                return null;
+            base.OnRemoved();
 
-            // Always check for a new layout so it can change on-the-fly
-            ref TState state = ref *(TState*)stateEvent->state;
-            return DetermineLayout(ref state);
+            foreach (var realDevice in m_RealDevices)
+                realDevice?.Dispose();
+            m_RealDevices.Clear();
         }
 
-        protected abstract string DetermineLayout(ref TState state);
+        protected override void OnDomainReload()
+        {
+            foreach (var realDevice in m_RealDevices)
+                realDevice?.Dispose();
+            m_RealDevices.Clear();
+        }
     }
 }
