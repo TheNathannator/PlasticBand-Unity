@@ -125,6 +125,7 @@ namespace PlasticBand
 
             // Variant devices
             XInputVariantDrumkit.Initialize();
+            XboxOneWiredLegacyAdapter.Initialize();
         }
 
 #if UNITY_EDITOR

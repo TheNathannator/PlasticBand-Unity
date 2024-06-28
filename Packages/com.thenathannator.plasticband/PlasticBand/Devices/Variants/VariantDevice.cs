@@ -32,6 +32,12 @@ namespace PlasticBand.Devices
             m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
         }
 
+        public VariantRealDevice(InputDeviceDescription description)
+        {
+            m_Device = InputSystem.AddDevice(description);
+            m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
+        }
+
         ~VariantRealDevice()
         {
             Debug.LogError($"VariantRealDevice '{m_Device}' was not disposed! Device cannot be removed outside of the main thread");
@@ -44,6 +50,24 @@ namespace PlasticBand.Devices
             m_DeviceCallbacks = null;
 
             GC.SuppressFinalize(this);
+        }
+
+        public unsafe void OnStateEvent<TState>(ref TState state)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            // Create state buffer
+            int eventSize = sizeof(TState) + (sizeof(StateEvent) - 1); // StateEvent already includes 1 byte at the end
+            byte* _stateEvent = stackalloc byte[eventSize];
+            StateEvent* stateEvent = (StateEvent*)_stateEvent;
+            *stateEvent = new StateEvent()
+            {
+                baseEvent = new InputEvent(StateEvent.Type, eventSize, m_Device.deviceId),
+                stateFormat = StateCache<TState>.StateFormat
+            };
+            *(TState*)stateEvent->state = state;
+
+            // Send state event
+            OnStateEvent((InputEvent*)stateEvent);
         }
 
         public void OnStateEvent(InputEventPtr eventPtr)

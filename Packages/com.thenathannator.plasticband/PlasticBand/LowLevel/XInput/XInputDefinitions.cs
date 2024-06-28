@@ -98,7 +98,7 @@ namespace PlasticBand.LowLevel
     /// rather it's the format reported by Unity for the device capabilities JSON.
     internal struct XInputCapabilities
     {
-        public int userIndex;
+        // public int userIndex; // We don't need to read this in, and it's not necessary to be set
         public int type;
         public DeviceSubType subType;
         public DeviceFlags flags;
