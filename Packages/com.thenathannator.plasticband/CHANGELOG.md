@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.8.1] - 2024/06/28
+
+### Fixed
+
+- Santroller XInput layouts are now given priority over the normal XInput layouts. This fixes 5-fret Santroller guitars in XInput mode being detected as normal 6-fret guitars.
+  - There was also a bug on Santroller's side which caused it to report the incorrect XInput capability flags, which has been fixed on their end.
+
 ## [0.8.0] - 2024/06/18
 
 ### Added
