@@ -6,8 +6,6 @@ using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.XInput;
 
-using Debug = UnityEngine.Debug;
-
 namespace PlasticBand.LowLevel
 {
     using static XInputController;
@@ -113,7 +111,7 @@ namespace PlasticBand.LowLevel
             string layoutName = typeof(TDevice).Name;
             if (overrides.Any((entry) => entry.matcher == matcher))
             {
-                Debug.LogError($"[XInputLayoutFinder] Matcher {matcher} is already registered for subtype {subType}!");
+                Logging.Error($"[XInputLayoutFinder] Matcher {matcher} is already registered for subtype {subType}!");
                 return;
             }
 

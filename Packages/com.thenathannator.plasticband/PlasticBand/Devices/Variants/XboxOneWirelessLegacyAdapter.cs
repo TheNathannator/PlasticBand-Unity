@@ -120,7 +120,7 @@ namespace PlasticBand.Devices
             {
                 if (state->userIndex >= m_RealDevices.Count)
                 {
-                    Debug.LogError($"Unexpected wireless legacy adapter user index {state->userIndex}! Should not be >= {m_RealDevices.Count}");
+                    Logging.Error($"Unexpected wireless legacy adapter user index {state->userIndex}! Should not be >= {m_RealDevices.Count}");
                     return;
                 }
 
@@ -143,7 +143,7 @@ namespace PlasticBand.Devices
             {
                 if (state->userIndex >= m_RealDevices.Count)
                 {
-                    Debug.LogError($"Unexpected wireless legacy adapter user index {state->userIndex}! Should not be >= {m_RealDevices.Count}");
+                    Logging.Error($"Unexpected wireless legacy adapter user index {state->userIndex}! Should not be >= {m_RealDevices.Count}");
                     return;
                 }
 
@@ -157,7 +157,7 @@ namespace PlasticBand.Devices
                     case XboxOneWirelessLegacyDeviceType.Guitar: layout = nameof(XboxOneRockBandGuitar); break;
                     case XboxOneWirelessLegacyDeviceType.Drums: layout = nameof(XboxOneFourLaneDrumkit); break;
                     default:
-                        Debug.LogError($"Unexpected wireless legacy adapter device type {info->deviceType}!");
+                        Logging.Error($"Unexpected wireless legacy adapter device type {info->deviceType}!");
                         return;
                 }
 
@@ -167,7 +167,7 @@ namespace PlasticBand.Devices
             {
                 if (state->userIndex >= m_RealDevices.Count)
                 {
-                    Debug.LogError($"Unexpected wireless legacy adapter user index {state->userIndex}! Should not be >= {m_RealDevices.Count}");
+                    Logging.Error($"Unexpected wireless legacy adapter user index {state->userIndex}! Should not be >= {m_RealDevices.Count}");
                     return;
                 }
 
@@ -179,7 +179,7 @@ namespace PlasticBand.Devices
         private void RequestDeviceInfo()
         {
             var requestInfo = XboxOneWirelessLegacyRequestInfoCommand.Create();
-            ExecuteCommand(ref requestInfo);
+            this.LoggedExecuteCommand(ref requestInfo);
         }
 
         protected override void OnAdded()

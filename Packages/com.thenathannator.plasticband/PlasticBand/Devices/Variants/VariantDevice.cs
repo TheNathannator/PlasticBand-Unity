@@ -41,7 +41,7 @@ namespace PlasticBand.Devices
 
         ~VariantRealDevice()
         {
-            Debug.LogError($"VariantRealDevice '{m_Device}' was not disposed! Device cannot be removed outside of the main thread");
+            Logging.Error($"[PlasticBand] VariantRealDevice '{m_Device}' was not disposed! Device cannot be removed outside of the main thread");
         }
 
         public void Dispose()

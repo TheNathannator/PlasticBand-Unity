@@ -148,7 +148,7 @@ namespace PlasticBand.Devices
         private void RequestDeviceInfo()
         {
             var requestInfo = XboxOneWiredLegacyRequestInfoCommand.Create();
-            ExecuteCommand(ref requestInfo);
+            this.LoggedExecuteCommand(ref requestInfo);
         }
 
         protected override void OnAdded()
