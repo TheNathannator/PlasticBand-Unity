@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PlasticBand.LowLevel;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -65,6 +66,32 @@ namespace PlasticBand.Devices
                 stateFormat = StateCache<TState>.StateFormat
             };
             *(TState*)stateEvent->state = state;
+
+            // Send state event
+            OnStateEvent((InputEvent*)stateEvent);
+        }
+
+        public unsafe void OnStateEvent(FourCC format, void* stateBuffer, int stateLength)
+        {
+            // Safety limit, to avoid allocating too much on the stack
+            // (InputSystem.StateEventBuffer.kMaxSize)
+            const int kMaxStateSize = 512;
+
+            if (stateBuffer == null || stateLength < 1 || stateLength > kMaxStateSize)
+                return;
+
+            // Create state buffer
+            int eventSize = stateLength + (sizeof(StateEvent) - 1); // StateEvent already includes 1 byte at the end
+            byte* _stateEvent = stackalloc byte[eventSize];
+            StateEvent* stateEvent = (StateEvent*)_stateEvent;
+            *stateEvent = new StateEvent
+            {
+                baseEvent = new InputEvent(StateEvent.Type, eventSize, m_Device.deviceId),
+                stateFormat = format
+            };
+
+            // Copy state data
+            UnsafeUtility.MemCpy(stateEvent->state, stateBuffer, stateLength);
 
             // Send state event
             OnStateEvent((InputEvent*)stateEvent);

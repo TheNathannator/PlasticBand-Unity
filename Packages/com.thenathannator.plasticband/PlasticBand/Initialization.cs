@@ -125,6 +125,7 @@ namespace PlasticBand
 
             // Variant devices
             XInputVariantDrumkit.Initialize();
+            XboxOneWirelessLegacyAdapter.Initialize();
             XboxOneWiredLegacyAdapter.Initialize();
         }
 
