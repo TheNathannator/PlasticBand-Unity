@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.8.3] - 2024/06/29
+
+### Added
+
+- Added support for the Xbox One Wired and Wireless Legacy Adapters.
+  - These adapters might not work fully consistently at first, as GameInput does not currently support sending raw output reports. Instruments may need to be reconnected for them to be picked up until this functionality is implemented on their end.
+
 ## [0.8.2] - 2024/06/28
 
 ### Fixed
