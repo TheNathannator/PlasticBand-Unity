@@ -148,3 +148,7 @@ TODO: Auto-calibration sensors; not currently possible due to Unity not supporti
 
 - [x] Wired (Xbox One)
 - [x] Wireless (Xbox One)
+
+## License
+
+This project is licensed under the MIT license. See [LICENSE.md](LICENSE.md) for details.
