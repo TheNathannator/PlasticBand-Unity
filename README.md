@@ -1,5 +1,7 @@
 # PlasticBand-Unity
 
+[![openupm](https://img.shields.io/npm/v/com.thenathannator.plasticband?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.thenathannator.plasticband/)
+
 An add-on for the [Unity InputSystem](https://github.com/Unity-Technologies/InputSystem) package that provides mappings and classes for Rock Band and Guitar Hero peripherals.
 
 This project is a companion to the [PlasticBand](https://github.com/TheNathannator/PlasticBand) repository. Documentation on how to interface with the peripherals in a general, non-Unity context can be found there.
@@ -7,6 +9,15 @@ This project is a companion to the [PlasticBand](https://github.com/TheNathannat
 For more package details, such as usage notes and supported devices, refer to the inner [package README](Packages/com.thenathannator.hidrogen/README.md).
 
 ## Installing
+
+### From OpenUPM
+
+Refer to the OpenUPM documentation:
+
+- [Unity Editor instructions](https://openupm.com/docs/getting-started.html)
+- [OpenUPM-CLI instructions](https://openupm.com/docs/getting-started-cli.html)
+
+The OpenUPM package page is [located here](https://openupm.com/packages/com.thenathannator.plasticband).
 
 ### From the Releases Page
 
