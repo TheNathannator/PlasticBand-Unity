@@ -4,36 +4,7 @@ An add-on for the [Unity InputSystem](https://github.com/Unity-Technologies/Inpu
 
 This project is a companion to the [PlasticBand](https://github.com/TheNathannator/PlasticBand) repository. Documentation on how to interface with the peripherals in a general, non-Unity context can be found there.
 
-This package is a work-in-progress. Contributions are welcome!
-
-## Usage
-
-After installation, this package integrates and operates on its own. No manual initialization is required.
-
-Device layouts from this package are used just like the built-in ones. You can use them in input actions, poll them manually through the provided static `current` and `all` properties on each layout, receive low-level `InputEventPtr`s through `InputState.onChange`, etc.
-
-> [!WARNING]
-> Usage of `InputSystem.onEvent` for low-level state handling is *not* recommended, as many layouts in this package have their own manual state handling requirements (see `IInputStateCallbackReceiver`) which will be bypassed if you use it. Use `InputState.onChange` or `IInputStateChangeMonitor`s instead. I've done my best to keep compatibility where I can, but certain spots are just inherently incompatible, and there's not much I can do.
->
-> In addition, some special handling will be needed for `InputSystem.onDeviceChange` with regards to the variant device system that this package uses for certain devices. Any devices being `InputDeviceChange.Added` where `device.enabled` is false must be ignored, as these are the container devices used to enable variance. An example of this is provided [here](Packages/com.thenathannator.plasticband/Samples~/DeviceConnectionHandler/DeviceConnectionHandler.cs).
-
-This package has no dependencies, however I highly recommend installing the [HIDrogen](https://github.com/TheNathannator/HIDrogen) package in addition to this one, as it provides proper HID device support on Linux, and Xbox One controller support on Windows.
-
-### Notes
-
-- **Unity 2022.2 currently has issues with Xbox 360 controllers on Windows, and only the standard gamepad controllers will be picked up.** The only workarounds currently are to downgrade Unity or write your own XInput backend for the input system.
-- Pre-compiling the layouts from this package is not currently possible without breaking things. A large number of them have to determine or construct things at runtime, and pre-compilation circumvents the mechanisms that allow these layouts to determine things in the first place.
-  - At some point I could consider looking into workarounds for this (e.g. initializing everything in an `OnAdded` override), but for the time being it's not a priority. (PRs welcome if you can get it worked out!)
-- Xbox 360/One controllers will only work properly on Windows currently. Mac and Linux require custom drivers or support through raw USB handling.
-
-### Configuration
-
-Some configuration is available through compile defines:
-
-- `PLASTICBAND_VERBOSE_LOGGING`: Enables certain, more potentially repetitive logging to help debug issues with devices.
-  - Currently, only enables error logging for sending device commands.
-- `PLASTICBAND_DEBUG_CONTROLS`: Enables verbose logging for custom control types to help debug issues with devices.
-  - Independent from verbose logging, since this is strictly meant for active development and debugging.
+For more package details, such as usage notes and supported devices, refer to the inner [package README](Packages/com.thenathannator.hidrogen/README.md).
 
 ## Installing
 
@@ -79,68 +50,6 @@ To update, increment the version number at the end of the URL to the new version
 3. Navigate to the `Packages` > `com.thenathannator.plasticband` folder inside the clone and select the `package.json` file.
 
 To update, pull the latest commits. Unity will detect the changes automatically.
-
-## TODO List
-
-Devices to support:
-
-- Guitar Hero 5-Fret Guitars
-  - [x] Xbox 360
-  - [ ] PS2
-    - Likely won't be possible to support directly, PS2 adapters are all over the place and usually show up as PS3 controllers.
-  - [x] PS3
-  - [ ] Wii
-- Rock Band 5-Fret Guitars
-  - All:
-    - [ ] Auto-calibration sensors
-  - [x] Xbox 360
-  - [x] Xbox One
-  - [x] PS3
-  - [x] PS4
-  - [x] Wii
-- Riffmaster 5-Fret Guitars
-  - [x] Xbox One
-  - [x] PS4/5
-- 6-Fret Guitars
-  - [x] Xbox 360
-  - [x] Xbox One
-  - [x] PS3/Wii U
-  - [x] PS4
-  - [ ] iOS
-- Rock Band Kits
-  - [x] Xbox 360
-  - [x] Xbox One
-  - [x] PS2/PS3
-  - [x] PS4
-  - [x] Wii
-- Guitar Hero Kits
-  - [x] Xbox 360
-  - [x] PS2/PS3
-  - [ ] Wii
-- Turntables
-  - [x] Xbox 360
-  - [x] PS3
-  - [ ] Wii
-- Rock Band Keyboards
-  - All:
-    - [ ] Pair velocities to keypresses
-  - [x] Xbox 360
-  - [x] PS3
-  - [x] Wii
-- Rock Band Pro Guitars
-  - All:
-    - [ ] Auto-calibration sensors
-  - [x] Xbox 360
-    - Some things are missing but either that's outside of our control, or it doesn't matter very much and just needs a bit more research.
-  - [x] PS3
-  - [x] Wii
-- Rock Band MIDI Pro Adapter
-  - [x] Xbox 360
-  - [x] PS3
-  - [x] Wii
-- Rock Band Legacy Adapters
-  - [x] Wired (Xbox One)
-  - [x] Wireless (Xbox One)
 
 ## License
 
