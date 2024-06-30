@@ -20,5 +20,12 @@
         "name": "TheNathannator",
         "url": "https://github.com/TheNathannator"
     },
+    "samples": [
+        {
+            "displayName": "VariantDevice Connection Handler",
+            "description": "Shows how to properly implement device connection/disconnection handling with respect to the VariantDevice system.",
+            "path": "Samples~/DeviceConnectionHandler"
+        }
+    ],
     "hideInEditor": false
 }

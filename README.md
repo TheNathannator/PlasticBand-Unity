@@ -15,7 +15,7 @@ Device layouts from this package are used just like the built-in ones. You can u
 > [!WARNING]
 > Usage of `InputSystem.onEvent` for low-level state handling is *not* recommended, as many layouts in this package have their own manual state handling requirements (see `IInputStateCallbackReceiver`) which will be bypassed if you use it. Use `InputState.onChange` or `IInputStateChangeMonitor`s instead. I've done my best to keep compatibility where I can, but certain spots are just inherently incompatible, and there's not much I can do.
 >
-> In addition, some special handling will be needed for `InputSystem.onDeviceChange` with regards to the variant device system that this package uses for certain devices. Any devices being `InputDeviceChange.Added` where `device.enabled` is false must be ignored, as these are the container devices used to enable variance. An example of this is provided [here](Assets/Scripts/DeviceConnectionHandlerExample.cs).
+> In addition, some special handling will be needed for `InputSystem.onDeviceChange` with regards to the variant device system that this package uses for certain devices. Any devices being `InputDeviceChange.Added` where `device.enabled` is false must be ignored, as these are the container devices used to enable variance. An example of this is provided [here](Packages/com.thenathannator.plasticband/Samples~/DeviceConnectionHandler/DeviceConnectionHandler.cs).
 
 This package has no dependencies, however I highly recommend installing the [HIDrogen](https://github.com/TheNathannator/HIDrogen) package in addition to this one, as it provides proper HID device support on Linux, and Xbox One controller support on Windows.
 
