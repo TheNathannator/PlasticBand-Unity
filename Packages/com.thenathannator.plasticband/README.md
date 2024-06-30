@@ -22,6 +22,7 @@ An add-on for the [Unity InputSystem](https://github.com/Unity-Technologies/Inpu
   - [Rock Band MIDI Pro Adapters](#rock-band-midi-pro-adapters)
   - [Rock Band Stage Kits](#rock-band-stage-kits)
   - [Rock Band Legacy Adapters](#rock-band-legacy-adapters)
+- [License](#license)
 
 ## Usage
 
