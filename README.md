@@ -6,7 +6,9 @@ An add-on for the [Unity InputSystem](https://github.com/Unity-Technologies/Inpu
 
 This project is a companion to the [PlasticBand](https://github.com/TheNathannator/PlasticBand) repository. Documentation on how to interface with the peripherals in a general, non-Unity context can be found there.
 
-For more package details, such as usage notes and supported devices, refer to the inner [package README](Packages/com.thenathannator.hidrogen/README.md).
+This package has no dependencies, however I highly recommend installing the [HIDrogen](https://github.com/TheNathannator/HIDrogen) package in addition to this one, as it helps provide additional controller support that Unity does not provide on its own.
+
+For more package details, such as usage notes and supported devices, refer to the inner [package README](Packages/com.thenathannator.plasticband/README.md).
 
 ## Installing
 
