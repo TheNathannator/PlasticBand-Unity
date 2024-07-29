@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
-// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/Wii%20and%20Wii.md
+// https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/PS3%20and%20Wii.md
 
 namespace PlasticBand.Devices
 {
@@ -38,7 +38,7 @@ namespace PlasticBand.Devices
             HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit>(0x1BAD, 0x3110);
 
             // MIDI Pro Adapter
-            HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit>(0x1BAD, 0x3118);
+            HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit>(0x1BAD, 0x3138);
         }
     }
 

@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [Unreleased]
+
+### Fixed
+
+- Fixed the Wii MIDI Pro Adapter not being recognized properly in drums mode, due to an incorrect product ID in the layout registration.
+
 ## [0.8.3] - 2024/06/29
 
 ### Added
