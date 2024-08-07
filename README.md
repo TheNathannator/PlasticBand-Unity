@@ -38,7 +38,7 @@ See the [Unity documentation](https://docs.unity3d.com/Manual/upm-git.html) for 
 #### Via URL
 
 1. Open the Unity Package Manager and hit the + button, then select `Add package from git URL`.
-2. Paste in `https://github.com/TheNathannator/PlasticBand-Unity.git?path=/Packages/com.thenathannator.plasticband#v0.8.4` and hit Add.
+2. Paste in `https://github.com/TheNathannator/PlasticBand-Unity.git?path=/Packages/com.thenathannator.plasticband#v0.8.5` and hit Add.
 
 To update, increment the version number at the end of the URL to the new version number and repeat these steps with the new URL. Alternatively, you can edit the URL listed in your `manifest.json` file as described in the [Via Manifest](#via-manifest) section.
 
@@ -49,7 +49,7 @@ In your Packages > `manifest.json` file, add the following line to your `depende
 ```diff
 {
   "dependencies": {
-+   "com.thenathannator.plasticband": "https://github.com/TheNathannator/PlasticBand-Unity.git?path=/Packages/com.thenathannator.plasticband#v0.8.4"
++   "com.thenathannator.plasticband": "https://github.com/TheNathannator/PlasticBand-Unity.git?path=/Packages/com.thenathannator.plasticband#v0.8.5"
   }
 }
 ```

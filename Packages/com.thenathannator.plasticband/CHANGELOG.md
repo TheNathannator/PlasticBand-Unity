@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.8.5] - 2024/08/07
+
+### Fixed
+
+- Fixed the MadCatz Xbox One drumkit not being recognized, typo'd the product ID.
+
 ## [0.8.4] - 2024/07/30
 
 ### Fixed
