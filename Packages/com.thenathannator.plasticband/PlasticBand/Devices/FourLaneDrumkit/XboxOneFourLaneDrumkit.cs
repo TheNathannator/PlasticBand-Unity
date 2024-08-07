@@ -180,7 +180,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            GameInputLayoutFinder.RegisterLayout<XboxOneFourLaneDrumkit>(0x0738, 0x4162);
+            GameInputLayoutFinder.RegisterLayout<XboxOneFourLaneDrumkit>(0x0738, 0x4262);
             GameInputLayoutFinder.RegisterLayout<XboxOneFourLaneDrumkit>(0x0E6F, 0x0171);
         }
 
