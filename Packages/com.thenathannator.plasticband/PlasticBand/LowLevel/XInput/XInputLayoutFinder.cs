@@ -30,7 +30,6 @@ namespace PlasticBand.LowLevel
         private static readonly Dictionary<DeviceSubType, List<XInputLayoutOverride>> s_LayoutOverrides
             = new Dictionary<DeviceSubType, List<XInputLayoutOverride>>();
 
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void Initialize()
         {
             // Ensure no layouts have persisted across a domain reload
@@ -93,7 +92,6 @@ namespace PlasticBand.LowLevel
             => null;
 #endif
 
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(DeviceSubType subType, XInputOverrideDetermineMatch resolveLayout,
             InputDeviceMatcher matcher = default)
             where TDevice : InputDevice
@@ -124,32 +122,27 @@ namespace PlasticBand.LowLevel
             });
         }
 
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(DeviceSubType subType)
             where TDevice : InputDevice
         {
             InputSystem.RegisterLayout<TDevice>(matches: GetMatcher(subType));
         }
 
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(DeviceSubType subType, short vendorId, short productId)
             where TDevice : InputDevice
         {
             InputSystem.RegisterLayout<TDevice>(matches: GetMatcher(subType, vendorId, productId));
         }
 
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType, XInputOverrideDetermineMatch resolveLayout,
             InputDeviceMatcher matcher = default)
             where TDevice : InputDevice
             => RegisterLayout<TDevice>(subType, resolveLayout, matcher);
 
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType)
             where TDevice : InputDevice
             => RegisterLayout<TDevice>((DeviceSubType)subType);
 
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType, short vendorId, short productId)
             where TDevice : InputDevice
             => RegisterLayout<TDevice>((DeviceSubType)subType, vendorId, productId);
