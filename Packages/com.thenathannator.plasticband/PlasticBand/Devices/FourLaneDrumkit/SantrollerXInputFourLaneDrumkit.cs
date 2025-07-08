@@ -18,7 +18,7 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Haptics = new SantrollerFourLaneDrumkitHaptics.XInput(this);
+            m_Haptics = SantrollerFourLaneDrumkitHaptics.Create(this, StageKitProtocol.XInput);
         }
 
         private SantrollerFourLaneDrumkitHaptics m_Haptics;
@@ -42,16 +42,16 @@ namespace PlasticBand.Devices
         public void SetLeds(StageKitLedColor color, StageKitLed leds) => m_Haptics.SetLeds(color, leds);
 
         /// <inheritdoc cref="IStageKitHaptics.SetRedLeds(StageKitLed)"/>
-        public void SetRedLeds(StageKitLed leds) => SetLeds(StageKitLedColor.Red, leds);
+        public void SetRedLeds(StageKitLed leds) => m_Haptics.SetRedLeds(leds);
 
         /// <inheritdoc cref="IStageKitHaptics.SetYellowLeds(StageKitLed)"/>
-        public void SetYellowLeds(StageKitLed leds) => SetLeds(StageKitLedColor.Yellow, leds);
+        public void SetYellowLeds(StageKitLed leds) => m_Haptics.SetYellowLeds(leds);
 
         /// <inheritdoc cref="IStageKitHaptics.SetBlueLeds(StageKitLed)"/>
-        public void SetBlueLeds(StageKitLed leds) => SetLeds(StageKitLedColor.Blue, leds);
+        public void SetBlueLeds(StageKitLed leds) => m_Haptics.SetBlueLeds(leds);
 
         /// <inheritdoc cref="IStageKitHaptics.SetGreenLeds(StageKitLed)"/>
-        public void SetGreenLeds(StageKitLed leds) => SetLeds(StageKitLedColor.Green, leds);
+        public void SetGreenLeds(StageKitLed leds) => m_Haptics.SetGreenLeds(leds);
 
         /// <inheritdoc cref="ISantrollerHaptics.SetStarPowerFill(float)"/>
         public void SetStarPowerFill(float fill) => m_Haptics.SetStarPowerFill(fill);
@@ -59,13 +59,16 @@ namespace PlasticBand.Devices
         /// <inheritdoc cref="ISantrollerHaptics.SetStarPowerActive(bool)"/>
         public void SetStarPowerActive(bool enabled) => m_Haptics.SetStarPowerActive(enabled);
 
-        /// <inheritdoc cref="ISantrollerHaptics.SetMultiplier(uint)"/>
-        public void SetMultiplier(uint multiplier) => m_Haptics.SetMultiplier(multiplier);
+        /// <inheritdoc cref="ISantrollerHaptics.SetMultiplier(byte)"/>
+        public void SetMultiplier(byte multiplier) => m_Haptics.SetMultiplier(multiplier);
 
-        /// <inheritdoc cref="ISantrollerHaptics.SetSolo(bool)"/>
-        public void SetSolo(bool enabled) => m_Haptics.SetSolo(enabled);
+        /// <inheritdoc cref="ISantrollerHaptics.SetSoloActive(bool)"/>
+        public void SetSoloActive(bool enabled) => m_Haptics.SetSoloActive(enabled);
 
-        /// <inheritdoc cref="ISantrollerFourLaneDrumkitHaptics.SetNoteLights(FourLanePad, bool)"/>
-        public void SetNoteLights(FourLanePad pads, bool enabled) => m_Haptics.SetNoteLights(pads, enabled);
+        /// <inheritdoc cref="ISantrollerHaptics.SetNoteMiss(bool)"/>
+        public void SetNoteMiss(bool enabled) => m_Haptics.SetNoteMiss(enabled);
+
+        /// <inheritdoc cref="ISantrollerFourLaneDrumkitHaptics.SetHitNotes(FourLaneDrumkitHitNote)"/>
+        public void SetHitNotes(FourLaneDrumkitHitNote notes) => m_Haptics.SetHitNotes(notes);
     }
 }

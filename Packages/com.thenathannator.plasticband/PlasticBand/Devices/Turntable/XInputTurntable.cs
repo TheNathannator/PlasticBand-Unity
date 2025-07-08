@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -169,8 +170,8 @@ namespace PlasticBand.Devices
         public TranslatedTurntableState state;
     }
 
-    [InputControlLayout(stateType = typeof(XInputTurntableLayout), displayName = "XInput DJ Hero Turntable")]
-    internal class XInputTurntable : TranslatingTurntable<XInputTurntableState>
+    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "XInput DJ Hero Turntable")]
+    internal class XInputTurntable : TranslatingTurntable<XInputTurntableState>, IInputUpdateCallbackReceiver
     {
         internal new static void Initialize()
         {
@@ -182,5 +183,21 @@ namespace PlasticBand.Devices
             base.FinishSetup();
             m_Haptics = new XInputTurntableHaptics(this);
         }
+
+        private XInputTurntableHaptics m_Haptics;
+
+        /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
+        public override void PauseHaptics() => m_Haptics?.PauseHaptics();
+
+        /// <inheritdoc cref="IHaptics.ResumeHaptics()"/>
+        public override void ResumeHaptics() => m_Haptics?.ResumeHaptics();
+
+        /// <inheritdoc cref="IHaptics.ResetHaptics()"/>
+        public override void ResetHaptics() => m_Haptics?.ResetHaptics();
+
+        /// <inheritdoc cref="ITurntableHaptics.SetEuphoriaBlink(bool)"/>
+        public override void SetEuphoriaBlink(bool enable) => m_Haptics?.SetEuphoriaBlink(enable);
+
+        void IInputUpdateCallbackReceiver.OnUpdate() => m_Haptics?.OnUpdate();
     }
 }

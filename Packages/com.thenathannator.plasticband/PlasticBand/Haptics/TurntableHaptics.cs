@@ -3,9 +3,21 @@ using System.Diagnostics;
 using PlasticBand.Devices.LowLevel;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Haptics;
 
 namespace PlasticBand.Haptics
 {
+    /// <summary>
+    /// Interface for <see cref="Turntable"/> haptics.
+    /// </summary>
+    public interface ITurntableHaptics : IHaptics
+    {
+        /// <summary>
+        /// Enables or disables blinking of the Euphoria light on the turntable.
+        /// </summary>
+        void SetEuphoriaBlink(bool enable);
+    }
+
     /// <summary>
     /// Handles haptics for DJ Hero turntables.
     /// </summary>

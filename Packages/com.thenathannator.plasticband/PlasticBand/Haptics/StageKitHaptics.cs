@@ -1,15 +1,111 @@
 using System;
 using PlasticBand.Devices.LowLevel;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Haptics;
 
 namespace PlasticBand.Haptics
 {
     /// <summary>
+    /// Speeds for the stage kit strobe light.
+    /// </summary>
+    public enum StageKitStrobeSpeed : byte
+    {
+        Off,
+        Slow,
+        Medium,
+        Fast,
+        Fastest
+    }
+
+    /// <summary>
+    /// Available LED colors on the stage kit.
+    /// </summary>
+    [Flags]
+    public enum StageKitLedColor : byte
+    {
+        None = 0x00,
+
+        Red = 0x01,
+        Yellow = 0x02,
+        Blue = 0x04,
+        Green = 0x08,
+
+        All = Red | Yellow | Blue | Green
+    }
+
+    /// <summary>
+    /// Bitmask for the stage kit LEDs.
+    /// </summary>
+    [Flags]
+    public enum StageKitLed : byte
+    {
+        None = 0x00,
+
+        Led1 = 0x01,
+        Led2 = 0x02,
+        Led3 = 0x04,
+        Led4 = 0x08,
+        Led5 = 0x10,
+        Led6 = 0x20,
+        Led7 = 0x40,
+        Led8 = 0x80,
+
+        All = Led1 | Led2 | Led3 | Led4 | Led5 | Led6 | Led7 | Led8
+    }
+
+    /// <summary>
+    /// Interface for <see cref="StageKit"/> haptics.
+    /// </summary>
+    public interface IStageKitHaptics : IHaptics
+    {
+        /// <summary>
+        /// Enables or disables the fog machine.
+        /// </summary>
+        void SetFogMachine(bool enabled);
+
+        /// <summary>
+        /// Sets the speed of the strobe light.
+        /// </summary>
+        void SetStrobeSpeed(StageKitStrobeSpeed speed);
+
+        /// <summary>
+        /// Enables the given LEDs for multiple colors in one go.
+        /// </summary>
+        void SetLeds(StageKitLedColor color, StageKitLed leds);
+
+        /// <summary>
+        /// Enables the given red LEDs.
+        /// </summary>
+        void SetRedLeds(StageKitLed leds);
+
+        /// <summary>
+        /// Enables the given yellow LEDs.
+        /// </summary>
+        void SetYellowLeds(StageKitLed leds);
+
+        /// <summary>
+        /// Enables the given blue LEDs.
+        /// </summary>
+        void SetBlueLeds(StageKitLed leds);
+
+        /// <summary>
+        /// Enables the given green LEDs.
+        /// </summary>
+        void SetGreenLeds(StageKitLed leds);
+    }
+
+    internal enum StageKitProtocol
+    {
+        XInput,
+        SantrollerHID,
+    }
+
+    /// <summary>
     /// Handles haptics for Rock Band stage kits.
     /// </summary>
-    internal abstract class StageKitHaptics : IStageKitHaptics
+    internal struct StageKitHaptics : IStageKitHaptics
     {
-        protected enum StageKitCommandId : byte
+        internal enum CommandId : byte
         {
             FogOn = 0x01,
             FogOff = 0x02,
@@ -28,9 +124,9 @@ namespace PlasticBand.Haptics
             Reset = 0xFF
         }
 
-        protected readonly InputDevice m_Device;
+        private InputDevice m_Device;
+        private StageKitProtocol m_Protocol;
 
-        protected bool m_HapticsEnabled = true;
         private bool m_FogEnabled;
         private StageKitStrobeSpeed m_StrobeSpeed;
         private StageKitLed m_RedLeds;
@@ -38,159 +134,190 @@ namespace PlasticBand.Haptics
         private StageKitLed m_BlueLeds;
         private StageKitLed m_GreenLeds;
 
-        public StageKitHaptics(InputDevice device)
+        public bool hapticsEnabled { get; private set; }
+
+        public static StageKitHaptics Create(InputDevice device, StageKitProtocol protocol)
+            => new StageKitHaptics()
         {
-            m_Device = device ?? throw new ArgumentNullException(nameof(device));
-        }
+            m_Device = device,
+            m_Protocol = protocol,
+            m_StrobeSpeed = StageKitStrobeSpeed.Off,
+            m_RedLeds = StageKitLed.None,
+            m_YellowLeds = StageKitLed.None,
+            m_BlueLeds = StageKitLed.None,
+            m_GreenLeds = StageKitLed.None,
+            m_FogEnabled = false,
+            hapticsEnabled = true,
+        };
 
         public void PauseHaptics()
         {
-            if (!m_HapticsEnabled)
+            if (!hapticsEnabled)
                 return;
 
-            m_HapticsEnabled = false;
-            OnHapticsPaused();
+            hapticsEnabled = false;
+            SendCommand(CommandId.Reset, 0);
         }
 
         public void ResumeHaptics()
         {
-            if (m_HapticsEnabled)
+            if (hapticsEnabled)
                 return;
 
-            m_HapticsEnabled = true;
-            OnHapticsResumed();
+            hapticsEnabled = true;
+
+            SendFogMachine(m_FogEnabled);
+            SendStrobeSpeed(m_StrobeSpeed);
+            SendCommand(CommandId.RedLeds, (byte)m_RedLeds);
+            SendCommand(CommandId.YellowLeds, (byte)m_YellowLeds);
+            SendCommand(CommandId.BlueLeds, (byte)m_BlueLeds);
+            SendCommand(CommandId.GreenLeds, (byte)m_GreenLeds);
         }
 
         public void ResetHaptics()
         {
-            m_HapticsEnabled = true;
-            OnHapticsReset();
-        }
+            hapticsEnabled = true;
 
-        protected virtual void OnHapticsPaused()
-        {
-            SendReset();
-        }
-
-        protected virtual void OnHapticsResumed()
-        {
-            SendFogMachine(m_FogEnabled);
-            SendStrobeSpeed(m_StrobeSpeed);
-            SendLeds(StageKitLedColor.Red, m_RedLeds);
-            SendLeds(StageKitLedColor.Yellow, m_YellowLeds);
-            SendLeds(StageKitLedColor.Blue, m_BlueLeds);
-            SendLeds(StageKitLedColor.Green, m_GreenLeds);
-        }
-
-        protected virtual void OnHapticsReset()
-        {
             m_FogEnabled = false;
             m_StrobeSpeed = StageKitStrobeSpeed.Off;
             m_RedLeds = StageKitLed.None;
             m_YellowLeds = StageKitLed.None;
             m_BlueLeds = StageKitLed.None;
             m_GreenLeds = StageKitLed.None;
-            SendReset();
+
+            SendCommand(CommandId.Reset, 0);
         }
 
         public void SetFogMachine(bool enabled)
         {
-            m_FogEnabled = enabled;
-            if (m_HapticsEnabled)
+            if (enabled != m_FogEnabled)
+            {
+                m_FogEnabled = enabled;
                 SendFogMachine(enabled);
+            }
         }
 
         public void SetStrobeSpeed(StageKitStrobeSpeed speed)
         {
-            m_StrobeSpeed = speed;
-            if (m_HapticsEnabled)
+            if (speed != m_StrobeSpeed)
+            {
+                m_StrobeSpeed = speed;
                 SendStrobeSpeed(speed);
+            }
         }
 
         public void SetLeds(StageKitLedColor color, StageKitLed leds)
         {
             if ((color & StageKitLedColor.Red) != 0)
-                m_RedLeds = leds;
-            if ((color & StageKitLedColor.Yellow) != 0)
-                m_YellowLeds = leds;
-            if ((color & StageKitLedColor.Blue) != 0)
-                m_BlueLeds = leds;
-            if ((color & StageKitLedColor.Green) != 0)
-                m_GreenLeds = leds;
+            {
+                SetRedLeds(leds);
+            }
 
-            if (m_HapticsEnabled)
-                SendLeds(color, leds);
+            if ((color & StageKitLedColor.Yellow) != 0)
+            {
+                SetYellowLeds(leds);
+            }
+
+            if ((color & StageKitLedColor.Blue) != 0)
+            {
+                SetBlueLeds(leds);
+            }
+
+            if ((color & StageKitLedColor.Green) != 0)
+            {
+                SetGreenLeds(leds);
+            }
         }
 
         public void SetRedLeds(StageKitLed leds)
-            => SetLeds(StageKitLedColor.Red, leds);
+        {
+            if (leds != m_RedLeds)
+            {
+                m_RedLeds = leds;
+                SendCommand(CommandId.RedLeds, (byte)leds);
+            }
+        }
 
         public void SetYellowLeds(StageKitLed leds)
-            => SetLeds(StageKitLedColor.Yellow, leds);
+        {
+            if (leds != m_YellowLeds)
+            {
+                m_YellowLeds = leds;
+                SendCommand(CommandId.YellowLeds, (byte)leds);
+            }
+        }
 
         public void SetBlueLeds(StageKitLed leds)
-            => SetLeds(StageKitLedColor.Blue, leds);
+        {
+            if (leds != m_BlueLeds)
+            {
+                m_BlueLeds = leds;
+                SendCommand(CommandId.BlueLeds, (byte)leds);
+            }
+        }
 
         public void SetGreenLeds(StageKitLed leds)
-            => SetLeds(StageKitLedColor.Green, leds);
+        {
+            if (leds != m_GreenLeds)
+            {
+                m_GreenLeds = leds;
+                SendCommand(CommandId.GreenLeds, (byte)leds);
+            }
+        }
 
         private void SendFogMachine(bool enabled)
         {
-            SendCommand(enabled ? StageKitCommandId.FogOn : StageKitCommandId.FogOff);
+            SendCommand(enabled ? CommandId.FogOn : CommandId.FogOff, 0);
         }
 
         private void SendStrobeSpeed(StageKitStrobeSpeed speed)
         {
-            StageKitCommandId id;
+            CommandId id;
             switch (speed)
             {
-                default: id = StageKitCommandId.StrobeOff; break;
-                case StageKitStrobeSpeed.Slow: id = StageKitCommandId.StrobeSlow; break;
-                case StageKitStrobeSpeed.Medium: id = StageKitCommandId.StrobeMedium; break;
-                case StageKitStrobeSpeed.Fast: id = StageKitCommandId.StrobeFast; break;
-                case StageKitStrobeSpeed.Fastest: id = StageKitCommandId.StrobeFastest; break;
+                default: id = CommandId.StrobeOff; break;
+                case StageKitStrobeSpeed.Slow: id = CommandId.StrobeSlow; break;
+                case StageKitStrobeSpeed.Medium: id = CommandId.StrobeMedium; break;
+                case StageKitStrobeSpeed.Fast: id = CommandId.StrobeFast; break;
+                case StageKitStrobeSpeed.Fastest: id = CommandId.StrobeFastest; break;
             }
 
-            SendCommand(id);
+            SendCommand(id, 0);
         }
 
-        private void SendLeds(StageKitLedColor color, StageKitLed leds)
+        private void SendCommand(CommandId commandId, byte parameter)
         {
-            // StageKitLedColor is a bitmask, so multiple colors can be set at once
-            if ((color & StageKitLedColor.Red) != 0)
-                SendCommand(StageKitCommandId.RedLeds, (byte)leds);
-
-            if ((color & StageKitLedColor.Yellow) != 0)
-                SendCommand(StageKitCommandId.YellowLeds, (byte)leds);
-
-            if ((color & StageKitLedColor.Blue) != 0)
-                SendCommand(StageKitCommandId.BlueLeds, (byte)leds);
-
-            if ((color & StageKitLedColor.Green) != 0)
-                SendCommand(StageKitCommandId.GreenLeds, (byte)leds);
-
+            SendCommand((byte)commandId, parameter);
         }
 
-        private void SendReset()
+        public void SendCommand(byte commandId, byte parameter)
         {
-            SendCommand(StageKitCommandId.Reset);
-        }
+            if (!hapticsEnabled)
+            {
+                return;
+            }
 
-        protected void SendCommand(StageKitCommandId commandId, byte parameter = 0)
-            => SendCommand(m_Device, (byte)commandId, parameter);
+            switch (m_Protocol)
+            {
+                case StageKitProtocol.XInput:
+                {
+                    var command = new XInputVibrationCommand(parameter, commandId);
+                    m_Device.LoggedExecuteCommand(ref command);
+                    break;
+                }
+                case StageKitProtocol.SantrollerHID:
+                {
+                    var command = new PS3OutputCommand(1, 0x5A);
+                    unsafe
+                    {
+                        command.data[0] = parameter;
+                        command.data[1] = commandId;
+                    }
 
-        protected abstract void SendCommand(InputDevice device, byte commandId, byte parameter);
-    }
-
-    internal class XInputStageKitHaptics : StageKitHaptics
-    {
-        public XInputStageKitHaptics(InputDevice device) : base(device)
-        { }
-
-        protected override void SendCommand(InputDevice device, byte commandId, byte parameter)
-        {
-            var command = new XInputVibrationCommand(parameter, commandId);
-            device.LoggedExecuteCommand(ref command);
+                    m_Device.LoggedExecuteCommand(ref command);
+                    break;
+                }
+            }
         }
     }
 }

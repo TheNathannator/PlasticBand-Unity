@@ -56,7 +56,7 @@ namespace PlasticBand.Devices
     /// A DJ Hero turntable.
     /// </summary>
     [InputControlLayout(displayName = "DJ Hero Turntable")]
-    public class Turntable : InputDevice, ITurntableHaptics, IInputUpdateCallbackReceiver
+    public class Turntable : InputDevice, ITurntableHaptics
     {
         /// <summary>
         /// The current <see cref="Turntable"/>.
@@ -348,20 +348,16 @@ namespace PlasticBand.Devices
                 current = null;
         }
 
-        private protected TurntableHaptics m_Haptics;
-
         /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
-        public virtual void PauseHaptics() => m_Haptics?.PauseHaptics();
+        public virtual void PauseHaptics() {}
 
         /// <inheritdoc cref="IHaptics.ResumeHaptics()"/>
-        public virtual void ResumeHaptics() => m_Haptics?.ResumeHaptics();
+        public virtual void ResumeHaptics() {}
 
         /// <inheritdoc cref="IHaptics.ResetHaptics()"/>
-        public virtual void ResetHaptics() => m_Haptics?.ResetHaptics();
+        public virtual void ResetHaptics() {}
 
         /// <inheritdoc cref="ITurntableHaptics.SetEuphoriaBlink(bool)"/>
-        public void SetEuphoriaBlink(bool enable) => m_Haptics?.SetEuphoriaBlink(enable);
-
-        void IInputUpdateCallbackReceiver.OnUpdate() => m_Haptics?.OnUpdate();
+        public virtual void SetEuphoriaBlink(bool enable) {}
     }
 }

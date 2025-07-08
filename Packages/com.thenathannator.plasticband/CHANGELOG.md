@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.9.0] - Unreleased
+
+### Changed
+
+- Overhauled haptics interfaces and implementations to fix issues, de-duplicate output commands, and update Santroller haptics to their latest revision.
+- Fixed XInput turntables not having their state type configured properly.
+
 ## [0.8.5] - 2024/08/07
 
 ### Fixed

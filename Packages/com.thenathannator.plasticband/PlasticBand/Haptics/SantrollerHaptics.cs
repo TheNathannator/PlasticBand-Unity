@@ -1,141 +1,181 @@
-using System;
-using PlasticBand.Devices.LowLevel;
-using PlasticBand.LowLevel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace PlasticBand.Haptics
 {
     /// <summary>
+    /// Interface for Santroller device haptics.
+    /// </summary>
+    public interface ISantrollerHaptics : IStageKitHaptics
+    {
+        // bool batchOutputs { get; set; }
+
+        /// <summary>
+        /// Sends the fill amount of the Star Power gauge (0-1).
+        /// </summary>
+        void SetStarPowerFill(float fill);
+
+        /// <summary>
+        /// Sends whether or not Star Power is active.
+        /// </summary>
+        void SetStarPowerActive(bool enabled);
+
+        /// <summary>
+        /// Sends the current multiplier number.
+        /// </summary>
+        void SetMultiplier(byte multiplier);
+
+        /// <summary>
+        /// Sends whether or not a solo is active.
+        /// </summary>
+        void SetSoloActive(bool enabled);
+
+        /// <summary>
+        /// Sends whether or not a note was missed.
+        /// </summary>
+        void SetNoteMiss(bool enabled);
+    }
+
+    /// <summary>
     /// Handles haptics for Santroller devices.
     /// </summary>
-    internal abstract class SantrollerHaptics : StageKitHaptics, ISantrollerHaptics
+    internal struct SantrollerHaptics : ISantrollerHaptics
     {
-        protected enum SantrollerCommandId : byte
+        internal enum CommandId : byte
         {
             StarPowerFill = 0x08,
             StarPowerActive = 0x09,
             Multiplier = 0x0A,
-            SoloActive = 0x0B
+            SoloActive = 0x0B,
+            NoteMiss = 0x0C,
         }
 
-        private float m_StarPowerFill;
+        private StageKitHaptics m_Base;
+
+        private byte m_StarPowerFill;
         private bool m_StarPowerActive;
-        private uint m_Multiplier = 1;
+        private byte m_Multiplier;
         private bool m_SoloActive;
+        private bool m_MissActive;
 
-        public SantrollerHaptics(InputDevice device) : base(device)
+        public bool hapticsEnabled => m_Base.hapticsEnabled;
+
+        public static SantrollerHaptics Create(InputDevice device, StageKitProtocol protocol)
+            => new SantrollerHaptics()
         {
+            m_Base = StageKitHaptics.Create(device, protocol),
+            m_StarPowerFill = 0,
+            m_StarPowerActive = false,
+            m_Multiplier = 1,
+            m_SoloActive = false,
+            m_MissActive = false,
+        };
+
+        public void PauseHaptics()
+        {
+            if (!m_Base.hapticsEnabled)
+                return;
+
+            m_Base.PauseHaptics();
         }
 
-        protected override void OnHapticsResumed()
+        public void ResumeHaptics()
         {
-            base.OnHapticsResumed();
-            SendStarPowerFill(m_StarPowerFill);
-            SendStarPowerActive(m_StarPowerActive);
-            SendMultiplier(m_Multiplier);
-            SendSolo(m_SoloActive);
+            if (m_Base.hapticsEnabled)
+                return;
+
+            m_Base.ResumeHaptics();
+
+            SendCommand(CommandId.StarPowerFill, m_StarPowerFill);
+            SendToggle(CommandId.StarPowerActive, m_StarPowerActive);
+            SendCommand(CommandId.Multiplier, m_Multiplier);
+            SendToggle(CommandId.SoloActive, m_SoloActive);
+            SendToggle(CommandId.NoteMiss, m_MissActive);
         }
 
-        protected override void OnHapticsReset()
+        public void ResetHaptics()
         {
-            base.OnHapticsReset();
-            m_StarPowerFill = 0f;
+            m_Base.ResetHaptics();
+
+            m_StarPowerFill = 0;
             m_StarPowerActive = false;
             m_Multiplier = 1;
             m_SoloActive = false;
+            m_MissActive = false;
         }
+
+        public void SetFogMachine(bool enabled) => m_Base.SetFogMachine(enabled);
+        public void SetStrobeSpeed(StageKitStrobeSpeed speed) => m_Base.SetStrobeSpeed(speed);
+        public void SetLeds(StageKitLedColor color, StageKitLed leds) => m_Base.SetLeds(color, leds);
+        public void SetRedLeds(StageKitLed leds) => m_Base.SetRedLeds(leds);
+        public void SetYellowLeds(StageKitLed leds) => m_Base.SetYellowLeds(leds);
+        public void SetBlueLeds(StageKitLed leds) => m_Base.SetBlueLeds(leds);
+        public void SetGreenLeds(StageKitLed leds) => m_Base.SetGreenLeds(leds);
 
         public void SetStarPowerFill(float fill)
         {
-            m_StarPowerFill = fill;
-            if (m_HapticsEnabled)
-                SendStarPowerFill(fill);
+            byte value = (byte)(Mathf.Clamp(fill, 0f, 1f) * byte.MaxValue);
+            if (value != m_StarPowerFill)
+            {
+                m_StarPowerFill = value;
+                SendCommand(CommandId.StarPowerFill, value);
+            }
         }
 
         public void SetStarPowerActive(bool enabled)
         {
-            m_StarPowerActive = enabled;
-            if (m_HapticsEnabled)
-                SendStarPowerActive(enabled);
+            if (enabled != m_StarPowerActive)
+            {
+                m_StarPowerActive = enabled;
+                SendToggle(CommandId.StarPowerActive, enabled);
+            }
         }
 
-        public void SetMultiplier(uint multiplier)
+        public void SetMultiplier(byte multiplier)
         {
-            m_Multiplier = multiplier;
-            if (m_HapticsEnabled)
-                SendMultiplier(multiplier);
-        }
-
-        public void SetSolo(bool enabled)
-        {
-            m_SoloActive = enabled;
-            if (m_HapticsEnabled)
-                SendSolo(enabled);
-        }
-
-        private void SendStarPowerFill(float fill)
-        {
-            fill = Mathf.Clamp(fill, 0f, 1f) * byte.MaxValue;
-            SendCommand(SantrollerCommandId.StarPowerFill, (byte)fill);
-        }
-
-        private void SendStarPowerActive(bool enabled)
-        {
-            SendCommand(SantrollerCommandId.StarPowerActive, (byte)(enabled ? 1 : 0));
-        }
-
-        private void SendMultiplier(uint multiplier)
-        {
-            if (multiplier > 245)
-                multiplier = 245;
-            else if (multiplier < 1)
+            if (multiplier < 1)
+            {
                 multiplier = 1;
+            }
 
-            SendCommand(SantrollerCommandId.Multiplier, (byte)(multiplier + 10));
+            if (multiplier != m_Multiplier)
+            {
+                m_Multiplier = multiplier;
+                SendCommand(CommandId.Multiplier, multiplier);
+            }
         }
 
-        private void SendSolo(bool enabled)
+        public void SetSoloActive(bool enabled)
         {
-            SendCommand(SantrollerCommandId.SoloActive, (byte)(enabled ? 1 : 0));
+            if (enabled != m_SoloActive)
+            {
+                m_SoloActive = enabled;
+                SendToggle(CommandId.SoloActive, enabled);
+            }
         }
 
-        protected void SendCommand(byte commandId, byte parameter = 0)
-            => SendCommand(m_Device, commandId, parameter);
-
-        private void SendCommand(SantrollerCommandId commandId, byte parameter = 0)
-            => SendCommand((byte)commandId, parameter);
-
-        protected static void SendCommand_XInput(InputDevice device, byte commandId, byte parameter = 0)
+        public void SetNoteMiss(bool enabled)
         {
-            var command = new XInputVibrationCommand(parameter, commandId);
-            device.LoggedExecuteCommand(ref command);
+            if (enabled != m_MissActive)
+            {
+                m_MissActive = enabled;
+                SendToggle(CommandId.NoteMiss, enabled);
+            }
         }
 
-        protected static unsafe void SendCommand_Hid(InputDevice device, byte commandId, byte parameter = 0)
+        private void SendCommand(CommandId commandId, byte parameter)
         {
-            var command = new PS3OutputCommand(1, 0x5A);
-            command.data[0] = parameter;
-            command.data[1] = commandId;
-            device.LoggedExecuteCommand(ref command);
+            SendCommand((byte)commandId, parameter);
         }
-    }
 
-    internal class XInputSantrollerHaptics : SantrollerHaptics
-    {
-        public XInputSantrollerHaptics(InputDevice device) : base(device)
-        { }
+        private void SendToggle(CommandId commandId, bool parameter)
+        {
+            SendCommand((byte)commandId, (byte)(parameter ? 1 : 0));
+        }
 
-        protected override void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
-            => SendCommand_XInput(device, commandId, parameter);
-    }
-
-    internal class HidSantrollerHaptics : SantrollerHaptics
-    {
-        public HidSantrollerHaptics(InputDevice device) : base(device)
-        { }
-
-        protected override unsafe void SendCommand(InputDevice device, byte commandId, byte parameter = 0)
-            => SendCommand_Hid(device, commandId, parameter);
+        public void SendCommand(byte commandId, byte parameter)
+        {
+            m_Base.SendCommand(commandId, parameter);
+        }
     }
 }

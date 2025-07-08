@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using PlasticBand.Haptics;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
@@ -53,17 +52,6 @@ namespace PlasticBand.Devices
                 current = null;
         }
 
-        private protected StageKitHaptics m_Haptics;
-
-        /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
-        public override void PauseHaptics() => m_Haptics?.PauseHaptics();
-
-        /// <inheritdoc cref="IHaptics.ResumeHaptics()"/>
-        public override void ResumeHaptics() => m_Haptics?.ResumeHaptics();
-
-        /// <inheritdoc cref="IHaptics.ResetHaptics()"/>
-        public override void ResetHaptics() => m_Haptics?.ResetHaptics();
-
         // Override to prevent standard rumble commands from being sent
         /// <summary>
         /// Stage kits do not support rumble, do not use this method.
@@ -79,24 +67,24 @@ namespace PlasticBand.Devices
 #pragma warning restore CS0809
 
         /// <inheritdoc cref="IStageKitHaptics.SetFogMachine(bool)"/>
-        public virtual void SetFogMachine(bool enabled) => m_Haptics?.SetFogMachine(enabled);
+        public virtual void SetFogMachine(bool enabled) {}
 
         /// <inheritdoc cref="IStageKitHaptics.SetStrobeSpeed(StageKitStrobeSpeed)"/>
-        public virtual void SetStrobeSpeed(StageKitStrobeSpeed speed) => m_Haptics?.SetStrobeSpeed(speed);
+        public virtual void SetStrobeSpeed(StageKitStrobeSpeed speed) {}
 
         /// <inheritdoc cref="IStageKitHaptics.SetLeds(StageKitLedColor, StageKitLed)"/>
-        public virtual void SetLeds(StageKitLedColor color, StageKitLed leds) => m_Haptics?.SetLeds(color, leds);
+        public virtual void SetLeds(StageKitLedColor color, StageKitLed leds) {}
 
         /// <inheritdoc cref="IStageKitHaptics.SetRedLeds(StageKitLed)"/>
-        public virtual void SetRedLeds(StageKitLed leds) => SetLeds(StageKitLedColor.Red, leds);
+        public virtual void SetRedLeds(StageKitLed leds) {}
 
         /// <inheritdoc cref="IStageKitHaptics.SetYellowLeds(StageKitLed)"/>
-        public virtual void SetYellowLeds(StageKitLed leds) => SetLeds(StageKitLedColor.Yellow, leds);
+        public virtual void SetYellowLeds(StageKitLed leds) {}
 
         /// <inheritdoc cref="IStageKitHaptics.SetBlueLeds(StageKitLed)"/>
-        public virtual void SetBlueLeds(StageKitLed leds) => SetLeds(StageKitLedColor.Blue, leds);
+        public virtual void SetBlueLeds(StageKitLed leds) {}
 
         /// <inheritdoc cref="IStageKitHaptics.SetGreenLeds(StageKitLed)"/>
-        public virtual void SetGreenLeds(StageKitLed leds) => SetLeds(StageKitLedColor.Green, leds);
+        public virtual void SetGreenLeds(StageKitLed leds) {}
     }
 }

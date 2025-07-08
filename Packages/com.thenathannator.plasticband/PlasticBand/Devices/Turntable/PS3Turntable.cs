@@ -3,6 +3,7 @@ using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -217,7 +218,7 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(PS3TurntableLayout), displayName = "PlayStation 3 DJ Hero Turntable")]
-    internal class PS3Turntable : TranslatingTurntable<PS3TurntableState_NoReportId>
+    internal class PS3Turntable : TranslatingTurntable<PS3TurntableState_NoReportId>, IInputUpdateCallbackReceiver
     {
         internal new static void Initialize()
         {
@@ -229,6 +230,22 @@ namespace PlasticBand.Devices
             base.FinishSetup();
             m_Haptics = new PS3TurntableHaptics(this);
         }
+
+        private PS3TurntableHaptics m_Haptics;
+
+        /// <inheritdoc cref="IHaptics.PauseHaptics()"/>
+        public override void PauseHaptics() => m_Haptics?.PauseHaptics();
+
+        /// <inheritdoc cref="IHaptics.ResumeHaptics()"/>
+        public override void ResumeHaptics() => m_Haptics?.ResumeHaptics();
+
+        /// <inheritdoc cref="IHaptics.ResetHaptics()"/>
+        public override void ResetHaptics() => m_Haptics?.ResetHaptics();
+
+        /// <inheritdoc cref="ITurntableHaptics.SetEuphoriaBlink(bool)"/>
+        public override void SetEuphoriaBlink(bool enable) => m_Haptics?.SetEuphoriaBlink(enable);
+
+        void IInputUpdateCallbackReceiver.OnUpdate() => m_Haptics?.OnUpdate();
     }
 
     [InputControlLayout(stateType = typeof(PS3TurntableLayout), hideInUI = true)]
