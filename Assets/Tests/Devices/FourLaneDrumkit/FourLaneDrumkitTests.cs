@@ -87,6 +87,14 @@ namespace PlasticBand.Tests.Devices
 
         protected abstract void SetPad(ref TState state, FourLanePad pad, float velocity);
 
+        protected override void SetFaceButtons(ref TState state, FaceButton buttons)
+        {
+            state.south = (buttons & FaceButton.South) != 0;
+            state.east = (buttons & FaceButton.East) != 0;
+            state.west = (buttons & FaceButton.West) != 0;
+            state.north = (buttons & FaceButton.North) != 0;
+        }
+
         protected override void SetDpad(ref TState state, DpadDirection dpad)
         {
             state.dpadUp = dpad.IsUp();
@@ -263,7 +271,7 @@ namespace PlasticBand.Tests.Devices
                     }
                 }
 
-                AssertButtonPress(drumkit, state, buttonList.ToArray());
+                AssertButtonPress(drumkit, state, $"for pads {pads}", buttonList.ToArray());
 
                 // Velocity is not tested here since RB drumkits don't support velocity for kicks,
                 // and flag-based kits (excluding Santroller kits) have shared velocity axes on each color
@@ -277,7 +285,7 @@ namespace PlasticBand.Tests.Devices
                         SetPad(ref state, pad, 0f);
                 }
 
-                AssertButtonPress(drumkit, state);
+                AssertButtonPress(drumkit, state, $"for pads {pads}");
             }
         });
 
@@ -328,17 +336,11 @@ namespace PlasticBand.Tests.Devices
 
     internal abstract class FourLaneDrumkitTests_Flags<TDrumkit, TState> : FourLaneDrumkitTests<TDrumkit, TState>
         where TDrumkit : FourLaneDrumkit
-        where TState : unmanaged, IFourLaneDrumkitState_Flags
+        where TState : unmanaged, IFourLaneDrumkitState_FlagButtons, IFourLaneDrumkitState_SharedVelocities
     {
-        private static bool s_dummyHasFlags = true;
+        private delegate void SetPadVelocityAction(ref TState state, byte velocity);
 
-        protected override void SetFaceButtons(ref TState state, FaceButton buttons)
-        {
-            state.green_south = (buttons & FaceButton.South) != 0;
-            state.red_east = (buttons & FaceButton.East) != 0;
-            state.blue_west = (buttons & FaceButton.West) != 0;
-            state.yellow_north = (buttons & FaceButton.North) != 0;
-        }
+        private static bool s_dummyHasFlags = true;
 
         protected override void SetPad(ref TState state, FourLanePad pad, float velocity)
         {
@@ -346,10 +348,177 @@ namespace PlasticBand.Tests.Devices
             byte rawVelocity = DeviceHandling.DenormalizeByteUnsigned(velocity);
 
             int colorCount = 0;
-            if (state.red_east) colorCount++;
-            if (state.yellow_north) colorCount++;
-            if (state.blue_west) colorCount++;
-            if (state.green_south) colorCount++;
+            if (state.GetRedFlag()) colorCount++;
+            if (state.GetYellowFlag()) colorCount++;
+            if (state.GetBlueFlag()) colorCount++;
+            if (state.GetGreenFlag()) colorCount++;
+
+            var activePads = TranslatingFourLaneDrumkit.TranslatePads(ref state, ref s_dummyHasFlags);
+
+            switch (pad)
+            {
+                case FourLanePad.Kick1:
+                {
+                    state.kick1 = hit;
+                    break;
+                }
+                case FourLanePad.Kick2:
+                {
+                    ValidateColorCount(ref state);
+                    state.kick2 = hit;
+                    break;
+                }
+                case FourLanePad.RedPad:
+                {
+                    ValidateColorCount(ref state);
+                    state.SetRedFlag(hit);
+                    state.redVelocity = rawVelocity;
+                    SetPadFlag(ref state);
+                    break;
+                }
+                case FourLanePad.YellowPad:
+                {
+                    ValidateColorCount(ref state);
+
+                    SetPadVelocity(ref state, FourLanePad.YellowCymbal, state.yellowVelocity,
+                        (ref TState s, byte v) => s.yellowVelocity = v);
+                    state.SetYellowFlag(hit || (activePads & FourLanePad.YellowCymbal) != 0);
+                    SetPadFlag(ref state);
+                    break;
+                }
+                case FourLanePad.BluePad:
+                {
+                    ValidateColorCount(ref state);
+
+                    SetPadVelocity(ref state, FourLanePad.BlueCymbal, state.blueVelocity,
+                        (ref TState s, byte v) => s.blueVelocity = v);
+                    state.SetBlueFlag(hit || (activePads & FourLanePad.BlueCymbal) != 0);
+                    state.blueVelocity = rawVelocity;
+                    SetPadFlag(ref state);
+                    break;
+                }
+                case FourLanePad.GreenPad:
+                {
+                    ValidateColorCount(ref state);
+
+                    SetPadVelocity(ref state, FourLanePad.GreenCymbal, state.greenVelocity,
+                        (ref TState s, byte v) => s.greenVelocity = v);
+                    state.SetGreenFlag(hit || (activePads & FourLanePad.GreenCymbal) != 0);
+                    state.greenVelocity = rawVelocity;
+                    SetPadFlag(ref state);
+                    break;
+                }
+                case FourLanePad.YellowCymbal:
+                {
+                    ValidateColorCount(ref state);
+
+                    SetCymbalVelocity(ref state, FourLanePad.YellowPad, (ref TState s, byte v) => s.yellowVelocity = v);
+                    state.SetYellowFlag(hit || (activePads & FourLanePad.YellowPad) != 0);
+                    SetCymbalFlag(ref state);
+
+                    // The drumkit will only set the dpad to either up or down, not both at the same time
+                    state.dpadUp = hit && !state.dpadDown;
+                    break;
+                }
+                case FourLanePad.BlueCymbal:
+                {
+                    ValidateColorCount(ref state);
+
+                    SetCymbalVelocity(ref state, FourLanePad.BluePad, (ref TState s, byte v) => s.blueVelocity = v);
+                    state.SetBlueFlag(hit || (activePads & FourLanePad.BluePad) != 0);
+                    SetCymbalFlag(ref state);
+
+                    state.dpadDown = hit && !state.dpadUp;
+                    break;
+                }
+                case FourLanePad.GreenCymbal:
+                {
+                    ValidateColorCount(ref state);
+
+                    SetCymbalVelocity(ref state, FourLanePad.GreenPad, (ref TState s, byte v) => s.greenVelocity = v);
+                    state.SetGreenFlag(hit || (activePads & FourLanePad.GreenPad) != 0);
+                    SetCymbalFlag(ref state);
+
+                    // Green cymbal does not set the d-pad state
+                    // Unsure if it prevents the d-pad from being set if it happened to be hit first
+                    break;
+                }
+                default:
+                {
+                    throw new ArgumentException($"Invalid pad value {pad}!", nameof(pad));
+                }
+            }
+
+            void ValidateColorCount(ref TState state2)
+            {
+                if (hit && (colorCount >= 2 || (colorCount == 1 && state2.pad && state2.cymbal)))
+                    throw new InvalidOperationException($"Cannot set more than two pads at once!\nAttempted to set {pad}, already have {activePads} set");
+            }
+
+            void SetPadFlag(ref TState state2)
+            {
+                // Don't remove if there are still other pads active
+                state2.pad = hit || (colorCount > 1 && !state2.cymbal);
+            }
+
+            void SetCymbalFlag(ref TState state2)
+            {
+                // Don't remove if there are still other cymbals active
+                state2.cymbal = hit || (colorCount > 1 && !state2.pad);
+            }
+
+            void SetPadVelocity(ref TState state2, FourLanePad matchingCymbal, byte cymbalVelocity, SetPadVelocityAction setVelocity)
+            {
+                // Pad hits move same-color cymbals to the red velocity axis
+                if ((activePads & matchingCymbal) != 0)
+                {
+                    if (hit)
+                    {
+                        // Save cymbal velocity into the red axis
+                        state2.redVelocity = cymbalVelocity;
+                    }
+                    else
+                    {
+                        // Restore cymbal velocity
+                        rawVelocity = state2.redVelocity;
+                        state2.redVelocity = 0;
+                    }
+                }
+
+                setVelocity(ref state2, rawVelocity);
+            }
+
+            void SetCymbalVelocity(ref TState state2, FourLanePad matchingPad, SetPadVelocityAction setVelocity)
+            {
+                // Pad hits move same-color cymbals to the red velocity axis
+                if ((activePads & matchingPad) != 0)
+                {
+                    state2.redVelocity = rawVelocity;
+                }
+                else
+                {
+                    setVelocity(ref state2, rawVelocity);
+                }
+            }
+        }
+    }
+
+    internal abstract class FourLaneDrumkitTests_Hybrid<TDrumkit, TState> : FourLaneDrumkitTests<TDrumkit, TState>
+        where TDrumkit : FourLaneDrumkit
+        where TState : unmanaged, IFourLaneDrumkitState_FlagButtons, IFourLaneDrumkitState_DistinctVelocities
+    {
+        private static bool s_dummyHasFlags = true;
+
+        protected override void SetPad(ref TState state, FourLanePad pad, float velocity)
+        {
+            bool hit = velocity > 0f;
+            byte rawVelocity = DeviceHandling.DenormalizeByteUnsigned(velocity);
+
+            int colorCount = 0;
+            if (state.GetRedFlag()) colorCount++;
+            if (state.GetYellowFlag()) colorCount++;
+            if (state.GetBlueFlag()) colorCount++;
+            if (state.GetGreenFlag()) colorCount++;
 
             switch (pad)
             {
@@ -364,37 +533,37 @@ namespace PlasticBand.Tests.Devices
 
                 case FourLanePad.RedPad:
                     VerifyPadCount(ref state);
-                    state.red_east = hit;
+                    state.SetRedFlag(hit);
                     state.redPadVelocity = rawVelocity;
-                    SetPad(ref state);
+                    SetPadFlag(ref state);
                     break;
 
                 case FourLanePad.YellowPad:
                     VerifyPadCount(ref state);
-                    state.yellow_north = hit;
+                    state.SetYellowFlag(hit);
                     state.yellowPadVelocity = rawVelocity;
-                    SetPad(ref state);
+                    SetPadFlag(ref state);
                     break;
 
                 case FourLanePad.BluePad:
                     VerifyPadCount(ref state);
-                    state.blue_west = hit;
+                    state.SetBlueFlag(hit);
                     state.bluePadVelocity = rawVelocity;
-                    SetPad(ref state);
+                    SetPadFlag(ref state);
                     break;
 
                 case FourLanePad.GreenPad:
                     VerifyPadCount(ref state);
-                    state.green_south = hit;
+                    state.SetGreenFlag(hit);
                     state.greenPadVelocity = rawVelocity;
-                    SetPad(ref state);
+                    SetPadFlag(ref state);
                     break;
 
                 case FourLanePad.YellowCymbal:
                     VerifyPadCount(ref state);
-                    state.yellow_north = hit;
+                    state.SetYellowFlag(hit);
                     state.yellowCymbalVelocity = rawVelocity;
-                    SetCymbal(ref state);
+                    SetCymbalFlag(ref state);
 
                     // The drumkit will only set the dpad to either up or down, not both at the same time
                     state.dpadUp = hit && !state.dpadDown;
@@ -402,18 +571,18 @@ namespace PlasticBand.Tests.Devices
 
                 case FourLanePad.BlueCymbal:
                     VerifyPadCount(ref state);
-                    state.blue_west = hit;
+                    state.SetBlueFlag(hit);
                     state.blueCymbalVelocity = rawVelocity;
-                    SetCymbal(ref state);
+                    SetCymbalFlag(ref state);
 
                     state.dpadDown = hit && !state.dpadUp;
                     break;
 
                 case FourLanePad.GreenCymbal:
                     VerifyPadCount(ref state);
-                    state.green_south = hit;
+                    state.SetGreenFlag(hit);
                     state.greenCymbalVelocity = rawVelocity;
-                    SetCymbal(ref state);
+                    SetCymbalFlag(ref state);
 
                     // Green cymbal does not set the d-pad state
                     // Unsure if it prevents the d-pad from being set if it happened to be hit first
@@ -429,39 +598,24 @@ namespace PlasticBand.Tests.Devices
                     throw new InvalidOperationException($"Cannot set more than two pads at once!\nAttempted to set {pad}, already have {TranslatingFourLaneDrumkit.TranslatePads(ref state2, ref s_dummyHasFlags)} set");
             }
 
-            void SetPad(ref TState state2)
+            void SetPadFlag(ref TState state2)
             {
-                // Don't remove if there are still pads active
-                // We don't care about the number of pads since only two should ever be active at once
-                if (!hit && colorCount > 1 && !state2.cymbal)
-                    return;
-
-                state2.pad = hit;
+                // Don't remove if there are still other pads active
+                state2.pad = hit || (colorCount > 1 && !state2.cymbal);
             }
 
-            void SetCymbal(ref TState state2)
+            void SetCymbalFlag(ref TState state2)
             {
-                // Same as above
-                if (!hit && colorCount > 1 && !state2.pad)
-                    return;
-
-                state2.cymbal = hit;
+                // Don't remove if there are still other cymbals active
+                state2.cymbal = hit || (colorCount > 1 && !state2.pad);
             }
         }
     }
 
     internal abstract class FourLaneDrumkitTests_Distinct<TDrumkit, TState> : FourLaneDrumkitTests<TDrumkit, TState>
         where TDrumkit : FourLaneDrumkit
-        where TState : unmanaged, IFourLaneDrumkitState_Distinct
+        where TState : unmanaged, IFourLaneDrumkitState_DistinctVelocities
     {
-        protected override void SetFaceButtons(ref TState state, FaceButton buttons)
-        {
-            state.south = (buttons & FaceButton.South) != 0;
-            state.east = (buttons & FaceButton.East) != 0;
-            state.west = (buttons & FaceButton.West) != 0;
-            state.north = (buttons & FaceButton.North) != 0;
-        }
-
         protected override void SetPad(ref TState state, FourLanePad pad, float velocity)
         {
             byte rawVelocity = DeviceHandling.DenormalizeByteUnsigned(velocity);
@@ -476,31 +630,31 @@ namespace PlasticBand.Tests.Devices
                     break;
 
                 case FourLanePad.RedPad:
-                    state.redPad = rawVelocity;
+                    state.redPadVelocity = rawVelocity;
                     break;
 
                 case FourLanePad.YellowPad:
-                    state.yellowPad = rawVelocity;
+                    state.yellowPadVelocity = rawVelocity;
                     break;
 
                 case FourLanePad.BluePad:
-                    state.bluePad = rawVelocity;
+                    state.bluePadVelocity = rawVelocity;
                     break;
 
                 case FourLanePad.GreenPad:
-                    state.greenPad = rawVelocity;
+                    state.greenPadVelocity = rawVelocity;
                     break;
 
                 case FourLanePad.YellowCymbal:
-                    state.yellowCymbal = rawVelocity;
+                    state.yellowCymbalVelocity = rawVelocity;
                     break;
 
                 case FourLanePad.BlueCymbal:
-                    state.blueCymbal = rawVelocity;
+                    state.blueCymbalVelocity = rawVelocity;
                     break;
 
                 case FourLanePad.GreenCymbal:
-                    state.greenCymbal = rawVelocity;
+                    state.greenCymbalVelocity = rawVelocity;
                     break;
 
                 default:

@@ -15,7 +15,8 @@ namespace PlasticBand.Devices
     /// The state format for Santroller HID Rock Band Drum Kits.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct SantrollerFourLaneDrumkitState : IFourLaneDrumkitState_Flags
+    internal unsafe struct SantrollerFourLaneDrumkitState : IFourLaneDrumkitState_FlagButtons,
+        IFourLaneDrumkitState_DistinctVelocities
     {
         [Flags]
         public enum Button : ushort
@@ -27,17 +28,9 @@ namespace PlasticBand.Devices
             West = 0x0004,
             North = 0x0008,
 
-            Red = East,
-            Yellow = North,
-            Blue = West,
-            Green = South,
-    
             Pad = 0x0010,
             Cymbal = 0x0020,
 
-            ColorFlags = Red | Yellow | Blue | Green,
-            TypeFlags = Pad | Cymbal,
-    
             Kick1 = 0x0040,
             Kick2 = 0x0080,
 
@@ -61,28 +54,28 @@ namespace PlasticBand.Devices
         public byte yellowCymbalVelocity;
         public byte blueCymbalVelocity;
 
-        public bool red_east
+        public bool south
+        {
+            get => (buttons & Button.South) != 0;
+            set => buttons.SetBit(Button.South, value);
+        }
+
+        public bool east
         {
             get => (buttons & Button.East) != 0;
             set => buttons.SetBit(Button.East, value);
         }
 
-        public bool yellow_north
-        {
-            get => (buttons & Button.North) != 0;
-            set => buttons.SetBit(Button.North, value);
-        }
-
-        public bool blue_west
+        public bool west
         {
             get => (buttons & Button.West) != 0;
             set => buttons.SetBit(Button.West, value);
         }
 
-        public bool green_south
+        public bool north
         {
-            get => (buttons & Button.South) != 0;
-            set => buttons.SetBit(Button.South, value);
+            get => (buttons & Button.North) != 0;
+            set => buttons.SetBit(Button.North, value);
         }
 
         public bool pad
@@ -151,43 +144,43 @@ namespace PlasticBand.Devices
             set => buttons.SetBit(Button.System, value);
         }
 
-        byte IFourLaneDrumkitState_Flags.redPadVelocity
+        byte IFourLaneDrumkitState_DistinctVelocities.redPadVelocity
         {
             get => redPadVelocity;
             set => redPadVelocity = value;
         }
 
-        byte IFourLaneDrumkitState_Flags.yellowPadVelocity
+        byte IFourLaneDrumkitState_DistinctVelocities.yellowPadVelocity
         {
             get => yellowPadVelocity;
             set => yellowPadVelocity = value;
         }
 
-        byte IFourLaneDrumkitState_Flags.bluePadVelocity
+        byte IFourLaneDrumkitState_DistinctVelocities.bluePadVelocity
         {
             get => bluePadVelocity;
             set => bluePadVelocity = value;
         }
 
-        byte IFourLaneDrumkitState_Flags.greenPadVelocity
+        byte IFourLaneDrumkitState_DistinctVelocities.greenPadVelocity
         {
             get => greenPadVelocity;
             set => greenPadVelocity = value;
         }
 
-        byte IFourLaneDrumkitState_Flags.yellowCymbalVelocity
+        byte IFourLaneDrumkitState_DistinctVelocities.yellowCymbalVelocity
         {
             get => yellowCymbalVelocity;
             set => yellowCymbalVelocity = value;
         }
 
-        byte IFourLaneDrumkitState_Flags.blueCymbalVelocity
+        byte IFourLaneDrumkitState_DistinctVelocities.blueCymbalVelocity
         {
             get => blueCymbalVelocity;
             set => blueCymbalVelocity = value;
         }
 
-        byte IFourLaneDrumkitState_Flags.greenCymbalVelocity
+        byte IFourLaneDrumkitState_DistinctVelocities.greenCymbalVelocity
         {
             get => greenCymbalVelocity;
             set => greenCymbalVelocity = value;
@@ -198,7 +191,7 @@ namespace PlasticBand.Devices
     /// A Santroller HID Rock Band Drum Kit.
     /// </summary>
     [InputControlLayout(stateType = typeof(TranslatedFourLaneState), displayName = "Santroller HID Rock Band Drumkit")]
-    internal class SantrollerHIDFourLaneDrumkit : TranslatingFourLaneDrumkit_Flags<SantrollerFourLaneDrumkitState>,
+    internal class SantrollerHIDFourLaneDrumkit : TranslatingFourLaneDrumkit_Hybrid<SantrollerFourLaneDrumkitState>,
         ISantrollerFourLaneDrumkitHaptics
     {
         internal new static void Initialize()

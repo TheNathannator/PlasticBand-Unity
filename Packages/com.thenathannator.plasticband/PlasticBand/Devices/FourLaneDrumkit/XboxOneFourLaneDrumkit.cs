@@ -12,7 +12,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct XboxOneFourLaneDrumkitState : IFourLaneDrumkitState_Distinct, IReportIdStateTypeInfo
+    internal unsafe struct XboxOneFourLaneDrumkitState : IFourLaneDrumkitState_DistinctVelocities, IReportIdStateTypeInfo
     {
         public FourCC format => GameInputDefinitions.InputFormat;
         byte IReportIdStateTypeInfo.reportId => 0x20;
@@ -110,43 +110,43 @@ namespace PlasticBand.Devices
             set => buttons.SetBit(GameInputButton.DpadRight, value);
         }
 
-        public byte redPad
+        public byte redPadVelocity
         {
             get => GetVelocityHigh(pads1);
             set => SetVelocityHigh(ref pads1, value);
         }
 
-        public byte yellowPad
+        public byte yellowPadVelocity
         {
             get => GetVelocityLow(pads1);
             set => SetVelocityLow(ref pads1, value);
         }
 
-        public byte bluePad
+        public byte bluePadVelocity
         {
             get => GetVelocityHigh(pads2);
             set => SetVelocityHigh(ref pads2, value);
         }
 
-        public byte greenPad
+        public byte greenPadVelocity
         {
             get => GetVelocityLow(pads2);
             set => SetVelocityLow(ref pads2, value);
         }
 
-        public byte yellowCymbal
+        public byte yellowCymbalVelocity
         {
             get => GetVelocityHigh(cymbals1);
             set => SetVelocityHigh(ref cymbals1, value);
         }
 
-        public byte blueCymbal
+        public byte blueCymbalVelocity
         {
             get => GetVelocityLow(cymbals1);
             set => SetVelocityLow(ref cymbals1, value);
         }
 
-        public byte greenCymbal
+        public byte greenCymbalVelocity
         {
             get => GetVelocityHigh(cymbals2);
             set => SetVelocityHigh(ref cymbals2, value);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -108,6 +109,12 @@ namespace PlasticBand.Tests
         public static new void AssertButtonPress<TState>(InputDevice device, TState state, params ButtonControl[] buttons)
             where TState : unmanaged, IInputStateTypeInfo
         {
+            AssertButtonPress(device, state, null, buttons);
+        }
+
+        public static void AssertButtonPress<TState>(InputDevice device, TState state, string context, params ButtonControl[] buttons)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
             void UpdateAssert() => AssertButton((button) => button.isPressed);
             void EventAssert(InputEventPtr eventPtr)
                 => AssertButton((button) => button.IsPressedInEvent(eventPtr));
@@ -121,10 +128,25 @@ namespace PlasticBand.Tests
                     if (!(control is ButtonControl button))
                         continue;
 
+                    string message;
+                    IResolveConstraint constraint;
                     if (buttons.Contains(button))
-                        Assert.That(getPressed(button), Is.True, $"Expected button {button} to be pressed");
+                    {
+                        message = $"Expected button {button} to be pressed";
+                        constraint = Is.True;
+                    }
                     else
-                        Assert.That(getPressed(button), Is.False, $"Expected button {button} to NOT be pressed");
+                    {
+                        message = $"Expected button {button} to NOT be pressed";
+                        constraint = Is.False;
+                    }
+
+                    if (context != null)
+                    {
+                        message += $" {context}";
+                    }
+
+                    Assert.That(getPressed(button), constraint, message);
                 }
             }
         }

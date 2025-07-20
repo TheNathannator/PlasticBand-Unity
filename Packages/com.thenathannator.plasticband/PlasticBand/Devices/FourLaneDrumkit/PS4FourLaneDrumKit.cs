@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Explicit, Pack = 1)]
-    internal struct PS4FourLaneDrumkitState_NoReportId : IFourLaneDrumkitState_Distinct
+    internal struct PS4FourLaneDrumkitState_NoReportId : IFourLaneDrumkitState_DistinctVelocities
     {
         public FourCC format => HidDefinitions.InputFormat;
 
@@ -119,43 +119,43 @@ namespace PlasticBand.Devices
             set => buttons1.SetDpadLeft(value);
         }
 
-        byte IFourLaneDrumkitState_Distinct.redPad
+        byte IFourLaneDrumkitState_DistinctVelocities.redPadVelocity
         {
             get => redPad;
             set => redPad = value;
         }
 
-        byte IFourLaneDrumkitState_Distinct.yellowPad
+        byte IFourLaneDrumkitState_DistinctVelocities.yellowPadVelocity
         {
             get => yellowPad;
             set => yellowPad = value;
         }
 
-        byte IFourLaneDrumkitState_Distinct.bluePad
+        byte IFourLaneDrumkitState_DistinctVelocities.bluePadVelocity
         {
             get => bluePad;
             set => bluePad = value;
         }
 
-        byte IFourLaneDrumkitState_Distinct.greenPad
+        byte IFourLaneDrumkitState_DistinctVelocities.greenPadVelocity
         {
             get => greenPad;
             set => greenPad = value;
         }
 
-        byte IFourLaneDrumkitState_Distinct.yellowCymbal
+        byte IFourLaneDrumkitState_DistinctVelocities.yellowCymbalVelocity
         {
             get => yellowCymbal;
             set => yellowCymbal = value;
         }
 
-        byte IFourLaneDrumkitState_Distinct.blueCymbal
+        byte IFourLaneDrumkitState_DistinctVelocities.blueCymbalVelocity
         {
             get => blueCymbal;
             set => blueCymbal = value;
         }
 
-        byte IFourLaneDrumkitState_Distinct.greenCymbal
+        byte IFourLaneDrumkitState_DistinctVelocities.greenCymbalVelocity
         {
             get => greenCymbal;
             set => greenCymbal = value;
@@ -163,7 +163,7 @@ namespace PlasticBand.Devices
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct PS4FourLaneDrumkitState_ReportId : IFourLaneDrumkitState_Distinct
+    internal unsafe struct PS4FourLaneDrumkitState_ReportId : IFourLaneDrumkitState_DistinctVelocities
     {
         public FourCC format => HidDefinitions.InputFormat;
 
@@ -184,13 +184,13 @@ namespace PlasticBand.Devices
         public bool select { get => state.select; set => state.select = value; }
         public bool system { get => state.system; set => state.system = value; }
 
-        public byte redPad { get => state.redPad; set => state.redPad = value; }
-        public byte yellowPad { get => state.yellowPad; set => state.yellowPad = value; }
-        public byte bluePad { get => state.bluePad; set => state.bluePad = value; }
-        public byte greenPad { get => state.greenPad; set => state.greenPad = value; }
-        public byte yellowCymbal { get => state.yellowCymbal; set => state.yellowCymbal = value; }
-        public byte blueCymbal { get => state.blueCymbal; set => state.blueCymbal = value; }
-        public byte greenCymbal { get => state.greenCymbal; set => state.greenCymbal = value; }
+        public byte redPadVelocity { get => state.redPad; set => state.redPad = value; }
+        public byte yellowPadVelocity { get => state.yellowPad; set => state.yellowPad = value; }
+        public byte bluePadVelocity { get => state.bluePad; set => state.bluePad = value; }
+        public byte greenPadVelocity { get => state.greenPad; set => state.greenPad = value; }
+        public byte yellowCymbalVelocity { get => state.yellowCymbal; set => state.yellowCymbal = value; }
+        public byte blueCymbalVelocity { get => state.blueCymbal; set => state.blueCymbal = value; }
+        public byte greenCymbalVelocity { get => state.greenCymbal; set => state.greenCymbal = value; }
 
         public bool kick1 { get => state.kick1; set => state.kick1 = value; }
         public bool kick2 { get => state.kick2; set => state.kick2 = value; }

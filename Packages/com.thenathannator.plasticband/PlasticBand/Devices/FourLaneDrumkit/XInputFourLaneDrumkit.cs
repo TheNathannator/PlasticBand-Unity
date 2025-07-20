@@ -12,7 +12,8 @@ using UnityEngine.InputSystem.XInput;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct XInputFourLaneDrumkitState : IFourLaneDrumkitState_Flags
+    internal struct XInputFourLaneDrumkitState : IFourLaneDrumkitState_FlagButtons,
+        IFourLaneDrumkitState_SharedVelocities
     {
         public FourCC format => XInputGamepad.Format;
 
@@ -25,28 +26,28 @@ namespace PlasticBand.Devices
         public short blueVelocity;
         public short greenVelocity;
 
-        public bool red_east
+        public bool south
+        {
+            get => (buttons & XInputButton.A) != 0;
+            set => buttons.SetBit(XInputButton.A, value);
+        }
+
+        public bool east
         {
             get => (buttons & XInputButton.B) != 0;
             set => buttons.SetBit(XInputButton.B, value);
         }
 
-        public bool yellow_north
-        {
-            get => (buttons & XInputButton.Y) != 0;
-            set => buttons.SetBit(XInputButton.Y, value);
-        }
-
-        public bool blue_west
+        public bool west
         {
             get => (buttons & XInputButton.X) != 0;
             set => buttons.SetBit(XInputButton.X, value);
         }
 
-        public bool green_south
+        public bool north
         {
-            get => (buttons & XInputButton.A) != 0;
-            set => buttons.SetBit(XInputButton.A, value);
+            get => (buttons & XInputButton.Y) != 0;
+            set => buttons.SetBit(XInputButton.Y, value);
         }
 
         public bool kick1
@@ -116,43 +117,25 @@ namespace PlasticBand.Devices
             set => buttons.SetBit(XInputButton.DpadRight, value);
         }
 
-        byte IFourLaneDrumkitState_Flags.redPadVelocity
+        byte IFourLaneDrumkitState_SharedVelocities.redVelocity
         {
             get => GetVelocity_Positive(redVelocity);
             set => redVelocity = SetVelocity_Positive(value);
         }
 
-        byte IFourLaneDrumkitState_Flags.yellowPadVelocity
+        byte IFourLaneDrumkitState_SharedVelocities.yellowVelocity
         {
             get => GetVelocity_Negative(yellowVelocity);
             set => yellowVelocity = SetVelocity_Negative(value);
         }
 
-        byte IFourLaneDrumkitState_Flags.bluePadVelocity
+        byte IFourLaneDrumkitState_SharedVelocities.blueVelocity
         {
             get => GetVelocity_Positive(blueVelocity);
             set => blueVelocity = SetVelocity_Positive(value);
         }
 
-        byte IFourLaneDrumkitState_Flags.greenPadVelocity
-        {
-            get => GetVelocity_Negative(greenVelocity);
-            set => greenVelocity = SetVelocity_Negative(value);
-        }
-
-        byte IFourLaneDrumkitState_Flags.yellowCymbalVelocity
-        {
-            get => GetVelocity_Negative(yellowVelocity);
-            set => yellowVelocity = SetVelocity_Negative(value);
-        }
-
-        byte IFourLaneDrumkitState_Flags.blueCymbalVelocity
-        {
-            get => GetVelocity_Positive(blueVelocity);
-            set => blueVelocity = SetVelocity_Positive(value);
-        }
-
-        byte IFourLaneDrumkitState_Flags.greenCymbalVelocity
+        byte IFourLaneDrumkitState_SharedVelocities.greenVelocity
         {
             get => GetVelocity_Negative(greenVelocity);
             set => greenVelocity = SetVelocity_Negative(value);

@@ -100,7 +100,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class SantrollerHIDFourLaneDrumkitTests
-        : FourLaneDrumkitTests_Flags<SantrollerHIDFourLaneDrumkit, SantrollerFourLaneDrumkitState>
+        : FourLaneDrumkitTests_Hybrid<SantrollerHIDFourLaneDrumkit, SantrollerFourLaneDrumkitState>
     {
         protected override SantrollerFourLaneDrumkitState CreateState()
             => new SantrollerFourLaneDrumkitState()

@@ -12,7 +12,8 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct PS3WiiFourLaneDrumkitState_NoReportId : IFourLaneDrumkitState_Flags
+    internal struct PS3WiiFourLaneDrumkitState_NoReportId : IFourLaneDrumkitState_FlagButtons,
+        IFourLaneDrumkitState_SharedVelocities
     {
         public FourCC format => HidDefinitions.InputFormat;
 
@@ -29,28 +30,28 @@ namespace PlasticBand.Devices
         private byte m_GreenVelocity;
         private byte m_BlueVelocity;
 
-        public bool red_east
+        public bool south
+        {
+            get => (buttons & PS3Button.Cross) != 0;
+            set => buttons.SetBit(PS3Button.Cross, value);
+        }
+
+        public bool east
         {
             get => (buttons & PS3Button.Circle) != 0;
             set => buttons.SetBit(PS3Button.Circle, value);
         }
 
-        public bool yellow_north
-        {
-            get => (buttons & PS3Button.Triangle) != 0;
-            set => buttons.SetBit(PS3Button.Triangle, value);
-        }
-
-        public bool blue_west
+        public bool west
         {
             get => (buttons & PS3Button.Square) != 0;
             set => buttons.SetBit(PS3Button.Square, value);
         }
 
-        public bool green_south
+        public bool north
         {
-            get => (buttons & PS3Button.Cross) != 0;
-            set => buttons.SetBit(PS3Button.Cross, value);
+            get => (buttons & PS3Button.Triangle) != 0;
+            set => buttons.SetBit(PS3Button.Triangle, value);
         }
 
         public bool kick1
@@ -119,61 +120,44 @@ namespace PlasticBand.Devices
             set => dpad.SetLeft(value);
         }
 
-        public byte redPadVelocity
+        public byte redVelocity
         {
             get => (byte)~m_RedVelocity;
             set => m_RedVelocity = (byte)~value;
         }
 
-        public byte yellowPadVelocity
+        public byte yellowVelocity
         {
             get => (byte)~m_YellowVelocity;
             set => m_YellowVelocity = (byte)~value;
         }
 
-        public byte bluePadVelocity
+        public byte blueVelocity
         {
             get => (byte)~m_BlueVelocity;
             set => m_BlueVelocity = (byte)~value;
         }
 
-        public byte greenPadVelocity
+        public byte greenVelocity
         {
             get => (byte)~m_GreenVelocity;
             set => m_GreenVelocity = (byte)~value;
         }
-
-        public byte yellowCymbalVelocity
-        {
-            get => yellowPadVelocity;
-            set => yellowPadVelocity = value;
-        }
-
-        public byte blueCymbalVelocity
-        {
-            get => bluePadVelocity;
-            set => bluePadVelocity = value;
-        }
-
-        public byte greenCymbalVelocity
-        {
-            get => greenPadVelocity;
-            set => greenPadVelocity = value;
-        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct PS3WiiFourLaneDrumkitState_ReportId : IFourLaneDrumkitState_Flags
+    internal struct PS3WiiFourLaneDrumkitState_ReportId : IFourLaneDrumkitState_FlagButtons,
+        IFourLaneDrumkitState_SharedVelocities
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
         public PS3WiiFourLaneDrumkitState_NoReportId state;
 
-        public bool blue_west { get => state.blue_west; set => state.blue_west = value; }
-        public bool green_south { get => state.green_south; set => state.green_south = value; }
-        public bool red_east { get => state.red_east; set => state.red_east = value; }
-        public bool yellow_north { get => state.yellow_north; set => state.yellow_north = value; }
+        public bool south { get => state.south; set => state.south = value; }
+        public bool east { get => state.east; set => state.east = value; }
+        public bool west { get => state.west; set => state.west = value; }
+        public bool north { get => state.north; set => state.north = value; }
 
         public bool kick1 { get => state.kick1; set => state.kick1 = value; }
         public bool kick2 { get => state.kick2; set => state.kick2 = value; }
@@ -191,13 +175,10 @@ namespace PlasticBand.Devices
         public bool dpadLeft { get => state.dpadLeft; set => state.dpadLeft = value; }
         public bool dpadRight { get => state.dpadRight; set => state.dpadRight = value; }
 
-        public byte redPadVelocity { get => state.redPadVelocity; set => state.redPadVelocity = value; }
-        public byte yellowPadVelocity { get => state.yellowPadVelocity; set => state.yellowPadVelocity = value; }
-        public byte bluePadVelocity { get => state.bluePadVelocity; set => state.bluePadVelocity = value; }
-        public byte greenPadVelocity { get => state.greenPadVelocity; set => state.greenPadVelocity = value; }
-        public byte yellowCymbalVelocity { get => state.yellowCymbalVelocity; set => state.yellowCymbalVelocity = value; }
-        public byte blueCymbalVelocity { get => state.blueCymbalVelocity; set => state.blueCymbalVelocity = value; }
-        public byte greenCymbalVelocity { get => state.greenCymbalVelocity; set => state.greenCymbalVelocity = value; }
+        public byte redVelocity { get => state.redVelocity; set => state.redVelocity = value; }
+        public byte yellowVelocity { get => state.yellowVelocity; set => state.yellowVelocity = value; }
+        public byte blueVelocity { get => state.blueVelocity; set => state.blueVelocity = value; }
+        public byte greenVelocity { get => state.greenVelocity; set => state.greenVelocity = value; }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

@@ -27,6 +27,11 @@ namespace PlasticBand.Devices
 
     internal interface IFourLaneDrumkitState_Base : IInputStateTypeInfo
     {
+        bool south { get; set; }
+        bool east { get; set; }
+        bool west { get; set; }
+        bool north { get; set; }
+
         bool dpadUp { get; set; }
         bool dpadDown { get; set; }
         bool dpadLeft { get; set; }
@@ -40,16 +45,22 @@ namespace PlasticBand.Devices
         bool kick2 { get; set; }
     }
 
-    internal interface IFourLaneDrumkitState_Flags : IFourLaneDrumkitState_Base
+    internal interface IFourLaneDrumkitState_FlagButtons : IFourLaneDrumkitState_Base
     {
-        bool red_east { get; set; }
-        bool yellow_north { get; set; }
-        bool blue_west { get; set; }
-        bool green_south { get; set; }
-
         bool pad { get; set; }
         bool cymbal { get; set; }
+    }
 
+    internal interface IFourLaneDrumkitState_SharedVelocities : IFourLaneDrumkitState_Base
+    {
+        byte redVelocity { get; set; }
+        byte yellowVelocity { get; set; }
+        byte blueVelocity { get; set; }
+        byte greenVelocity { get; set; }
+    }
+
+    internal interface IFourLaneDrumkitState_DistinctVelocities : IFourLaneDrumkitState_Base
+    {
         byte redPadVelocity { get; set; }
         byte yellowPadVelocity { get; set; }
         byte bluePadVelocity { get; set; }
@@ -57,22 +68,6 @@ namespace PlasticBand.Devices
         byte yellowCymbalVelocity { get; set; }
         byte blueCymbalVelocity { get; set; }
         byte greenCymbalVelocity { get; set; }
-    }
-
-    internal interface IFourLaneDrumkitState_Distinct : IFourLaneDrumkitState_Base
-    {
-        bool south { get; set; }
-        bool east { get; set; }
-        bool west { get; set; }
-        bool north { get; set; }
-
-        byte redPad { get; set; }
-        byte yellowPad { get; set; }
-        byte bluePad { get; set; }
-        byte greenPad { get; set; }
-        byte yellowCymbal { get; set; }
-        byte blueCymbal { get; set; }
-        byte greenCymbal { get; set; }
     }
 
     /// <summary>
@@ -333,5 +328,40 @@ namespace PlasticBand.Devices
             if (current == this)
                 current = null;
         }
+    }
+
+    internal static class FourLaneDrumExtensions
+    {
+        public static bool GetRedFlag<TState>(ref this TState state)
+            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
+            => state.east;
+
+        public static bool SetRedFlag<TState>(ref this TState state, bool value)
+            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
+            => state.east = value;
+
+        public static bool GetYellowFlag<TState>(ref this TState state)
+            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
+            => state.north;
+
+        public static bool SetYellowFlag<TState>(ref this TState state, bool value)
+            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
+            => state.north = value;
+
+        public static bool GetBlueFlag<TState>(ref this TState state)
+            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
+            => state.west;
+
+        public static bool SetBlueFlag<TState>(ref this TState state, bool value)
+            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
+            => state.west = value;
+
+        public static bool GetGreenFlag<TState>(ref this TState state)
+            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
+            => state.south;
+
+        public static bool SetGreenFlag<TState>(ref this TState state, bool value)
+            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
+            => state.south = value;
     }
 }
