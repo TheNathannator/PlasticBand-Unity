@@ -11,7 +11,7 @@ Dates are relative to UTC.
 ### Changed
 
 - Overhauled haptics interfaces and implementations to fix issues, de-duplicate output commands, and update Santroller haptics to their latest revision.
-- Fixed XInput turntables not having their state type configured properly.
+- Overhauled 4-lane drumkit velocity handling to correctly handle pad+cymbal hits of the same color.
 
 ## [0.8.5] - 2024/08/07
 

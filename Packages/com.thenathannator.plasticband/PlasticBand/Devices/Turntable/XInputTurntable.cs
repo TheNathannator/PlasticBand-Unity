@@ -170,7 +170,7 @@ namespace PlasticBand.Devices
         public TranslatedTurntableState state;
     }
 
-    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "XInput DJ Hero Turntable")]
+    [InputControlLayout(stateType = typeof(XInputTurntableLayout), displayName = "XInput DJ Hero Turntable")]
     internal class XInputTurntable : TranslatingTurntable<XInputTurntableState>, IInputUpdateCallbackReceiver
     {
         internal new static void Initialize()
