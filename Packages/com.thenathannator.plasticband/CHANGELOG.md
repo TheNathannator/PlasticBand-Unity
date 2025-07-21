@@ -6,10 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
-## [0.9.0] - Unreleased
+## [0.9.0] - 2025/07/21
 
 ### Changed
 
+- XInput device layouts are now registered regardless of platform, enabling these layouts to work with backend packages (such as HIDrogen) that implement the XInput device interface on normally-unsupported platforms.
 - Overhauled haptics interfaces and implementations to fix issues, de-duplicate output commands, and update Santroller haptics to their latest revision.
 - Overhauled 4-lane drumkit velocity handling to correctly handle pad+cymbal hits of the same color.
 
