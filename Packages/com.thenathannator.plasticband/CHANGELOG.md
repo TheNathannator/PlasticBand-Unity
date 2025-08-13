@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [Unreleased]
+
+### Fixed
+
+- Wii Pro Keyboards now have proper labels for their AB12 face buttons.
+
 ## [0.9.0] - 2025/07/21
 
 ### Changed
