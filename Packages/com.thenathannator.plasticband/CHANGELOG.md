@@ -11,6 +11,7 @@ Dates are relative to UTC.
 ### Fixed
 
 - Wii Pro Keyboards now have proper labels for their AB12 face buttons.
+- Tilt on PS3 GH guitars now fill up the whole -1 to 1 range by naturally tilting. (Note that shaking the guitar will cause the accelerometer axes to report values greater than 1.)
 
 ## [0.9.0] - 2025/07/21
 
