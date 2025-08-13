@@ -15,6 +15,10 @@ namespace PlasticBand.Devices
     {
         public FourCC format => HidDefinitions.InputFormat;
 
+        [InputControl(name = "buttonWest", layout = "Button", bit = 0, displayName = "1 Button", shortDisplayName = "1")]
+        [InputControl(name = "buttonSouth", layout = "Button", bit = 1, displayName = "A Button", shortDisplayName = "A")]
+        [InputControl(name = "buttonEast", layout = "Button", bit = 2, displayName = "B Button", shortDisplayName = "B")]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = 3, displayName = "2 Button", shortDisplayName = "2")]
         [InputControl(name = "selectButton", layout = "Button", bit = 8, displayName = "Minus", shortDisplayName = "-")]
         [InputControl(name = "startButton", layout = "Button", bit = 9, displayName = "Plus", shortDisplayName = "+")]
         [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "System")]
