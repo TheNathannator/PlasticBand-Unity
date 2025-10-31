@@ -77,15 +77,17 @@ namespace PlasticBand.Devices
         public byte velocity5;
 
         [InputControl(name = "overdrive", layout = "Button", bit = 7)]
-        // The touchstrip isn't available through XInput, but it has to be there for ProKeyboard
-        // These bits are unused, so we place it here
-        [InputControl(name = "touchStrip", layout = "Axis", format = "BIT", sizeInBits = 7)]
         public byte overdrive;
 
         // TODO: The normalization here needs verification
         [InputControl(name = "analogPedal", layout = "Axis", format = "BIT", sizeInBits = 7, parameters = "normalize,normalizeMin=1,normalizeMax=0,normalizeZero=1")]
         [InputControl(name = "digitalPedal", layout = "Button", bit = 7)]
         public byte pedal;
+
+        // Bytes after this point are not reported via XInput on Windows.
+
+        [InputControl(name = "touchStrip", layout = "Axis", format = "BIT", sizeInBits = 7)]
+        public byte touchPad;
     }
 
     [InputControlLayout(stateType = typeof(XInputProKeyboardState), displayName = "XInput Rock Band Pro Keyboard")]
