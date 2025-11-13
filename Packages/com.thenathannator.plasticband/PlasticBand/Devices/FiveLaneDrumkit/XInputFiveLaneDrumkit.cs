@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
+using UnityEngine.InputSystem.XInput;
 
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Lane%20Drums/Xbox%20360.md
@@ -166,6 +167,10 @@ namespace PlasticBand.Devices
         {
             // No matcher since special differentiation must be done
             InputSystem.RegisterLayout<XInputFiveLaneDrumkit>();
+
+            // Except for the GH5 drumkit, which reports capability info we can rely on to match it
+            XInputLayoutFinder.RegisterLayout<XInputFiveLaneDrumkit>(
+                XInputController.DeviceSubType.DrumKit, 0x1430, 0x0805);
         }
     }
 }
