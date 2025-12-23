@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.XInput;
@@ -40,7 +38,6 @@ namespace PlasticBand.LowLevel
             InputSystem.RegisterLayout<TDevice>(matches: GetHidMatcher(deviceType));
         }
 
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(XInputController.DeviceSubType subType,
             SantrollerDeviceType deviceType)
             where TDevice : InputDevice
@@ -48,7 +45,6 @@ namespace PlasticBand.LowLevel
             InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType, deviceType));
         }
 
-        [Conditional("UNITY_STANDALONE_WIN"), Conditional("UNITY_EDITOR_WIN")]
         internal static void RegisterXInputLayout<TDevice>(XInputNonStandardSubType subType,
             SantrollerDeviceType deviceType)
             where TDevice : InputDevice
