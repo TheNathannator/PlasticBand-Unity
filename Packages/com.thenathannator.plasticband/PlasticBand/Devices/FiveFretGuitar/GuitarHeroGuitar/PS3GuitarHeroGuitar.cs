@@ -80,14 +80,22 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // PS3 guitars
             HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar>(0x12BA, 0x0100);
-
-            // World Tour PC guitar
-            HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar>(0x1430, 0x474C);
         }
     }
 
     [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_ReportId), displayName = "PlayStation 3 Guitar Hero Guitar", hideInUI = true)]
     internal class PS3GuitarHeroGuitar_ReportId : PS3GuitarHeroGuitar { }
+
+    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_NoReportId), displayName = "PC Guitar Hero Guitar")]
+    internal class PCGuitarHeroGuitar : GuitarHeroGuitar
+    {
+        internal new static void Initialize()
+        {
+            HidLayoutFinder.RegisterLayout<PCGuitarHeroGuitar_ReportId, PCGuitarHeroGuitar>(0x1430, 0x474C);
+        }
+    }
+
+    [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarState_ReportId), displayName = "PC Guitar Hero Guitar", hideInUI = true)]
+    internal class PCGuitarHeroGuitar_ReportId : PCGuitarHeroGuitar { }
 }

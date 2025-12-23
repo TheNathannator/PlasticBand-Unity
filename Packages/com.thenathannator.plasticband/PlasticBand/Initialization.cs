@@ -52,6 +52,7 @@ namespace PlasticBand
             GuitarHeroGuitar.Initialize();
             XInputGuitarHeroGuitar.Initialize();
             PS3GuitarHeroGuitar.Initialize();
+            PCGuitarHeroGuitar.Initialize();
             SantrollerHIDGuitarHeroGuitar.Initialize();
             SantrollerXInputGuitarHeroGuitar.Initialize();
 
