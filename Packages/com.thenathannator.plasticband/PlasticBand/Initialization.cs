@@ -61,7 +61,6 @@ namespace PlasticBand
             RockBandGuitar.Initialize();
             XInputRockBandGuitar.Initialize();
             XboxOneRockBandGuitar.Initialize();
-            XboxOneCrkdGuitar.Initialize();
             PS3RockBandGuitar.Initialize();
             PS4RockBandGuitar.Initialize();
             WiiRockBandGuitar.Initialize();
@@ -73,6 +72,11 @@ namespace PlasticBand
             XboxOneRiffmasterGuitar.Initialize();
             PS4RiffmasterGuitar.Initialize();
             PS5RiffmasterGuitar.Initialize();
+
+            // CRKD guitars
+            XboxOneCrkdGuitar.Initialize();
+            PS4CrkdGuitar.Initialize();
+            PS5CrkdGuitar.Initialize();
 
             // 6-fret guitars
             SixFretGuitar.Initialize();

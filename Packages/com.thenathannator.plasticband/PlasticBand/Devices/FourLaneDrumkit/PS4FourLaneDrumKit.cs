@@ -67,14 +67,14 @@ namespace PlasticBand.Devices
 
         public bool kick1
         {
-            get => (buttons1 & PS4Button1.L2) != 0;
-            set => buttons1.SetBit(PS4Button1.L2, value);
+            get => (buttons1 & PS4Button1.L1) != 0;
+            set => buttons1.SetBit(PS4Button1.L1, value);
         }
 
         public bool kick2
         {
-            get => (buttons1 & PS4Button1.R2) != 0;
-            set => buttons1.SetBit(PS4Button1.R2, value);
+            get => (buttons1 & PS4Button1.R1) != 0;
+            set => buttons1.SetBit(PS4Button1.R1, value);
         }
 
         public bool select

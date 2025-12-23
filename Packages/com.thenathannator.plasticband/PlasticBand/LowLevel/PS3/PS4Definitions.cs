@@ -21,10 +21,10 @@ namespace PlasticBand.Devices.LowLevel
         Cross = 0x0020,
         Circle = 0x0040,
         Triangle = 0x0080,
-        L2 = 0x0100,
-        R2 = 0x0200,
-        L1 = 0x0400,
-        R1 = 0x0800,
+        L1 = 0x0100,
+        R1 = 0x0200,
+        L2 = 0x0400,
+        R2 = 0x0800,
         Select = 0x1000,
         Start = 0x2000,
         L3 = 0x4000,
@@ -35,6 +35,7 @@ namespace PlasticBand.Devices.LowLevel
     internal enum PS4Button2 : byte
     {
         PlayStation = 0x01,
+        Touchpad = 0x02,
     }
 
     internal static class PS4Extensions

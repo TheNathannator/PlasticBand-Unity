@@ -153,8 +153,12 @@ namespace PlasticBand.Devices
 
         public bool p1
         {
-            get => (buttons1 & PS4Button1.R3) != 0;
-            set => buttons1.SetBit(PS4Button1.R3, value);
+            get => (buttons1 & PS4Button1.R3) != 0 || (buttons2 & PS4Button2.Touchpad) != 0;
+            set
+            {
+                buttons1.SetBit(PS4Button1.R3, value);
+                buttons2.SetBit(PS4Button2.Touchpad, false);
+            }
         }
 
         public bool joystickClick
@@ -249,6 +253,19 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             HidLayoutFinder.RegisterLayout<PS5RiffmasterGuitar, PS5RiffmasterGuitar_NoReportId>(0x0E6F, 0x0249, reportIdDefault: true);
+        }
+    }
+
+    [InputControlLayout(stateType = typeof(PSRiffmasterGuitarLayout), displayName = "PlayStation 5 CRKD Guitar", hideInUI = true)]
+    internal class PS5CrkdGuitar_NoReportId : PS5RiffmasterGuitar_NoReportId { }
+
+    [InputControlLayout(stateType = typeof(PSRiffmasterGuitarLayout), displayName = "PlayStation 5 CRKD Guitar")]
+    internal class PS5CrkdGuitar : PS5RiffmasterGuitar
+    {
+        internal new static void Initialize()
+        {
+            HidLayoutFinder.RegisterLayout<PS5CrkdGuitar, PS5CrkdGuitar_NoReportId>(0x3651, 0x1600, reportIdDefault: true);
+            HidLayoutFinder.RegisterLayout<PS5CrkdGuitar, PS5CrkdGuitar_NoReportId>(0x3651, 0x5600, reportIdDefault: true);
         }
     }
 }
