@@ -61,6 +61,7 @@ namespace PlasticBand
             RockBandGuitar.Initialize();
             XInputRockBandGuitar.Initialize();
             XboxOneRockBandGuitar.Initialize();
+            XboxOneCrkdGuitar.Initialize();
             PS3RockBandGuitar.Initialize();
             PS4RockBandGuitar.Initialize();
             WiiRockBandGuitar.Initialize();
