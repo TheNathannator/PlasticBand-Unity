@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
@@ -50,17 +49,29 @@ namespace PlasticBand.LowLevel
         internal static string FindDeviceLayout(ref InputDeviceDescription description, string matchedLayout,
             InputDeviceExecuteCommandDelegate commandDelegate)
         {
-            if (description.interfaceName != HidDefinitions.InterfaceName || string.IsNullOrEmpty(matchedLayout)
-                || !s_AvailableLayouts.TryGetValue(matchedLayout, out var layouts))
+            if (description.interfaceName != HidDefinitions.InterfaceName ||
+                string.IsNullOrEmpty(matchedLayout) ||
+                !s_AvailableLayouts.TryGetValue(matchedLayout, out var layouts))
+            {
                 return null;
+            }
 
             var descriptor = s_GetDeviceDescriptor(ref description, commandDelegate);
             if (descriptor.elements == null || descriptor.elements.Length < 1)
+            {
                 return null;
+            }
 
             // Any elements with a bit offset less than 8 indicates that there is no report ID
-            bool hasReportId = !descriptor.elements.Where((element) => element.reportType == HIDReportType.Input)
-                .Any((element) => element.reportOffsetInBits < 8);
+            bool hasReportId = true;
+            foreach (var element in descriptor.elements)
+            {
+                if (element.reportType == HIDReportType.Input && element.reportOffsetInBits < 8)
+                {
+                    hasReportId = false;
+                    break;
+                }
+            }   
 
             return hasReportId ? layouts.reportId : layouts.noReportId;
         }
