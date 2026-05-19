@@ -194,6 +194,7 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             GameInputLayoutFinder.RegisterLayout<XboxOneCrkdGuitar>(0x3651, 0x4161);
+            GameInputLayoutFinder.RegisterLayout<XboxOneCrkdGuitar>(0x3958, 0x4161);
         }
     }
 }
