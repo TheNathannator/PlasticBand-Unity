@@ -137,7 +137,7 @@ namespace PlasticBand.LowLevel
         internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType, XInputOverrideDetermineMatch resolveLayout,
             InputDeviceMatcher matcher = default)
             where TDevice : InputDevice
-            => RegisterLayout<TDevice>(subType, resolveLayout, matcher);
+            => RegisterLayout<TDevice>((DeviceSubType)subType, resolveLayout, matcher);
 
         internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType)
             where TDevice : InputDevice
