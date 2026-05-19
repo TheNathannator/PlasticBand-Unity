@@ -167,8 +167,8 @@ namespace PlasticBand.Devices
 
         public sbyte joystickY
         {
-            get => (sbyte)(m_JoystickY ^ 0x80);
-            set => m_JoystickY = (byte)(value ^ 0x80);
+            get => (sbyte)((0xFF - m_JoystickY) ^ 0x80);
+            set => m_JoystickY = (byte)((0xFF - value) ^ 0x80);
         }
 
         byte IFiveFretGuitarState.whammy
