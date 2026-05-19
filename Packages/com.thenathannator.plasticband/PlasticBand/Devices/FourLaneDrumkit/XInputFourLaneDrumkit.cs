@@ -179,12 +179,13 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // No matcher since special differentiation must be done
-            InputSystem.RegisterLayout<XInputFourLaneDrumkit>();
+            // Guitar Hero and Rock Band drumkits share the same subtype, so additional differentiation is needed.
+            // Rock Band drumkits have the Force Feedback flag set in their capabilities, while Guitar Hero drumkits do not.
+            XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(XInputController.DeviceSubType.DrumKit,
+                (capabilities) => (capabilities.flags & XInputController.DeviceFlags.ForceFeedbackSupported) != 0);
 
-            // Except for the ION drumkit, which reports capability info we can rely on to match it
-            // This is necessary to prevent it from being identified as a 5-lane drumkit, due to a hardware
-            // quirk where it constantly holds the right-stick click input while a pedal is plugged in
+            // Additional known hardware IDs:
+            // ION Drum Rocker
             XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(
                 XInputController.DeviceSubType.DrumKit, 0x15E4, 0x0130);
         }

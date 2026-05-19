@@ -130,7 +130,6 @@ namespace PlasticBand
             SantrollerXInputStageKit.Initialize();
 
             // Variant devices
-            XInputVariantDrumkit.Initialize();
             XboxOneWirelessLegacyAdapter.Initialize();
             XboxOneWiredLegacyAdapter.Initialize();
         }

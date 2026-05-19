@@ -165,10 +165,13 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // No matcher since special differentiation must be done
-            InputSystem.RegisterLayout<XInputFiveLaneDrumkit>();
+            // Rock Band and Guitar Hero drumkits share the same subtype, so additional differentiation is needed.
+            // Rock Band drumkits have the Force Feedback flag set in their capabilities, while Guitar Hero drumkits do not.
+            XInputLayoutFinder.RegisterLayout<XInputFiveLaneDrumkit>(XInputController.DeviceSubType.DrumKit,
+                (capabilities) => (capabilities.flags & XInputController.DeviceFlags.ForceFeedbackSupported) == 0);
 
-            // Except for the GH5 drumkit, which reports capability info we can rely on to match it
+            // Additional known hardware IDs:
+            // Guitar Hero 5 drumkit
             XInputLayoutFinder.RegisterLayout<XInputFiveLaneDrumkit>(
                 XInputController.DeviceSubType.DrumKit, 0x1430, 0x0805);
         }
