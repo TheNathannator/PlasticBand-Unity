@@ -35,31 +35,19 @@ namespace PlasticBand.LowLevel
         internal static void RegisterHIDLayout<TDevice>(SantrollerDeviceType deviceType)
             where TDevice : InputDevice
         {
-            InputSystem.RegisterLayout<TDevice>(matches: GetHidMatcher(deviceType));
+            HidLayoutFinder.RegisterLayout<TDevice>(VendorID, ProductID, GetRevisionValue(deviceType));
         }
 
         internal static void RegisterXInputLayout<TDevice>(XInputController.DeviceSubType subType,
             SantrollerDeviceType deviceType)
             where TDevice : InputDevice
         {
-            InputSystem.RegisterLayout<TDevice>(matches: GetXInputMatcher(subType, deviceType));
+            XInputLayoutFinder.RegisterLayout<TDevice>(subType, VendorID, ProductID, GetRevisionValue(deviceType));
         }
 
         internal static void RegisterXInputLayout<TDevice>(XInputNonStandardSubType subType,
             SantrollerDeviceType deviceType)
             where TDevice : InputDevice
             => RegisterXInputLayout<TDevice>((XInputController.DeviceSubType)subType, deviceType);
-
-        internal static InputDeviceMatcher GetHidMatcher(SantrollerDeviceType deviceType)
-        {
-            return HidLayoutFinder.GetMatcher(VendorID, ProductID)
-                .WithVersion(GetRevisionValue(deviceType).ToString());
-        }
-
-        internal static InputDeviceMatcher GetXInputMatcher(XInputController.DeviceSubType subType,
-            SantrollerDeviceType deviceType)
-        {
-            return XInputLayoutFinder.GetMatcher(subType, VendorID, ProductID, GetRevisionValue(deviceType));
-        }
     }
 }

@@ -66,9 +66,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            XInputLayoutFinder.RegisterLayout<XInputGuitarHeroGuitar>(XInputController.DeviceSubType.GuitarAlternate,
-                // GHL guitars have the same subtype as GH guitars; avoid matching them here
-                (capabilities) => (capabilities.flags & XInputController.DeviceFlags.NoNavigation) == 0);
+            XInputLayoutFinder.RegisterLayout<XInputGuitarHeroGuitar>(XInputController.DeviceSubType.GuitarAlternate);
         }
     }
 }

@@ -16,7 +16,13 @@ namespace PlasticBand.LowLevel
     {
         public const string InterfaceName = "XInput";
 
-        internal delegate bool XInputLayoutMatchPredicate(XInputCapabilities capabilities);
+        /// <summary>
+        /// Determines whether the given capabilities match the target layout.
+        /// If it does, returns a value of 0 or greater which is added to the overall match score.
+        /// If it doesn't, returns a value below 0 to skip the layout.
+        /// </summary>
+        internal delegate float XInputLayoutMatchPredicate(XInputCapabilities capabilities);
+
         private class XInputLayoutMatcher
         {
             public XInputLayoutMatchPredicate predicate;
@@ -52,13 +58,7 @@ namespace PlasticBand.LowLevel
                 return null;
             }
 
-            // Preserve any concrete non-default layouts
-            if (matchedLayout != null && matchedLayout != s_DefaultLayout)
-            {
-                return null;
-            }
-
-            // Get capabilities and matchers
+            // Get matchers
             if (!Utilities.TryParseJson<XInputCapabilities>(description.capabilities, out var capabilities) ||
                 !s_LayoutMatchers.TryGetValue(capabilities.subType, out var matchers))
             {
@@ -70,13 +70,15 @@ namespace PlasticBand.LowLevel
             float greatestMatch = 0f;
             foreach (var matcher in matchers)
             {
-                if (!matcher.predicate(capabilities))
+                float predicateMatch = matcher.predicate(capabilities);
+                if (predicateMatch < 0)
                 {
                     continue;
                 }
 
                 // Keep track of the best match
                 float match = matcher.matcher.MatchPercentage(description);
+                match += predicateMatch;
                 if (match > greatestMatch)
                 {
                     greatestMatch = match;
@@ -95,52 +97,80 @@ namespace PlasticBand.LowLevel
         private static string DefaultLayoutIfNull(string matchedLayout)
             => string.IsNullOrEmpty(matchedLayout) ? s_DefaultLayout : null;
 
-        /// <summary>
-        /// Registers a layout for the given subtype, using the given callback to 
-        /// </summary>
-        internal static void RegisterLayout<TDevice>(DeviceSubType subType, XInputLayoutMatchPredicate resolveLayout,
-            InputDeviceMatcher matcher = default)
+        private static void RegisterMatcher<TDevice>(
+            DeviceSubType subType,
+            XInputLayoutMatchPredicate predicate,
+            InputDeviceMatcher matcher
+        )
             where TDevice : InputDevice
         {
-            InputSystem.RegisterLayout<TDevice>();
-
-            if (!s_LayoutMatchers.TryGetValue(subType, out var overrides))
+            if (!s_LayoutMatchers.TryGetValue(subType, out var matchers))
             {
-                overrides = new List<XInputLayoutMatcher>();
-                s_LayoutMatchers.Add(subType, overrides);
+                matchers = new List<XInputLayoutMatcher>();
+                s_LayoutMatchers.Add(subType, matchers);
             }
 
             string layoutName = typeof(TDevice).Name;
-            if (overrides.Any((entry) => entry.matcher == matcher))
+            if (!matcher.empty && matchers.Any((entry) => entry.matcher == matcher))
             {
                 Logging.Error($"[XInputLayoutFinder] Matcher {matcher} is already registered for subtype {subType}!");
                 return;
             }
 
-            overrides.Add(new XInputLayoutMatcher()
+            matchers.Add(new XInputLayoutMatcher()
             {
-                predicate = resolveLayout,
+                predicate = predicate,
                 matcher = matcher.empty ? GetMatcher(subType) : matcher,
                 layoutName = layoutName
             });
         }
 
+        /// <summary>
+        /// Registers a layout for the given subtype, using the given callback to 
+        /// </summary>
+        internal static void RegisterLayout<TDevice>(
+            DeviceSubType subType,
+            XInputLayoutMatchPredicate predicate,
+            InputDeviceMatcher matcher = default
+        )
+            where TDevice : InputDevice
+        {
+            InputSystem.RegisterLayout<TDevice>();
+            RegisterMatcher<TDevice>(subType, predicate, matcher);
+        }
+
+        private static void RegisterLayout<TDevice>(DeviceSubType subType, InputDeviceMatcher matcher)
+            where TDevice : InputDevice
+        {
+            InputSystem.RegisterLayout<TDevice>(matches: matcher);
+            RegisterMatcher<TDevice>(subType, (_) => 0, matcher);
+        }
+
         internal static void RegisterLayout<TDevice>(DeviceSubType subType)
             where TDevice : InputDevice
         {
-            InputSystem.RegisterLayout<TDevice>(matches: GetMatcher(subType));
+            RegisterLayout<TDevice>(subType, GetMatcher(subType));
         }
 
         internal static void RegisterLayout<TDevice>(DeviceSubType subType, short vendorId, short productId)
             where TDevice : InputDevice
         {
-            InputSystem.RegisterLayout<TDevice>(matches: GetMatcher(subType, vendorId, productId));
+            RegisterLayout<TDevice>(subType, GetMatcher(subType, vendorId, productId));
         }
 
-        internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType, XInputLayoutMatchPredicate resolveLayout,
-            InputDeviceMatcher matcher = default)
+        internal static void RegisterLayout<TDevice>(DeviceSubType subType, short vendorId, short productId, short revision)
             where TDevice : InputDevice
-            => RegisterLayout<TDevice>((DeviceSubType)subType, resolveLayout, matcher);
+        {
+            RegisterLayout<TDevice>(subType, GetMatcher(subType, vendorId, productId, revision));
+        }
+
+        internal static void RegisterLayout<TDevice>(
+            XInputNonStandardSubType subType,
+            XInputLayoutMatchPredicate predicate,
+            InputDeviceMatcher matcher = default
+        )
+            where TDevice : InputDevice
+            => RegisterLayout<TDevice>((DeviceSubType)subType, predicate, matcher);
 
         internal static void RegisterLayout<TDevice>(XInputNonStandardSubType subType)
             where TDevice : InputDevice
@@ -150,14 +180,14 @@ namespace PlasticBand.LowLevel
             where TDevice : InputDevice
             => RegisterLayout<TDevice>((DeviceSubType)subType, vendorId, productId);
 
-        internal static InputDeviceMatcher GetMatcher(DeviceSubType subType)
+        private static InputDeviceMatcher GetMatcher(DeviceSubType subType)
         {
             return new InputDeviceMatcher()
                 .WithInterface(InterfaceName)
                 .WithCapability("subType", (int)subType);
         }
 
-        internal static InputDeviceMatcher GetMatcher(DeviceSubType subType, short vendorId, short productId)
+        private static InputDeviceMatcher GetMatcher(DeviceSubType subType, short vendorId, short productId)
         {
             return GetMatcher(subType)
                 // `int` cast is required for the input system's JSON parser to match these values correctly
@@ -166,7 +196,7 @@ namespace PlasticBand.LowLevel
                 .WithCapability("gamepad/leftStickY", (int)productId);
         }
 
-        internal static InputDeviceMatcher GetMatcher(DeviceSubType subType, short vendorId, short productId, short revision)
+        private static InputDeviceMatcher GetMatcher(DeviceSubType subType, short vendorId, short productId, short revision)
         {
             return GetMatcher(subType, vendorId, productId)
                 .WithCapability("gamepad/rightStickX", (int)revision);
