@@ -8,10 +8,26 @@ Dates are relative to UTC.
 
 ## [Unreleased]
 
+### Added
+
+- Xbox CRKD guitars are now supported.
+- PlayStation CRKD guitars are now supported.
+
+### Changed
+
+- GameInput and Santroller XInput layouts are now registered regardless of platform.
+  - These were the last layouts to be conditionally compiled out based on platform. They can now be used on all platforms, so long as a backend is provided that reports the expected data.
+- The PC World Tour guitar now has its own layout and default display string.
+- XInput 4-lane and 5-lane drumkits are now immediately distinguished, and no longer require an input to be received first.
+- Reworked XInput device layout resolution for internal maintenance purposes.
+  - Much easier to ensure things are functioning as intended now.
+- Eliminated some memory allocation from LINQ usage in HID device layout resolution.
+
 ### Fixed
 
 - Wii Pro Keyboards now have proper labels for their AB12 face buttons.
-- Tilt on PS3 GH guitars now fill up the whole -1 to 1 range by naturally tilting. (Note that shaking the guitar will cause the accelerometer axes to report values greater than 1.)
+- Tilt on PS3 GH guitars now fill up the whole -1 to 1 range by naturally tilting. (Note that shaking the guitar may cause the accelerometer axes to report values greater than 1.)
+- PS4/5 Riffmaster joysticks no longer have up and down swapped.
 
 ## [0.9.0] - 2025/07/21
 
