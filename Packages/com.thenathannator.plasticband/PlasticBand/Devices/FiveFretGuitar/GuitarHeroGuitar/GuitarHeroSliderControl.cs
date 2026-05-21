@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PlasticBand.Devices;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 
 #if PLASTICBAND_DEBUG_CONTROLS
@@ -17,6 +18,7 @@ namespace PlasticBand.Controls
     /// <summary>
     /// One of the segments on a <see cref="GuitarHeroGuitar"/>'s slider bar.
     /// </summary>
+    [InputControlLayout(displayName = "Slider Fret", hideInUI = true)]
     internal class GuitarHeroSliderControl : ButtonControl
     {
         internal static void Initialize()

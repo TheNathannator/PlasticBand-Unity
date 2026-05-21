@@ -3,6 +3,7 @@ using PlasticBand.Devices;
 using PlasticBand.Devices.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 
 #if PLASTICBAND_DEBUG_CONTROLS
@@ -17,6 +18,7 @@ namespace PlasticBand.Controls
     /// <summary>
     /// The pickup switch on an Xbox 360/PS3/Wii <see cref="RockBandGuitar"/>.
     /// </summary>
+    [InputControlLayout(displayName = "Pickup Switch", hideInUI = true)]
     internal class RockBandPickupSwitchControl : IntegerControl
     {
         internal static void Initialize()
