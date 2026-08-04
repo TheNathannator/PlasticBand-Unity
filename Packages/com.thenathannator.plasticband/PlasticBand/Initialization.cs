@@ -97,6 +97,7 @@ namespace PlasticBand
             FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
             XboxOneFourLaneDrumkit.Initialize();
+            XboxOneCrkdDrumkit.Initialize();
             PS3FourLaneDrumkit.Initialize();
             PS4FourLaneDrumkit.Initialize();
             WiiFourLaneDrumkit.Initialize();

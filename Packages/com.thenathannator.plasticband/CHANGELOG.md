@@ -10,7 +10,7 @@ Dates are relative to UTC.
 
 ### Added
 
-- Xbox CRKD guitars are now supported.
+- Xbox CRKD guitars and drums are now supported.
 - PlayStation CRKD guitars are now supported.
 
 ### Changed
