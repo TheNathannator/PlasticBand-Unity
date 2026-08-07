@@ -72,6 +72,7 @@ namespace PlasticBand
             XboxOneRiffmasterGuitar.Initialize();
             PS4RiffmasterGuitar.Initialize();
             PS5RiffmasterGuitar.Initialize();
+            SwitchRiffmasterGuitar.Initialize();
 
             // CRKD guitars
             XboxOneCrkdGuitar.Initialize();
