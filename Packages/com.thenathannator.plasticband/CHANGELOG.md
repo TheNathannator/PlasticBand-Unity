@@ -16,6 +16,10 @@ Dates are relative to UTC.
 
 - Xbox 360 Rock Band 1 drumkits are no longer incorrectly identified as Guitar Hero drumkits.
 
+### Removed
+
+- The accelerometers on Guitar Hero guitars are no longer fully exposed, as they are not reliably implemented between different guitar models. Only standard tilt remains exposed.
+
 ## [0.9.1] - 2026/08/04
 
 ### Added

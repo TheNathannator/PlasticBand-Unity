@@ -32,12 +32,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "yellowFret", layout = "Button", bit = 15)]
         public ushort buttons;
 
-        // Accelerometer values are not provided on Santroller guitars
-        // [InputControl(name = "accelY", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize=true,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public byte accelY;
-
-        // [InputControl(name = "accelZ", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize=true,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public byte accelZ;
+        public byte unused1;
+        public byte unused2;
 
         [InputControl(name = "touchGreen", layout = "GuitarHeroSlider", format = "SHRT")]
         [InputControl(name = "touchRed", layout = "GuitarHeroSlider", format = "SHRT")]
@@ -46,7 +42,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "touchOrange", layout = "GuitarHeroSlider", format = "SHRT")]
         public short slider;
 
-        public short unused;
+        public short unused3;
 
         [InputControl(name = "whammy", layout = "Axis", defaultState = short.MinValue, parameters = "normalize=true,normalizeMin=-1,normalizeMax=1,normalizeZero=-1")]
         public short whammy;

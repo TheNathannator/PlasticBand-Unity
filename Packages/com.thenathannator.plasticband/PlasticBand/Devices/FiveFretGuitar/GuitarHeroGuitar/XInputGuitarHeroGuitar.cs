@@ -34,15 +34,9 @@ namespace PlasticBand.Devices
         [InputControl(name = "yellowFret", layout = "Button", bit = 15)]
         public ushort buttons;
 
-        // Was gonna use these parameters based on my Les Paul, but maybe it would be best to
-        // leave that up to calibration systems rather than assuming all guitars will be the same
-        // parameters = "normalize=true,normalizeMin=0.1,normalizeMax=0.6,normalizeZero=0.36,clamp=2,clampMin=-1,clampMax=1"
-        [InputControl(name = "accelY", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize=true,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public byte accelY;
-
-        // parameters = "normalize=true,normalizeMin=0.2,normalizeMax=0.75,normalizeZero=0.45,clamp=2,clampMin=-1,clampMax=1"
-        [InputControl(name = "accelZ", layout = "Axis", noisy = true, defaultState = 0x80, parameters = "normalize=true,normalizeMin=0,normalizeMax=1,normalizeZero=0.5")]
-        public byte accelZ;
+        // Accelerometer values are ignored, as they are unreliable between different guitar models
+        private byte m_AccelY;
+        private byte m_AccelZ;
 
         [InputControl(name = "touchGreen", layout = "GuitarHeroSlider", format = "SHRT")]
         [InputControl(name = "touchRed", layout = "GuitarHeroSlider", format = "SHRT")]
@@ -56,7 +50,6 @@ namespace PlasticBand.Devices
         [InputControl(name = "whammy", layout = "Axis", defaultState = short.MinValue, parameters = "normalize=true,normalizeMin=-1,normalizeMax=1,normalizeZero=-1")]
         public short whammy;
 
-        // parameters = "normalize=true,normalizeMin=-0.85,normalizeMax=1,normalizeZero=0,clamp=2,clampMin=-1,clampMax=1"
         [InputControl(name = "tilt", layout = "Axis", noisy = true)]
         public short tilt;
     }

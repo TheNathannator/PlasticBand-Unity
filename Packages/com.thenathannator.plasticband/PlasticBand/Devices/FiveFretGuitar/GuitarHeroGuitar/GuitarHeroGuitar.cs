@@ -67,33 +67,6 @@ namespace PlasticBand.Devices
         public ButtonControl touchOrange { get; private set; }
 
         /// <summary>
-        /// The X-axis of the guitar's accelerometer; equivalent to regular tilt.
-        /// </summary>
-        /// <remarks>
-        /// Positive is when the guitar is pointed up, negative is when the guitar is pointed down.
-        /// </remarks>
-        [InputControl(name = nameof(tilt), displayName = "Tilt/Accelerometer X", noisy = true, alias = "accelX")]
-        public AxisControl accelX { get; private set; }
-
-        /// <summary>
-        /// The Y-axis of the guitar's accelerometer.
-        /// </summary>
-        /// <remarks>
-        /// Positive is when the guitar is face down, negative is when the guitar is face up.
-        /// </remarks>
-        [InputControl(displayName = "Accelerometer Y", noisy = true)]
-        public AxisControl accelY { get; private set; }
-
-        /// <summary>
-        /// The Z-axis of the guitar's accelerometer.
-        /// </summary>
-        /// <remarks>
-        /// Positive is when the guitar is pointed right, negative is when the guitar is pointed left.
-        /// </remarks>
-        [InputControl(displayName = "Accelerometer Z", noisy = true)]
-        public AxisControl accelZ { get; private set; }
-
-        /// <summary>
         /// Retrieves a touch fret control by index.<br/>
         /// 0 = green, 4 = orange.
         /// </summary>
@@ -165,10 +138,6 @@ namespace PlasticBand.Devices
             touchYellow = GetChildControl<ButtonControl>(nameof(touchYellow));
             touchBlue = GetChildControl<ButtonControl>(nameof(touchBlue));
             touchOrange = GetChildControl<ButtonControl>(nameof(touchOrange));
-
-            accelX = GetChildControl<AxisControl>(nameof(accelX));
-            accelY = GetChildControl<AxisControl>(nameof(accelY));
-            accelZ = GetChildControl<AxisControl>(nameof(accelZ));
         }
 
         /// <inheritdoc/>

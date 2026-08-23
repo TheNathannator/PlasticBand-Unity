@@ -56,14 +56,6 @@ namespace PlasticBand.Devices
         [InputControl(name = "tilt", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0.375,normalizeMax=0.625,normalizeZero=0.5,invert")]
         [FieldOffset(19)]
         public short tilt;
-
-        [InputControl(name = "accelZ", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0.375,normalizeMax=0.625,normalizeZero=0.5,invert")]
-        [FieldOffset(21)]
-        public short accelZ;
-
-        [InputControl(name = "accelY", layout = "Axis", noisy = true, format = "BIT", sizeInBits = 10, defaultState = 0x200, parameters = "normalize,normalizeMin=0.375,normalizeMax=0.625,normalizeZero=0.5,invert")]
-        [FieldOffset(23)]
-        public short accelY;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

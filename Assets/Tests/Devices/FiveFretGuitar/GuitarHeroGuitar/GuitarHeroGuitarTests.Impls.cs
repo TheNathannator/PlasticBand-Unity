@@ -8,14 +8,12 @@ namespace PlasticBand.Tests.Devices
     using SantrollerHIDButton = SantrollerHIDGuitarHeroGuitarState.Button;
 
     internal class XInputGuitarHeroGuitarTests
-        : GuitarHeroGuitarTests_Accelerometer<XInputGuitarHeroGuitar, XInputGuitarHeroGuitarState>
+        : GuitarHeroGuitarTests<XInputGuitarHeroGuitar, XInputGuitarHeroGuitarState>
     {
         protected override XInputGuitarHeroGuitarState CreateState()
             => new XInputGuitarHeroGuitarState()
         {
             whammy = short.MinValue,
-            accelY = 0x80,
-            accelZ = 0x80,
         };
 
         protected override void SetDpad(ref XInputGuitarHeroGuitarState state, DpadDirection dpad)
@@ -43,19 +41,6 @@ namespace PlasticBand.Tests.Devices
             // of the short, but values of 0x80 or greater result in an upper byte of one less than the lower byte
             state.slider = (short)-((sbyte)value * -0x0101);
         }
-
-        protected override void SetAccelerometerX(ref XInputGuitarHeroGuitarState state, float value)
-            => SetTilt(ref state, value);
-
-        protected override void SetAccelerometerY(ref XInputGuitarHeroGuitarState state, float value)
-        {
-            state.accelY = DeviceHandling.DenormalizeByteSigned(value);
-        }
-
-        protected override void SetAccelerometerZ(ref XInputGuitarHeroGuitarState state, float value)
-        {
-            state.accelZ = DeviceHandling.DenormalizeByteSigned(value);
-        }
     }
 
     internal class SantrollerXInputGuitarHeroGuitarTests
@@ -65,8 +50,6 @@ namespace PlasticBand.Tests.Devices
             => new SantrollerXInputGuitarHeroGuitarState()
         {
             whammy = short.MinValue,
-            accelY = 0x80,
-            accelZ = 0x80,
         };
 
         protected override void SetDpad(ref SantrollerXInputGuitarHeroGuitarState state, DpadDirection dpad)
@@ -95,15 +78,13 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class PS3GuitarHeroGuitarTests_NoReportId
-        : GuitarHeroGuitarTests_Accelerometer<PS3GuitarHeroGuitar, PS3GuitarHeroGuitarState_NoReportId>
+        : GuitarHeroGuitarTests<PS3GuitarHeroGuitar, PS3GuitarHeroGuitarState_NoReportId>
     {
         protected override PS3GuitarHeroGuitarState_NoReportId CreateState()
             => new PS3GuitarHeroGuitarState_NoReportId()
         {
             dpad = 8,
             tilt = 0x200,
-            accelY = 0x200,
-            accelZ = 0x200,
         };
 
         protected override void SetDpad(ref PS3GuitarHeroGuitarState_NoReportId state, DpadDirection dpad)
@@ -131,23 +112,10 @@ namespace PlasticBand.Tests.Devices
         {
             state.slider = value;
         }
-
-        protected override void SetAccelerometerX(ref PS3GuitarHeroGuitarState_NoReportId state, float value)
-            => SetTilt(ref state, value);
-
-        protected override void SetAccelerometerY(ref PS3GuitarHeroGuitarState_NoReportId state, float value)
-        {
-            state.accelY = PS3DeviceHandling.DenormalizeAccelerometer(value);
-        }
-
-        protected override void SetAccelerometerZ(ref PS3GuitarHeroGuitarState_NoReportId state, float value)
-        {
-            state.accelZ = PS3DeviceHandling.DenormalizeAccelerometer(value);
-        }
     }
 
     internal class PS3GuitarHeroGuitarTests_ReportId
-        : GuitarHeroGuitarTests_Accelerometer<PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitarState_ReportId>
+        : GuitarHeroGuitarTests<PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitarState_ReportId>
     {
         protected override PS3GuitarHeroGuitarState_ReportId CreateState()
             => new PS3GuitarHeroGuitarState_ReportId()
@@ -156,8 +124,6 @@ namespace PlasticBand.Tests.Devices
             {
                 dpad = 8,
                 tilt = 0x200,
-                accelY = 0x200,
-                accelZ = 0x200,
             }
         };
 
@@ -185,19 +151,6 @@ namespace PlasticBand.Tests.Devices
         protected override void SetSliderValue(ref PS3GuitarHeroGuitarState_ReportId state, byte value)
         {
             state.state.slider = value;
-        }
-
-        protected override void SetAccelerometerX(ref PS3GuitarHeroGuitarState_ReportId state, float value)
-            => SetTilt(ref state, value);
-
-        protected override void SetAccelerometerY(ref PS3GuitarHeroGuitarState_ReportId state, float value)
-        {
-            state.state.accelY = PS3DeviceHandling.DenormalizeAccelerometer(value);
-        }
-
-        protected override void SetAccelerometerZ(ref PS3GuitarHeroGuitarState_ReportId state, float value)
-        {
-            state.state.accelZ = PS3DeviceHandling.DenormalizeAccelerometer(value);
         }
     }
 
