@@ -182,6 +182,11 @@ namespace PlasticBand.Devices
             XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(XInputController.DeviceSubType.DrumKit);
 
             // Additional known hardware IDs:
+
+            // RB1 drumkit; uses all 0s for its axis capabilities
+            XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(
+                XInputController.DeviceSubType.DrumKit, 0, 0, 0);
+
             // ION Drum Rocker
             XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(
                 XInputController.DeviceSubType.DrumKit, 0x15E4, 0x0130);

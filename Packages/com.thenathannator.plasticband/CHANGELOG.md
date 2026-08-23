@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [Unreleased]
+
+### Fixed
+
+- Xbox 360 Rock Band 1 drumkits are no longer incorrectly identified as Guitar Hero drumkits.
+
 ## [0.9.1] - 2026/08/04
 
 ### Added
