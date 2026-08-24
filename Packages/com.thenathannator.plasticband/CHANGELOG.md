@@ -8,6 +8,10 @@ Dates are relative to UTC.
 
 ## [0.9.2] - 2026/08/24
 
+### Added
+
+- A couple missing IDs for PlayStation CRKD guitars have been added.
+
 ### Fixed
 
 - Xbox 360 Rock Band 1 drumkits are no longer incorrectly identified as Guitar Hero drumkits.
