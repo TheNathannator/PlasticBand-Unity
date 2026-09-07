@@ -7,6 +7,13 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
+    internal interface IGuitarHeroGuitarState : IFiveFretGuitarState
+    {
+        bool spPedal { get; set; }
+
+        byte rawTouchBar { get; set; }
+    }
+
     /// <summary>
     /// A Guitar Hero 5-fret guitar.
     /// Has some additional features that aren't available on all 5-fret guitars.

@@ -129,5 +129,14 @@ namespace PlasticBand.Controls
             int denormalized = min + (int)((max - min) * (@base + value));
             return denormalized;
         }
+
+        public static int Convert(int value,
+            int fromMin, int fromMax, int fromZero,
+            int toMin, int toMax, int toZero)
+        {
+            float normalized = Normalize(value, fromMin, fromMax, fromZero);
+            int converted = Denormalize(normalized, toMin, toMax, toZero);
+            return converted;
+        }
     }
 }

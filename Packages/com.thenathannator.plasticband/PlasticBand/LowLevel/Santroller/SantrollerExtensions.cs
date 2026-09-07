@@ -2,6 +2,15 @@ namespace PlasticBand.Devices.LowLevel
 {
     internal static class SantrollerExtensions
     {
+        internal static void SetBit(ref this SantrollerHIDGuitarHeroGuitarState.Button value,
+            SantrollerHIDGuitarHeroGuitarState.Button mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= ~mask;
+        }
+
         internal static void SetBit(ref this SantrollerHIDRockBandGuitarState.Button value,
             SantrollerHIDRockBandGuitarState.Button mask, bool set)
         {

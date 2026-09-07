@@ -198,21 +198,4 @@ namespace PlasticBand.Tests.Devices
             RecognizesAxis(guitar, CreateState(), guitar.tilt, tiltMode, SetTilt);
         });
     }
-
-    public static class XInputFiveFretGuitarHandling
-    {
-        public static void SetFrets(ref ushort buttonsField, FiveFret frets)
-        {
-            buttonsField.SetBit((ushort)XInputButton.A, (frets & FiveFret.Green) != 0);
-            buttonsField.SetBit((ushort)XInputButton.B, (frets & FiveFret.Red) != 0);
-            buttonsField.SetBit((ushort)XInputButton.Y, (frets & FiveFret.Yellow) != 0);
-            buttonsField.SetBit((ushort)XInputButton.X, (frets & FiveFret.Blue) != 0);
-            buttonsField.SetBit((ushort)XInputButton.LeftShoulder, (frets & FiveFret.Orange) != 0);
-        }
-
-        public static short GetWhammy(float value)
-        {
-            return (short)IntegerAxisControl.Denormalize(value, short.MinValue, short.MaxValue, short.MinValue);
-        }
-    }
 }

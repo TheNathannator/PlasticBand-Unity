@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
@@ -14,7 +15,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct SantrollerHIDGuitarHeroGuitarState : IInputStateTypeInfo
+    internal unsafe struct SantrollerHIDGuitarHeroGuitarState : IGuitarHeroGuitarState
     {
         [Flags]
         public enum Button : ushort
@@ -38,42 +39,112 @@ namespace PlasticBand.Devices
 
         public byte reportId;
 
-        [InputControl(name = "greenFret", layout = "Button", bit = 0)]
-        [InputControl(name = "redFret", layout = "Button", bit = 1)]
-        [InputControl(name = "yellowFret", layout = "Button", bit = 2)]
-        [InputControl(name = "blueFret", layout = "Button", bit = 3)]
-        [InputControl(name = "orangeFret", layout = "Button", bit = 4)]
+        public Button buttons;
+        public HidDpad dpad;
 
-        [InputControl(name = "spPedal", layout = "Button", bit = 5)]
+        public byte m_Whammy;
+        public byte m_TouchBar;
+        public byte m_Tilt;
 
-        [InputControl(name = "selectButton", layout = "Button", bit = 6)]
-        [InputControl(name = "startButton", layout = "Button", bit = 7)]
-        [InputControl(name = "systemButton", layout = "Button", bit = 8, displayName = "System")]
-        public ushort buttons;
+        public bool green
+        {
+            get => (buttons & Button.Green) != 0;
+            set => buttons.SetBit(Button.Green, value);
+        }
 
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
-        [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7")]
-        [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
-        [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
-        [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5, maxValue=7")]
-        public byte dpad;
+        public bool red
+        {
+            get => (buttons & Button.Red) != 0;
+            set => buttons.SetBit(Button.Red, value);
+        }
 
-        [InputControl(name = "whammy", layout = "Axis")]
-        public byte whammy;
+        public bool yellow
+        {
+            get => (buttons & Button.Yellow) != 0;
+            set => buttons.SetBit(Button.Yellow, value);
+        }
 
-        [InputControl(name = "touchGreen", layout = "GuitarHeroSlider", format = "BYTE")]
-        [InputControl(name = "touchRed", layout = "GuitarHeroSlider", format = "BYTE")]
-        [InputControl(name = "touchYellow", layout = "GuitarHeroSlider", format = "BYTE")]
-        [InputControl(name = "touchBlue", layout = "GuitarHeroSlider", format = "BYTE")]
-        [InputControl(name = "touchOrange", layout = "GuitarHeroSlider", format = "BYTE")]
-        public byte slider;
+        public bool blue
+        {
+            get => (buttons & Button.Blue) != 0;
+            set => buttons.SetBit(Button.Blue, value);
+        }
 
-        [InputControl(name = "tilt", layout = "IntAxis", defaultState = 0x80, parameters = "minValue=0x00,maxValue=0xFF,zeroPoint=0x80")]
-        public byte tilt;
+        public bool orange
+        {
+            get => (buttons & Button.Orange) != 0;
+            set => buttons.SetBit(Button.Orange, value);
+        }
+
+        public bool dpadUp
+        {
+            get => dpad.IsUp();
+            set => dpad.SetUp(value);
+        }
+
+        public bool dpadRight
+        {
+            get => dpad.IsRight();
+            set => dpad.SetRight(value);
+        }
+
+        public bool dpadDown
+        {
+            get => dpad.IsDown();
+            set => dpad.SetDown(value);
+        }
+
+        public bool dpadLeft
+        {
+            get => dpad.IsLeft();
+            set => dpad.SetLeft(value);
+        }
+
+        public bool start
+        {
+            get => (buttons & Button.Start) != 0;
+            set => buttons.SetBit(Button.Start, value);
+        }
+
+        public bool select
+        {
+            get => (buttons & Button.Select) != 0;
+            set => buttons.SetBit(Button.Select, value);
+        }
+
+        public bool system
+        {
+            get => (buttons & Button.System) != 0;
+            set => buttons.SetBit(Button.System, value);
+        }
+
+        public byte whammy
+        {
+            get => m_Whammy;
+            set => m_Whammy = value;
+        }
+
+        public sbyte tilt
+        {
+            get => (sbyte)(m_Tilt - 0x80);
+            set => m_Tilt = (byte)(value + 0x80);
+        }
+
+        public bool spPedal
+        {
+            get => (buttons & Button.SpPedal) != 0;
+            set => buttons.SetBit(Button.SpPedal, value);
+        }
+
+        public byte rawTouchBar
+        {
+            get => m_TouchBar;
+            set => m_TouchBar = value;
+        }
     }
 
-    [InputControlLayout(stateType = typeof(SantrollerHIDGuitarHeroGuitarState), displayName = "Santroller HID Guitar Hero Guitar")]
-    internal class SantrollerHIDGuitarHeroGuitar : GuitarHeroGuitar, ISantrollerFiveFretGuitarHaptics
+    [InputControlLayout(stateType = typeof(TranslatedGuitarHeroGuitarState), displayName = "Santroller HID Guitar Hero Guitar")]
+    internal class SantrollerHIDGuitarHeroGuitar : TranslatingGuitarHeroGuitar_Discrete<SantrollerHIDGuitarHeroGuitarState>, ISantrollerFiveFretGuitarHaptics
     {
         internal new static void Initialize()
         {
