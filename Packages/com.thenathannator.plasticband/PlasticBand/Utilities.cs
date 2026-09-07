@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -49,6 +50,26 @@ namespace PlasticBand
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsPressedInEvent(this ButtonControl control, InputEventPtr eventPtr)
             => control.ReadValueFromEvent(eventPtr, out float value) && control.IsValueConsideredPressed(value);
+
+        public static int Clamp(int value, int min, int max)
+        {
+            if (min > max)
+            {
+                throw new ArgumentOutOfRangeException("Min cannot be greater than max.");
+            }
+
+            if (value > max)
+            {
+                return max;
+            }
+
+            if (value < min)
+            {
+                return min;
+            }
+
+            return value;
+        }
 
         // TODO: Move all of this out into a separate Extensions file
         public static void SetBit(ref this byte value, byte mask, bool set)

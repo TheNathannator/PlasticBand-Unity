@@ -48,7 +48,6 @@ namespace PlasticBand
             GuitarPraiseGuitar.Initialize();
 
             // Guitar Hero guitars
-            GuitarHeroSliderControl.Initialize();
             GuitarHeroGuitar.Initialize();
             XInputGuitarHeroGuitar.Initialize();
             PS3GuitarHeroGuitar.Initialize();

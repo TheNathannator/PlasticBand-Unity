@@ -88,7 +88,12 @@ namespace PlasticBand.LowLevel
             InputSystem.RegisterLayout<TDevice>(matches: GetRevisionMatcher(vendorId, productId, revision));
         }
 
-        internal static void RegisterLayout<TReportId, TNoReportId>(int vendorId, int productId, bool reportIdDefault = false)
+        internal static void RegisterLayout<TReportId, TNoReportId>(
+            int vendorId,
+            int productId,
+            bool reportIdDefault = false,
+            string productName = null
+        )
             where TReportId : InputDevice
             where TNoReportId : InputDevice
         {
@@ -100,9 +105,9 @@ namespace PlasticBand.LowLevel
 
             // Register default layout
             InputSystem.RegisterLayout(TDefault, matches:
-                GetMatcher(vendorId, productId, (int)UsagePage.GenericDesktop, (int)GenericDesktop.Joystick));
+                GetMatcher(vendorId, productId, (int)UsagePage.GenericDesktop, (int)GenericDesktop.Joystick, productName));
             InputSystem.RegisterLayout(TDefault, matches:
-                GetMatcher(vendorId, productId, (int)UsagePage.GenericDesktop, (int)GenericDesktop.Gamepad));
+                GetMatcher(vendorId, productId, (int)UsagePage.GenericDesktop, (int)GenericDesktop.Gamepad, productName));
 
             // Register report ID/no report ID variants
             if (!s_AvailableLayouts.ContainsKey(TDefault.Name))
@@ -113,22 +118,47 @@ namespace PlasticBand.LowLevel
             }
         }
 
-        private static InputDeviceMatcher GetMatcher(int vendorId, int productId,
-            int usagePage = (int)UsagePage.GenericDesktop, int usage = (int)GenericDesktop.Gamepad)
+        private static InputDeviceMatcher GetMatcher(
+            int vendorId,
+            int productId,
+            int usagePage = (int)UsagePage.GenericDesktop,
+            int usage = (int)GenericDesktop.Gamepad,
+            string productName = null
+        )
         {
-            return new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
+            var matcher = new InputDeviceMatcher()
+                .WithInterface(HidDefinitions.InterfaceName);
+            
+            if (!string.IsNullOrEmpty(productName))
+            {
+                matcher = matcher.WithProduct(productName);
+            }
+
+            return matcher
                 .WithCapability("vendorId", vendorId)
                 .WithCapability("productId", productId)
                 .WithCapability("usagePage", usagePage)
                 .WithCapability("usage", usage);
         }
 
-        private static InputDeviceMatcher GetRevisionMatcher(int vendorId, int productId, int revision,
-            int usagePage = (int)UsagePage.GenericDesktop, int usage = (int)GenericDesktop.Gamepad)
+        private static InputDeviceMatcher GetRevisionMatcher(
+            int vendorId,
+            int productId,
+            int revision,
+            int usagePage = (int)UsagePage.GenericDesktop,
+            int usage = (int)GenericDesktop.Gamepad,
+            string productName = null
+        )
         {
-            return new InputDeviceMatcher()
-                .WithInterface(HidDefinitions.InterfaceName)
+            var matcher = new InputDeviceMatcher()
+                .WithInterface(HidDefinitions.InterfaceName);
+            
+            if (!string.IsNullOrEmpty(productName))
+            {
+                matcher = matcher.WithProduct(productName);
+            }
+
+            return matcher
                 .WithVersion(revision.ToString())
                 .WithCapability("vendorId", vendorId)
                 .WithCapability("productId", productId)
