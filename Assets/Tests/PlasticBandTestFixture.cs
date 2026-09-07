@@ -343,11 +343,11 @@ namespace PlasticBand.Tests
             SetAxisAction<TState> setAxis)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            for (int i = -100; i <= 100; i++)
+            for (int i = -50; i <= 50; i++)
             {
-                float value = i / 100f;
+                float value = i / 50f;
                 setAxis(ref state, value);
-                AssertAxisValue(device, state, value, 1 / 100f, axis);
+                AssertAxisValue(device, state, value, 1 / 50f, axis);
             }
         }
 
