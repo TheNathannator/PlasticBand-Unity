@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Dates are relative to UTC.
 
+## [0.10.0] - 2026/09/07
+
+### Fixed
+
+- The touch bar on the Xbox 360 Pro Keyboard is now properly handled when using an Xbox 360 receiver via libusb.
+- The touch bar on World Tour guitars is now properly handled.
+
+### Removed
+
+- The accelerometers on Guitar Hero guitars are no longer fully exposed, as they are not reliably implemented between different guitar models. Only standard tilt remains exposed.
+
 ## [0.9.2] - 2026/08/24
 
 ### Added
@@ -15,10 +26,6 @@ Dates are relative to UTC.
 ### Fixed
 
 - Xbox 360 Rock Band 1 drumkits are no longer incorrectly identified as Guitar Hero drumkits.
-
-### Removed
-
-- The accelerometers on Guitar Hero guitars are no longer fully exposed, as they are not reliably implemented between different guitar models. Only standard tilt remains exposed.
 
 ## [0.9.1] - 2026/08/04
 
