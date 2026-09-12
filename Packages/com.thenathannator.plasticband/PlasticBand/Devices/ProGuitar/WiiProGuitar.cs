@@ -20,8 +20,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "buttonWest", layout = "Button", bit = (int)TranslatedProGuitarButton.West, displayName = "1")]
         [InputControl(name = "buttonNorth", layout = "Button", bit = (int)TranslatedProGuitarButton.North, displayName = "2")]
 
-        [InputControl(name = "startButton", layout = "Button", bit = (int)TranslatedProGuitarButton.Start, displayName = "Plus", shortDisplayName = "+")]
-        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedProGuitarButton.Select, displayName = "Minus", shortDisplayName = "-")]
+        [InputControl(name = "start", layout = "Button", bit = (int)TranslatedProGuitarButton.Start, displayName = "Plus", shortDisplayName = "+")]
+        [InputControl(name = "select", layout = "Button", bit = (int)TranslatedProGuitarButton.Select, displayName = "Minus", shortDisplayName = "-")]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedProGuitarButton.System, displayName = "System")]
         public TranslatedProGuitarState state;
     }

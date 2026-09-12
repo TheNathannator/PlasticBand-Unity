@@ -102,13 +102,13 @@ namespace PlasticBand.Devices
         /// The Start button on the drumkit.
         /// </summary>
         [InputControl(displayName = "Start", usage = "Menu")]
-        public ButtonControl startButton { get; private set; }
+        public ButtonControl start { get; private set; }
 
         /// <summary>
         /// The Select button on the drumkit.
         /// </summary>
         [InputControl(displayName = "Select")]
-        public ButtonControl selectButton { get; private set; }
+        public ButtonControl select { get; private set; }
 
         /// <summary>
         /// The bottom face button.
@@ -287,8 +287,8 @@ namespace PlasticBand.Devices
 
             dpad = GetChildControl<DpadControl>(nameof(dpad));
 
-            startButton = GetChildControl<ButtonControl>(nameof(startButton));
-            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
+            start = GetChildControl<ButtonControl>(nameof(start));
+            select = GetChildControl<ButtonControl>(nameof(select));
 
             buttonSouth = GetChildControl<ButtonControl>(nameof(buttonSouth));
             buttonEast = GetChildControl<ButtonControl>(nameof(buttonEast));

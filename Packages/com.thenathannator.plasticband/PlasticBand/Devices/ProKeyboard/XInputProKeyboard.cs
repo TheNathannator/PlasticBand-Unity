@@ -20,8 +20,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/left", bit = 2)]
         [InputControl(name = "dpad/right", bit = 3)]
 
-        [InputControl(name = "startButton", layout = "Button", bit = 4)]
-        [InputControl(name = "selectButton", layout = "Button", bit = 5, displayName = "Back")]
+        [InputControl(name = "start", layout = "Button", bit = 4)]
+        [InputControl(name = "select", layout = "Button", bit = 5, displayName = "Back")]
 
         [InputControl(name = "buttonSouth", layout = "Button", bit = 12, displayName = "A")]
         [InputControl(name = "buttonEast", layout = "Button", bit = 13, displayName = "B")]

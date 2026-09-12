@@ -60,8 +60,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "joystickClick", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.JoystickClick)]
         [InputControl(name = "p1Button", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.P1, displayName = "P1")]
 
-        [InputControl(name = "startButton", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.Start)]
-        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.Select)]
+        [InputControl(name = "start", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.Start)]
+        [InputControl(name = "select", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.Select)]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.System)]
         public ushort buttons;
 

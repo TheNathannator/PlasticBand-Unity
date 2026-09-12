@@ -50,8 +50,8 @@ namespace PlasticBand.Devices.LowLevel
         [InputControl(name = "l1", layout = "Button", format = "BIT", bit = 6, displayName = "L1")]
         [InputControl(name = "r1", layout = "Button", format = "BIT", bit = 7, displayName = "R1")]
 
-        [InputControl(name = "selectButton", layout = "Button", format = "BIT", bit = 8, displayName = "Select")]
-        [InputControl(name = "startButton", layout = "Button", format = "BIT", bit = 9, displayName = "Start", usage = "Menu")]
+        [InputControl(name = "select", layout = "Button", format = "BIT", bit = 8, displayName = "Select")]
+        [InputControl(name = "start", layout = "Button", format = "BIT", bit = 9, displayName = "Start", usage = "Menu")]
         [InputControl(name = "l3Press", layout = "Button", format = "BIT", bit = 10, displayName = "L3")]
         [InputControl(name = "r3Press", layout = "Button", format = "BIT", bit = 11, displayName = "R3")]
 

@@ -128,7 +128,7 @@ namespace PlasticBand.Devices
     {
         public FourCC format => TranslatedRockBandGuitarState.Format;
 
-        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.Select, displayName = "Back")]
+        [InputControl(name = "select", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.Select, displayName = "Back")]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.System, displayName = "Guide")]
         public TranslatedRockBandGuitarState state;
     }

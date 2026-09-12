@@ -63,13 +63,13 @@ namespace PlasticBand.Devices
         /// The Start button on the keyboard.
         /// </summary>
         [InputControl(displayName = "Start", usage = "Menu")]
-        public ButtonControl startButton { get; private set; }
+        public ButtonControl start { get; private set; }
 
         /// <summary>
         /// The Select button on the keyboard.
         /// </summary>
         [InputControl(displayName = "Select")]
-        public ButtonControl selectButton { get; private set; }
+        public ButtonControl select { get; private set; }
 
         /// <summary>
         /// The 1st (leftmost) key on the keyboard (C-1).
@@ -327,8 +327,8 @@ namespace PlasticBand.Devices
             buttonWest = GetChildControl<ButtonControl>(nameof(buttonWest));
             buttonNorth = GetChildControl<ButtonControl>(nameof(buttonNorth));
 
-            startButton = GetChildControl<ButtonControl>(nameof(startButton));
-            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
+            start = GetChildControl<ButtonControl>(nameof(start));
+            select = GetChildControl<ButtonControl>(nameof(select));
 
             key1 = GetChildControl<ButtonControl>(nameof(key1));
             key2 = GetChildControl<ButtonControl>(nameof(key2));

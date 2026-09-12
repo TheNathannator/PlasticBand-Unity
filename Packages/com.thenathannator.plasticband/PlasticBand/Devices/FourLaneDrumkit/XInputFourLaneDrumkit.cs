@@ -169,7 +169,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "buttonWest", layout = "Button", bit = (int)TranslatedFourLaneButton.West, displayName = "X")]
         [InputControl(name = "buttonNorth", layout = "Button", bit = (int)TranslatedFourLaneButton.North, displayName = "Y")]
 
-        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedFourLaneButton.Select, displayName = "Back")]
+        [InputControl(name = "select", layout = "Button", bit = (int)TranslatedFourLaneButton.Select, displayName = "Back")]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedFourLaneButton.System, displayName = "Guide")]
         public TranslatedFourLaneState state;
     }

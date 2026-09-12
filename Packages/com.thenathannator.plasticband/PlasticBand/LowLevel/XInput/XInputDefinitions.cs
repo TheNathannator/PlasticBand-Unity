@@ -42,8 +42,8 @@ namespace PlasticBand.LowLevel
         [InputControl(name = "dpad/left", bit = 2)]
         [InputControl(name = "dpad/right", bit = 3)]
 
-        [InputControl(name = "startButton", layout = "Button", format = "BIT", bit = 4, displayName = "Start", usage = "Menu")]
-        [InputControl(name = "selectButton", layout = "Button", format = "BIT", bit = 5, displayName = "Back")]
+        [InputControl(name = "start", layout = "Button", format = "BIT", bit = 4, displayName = "Start", usage = "Menu")]
+        [InputControl(name = "select", layout = "Button", format = "BIT", bit = 5, displayName = "Back")]
         [InputControl(name = "leftStickClick", layout = "Button", format = "BIT", bit = 6, displayName = "Left Stick Click")]
         [InputControl(name = "rightStickClick", layout = "Button", format = "BIT", bit = 7, displayName = "Right Stick Click")]
 

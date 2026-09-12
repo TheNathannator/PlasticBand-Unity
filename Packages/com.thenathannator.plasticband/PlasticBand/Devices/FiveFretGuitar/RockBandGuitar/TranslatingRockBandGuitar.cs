@@ -52,8 +52,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/left", bit = (int)TranslatedRockBandGuitarButton.DpadLeft)]
         [InputControl(name = "dpad/right", bit = (int)TranslatedRockBandGuitarButton.DpadRight)]
 
-        [InputControl(name = "startButton", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.Start)]
-        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.Select)]
+        [InputControl(name = "start", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.Start)]
+        [InputControl(name = "select", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.Select)]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedRockBandGuitarButton.System)]
         public ushort buttons;
 

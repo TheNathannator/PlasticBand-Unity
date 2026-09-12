@@ -73,8 +73,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/left", bit = (int)TranslatedFourLaneButton.DpadLeft)]
         [InputControl(name = "dpad/right", bit = (int)TranslatedFourLaneButton.DpadRight)]
 
-        [InputControl(name = "startButton", layout = "Button", bit = (int)TranslatedFourLaneButton.Start)]
-        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedFourLaneButton.Select)]
+        [InputControl(name = "start", layout = "Button", bit = (int)TranslatedFourLaneButton.Start)]
+        [InputControl(name = "select", layout = "Button", bit = (int)TranslatedFourLaneButton.Select)]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedFourLaneButton.System)]
 
         [InputControl(name = "kick1", layout = "Button", bit = (int)TranslatedFourLaneButton.Kick1)]

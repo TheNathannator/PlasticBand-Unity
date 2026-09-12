@@ -20,8 +20,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "buttonEast", layout = "Button", bit = 2, displayName = "Circle")]
         [InputControl(name = "buttonNorth", layout = "Button", bit = 3, displayName = "Triangle")]
 
-        [InputControl(name = "selectButton", layout = "Button", bit = 8)]
-        [InputControl(name = "startButton", layout = "Button", bit = 9)]
+        [InputControl(name = "select", layout = "Button", bit = 8)]
+        [InputControl(name = "start", layout = "Button", bit = 9)]
 
         [InputControl(name = "systemButton", layout = "Button", bit = 12, displayName = "PlayStation")]
         public ushort buttons;

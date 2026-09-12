@@ -155,7 +155,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "buttonWest", layout = "Button", bit = (int)TranslatedFiveLaneButton.West, displayName = "X")]
         [InputControl(name = "buttonNorth", layout = "Button", bit = (int)TranslatedFiveLaneButton.North, displayName = "Y")]
 
-        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedFiveLaneButton.Select, displayName = "Back")]
+        [InputControl(name = "select", layout = "Button", bit = (int)TranslatedFiveLaneButton.Select, displayName = "Back")]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedFiveLaneButton.System, displayName = "Guide")]
         public TranslatedFiveLaneState state;
     }

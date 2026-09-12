@@ -66,8 +66,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/left", bit = (int)TranslatedTurntableButton.DpadLeft)]
         [InputControl(name = "dpad/right", bit = (int)TranslatedTurntableButton.DpadRight)]
 
-        [InputControl(name = "startButton", layout = "Button", bit = (int)TranslatedTurntableButton.Start)]
-        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedTurntableButton.Select)]
+        [InputControl(name = "start", layout = "Button", bit = (int)TranslatedTurntableButton.Start)]
+        [InputControl(name = "select", layout = "Button", bit = (int)TranslatedTurntableButton.Select)]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedTurntableButton.System)]
         public ushort buttons;
 

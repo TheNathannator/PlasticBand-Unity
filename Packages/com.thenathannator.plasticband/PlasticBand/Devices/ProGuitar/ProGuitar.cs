@@ -112,13 +112,13 @@ namespace PlasticBand.Devices
         /// The Start button on the guitar.
         /// </summary>
         [InputControl(displayName = "Start", usage = "Menu")]
-        public ButtonControl startButton { get; private set; }
+        public ButtonControl start { get; private set; }
 
         /// <summary>
         /// The Select button on the guitar.
         /// </summary>
         [InputControl(displayName = "Select")]
-        public ButtonControl selectButton { get; private set; }
+        public ButtonControl select { get; private set; }
 
         /// <summary>
         /// The held fret of the guitar's 1st string.
@@ -502,8 +502,8 @@ namespace PlasticBand.Devices
             buttonWest = GetChildControl<ButtonControl>(nameof(buttonWest));
             buttonNorth = GetChildControl<ButtonControl>(nameof(buttonNorth));
 
-            startButton = GetChildControl<ButtonControl>(nameof(startButton));
-            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
+            start = GetChildControl<ButtonControl>(nameof(start));
+            select = GetChildControl<ButtonControl>(nameof(select));
 
             fret1 = GetChildControl<IntegerControl>(nameof(fret1));
             fret2 = GetChildControl<IntegerControl>(nameof(fret2));

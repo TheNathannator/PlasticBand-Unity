@@ -145,13 +145,13 @@ namespace PlasticBand.Devices
         /// The Start button on the guitar.
         /// </summary>
         [InputControl(displayName = "Start", usage = "Menu")]
-        public ButtonControl startButton { get; private set; }
+        public ButtonControl start { get; private set; }
 
         /// <summary>
         /// The Select button on the guitar.
         /// </summary>
         [InputControl(displayName = "Hero Power")]
-        public ButtonControl selectButton { get; private set; }
+        public ButtonControl select { get; private set; }
 
         /// <summary>
         /// The GHTV button on the guitar.
@@ -245,8 +245,8 @@ namespace PlasticBand.Devices
             tilt = GetChildControl<AxisControl>(nameof(tilt));
             whammy = GetChildControl<AxisControl>(nameof(whammy));
 
-            startButton = GetChildControl<ButtonControl>(nameof(startButton));
-            selectButton = GetChildControl<ButtonControl>(nameof(selectButton));
+            start = GetChildControl<ButtonControl>(nameof(start));
+            select = GetChildControl<ButtonControl>(nameof(select));
             ghtvButton = GetChildControl<ButtonControl>(nameof(ghtvButton));
         }
 

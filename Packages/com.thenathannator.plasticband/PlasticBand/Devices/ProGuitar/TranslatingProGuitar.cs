@@ -108,8 +108,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/left", bit = (int)TranslatedProGuitarButton.DpadLeft)]
         [InputControl(name = "dpad/right", bit = (int)TranslatedProGuitarButton.DpadRight)]
 
-        [InputControl(name = "startButton", layout = "Button", bit = (int)TranslatedProGuitarButton.Start)]
-        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedProGuitarButton.Select)]
+        [InputControl(name = "start", layout = "Button", bit = (int)TranslatedProGuitarButton.Start)]
+        [InputControl(name = "select", layout = "Button", bit = (int)TranslatedProGuitarButton.Select)]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedProGuitarButton.System)]
 
         [InputControl(name = "tilt", layout = "Button", bit = (int)TranslatedProGuitarButton.Tilt, noisy = true)]

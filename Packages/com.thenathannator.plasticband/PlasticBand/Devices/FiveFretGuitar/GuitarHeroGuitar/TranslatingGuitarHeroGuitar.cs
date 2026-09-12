@@ -58,8 +58,8 @@ namespace PlasticBand.Devices
 
         [InputControl(name = "spPedal", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.Pedal)]
 
-        [InputControl(name = "startButton", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.Start)]
-        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.Select)]
+        [InputControl(name = "start", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.Start)]
+        [InputControl(name = "select", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.Select)]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.System, displayName = "System")]
         public ushort buttons;
 

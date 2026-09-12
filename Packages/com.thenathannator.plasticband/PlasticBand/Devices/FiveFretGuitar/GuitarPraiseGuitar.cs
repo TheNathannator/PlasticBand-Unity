@@ -102,8 +102,8 @@ namespace PlasticBand.Devices
 
         [InputControl(name = "orangeFret", layout = "Button", bit = 8)]
         [InputControl(name = "tilt", layout = "Button", bit = 9)]
-        [InputControl(name = "startButton", layout = "Button", bit = 10)]
-        [InputControl(name = "selectButton", layout = "Button", bit = 11)]
+        [InputControl(name = "start", layout = "Button", bit = 10)]
+        [InputControl(name = "select", layout = "Button", bit = 11)]
         public ushort buttons;
 
         private byte unused2;

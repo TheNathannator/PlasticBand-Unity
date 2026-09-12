@@ -52,8 +52,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/left", bit = (int)TranslatedSixFretButton.DpadLeft)]
         [InputControl(name = "dpad/right", bit = (int)TranslatedSixFretButton.DpadRight)]
 
-        [InputControl(name = "startButton", layout = "Button", bit = (int)TranslatedSixFretButton.Start)]
-        [InputControl(name = "selectButton", layout = "Button", bit = (int)TranslatedSixFretButton.Select)]
+        [InputControl(name = "start", layout = "Button", bit = (int)TranslatedSixFretButton.Start)]
+        [InputControl(name = "select", layout = "Button", bit = (int)TranslatedSixFretButton.Select)]
         [InputControl(name = "ghtvButton", layout = "Button", bit = (int)TranslatedSixFretButton.GHTV)]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedSixFretButton.System, displayName = "D-pad Center")]
         public ushort buttons;
