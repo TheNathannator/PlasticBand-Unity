@@ -42,7 +42,13 @@ This package has no dependencies, however I highly recommend installing the [HID
 - Unity 2022.2 and onward do not natively support XInput instruments. This can be addressed by using v0.4.0 or higher of [HIDrogen](https://github.com/TheNathannator/HIDrogen).
 - Pre-compiling the layouts from this package is not currently possible without breaking things. A large number of them have to determine or construct things at runtime, and pre-compilation circumvents the mechanisms that allow these layouts to determine things in the first place.
   - At some point I could consider looking into workarounds for this (e.g. initializing everything in an `OnAdded` override), but for the time being it's not a priority. (PRs welcome if you can get it worked out!)
-- Xbox 360/One controllers will only work properly on Windows currently. Mac and Linux require custom drivers or support through raw USB handling.
+- Xbox 360/One controllers generally only work properly on Windows. Mac and
+  Linux require custom drivers or support through raw USB handling.
+- On Linux, Xbox PDP Rock Band Jaguar/Riffmaster guitars are supported via the
+  `xone` kernel driver. The Linux joystick device must expose the xone PDP
+  Jaguar report layout; this does not provide the Riffmaster headstock joystick,
+  which xone does not report. HIDrogen must preserve explicitly matched native
+  Linux layouts for the guitar to be recognized.
 - Xbox One support on Windows requires the [HIDrogen](https://github.com/TheNathannator/HIDrogen) package to be installed alongside this one. No errors will occur without it, but they will not be detected by the input system otherwise.
 
 ### Configuration
