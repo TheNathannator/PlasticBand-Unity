@@ -87,8 +87,8 @@ namespace PlasticBand.Tests.Devices
         {
             switch (button)
             {
-                case MenuButton.Start: return keyboard.startButton;
-                case MenuButton.Select: return keyboard.selectButton;
+                case MenuButton.Start: return keyboard.start;
+                case MenuButton.Select: return keyboard.select;
                 default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
             }
         }

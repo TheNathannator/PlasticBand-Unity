@@ -88,8 +88,8 @@ namespace PlasticBand.Tests.Devices
         {
             switch (button)
             {
-                case MenuButton.Start: return drumkit.startButton;
-                case MenuButton.Select: return drumkit.selectButton;
+                case MenuButton.Start: return drumkit.start;
+                case MenuButton.Select: return drumkit.select;
                 default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
             }
         }

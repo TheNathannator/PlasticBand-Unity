@@ -130,8 +130,8 @@ namespace PlasticBand.Tests.Devices
         {
             switch (button)
             {
-                case MenuButton.Start: return turntable.startButton;
-                case MenuButton.Select: return turntable.selectButton;
+                case MenuButton.Start: return turntable.start;
+                case MenuButton.Select: return turntable.select;
                 default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
             }
         }
