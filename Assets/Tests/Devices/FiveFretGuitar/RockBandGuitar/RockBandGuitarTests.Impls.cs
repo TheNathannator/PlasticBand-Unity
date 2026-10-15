@@ -126,4 +126,23 @@ namespace PlasticBand.Tests.Devices
             tilt = 0,
         };
     }
+
+    internal class SantrollerV2HIDRockBandGuitarTests
+        : RockBandGuitarTests_Flags<SantrollerV2HIDRockBandGuitar, SantrollerV2HIDRockBandGuitarState>
+    {
+        protected override AxisMode tiltMode => AxisMode.Signed;
+
+        protected override SantrollerV2HIDRockBandGuitarState CreateState()
+            => new SantrollerV2HIDRockBandGuitarState()
+        {
+            report = new SantrollerV2HIDReport()
+            {
+                reportId = 1,
+                buttons1 = (byte)HidDpad.Neutral,
+            },
+
+            // The default value for this property is not 0, so we must set it explicitly
+            tilt = 0,
+        };
+    }
 }

@@ -110,4 +110,21 @@ namespace PlasticBand.Tests.Devices
             rawTouchBar = 0x80,
         };
     }
+
+    internal class SantrollerV2HIDGuitarHeroGuitarTests
+        : GuitarHeroGuitarTests<SantrollerV2HIDGuitarHeroGuitar, SantrollerV2HIDGuitarHeroGuitarState>
+    {
+        protected override SantrollerV2HIDGuitarHeroGuitarState CreateState()
+            => new SantrollerV2HIDGuitarHeroGuitarState()
+        {
+            report = new SantrollerV2HIDReport()
+            {
+                reportId = 1,
+                buttons1 = (byte)HidDpad.Neutral,
+            },
+            // The default value for this property is not 0, so we must set it explicitly
+            tilt = 0,
+            rawTouchBar = 0x80,
+        };
+    }
 }

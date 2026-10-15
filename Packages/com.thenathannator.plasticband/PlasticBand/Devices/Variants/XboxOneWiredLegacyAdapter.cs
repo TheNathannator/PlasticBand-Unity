@@ -136,7 +136,7 @@ namespace PlasticBand.Devices
                         }
                     })
                 };
-                m_RealDevice = new VariantRealDevice(description);
+                m_RealDevice = new VariantRealDevice(this, description);
             }
             else if (StateReader.ReadReportIdState(stateEvent, out XboxOneWiredLegacyDeviceDisconnect* disconnect))
             {

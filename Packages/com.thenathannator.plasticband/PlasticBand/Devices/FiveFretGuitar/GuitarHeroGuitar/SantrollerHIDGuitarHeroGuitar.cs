@@ -144,12 +144,12 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(TranslatedGuitarHeroGuitarState), displayName = "Santroller HID Guitar Hero Guitar")]
-    internal class SantrollerHIDGuitarHeroGuitar : TranslatingGuitarHeroGuitar_Discrete<SantrollerHIDGuitarHeroGuitarState>, ISantrollerFiveFretGuitarHaptics
+    internal class SantrollerHIDGuitarHeroGuitar : TranslatingGuitarHeroGuitar_Discrete<SantrollerHIDGuitarHeroGuitarState>,
+        ISantrollerFiveFretGuitarHaptics
     {
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDGuitarHeroGuitar>(
-                SantrollerDeviceType.GuitarHeroGuitar);
+            InputSystem.RegisterLayout<SantrollerHIDGuitarHeroGuitar>();
         }
 
         protected override void FinishSetup()

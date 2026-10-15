@@ -64,4 +64,23 @@ namespace PlasticBand.Tests.Devices
             crossfader = 0,
         };
     }
+
+    internal class SantrollerV2HIDTurntableTests
+        : TurntableTests<SantrollerV2HIDTurntable, SantrollerV2HIDTurntableState>
+    {
+        protected override SantrollerV2HIDTurntableState CreateState()
+            => new SantrollerV2HIDTurntableState()
+        {
+            report = new SantrollerV2HIDReport()
+            {
+                reportId = 1,
+                buttons1 = (byte)HidDpad.Neutral,
+            },
+
+            // The raw value for these properties is not 0, so we must set them explicitly
+            leftVelocity = 0,
+            rightVelocity = 0,
+            crossfader = 0,
+        };
+    }
 }
