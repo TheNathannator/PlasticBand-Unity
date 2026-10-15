@@ -26,17 +26,15 @@ namespace PlasticBand.Devices
         [InputControl(name = "select", layout = "Button", bit = 5)]
         [InputControl(name = "leftStickPress", layout = "Button", bit = 6)]
         [InputControl(name = "rightStickPress", layout = "Button", bit = 7)]
-        public byte buttons1;
-
-        [InputControl(name = "leftShoulder", layout = "Button", bit = 0)]
-        [InputControl(name = "rightShoulder", layout = "Button", bit = 1)]
-        [InputControl(name = "systemButton", layout = "Button", bit = 2)]
-        [InputControl(name = "captureButton", layout = "Button", bit = 3)]
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 4)]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 5)]
-        [InputControl(name = "buttonWest", layout = "Button", bit = 6)]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 7)]
-        public byte buttons2;
+        [InputControl(name = "leftShoulder", layout = "Button", bit = 8)]
+        [InputControl(name = "rightShoulder", layout = "Button", bit = 9)]
+        [InputControl(name = "systemButton", layout = "Button", bit = 10)]
+        [InputControl(name = "captureButton", layout = "Button", bit = 11)]
+        [InputControl(name = "buttonSouth", layout = "Button", bit = 12)]
+        [InputControl(name = "buttonEast", layout = "Button", bit = 13)]
+        [InputControl(name = "buttonWest", layout = "Button", bit = 14)]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = 15)]
+        public SantrollerV2Button buttons;
 
         [InputControl(name = "leftTrigger", layout = "Button", format = "BYTE")]
         public byte leftTrigger;

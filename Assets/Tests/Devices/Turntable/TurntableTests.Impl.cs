@@ -71,11 +71,8 @@ namespace PlasticBand.Tests.Devices
         protected override SantrollerV2HIDTurntableState CreateState()
             => new SantrollerV2HIDTurntableState()
         {
-            report = new SantrollerV2HIDReport()
-            {
-                reportId = 1,
-                buttons1 = (byte)HidDpad.Neutral,
-            },
+            reportId = 1,
+            dpad = HidDpad.Neutral,
 
             // The raw value for these properties is not 0, so we must set them explicitly
             leftVelocity = 0,

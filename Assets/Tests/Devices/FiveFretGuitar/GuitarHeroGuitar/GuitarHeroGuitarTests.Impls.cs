@@ -117,11 +117,8 @@ namespace PlasticBand.Tests.Devices
         protected override SantrollerV2HIDGuitarHeroGuitarState CreateState()
             => new SantrollerV2HIDGuitarHeroGuitarState()
         {
-            report = new SantrollerV2HIDReport()
-            {
-                reportId = 1,
-                buttons1 = (byte)HidDpad.Neutral,
-            },
+            reportId = 1,
+            dpad = HidDpad.Neutral,
             // The default value for this property is not 0, so we must set it explicitly
             tilt = 0,
             rawTouchBar = 0x80,

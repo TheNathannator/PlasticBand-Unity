@@ -56,11 +56,8 @@ namespace PlasticBand.Tests.Devices
         protected override SantrollerV2HIDFiveLaneDrumkitState CreateState()
             => new SantrollerV2HIDFiveLaneDrumkitState()
         {
-            report = new SantrollerV2HIDReport()
-            {
-                reportId = 1,
-                buttons1 = (byte)HidDpad.Neutral,
-            },
+            reportId = 1,
+            dpad = HidDpad.Neutral,
         };
     }
 }

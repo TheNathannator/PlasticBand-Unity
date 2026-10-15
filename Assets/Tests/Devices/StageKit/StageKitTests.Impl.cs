@@ -1,4 +1,5 @@
 using PlasticBand.Devices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 
 namespace PlasticBand.Tests.Devices
@@ -167,38 +168,38 @@ namespace PlasticBand.Tests.Devices
             => new SantrollerV2HidStageKitState()
         {
             reportId = 1,
-            buttons1 = 8,
+            buttons = (SantrollerV2Button)HidDpad.Neutral,
         };
 
         protected override void SetDpad(ref SantrollerV2HidStageKitState state, DpadDirection dpad)
         {
-            state.buttons1 = (byte)((state.buttons1 & 0xF0) | (byte)HidDeviceHandling.GetDpadByte(dpad));
+            state.buttons.SetDpad((HidDpad)HidDeviceHandling.GetDpadByte(dpad));
         }
 
         protected override void SetFaceButtons(ref SantrollerV2HidStageKitState state, FaceButton buttons)
         {
-            state.buttons2.SetBit(0x10, (buttons & FaceButton.South) != 0);
-            state.buttons2.SetBit(0x20, (buttons & FaceButton.East) != 0);
-            state.buttons2.SetBit(0x40, (buttons & FaceButton.West) != 0);
-            state.buttons2.SetBit(0x80, (buttons & FaceButton.North) != 0);
+            state.buttons.SetBit(SantrollerV2Button.South, (buttons & FaceButton.South) != 0);
+            state.buttons.SetBit(SantrollerV2Button.East, (buttons & FaceButton.East) != 0);
+            state.buttons.SetBit(SantrollerV2Button.West, (buttons & FaceButton.West) != 0);
+            state.buttons.SetBit(SantrollerV2Button.North, (buttons & FaceButton.North) != 0);
         }
 
         protected override void SetMenuButtons(ref SantrollerV2HidStageKitState state, MenuButton buttons)
         {
-            state.buttons1.SetBit(0x10, (buttons & MenuButton.Start) != 0);
-            state.buttons1.SetBit(0x20, (buttons & MenuButton.Select) != 0);
+            state.buttons.SetBit(SantrollerV2Button.Start, (buttons & MenuButton.Start) != 0);
+            state.buttons.SetBit(SantrollerV2Button.Select, (buttons & MenuButton.Select) != 0);
         }
 
         protected override void SetShoulderButtons(ref SantrollerV2HidStageKitState state, SideButton buttons)
         {
-            state.buttons2.SetBit(0x01, (buttons & SideButton.Left) != 0);
-            state.buttons2.SetBit(0x02, (buttons & SideButton.Right) != 0);
+            state.buttons.SetBit(SantrollerV2Button.LeftShoulder, (buttons & SideButton.Left) != 0);
+            state.buttons.SetBit(SantrollerV2Button.RightShoulder, (buttons & SideButton.Right) != 0);
         }
 
         protected override void SetStickButtons(ref SantrollerV2HidStageKitState state, SideButton buttons)
         {
-            state.buttons1.SetBit(0x40, (buttons & SideButton.Left) != 0);
-            state.buttons1.SetBit(0x80, (buttons & SideButton.Right) != 0);
+            state.buttons.SetBit(SantrollerV2Button.LeftStick, (buttons & SideButton.Left) != 0);
+            state.buttons.SetBit(SantrollerV2Button.RightStick, (buttons & SideButton.Right) != 0);
         }
 
         protected override void SetLeftTrigger(ref SantrollerV2HidStageKitState state, float value)

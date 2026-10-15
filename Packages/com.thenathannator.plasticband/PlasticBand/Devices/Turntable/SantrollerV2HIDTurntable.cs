@@ -1,4 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
@@ -12,134 +14,158 @@ namespace PlasticBand.Devices
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct SantrollerV2HIDTurntableState : ITurntableState
     {
+        [Flags]
+        public enum PlatterButton : byte
+        {
+            None = 0,
+
+            Green = 0x01,
+            Red = 0x02,
+            Blue = 0x04,
+        }
+
         public FourCC format => HidDefinitions.InputFormat;
 
-        public SantrollerV2HIDReport report;
+        public byte reportId;
+        public byte reserved;
+        public SantrollerV2Button buttons;
+        public PlatterButton leftTable;
+        public PlatterButton rightTable;
+        public short leftStickX;
+        public short leftStickY;
+        public short rightStickX;
+        public short rightStickY;
+
+        public HidDpad dpad
+        {
+            get => buttons.GetDpad();
+            set => buttons.SetDpad(value);
+        }
 
         public bool south
         {
-            get => report.south;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x10 : report.buttons2 & ~0x10);
+            get => (buttons & SantrollerV2Button.South) != 0;
+            set => buttons.SetBit(SantrollerV2Button.South, value);
         }
 
         public bool east
         {
-            get => report.east;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x20 : report.buttons2 & ~0x20);
+            get => (buttons & SantrollerV2Button.East) != 0;
+            set => buttons.SetBit(SantrollerV2Button.East, value);
         }
 
         public bool west
         {
-            get => report.west;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x40 : report.buttons2 & ~0x40);
+            get => (buttons & SantrollerV2Button.West) != 0;
+            set => buttons.SetBit(SantrollerV2Button.West, value);
         }
 
         public bool north_euphoria
         {
-            get => report.north;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x80 : report.buttons2 & ~0x80);
+            get => (buttons & SantrollerV2Button.North) != 0;
+            set => buttons.SetBit(SantrollerV2Button.North, value);
         }
 
         public bool dpadUp
         {
-            get => report.dpadUp;
-            set => report.buttons1 = (byte)((report.buttons1 & 0xF0) | (byte)(value ? HidDpad.Up : HidDpad.Neutral));
+            get => dpad.IsUp();
+            set => buttons.SetDpadUp(value);
         }
 
         public bool dpadRight
         {
-            get => report.dpadRight;
-            set => report.buttons1 = (byte)((report.buttons1 & 0xF0) | (byte)(value ? HidDpad.Right : HidDpad.Neutral));
+            get => dpad.IsRight();
+            set => buttons.SetDpadRight(value);
         }
 
         public bool dpadDown
         {
-            get => report.dpadDown;
-            set => report.buttons1 = (byte)((report.buttons1 & 0xF0) | (byte)(value ? HidDpad.Down : HidDpad.Neutral));
+            get => dpad.IsDown();
+            set => buttons.SetDpadDown(value);
         }
 
         public bool dpadLeft
         {
-            get => report.dpadLeft;
-            set => report.buttons1 = (byte)((report.buttons1 & 0xF0) | (byte)(value ? HidDpad.Left : HidDpad.Neutral));
+            get => dpad.IsLeft();
+            set => buttons.SetDpadLeft(value);
         }
 
         public bool start
         {
-            get => report.start;
-            set => report.buttons1 = (byte)(value ? report.buttons1 | 0x10 : report.buttons1 & ~0x10);
+            get => (buttons & SantrollerV2Button.Start) != 0;
+            set => buttons.SetBit(SantrollerV2Button.Start, value);
         }
 
         public bool select
         {
-            get => report.back;
-            set => report.buttons1 = (byte)(value ? report.buttons1 | 0x20 : report.buttons1 & ~0x20);
+            get => (buttons & SantrollerV2Button.Back) != 0;
+            set => buttons.SetBit(SantrollerV2Button.Back, value);
         }
 
         public bool system
         {
-            get => report.guide;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x04 : report.buttons2 & ~0x04);
+            get => (buttons & SantrollerV2Button.Guide) != 0;
+            set => buttons.SetBit(SantrollerV2Button.Guide, value);
         }
 
         public bool leftGreen
         {
-            get => (report.leftTrigger & 0x01) != 0;
-            set => report.leftTrigger = (byte)(value ? report.leftTrigger | 0x01 : report.leftTrigger & ~0x01);
+            get => (leftTable & PlatterButton.Green) != 0;
+            set => leftTable.SetBit(PlatterButton.Green, value);
         }
 
         public bool leftRed
         {
-            get => (report.leftTrigger & 0x02) != 0;
-            set => report.leftTrigger = (byte)(value ? report.leftTrigger | 0x02 : report.leftTrigger & ~0x02);
+            get => (leftTable & PlatterButton.Red) != 0;
+            set => leftTable.SetBit(PlatterButton.Red, value);
         }
 
         public bool leftBlue
         {
-            get => (report.leftTrigger & 0x04) != 0;
-            set => report.leftTrigger = (byte)(value ? report.leftTrigger | 0x04 : report.leftTrigger & ~0x04);
+            get => (leftTable & PlatterButton.Blue) != 0;
+            set => leftTable.SetBit(PlatterButton.Blue, value);
         }
 
         public bool rightGreen
         {
-            get => (report.rightTrigger & 0x01) != 0;
-            set => report.rightTrigger = (byte)(value ? report.rightTrigger | 0x01 : report.rightTrigger & ~0x01);
+            get => (rightTable & PlatterButton.Green) != 0;
+            set => rightTable.SetBit(PlatterButton.Green, value);
         }
 
         public bool rightRed
         {
-            get => (report.rightTrigger & 0x02) != 0;
-            set => report.rightTrigger = (byte)(value ? report.rightTrigger | 0x02 : report.rightTrigger & ~0x02);
+            get => (rightTable & PlatterButton.Red) != 0;
+            set => rightTable.SetBit(PlatterButton.Red, value);
         }
 
         public bool rightBlue
         {
-            get => (report.rightTrigger & 0x04) != 0;
-            set => report.rightTrigger = (byte)(value ? report.rightTrigger | 0x04 : report.rightTrigger & ~0x04);
+            get => (rightTable & PlatterButton.Blue) != 0;
+            set => rightTable.SetBit(PlatterButton.Blue, value);
         }
 
         public sbyte leftVelocity
         {
-            get => (sbyte)(report.leftStickX >> 8);
-            set => report.leftStickX = (short)(value << 8);
+            get => (sbyte)(leftStickX >> 8);
+            set => leftStickX = (short)(value << 8);
         }
 
         public sbyte rightVelocity
         {
-            get => (sbyte)(report.leftStickY >> 8);
-            set => report.leftStickY = (short)(value << 8);
+            get => (sbyte)(leftStickY >> 8);
+            set => leftStickY = (short)(value << 8);
         }
 
         public sbyte crossfader
         {
-            get => (sbyte)(report.rightStickX >> 8);
-            set => report.rightStickX = (short)(value << 8);
+            get => (sbyte)(rightStickX >> 8);
+            set => rightStickX = (short)(value << 8);
         }
 
         public ushort effectsDial
         {
-            get => (ushort)(report.rightStickY + 0x8000);
-            set => report.rightStickY = (short)(value - 0x8000);
+            get => (ushort)(rightStickY + 0x8000);
+            set => rightStickY = (short)(value - 0x8000);
         }
     }
 

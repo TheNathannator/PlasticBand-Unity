@@ -1,4 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
@@ -14,120 +16,134 @@ namespace PlasticBand.Devices
     {
         public FourCC format => HidDefinitions.InputFormat;
 
-        public SantrollerV2HIDReport report;
+        public byte reportId;
+        public byte reserved;
+        public SantrollerV2Button buttons;
+        public byte leftTrigger;
+        public byte rightTrigger;
+        public short leftStickX;
+        public short leftStickY;
+        public short rightStickX;
+        public short rightStickY;
+
+        public HidDpad dpad
+        {
+            get => buttons.GetDpad();
+            set => buttons.SetDpad(value);
+        }
 
         public bool red_east
         {
-            get => report.east;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x20 : report.buttons2 & ~0x20);
+            get => (buttons & SantrollerV2Button.East) != 0;
+            set => buttons.SetBit(SantrollerV2Button.East, value);
         }
 
         public bool yellow_north
         {
-            get => report.north;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x80 : report.buttons2 & ~0x80);
+            get => (buttons & SantrollerV2Button.North) != 0;
+            set => buttons.SetBit(SantrollerV2Button.North, value);
         }
 
         public bool blue_west
         {
-            get => report.west;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x40 : report.buttons2 & ~0x40);
+            get => (buttons & SantrollerV2Button.West) != 0;
+            set => buttons.SetBit(SantrollerV2Button.West, value);
         }
 
         public bool green_south
         {
-            get => report.south;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x10 : report.buttons2 & ~0x10);
+            get => (buttons & SantrollerV2Button.South) != 0;
+            set => buttons.SetBit(SantrollerV2Button.South, value);
         }
 
         public bool orange
         {
-            get => report.rightShoulder;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x02 : report.buttons2 & ~0x02);
+            get => (buttons & SantrollerV2Button.RightShoulder) != 0;
+            set => buttons.SetBit(SantrollerV2Button.RightShoulder, value);
         }
 
         public bool kick
         {
-            get => report.leftShoulder;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x01 : report.buttons2 & ~0x01);
+            get => (buttons & SantrollerV2Button.LeftShoulder) != 0;
+            set => buttons.SetBit(SantrollerV2Button.LeftShoulder, value);
         }
 
         public bool dpadUp
         {
-            get => report.dpadUp;
-            set => report.buttons1 = (byte)((report.buttons1 & 0xF0) | (byte)(value ? HidDpad.Up : HidDpad.Neutral));
+            get => dpad.IsUp();
+            set => buttons.SetDpadUp(value);
         }
 
         public bool dpadRight
         {
-            get => report.dpadRight;
-            set => report.buttons1 = (byte)((report.buttons1 & 0xF0) | (byte)(value ? HidDpad.Right : HidDpad.Neutral));
+            get => dpad.IsRight();
+            set => buttons.SetDpadRight(value);
         }
 
         public bool dpadDown
         {
-            get => report.dpadDown;
-            set => report.buttons1 = (byte)((report.buttons1 & 0xF0) | (byte)(value ? HidDpad.Down : HidDpad.Neutral));
+            get => dpad.IsDown();
+            set => buttons.SetDpadDown(value);
         }
 
         public bool dpadLeft
         {
-            get => report.dpadLeft;
-            set => report.buttons1 = (byte)((report.buttons1 & 0xF0) | (byte)(value ? HidDpad.Left : HidDpad.Neutral));
+            get => dpad.IsLeft();
+            set => buttons.SetDpadLeft(value);
         }
 
         public bool start
         {
-            get => report.start;
-            set => report.buttons1 = (byte)(value ? report.buttons1 | 0x10 : report.buttons1 & ~0x10);
+            get => (buttons & SantrollerV2Button.Start) != 0;
+            set => buttons.SetBit(SantrollerV2Button.Start, value);
         }
 
         public bool select
         {
-            get => report.back;
-            set => report.buttons1 = (byte)(value ? report.buttons1 | 0x20 : report.buttons1 & ~0x20);
+            get => (buttons & SantrollerV2Button.Back) != 0;
+            set => buttons.SetBit(SantrollerV2Button.Back, value);
         }
 
         public bool system
         {
-            get => report.guide;
-            set => report.buttons2 = (byte)(value ? report.buttons2 | 0x04 : report.buttons2 & ~0x04);
+            get => (buttons & SantrollerV2Button.Guide) != 0;
+            set => buttons.SetBit(SantrollerV2Button.Guide, value);
         }
 
         public byte redVelocity
         {
-            get => (byte)(report.leftStickX >> 8);
-            set => report.leftStickX = (short)(value << 8);
+            get => (byte)(leftStickX >> 8);
+            set => leftStickX = (short)(value << 8);
         }
 
         public byte yellowVelocity
         {
-            get => (byte)(report.leftStickY >> 8);
-            set => report.leftStickY = (short)(value << 8);
+            get => (byte)(leftStickY >> 8);
+            set => leftStickY = (short)(value << 8);
         }
 
         public byte blueVelocity
         {
-            get => (byte)(report.rightStickX >> 8);
-            set => report.rightStickX = (short)(value << 8);
+            get => (byte)(rightStickX >> 8);
+            set => rightStickX = (short)(value << 8);
         }
 
         public byte orangeVelocity
         {
-            get => (byte)(report.rightStickY >> 8);
-            set => report.rightStickY = (short)(value << 8);
+            get => (byte)(rightStickY >> 8);
+            set => rightStickY = (short)(value << 8);
         }
 
         public byte greenVelocity
         {
-            get => report.rightTrigger;
-            set => report.rightTrigger = value;
+            get => rightTrigger;
+            set => rightTrigger = value;
         }
 
         public byte kickVelocity
         {
-            get => report.leftTrigger;
-            set => report.leftTrigger = value;
+            get => leftTrigger;
+            set => leftTrigger = value;
         }
     }
 
