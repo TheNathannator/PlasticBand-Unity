@@ -57,7 +57,7 @@ namespace PlasticBand.LowLevel
     {
         public const int VendorID = 0x1209;
         public const int ProductID = 0x2882;
-        public const int ProductIDV2 = 0x2882;
+        public const int ProductIDV2 = 0x2883;
 
         internal static short GetRevisionValue(SantrollerDeviceType deviceType)
             => (short)(((int)deviceType & 0xFF) << 8);
