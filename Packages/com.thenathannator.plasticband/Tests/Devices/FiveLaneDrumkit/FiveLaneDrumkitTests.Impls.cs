@@ -84,4 +84,18 @@ namespace PlasticBand.Tests.Devices
             AssertHidMatch(0x1209, 0x2882, revision: 0x0500, reportId: true);
         }
     }
+
+    internal class SantrollerV2HIDFiveLaneDrumkitTests
+        : FiveLaneDrumkitTests<SantrollerV2HIDFiveLaneDrumkit, SantrollerV2HIDFiveLaneDrumkitState>
+    {
+        protected override SantrollerV2HIDFiveLaneDrumkitState CreateState()
+            => new SantrollerV2HIDFiveLaneDrumkitState()
+        {
+            report = new SantrollerV2HIDReport()
+            {
+                reportId = 1,
+                buttons1 = (byte)HidDpad.Neutral,
+            },
+        };
+    }
 }

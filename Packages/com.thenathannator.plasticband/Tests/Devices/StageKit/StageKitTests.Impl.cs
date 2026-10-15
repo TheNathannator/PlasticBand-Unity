@@ -51,4 +51,19 @@ namespace PlasticBand.Tests.Devices
             AssertHidMatch(0x1209, 0x2882, revision: 0x0900, reportId: true);
         }
     }
+
+    internal class SantrollerV2HidStageKitTests
+        : StageKitTests<SantrollerV2HidStageKit, SantrollerV2HidStageKitState>
+    {
+        protected override SantrollerV2HidStageKitState CreateState()
+            => new SantrollerV2HidStageKitState()
+        {
+            reportId = 1,
+            buttons1 = 8,
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
+        }
+    }
 }

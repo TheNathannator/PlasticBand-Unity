@@ -161,4 +161,21 @@ namespace PlasticBand.Tests.Devices
             AssertHidMatch(0x1209, 0x2882, revision: 0x0700, reportId: true);
         }
     }
+
+    internal class SantrollerV2HIDSixFretGuitarTests
+        : SixFretGuitarTests<SantrollerV2HIDSixFretGuitar, SantrollerV2HIDSixFretGuitarState>
+    {
+        protected override SantrollerV2HIDSixFretGuitarState CreateState()
+            => new SantrollerV2HIDSixFretGuitarState()
+        {
+            report = new SantrollerV2HIDReport()
+            {
+                reportId = 1,
+                buttons1 = (byte)HidDpad.Neutral,
+            },
+
+            // The default value for these properties is not 0, so we must set them explicitly
+            tilt = 0,
+        };
+    }
 }

@@ -3,8 +3,10 @@ using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
@@ -185,11 +187,12 @@ namespace PlasticBand.Devices
     /// A Santroller HID Turntable.
     /// </summary>
     [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "Santroller HID Turntable")]
-    internal class SantrollerHIDTurntable : TranslatingTurntable<SantrollerHIDTurntableState>, ISantrollerTurntableHaptics
+    internal class SantrollerHIDTurntable : TranslatingTurntable<SantrollerHIDTurntableState>,
+        ISantrollerTurntableHaptics
     {
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDTurntable>(SantrollerDeviceType.DjHeroTurntable);
+            InputSystem.RegisterLayout<SantrollerHIDTurntable>();
         }
 
         protected override void FinishSetup()
