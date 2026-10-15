@@ -17,6 +17,10 @@ namespace PlasticBand.Devices
                 .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", SantrollerLayoutFinder.VendorID)
                 .WithCapability("productId", SantrollerLayoutFinder.ProductID));
+            InputSystem.RegisterLayout<SantrollerHIDAdapter>(matches: new InputDeviceMatcher()
+                .WithInterface(HidDefinitions.InterfaceName)
+                .WithCapability("vendorId", SantrollerLayoutFinder.VendorID)
+                .WithCapability("productId", SantrollerLayoutFinder.ProductIDV2));
         }
 
         private const double kRequestRetryInterval = 0.5; // seconds
