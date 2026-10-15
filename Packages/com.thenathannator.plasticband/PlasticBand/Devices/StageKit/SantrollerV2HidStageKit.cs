@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
@@ -22,21 +23,22 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/right", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=1,maxValue=3")]
         [InputControl(name = "dpad/down", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=3,maxValue=5")]
         [InputControl(name = "dpad/left", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=5,maxValue=7")]
+
         [InputControl(name = "start", layout = "Button", bit = 4)]
         [InputControl(name = "select", layout = "Button", bit = 5)]
         [InputControl(name = "leftStickPress", layout = "Button", bit = 6)]
         [InputControl(name = "rightStickPress", layout = "Button", bit = 7)]
-        public byte buttons1;
 
-        [InputControl(name = "leftShoulder", layout = "Button", bit = 0)]
-        [InputControl(name = "rightShoulder", layout = "Button", bit = 1)]
-        [InputControl(name = "systemButton", layout = "Button", bit = 2)]
-        [InputControl(name = "shareButton", layout = "Button", bit = 3)]
-        [InputControl(name = "buttonSouth", layout = "Button", bit = 4)]
-        [InputControl(name = "buttonEast", layout = "Button", bit = 5)]
-        [InputControl(name = "buttonWest", layout = "Button", bit = 6)]
-        [InputControl(name = "buttonNorth", layout = "Button", bit = 7)]
-        public byte buttons2;
+        [InputControl(name = "leftShoulder", layout = "Button", bit = 8)]
+        [InputControl(name = "rightShoulder", layout = "Button", bit = 9)]
+        [InputControl(name = "systemButton", layout = "Button", bit = 10)]
+        [InputControl(name = "shareButton", layout = "Button", bit = 11)]
+
+        [InputControl(name = "buttonSouth", layout = "Button", bit = 12)]
+        [InputControl(name = "buttonEast", layout = "Button", bit = 13)]
+        [InputControl(name = "buttonWest", layout = "Button", bit = 14)]
+        [InputControl(name = "buttonNorth", layout = "Button", bit = 15)]
+        public SantrollerV2Button buttons;
 
         [InputControl(name = "leftTrigger", layout = "Button", format = "BYTE")]
         public byte leftTrigger;
@@ -66,86 +68,86 @@ namespace PlasticBand.Devices
 
         public bool start
         {
-            get => (buttons1 & 0x10) != 0;
-            set => buttons1.SetBit(0x10, value);
+            get => (buttons & SantrollerV2Button.Start) != 0;
+            set => buttons.SetBit(SantrollerV2Button.Start, value);
         }
 
         public bool select
         {
-            get => (buttons1 & 0x20) != 0;
-            set => buttons1.SetBit(0x20, value);
+            get => (buttons & SantrollerV2Button.Select) != 0;
+            set => buttons.SetBit(SantrollerV2Button.Select, value);
         }
 
         public bool system
         {
-            get => (buttons2 & 0x04) != 0;
-            set => buttons2.SetBit(0x04, value);
+            get => (buttons & SantrollerV2Button.System) != 0;
+            set => buttons.SetBit(SantrollerV2Button.System, value);
         }
 
         public bool share
         {
-            get => (buttons2 & 0x08) != 0;
-            set => buttons2.SetBit(0x08, value);
+            get => (buttons & SantrollerV2Button.Share) != 0;
+            set => buttons.SetBit(SantrollerV2Button.Share, value);
         }
 
         public bool south
         {
-            get => (buttons2 & 0x10) != 0;
-            set => buttons2.SetBit(0x10, value);
+            get => (buttons & SantrollerV2Button.South) != 0;
+            set => buttons.SetBit(SantrollerV2Button.South, value);
         }
 
         public bool east
         {
-            get => (buttons2 & 0x20) != 0;
-            set => buttons2.SetBit(0x20, value);
+            get => (buttons & SantrollerV2Button.East) != 0;
+            set => buttons.SetBit(SantrollerV2Button.East, value);
         }
 
         public bool west
         {
-            get => (buttons2 & 0x40) != 0;
-            set => buttons2.SetBit(0x40, value);
+            get => (buttons & SantrollerV2Button.West) != 0;
+            set => buttons.SetBit(SantrollerV2Button.West, value);
         }
 
         public bool north
         {
-            get => (buttons2 & 0x80) != 0;
-            set => buttons2.SetBit(0x80, value);
+            get => (buttons & SantrollerV2Button.North) != 0;
+            set => buttons.SetBit(SantrollerV2Button.North, value);
         }
 
         public bool dpadUp
         {
-            get => GetDpad(buttons1).IsUp();
-            set => SetDpad(ref buttons1, GetDpad(buttons1).ChangeUp(value));
+            get => GetDpad(buttons).IsUp();
+            set => SetDpad(ref buttons, GetDpad(buttons).ChangeUp(value));
         }
 
         public bool dpadDown
         {
-            get => GetDpad(buttons1).IsDown();
-            set => SetDpad(ref buttons1, GetDpad(buttons1).ChangeDown(value));
+            get => GetDpad(buttons).IsDown();
+            set => SetDpad(ref buttons, GetDpad(buttons).ChangeDown(value));
         }
 
         public bool dpadLeft
         {
-            get => GetDpad(buttons1).IsLeft();
-            set => SetDpad(ref buttons1, GetDpad(buttons1).ChangeLeft(value));
+            get => GetDpad(buttons).IsLeft();
+            set => SetDpad(ref buttons, GetDpad(buttons).ChangeLeft(value));
         }
 
         public bool dpadRight
         {
-            get => GetDpad(buttons1).IsRight();
-            set => SetDpad(ref buttons1, GetDpad(buttons1).ChangeRight(value));
+            get => GetDpad(buttons).IsRight();
+            set => SetDpad(ref buttons, GetDpad(buttons).ChangeRight(value));
         }
 
         public bool leftShoulder
         {
-            get => (buttons2 & 0x01) != 0;
-            set => buttons2.SetBit(0x01, value);
+            get => (buttons & SantrollerV2Button.LeftShoulder) != 0;
+            set => buttons.SetBit(SantrollerV2Button.LeftShoulder, value);
         }
 
         public bool rightShoulder
         {
-            get => (buttons2 & 0x02) != 0;
-            set => buttons2.SetBit(0x02, value);
+            get => (buttons & SantrollerV2Button.RightShoulder) != 0;
+            set => buttons.SetBit(SantrollerV2Button.RightShoulder, value);
         }
 
         public bool leftTriggerPress
@@ -162,14 +164,14 @@ namespace PlasticBand.Devices
 
         public bool leftStickPress
         {
-            get => (buttons1 & 0x40) != 0;
-            set => buttons1.SetBit(0x40, value);
+            get => (buttons & SantrollerV2Button.LeftStickPress) != 0;
+            set => buttons.SetBit(SantrollerV2Button.LeftStickPress, value);
         }
 
         public bool rightStickPress
         {
-            get => (buttons1 & 0x80) != 0;
-            set => buttons1.SetBit(0x80, value);
+            get => (buttons & SantrollerV2Button.RightStickPress) != 0;
+            set => buttons.SetBit(SantrollerV2Button.RightStickPress, value);
         }
 
         byte IGamepadState.leftTrigger
@@ -208,14 +210,14 @@ namespace PlasticBand.Devices
             set => rightStickY = XInputDefinitions.SetAxisY(value);
         }
 
-        private static HidDpad GetDpad(byte buttons)
+        private static HidDpad GetDpad(SantrollerV2Button buttons)
         {
-            return (HidDpad)(buttons & 0x0F);
+            return (HidDpad)(buttons & SantrollerV2Button.DpadMask);
         }
 
-        private static void SetDpad(ref byte buttons, HidDpad dpad)
+        private static void SetDpad(ref SantrollerV2Button buttons, HidDpad dpad)
         {
-            buttons = (byte)((buttons & ~0x0F) | (byte)dpad);
+            buttons = (buttons & ~SantrollerV2Button.DpadMask) | ((SantrollerV2Button)dpad & SantrollerV2Button.DpadMask);
         }
     }
 

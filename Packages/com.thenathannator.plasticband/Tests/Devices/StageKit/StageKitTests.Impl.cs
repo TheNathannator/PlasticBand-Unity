@@ -59,7 +59,7 @@ namespace PlasticBand.Tests.Devices
             => new SantrollerV2HidStageKitState()
         {
             reportId = 1,
-            buttons1 = 8,
+            buttons = SantrollerV2Button.Neutral,
         };
 
         protected override void CheckExpectedDescriptions()
