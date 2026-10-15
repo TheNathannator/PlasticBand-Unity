@@ -170,25 +170,7 @@ namespace PlasticBand.Devices
                 return;
             }
 
-            // Handle V2 input report (ID 0x01)
-            if (m_IsV2)
-            {
-                if (StateReader.ReadReportIdState(stateEvent, out SantrollerV2HIDReport* v2Report))
-                {
-                    if ((m_Capabilities & SantrollerCapabilities.YAxisInverted) != 0)
-                    {
-                        v2Report->leftStickY = (short)~v2Report->leftStickY;
-                        v2Report->rightStickY = (short)~v2Report->rightStickY;
-                    }
-
-                    m_RealDevice.OnStateEvent(stateEvent->stateFormat, stateEvent->state, (int)stateEvent->stateSizeInBytes);
-                }
-            }
-            else
-            {
-                // Legacy reports pass through directly
-                m_RealDevice.OnStateEvent(stateEvent->stateFormat, stateEvent->state, (int)stateEvent->stateSizeInBytes);
-            }
+            m_RealDevice.OnStateEvent(stateEvent->stateFormat, stateEvent->state, (int)stateEvent->stateSizeInBytes);
         }
 
         private void CreateRealDevice(string layout)
