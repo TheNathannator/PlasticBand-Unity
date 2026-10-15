@@ -70,45 +70,4 @@ namespace PlasticBand.LowLevel
         West = 0x4000,
         North = 0x8000,
     }
-
-    /// <summary>
-    /// Unified V2 Santroller input report (Report ID 0x01, 14 bytes).
-    /// </summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct SantrollerV2HIDReport : IReportIdStateTypeInfo
-    {
-        public FourCC format => HidDefinitions.InputFormat;
-        byte IReportIdStateTypeInfo.reportId => 0x01;
-
-        public byte reportId;
-        public byte reserved;
-        public SantrollerV2Button buttons;
-        public byte leftTrigger;
-        public byte rightTrigger;
-        public short leftStickX;
-        public short leftStickY;
-        public short rightStickX;
-        public short rightStickY;
-
-        public HidDpad dpad => (HidDpad)((ushort)buttons & (ushort)SantrollerV2Button.DpadMask);
-        public bool dpadUp => dpad.IsUp();
-        public bool dpadDown => dpad.IsDown();
-        public bool dpadLeft => dpad.IsLeft();
-        public bool dpadRight => dpad.IsRight();
-
-        public bool start => (buttons & SantrollerV2Button.Start) != 0;
-        public bool select => (buttons & SantrollerV2Button.Select) != 0;
-        public bool leftStickClick => (buttons & SantrollerV2Button.LeftStickPress) != 0;
-        public bool rightStickClick => (buttons & SantrollerV2Button.RightStickPress) != 0;
-
-        public bool leftShoulder => (buttons & SantrollerV2Button.LeftShoulder) != 0;
-        public bool rightShoulder => (buttons & SantrollerV2Button.RightShoulder) != 0;
-        public bool system => (buttons & SantrollerV2Button.System) != 0;
-        public bool share => (buttons & SantrollerV2Button.Share) != 0;
-
-        public bool south => (buttons & SantrollerV2Button.South) != 0;
-        public bool east => (buttons & SantrollerV2Button.East) != 0;
-        public bool west => (buttons & SantrollerV2Button.West) != 0;
-        public bool north => (buttons & SantrollerV2Button.North) != 0;
-    }
 }
