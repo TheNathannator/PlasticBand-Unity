@@ -27,6 +27,8 @@ namespace PlasticBand.Devices
         private InputDevice m_Device;
         private IInputStateCallbackReceiver m_DeviceCallbacks;
 
+        public string layout => m_Device?.layout;
+
         public VariantRealDevice(string layout)
         {
             m_Device = InputSystem.AddDevice(layout);

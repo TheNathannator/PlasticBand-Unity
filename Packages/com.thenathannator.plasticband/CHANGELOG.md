@@ -8,9 +8,19 @@ Dates are relative to UTC.
 
 ## [Unreleased]
 
+### Added
+
+- The Xbox One wireless legacy adapter now requests device info again whenever the game regains focus, like Rock Band 4 does, so instruments that disconnected or changed while the game was in the background are picked up.
+
 ### Changed
 
 - The `startButton` and `selectButton` controls have been renamed to `start` and `select` to match the ones on the `Gamepad` layout.
+
+### Fixed
+
+- Instruments on the Xbox One wireless legacy adapter are now created, as device info and disconnect reports are no longer read with the wrong user index.
+- The Xbox One wireless legacy adapter no longer requests device info for every input report from a device it has no layout for, such as a gamepad.
+- Instruments on the Xbox One wireless legacy adapter are no longer re-created whenever device info is sent again.
 
 ## [0.10.0] - 2026/09/07
 
