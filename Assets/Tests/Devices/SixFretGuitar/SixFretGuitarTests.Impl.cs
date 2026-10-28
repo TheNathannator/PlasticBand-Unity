@@ -110,4 +110,18 @@ namespace PlasticBand.Tests.Devices
             tilt = 0,
         };
     }
+
+    internal class SantrollerV2HIDSixFretGuitarTests
+        : SixFretGuitarTests<SantrollerV2HIDSixFretGuitar, SantrollerV2HIDSixFretGuitarState>
+    {
+        protected override SantrollerV2HIDSixFretGuitarState CreateState()
+            => new SantrollerV2HIDSixFretGuitarState()
+        {
+            reportId = 1,
+            dpad = HidDpad.Neutral,
+
+            // The default value for these properties is not 0, so we must set them explicitly
+            tilt = 0,
+        };
+    }
 }

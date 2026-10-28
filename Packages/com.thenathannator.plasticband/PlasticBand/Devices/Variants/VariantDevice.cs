@@ -24,19 +24,38 @@ namespace PlasticBand.Devices
 
     internal class VariantRealDevice : IDisposable
     {
+        private readonly VariantDevice m_Parent;
         private InputDevice m_Device;
         private IInputStateCallbackReceiver m_DeviceCallbacks;
 
+        public InputDevice device => m_Device;
+
         public VariantRealDevice(string layout)
+            : this(null, layout)
         {
-            m_Device = InputSystem.AddDevice(layout);
-            m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
         }
 
         public VariantRealDevice(InputDeviceDescription description)
+            : this(null, description)
         {
+        }
+
+        public unsafe VariantRealDevice(VariantDevice parent, string layout)
+        {
+            m_Parent = parent;
+            m_Device = InputSystem.AddDevice(layout);
+            m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
+            if (parent != null)
+                InputSystem.onDeviceCommand += OnDeviceCommand;
+        }
+
+        public unsafe VariantRealDevice(VariantDevice parent, InputDeviceDescription description)
+        {
+            m_Parent = parent;
             m_Device = InputSystem.AddDevice(description);
             m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
+            if (parent != null)
+                InputSystem.onDeviceCommand += OnDeviceCommand;
         }
 
         ~VariantRealDevice()
@@ -44,13 +63,24 @@ namespace PlasticBand.Devices
             Logging.Error($"[PlasticBand] VariantRealDevice '{m_Device}' was not disposed! Device cannot be removed outside of the main thread");
         }
 
-        public void Dispose()
+        public unsafe void Dispose()
         {
+            if (m_Parent != null)
+                InputSystem.onDeviceCommand -= OnDeviceCommand;
+
             InputSystem.RemoveDevice(m_Device);
             m_Device = null;
             m_DeviceCallbacks = null;
 
             GC.SuppressFinalize(this);
+        }
+
+        private unsafe long? OnDeviceCommand(InputDevice device, InputDeviceCommand* command)
+        {
+            if (device != m_Device || m_Parent == null)
+                return null;
+
+            return m_Parent.ExecuteCommand(ref *command);
         }
 
         public unsafe void OnStateEvent<TState>(ref TState state)

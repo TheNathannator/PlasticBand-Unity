@@ -35,6 +35,10 @@ namespace PlasticBand.LowLevel
                 new Type[] { typeof(InputDeviceDescription).MakeByRefType(), typeof(InputDeviceExecuteCommandDelegate) }, null)
             .CreateDelegate(typeof(HID_ReadHIDDeviceDescriptor));
 
+        internal static HIDDeviceDescriptor GetDeviceDescriptor(ref InputDeviceDescription deviceDescription,
+            InputDeviceExecuteCommandDelegate executeCommandDelegate)
+            => s_GetDeviceDescriptor(ref deviceDescription, executeCommandDelegate);
+
         private static readonly Dictionary<string, (string reportId, string noReportId)> s_AvailableLayouts = new Dictionary<string, (string, string)>();
 
         internal static void Initialize()

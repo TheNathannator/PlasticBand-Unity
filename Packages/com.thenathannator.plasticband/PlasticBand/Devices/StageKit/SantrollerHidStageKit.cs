@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -106,7 +107,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHidStageKit>(SantrollerDeviceType.StageKit);
+            InputSystem.RegisterLayout<SantrollerHidStageKit>();
         }
 
         protected override void FinishSetup()

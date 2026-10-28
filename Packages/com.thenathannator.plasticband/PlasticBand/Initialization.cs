@@ -54,6 +54,7 @@ namespace PlasticBand
             PS3GuitarHeroGuitar.Initialize();
             PCGuitarHeroGuitar.Initialize();
             SantrollerHIDGuitarHeroGuitar.Initialize();
+            SantrollerV2HIDGuitarHeroGuitar.Initialize();
             SantrollerXInputGuitarHeroGuitar.Initialize();
 
             // Rock Band guitars
@@ -66,6 +67,7 @@ namespace PlasticBand
             EvdevSonyPS4RockBandGuitar.Initialize();
             WiiRockBandGuitar.Initialize();
             SantrollerHIDRockBandGuitar.Initialize();
+            SantrollerV2HIDRockBandGuitar.Initialize();
             SantrollerXInputRockBandGuitar.Initialize();
 
             // Riffmaster guitars
@@ -89,6 +91,7 @@ namespace PlasticBand
             PS3WiiUSixFretGuitar.Initialize();
             PS4SixFretGuitar.Initialize();
             SantrollerHIDSixFretGuitar.Initialize();
+            SantrollerV2HIDSixFretGuitar.Initialize();
             SantrollerXInputSixFretGuitar.Initialize();
 
             // Pro Guitars
@@ -109,6 +112,7 @@ namespace PlasticBand
             PS4FourLaneDrumkit.Initialize();
             WiiFourLaneDrumkit.Initialize();
             SantrollerHIDFourLaneDrumkit.Initialize();
+            SantrollerV2HIDFourLaneDrumkit.Initialize();
             SantrollerXInputFourLaneDrumkit.Initialize();
 
             // 5-lane drumkits
@@ -118,6 +122,7 @@ namespace PlasticBand
             XInputFiveLaneDrumkit.Initialize();
             PS3FiveLaneDrumkit.Initialize();
             SantrollerHIDFiveLaneDrumkit.Initialize();
+            SantrollerV2HIDFiveLaneDrumkit.Initialize();
             SantrollerXInputFiveLaneDrumkit.Initialize();
 
             // Turntables
@@ -127,6 +132,7 @@ namespace PlasticBand
             XInputTurntable.Initialize();
             PS3Turntable.Initialize();
             SantrollerHIDTurntable.Initialize();
+            SantrollerV2HIDTurntable.Initialize();
             SantrollerXInputTurntable.Initialize();
 
             // Pro Keyboards
@@ -140,11 +146,13 @@ namespace PlasticBand
             StageKit.Initialize();
             XInputStageKit.Initialize();
             SantrollerHidStageKit.Initialize();
+            SantrollerV2HidStageKit.Initialize();
             SantrollerXInputStageKit.Initialize();
 
             // Variant devices
             XboxOneWirelessLegacyAdapter.Initialize();
             XboxOneWiredLegacyAdapter.Initialize();
+            SantrollerHIDAdapter.Initialize();
         }
 
 #if UNITY_EDITOR
