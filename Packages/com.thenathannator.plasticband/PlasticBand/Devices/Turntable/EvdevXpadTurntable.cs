@@ -1,81 +1,60 @@
+using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "Evdev XInput DJ Hero Turntable")]
-    internal class EvdevXpadTurntable : Turntable, IInputStateCallbackReceiver
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct EvdevXpadTurntableState : ITurntableState
     {
-        private TranslateStateHandler<EvdevState, TranslatedTurntableState> m_Translator;
+        public static FourCC Format => new FourCC('E', 'V', 'D', 'V');
+        public FourCC format => Format;
 
+        public EvdevState state;
+
+        public bool south { get => state.GetKey(0x130); set => state.SetKey(0x130, value); }
+        public bool east  { get => state.GetKey(0x131); set => state.SetKey(0x131, value); }
+        public bool west  { get => state.GetKey(0x133); set => state.SetKey(0x133, value); }
+        public bool north_euphoria { get => state.GetKey(0x134); set => state.SetKey(0x134, value); }
+
+        public bool select { get => state.GetKey(0x13A); set => state.SetKey(0x13A, value); }
+        public bool start  { get => state.GetKey(0x13B); set => state.SetKey(0x13B, value); }
+        public bool system { get => state.GetKey(0x13C); set => state.SetKey(0x13C, value); }
+
+        public bool dpadLeft  { get => state.GetAxis(0x10) < 0 || state.GetKey(0x222); set => state.SetAxis(0x10, value ? -1 : 0); }
+        public bool dpadRight { get => state.GetAxis(0x10) > 0 || state.GetKey(0x223); set => state.SetAxis(0x10, value ? 1 : 0); }
+        public bool dpadUp    { get => state.GetAxis(0x11) < 0 || state.GetKey(0x220); set => state.SetAxis(0x11, value ? -1 : 0); }
+        public bool dpadDown  { get => state.GetAxis(0x11) > 0 || state.GetKey(0x221); set => state.SetAxis(0x11, value ? 1 : 0); }
+
+        public bool leftGreen { get => (state.GetAxis(2) & 0x01) != 0; set {} }
+        public bool leftRed   { get => (state.GetAxis(2) & 0x02) != 0; set {} }
+        public bool leftBlue  { get => (state.GetAxis(2) & 0x04) != 0; set {} }
+
+        public bool rightGreen { get => (state.GetAxis(5) & 0x01) != 0; set {} }
+        public bool rightRed   { get => (state.GetAxis(5) & 0x02) != 0; set {} }
+        public bool rightBlue  { get => (state.GetAxis(5) & 0x04) != 0; set {} }
+
+        public sbyte leftVelocity  { get => (sbyte)(state.GetAxis(0) & 0xFF); set {} }
+        public sbyte rightVelocity { get => (sbyte)(~state.GetAxis(1) & 0xFF); set {} }
+
+        public sbyte crossfader { get => (sbyte)(((short)~state.GetAxis(4)) >> 8); set {} }
+        public ushort effectsDial { get => (ushort)state.GetAxis(3); set {} }
+    }
+
+    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "Evdev XInput DJ Hero Turntable")]
+    internal class EvdevXpadTurntable : TranslatingTurntable<EvdevXpadTurntableState>
+    {
         internal new static void Initialize()
         {
             EvdevLayoutFinder.RegisterXInput<EvdevXpadTurntable>(23);
-        }
-
-        void IInputStateCallbackReceiver.OnNextUpdate() {}
-        void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<EvdevState, TranslatedTurntableState>.OnStateEvent(this, eventPtr, m_Translator);
-        bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<EvdevState, TranslatedTurntableState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
-
-        private TranslatedTurntableState TranslateState(ref EvdevState state)
-        {
-            byte leftTrig = (byte)state.GetAxis(2);
-            byte rightTrig = (byte)state.GetAxis(5);
-
-            var left = TurntableButton.None;
-            var right = TurntableButton.None;
-            if ((leftTrig & 0x01) != 0) left |= TurntableButton.Green;
-            if ((leftTrig & 0x02) != 0) left |= TurntableButton.Red;
-            if ((leftTrig & 0x04) != 0) left |= TurntableButton.Blue;
-
-            if ((rightTrig & 0x01) != 0) right |= TurntableButton.Green;
-            if ((rightTrig & 0x02) != 0) right |= TurntableButton.Red;
-            if ((rightTrig & 0x04) != 0) right |= TurntableButton.Blue;
-
-            var tableButtons = left | right;
-
-            bool south = state.GetKey(0x130);
-            bool east = state.GetKey(0x131);
-            bool west = state.GetKey(0x133);
-            bool north = state.GetKey(0x134);
-
-            var buttons = TranslatedTurntableButtonMask.None;
-            if ((tableButtons & TurntableButton.Green) == 0 && south) buttons |= TranslatedTurntableButtonMask.South;
-            if ((tableButtons & TurntableButton.Red) == 0 && east) buttons |= TranslatedTurntableButtonMask.East;
-            if ((tableButtons & TurntableButton.Blue) == 0 && west) buttons |= TranslatedTurntableButtonMask.West;
-            if (north) buttons |= TranslatedTurntableButtonMask.North_Euphoria;
-
-            if (state.GetAxis(0x11) < 0 || state.GetKey(0x220)) buttons |= TranslatedTurntableButtonMask.DpadUp;
-            if (state.GetAxis(0x11) > 0 || state.GetKey(0x221)) buttons |= TranslatedTurntableButtonMask.DpadDown;
-            if (state.GetAxis(0x10) < 0 || state.GetKey(0x222)) buttons |= TranslatedTurntableButtonMask.DpadLeft;
-            if (state.GetAxis(0x10) > 0 || state.GetKey(0x223)) buttons |= TranslatedTurntableButtonMask.DpadRight;
-
-            if (state.GetKey(0x13B)) buttons |= TranslatedTurntableButtonMask.Start;
-            if (state.GetKey(0x13A)) buttons |= TranslatedTurntableButtonMask.Select;
-            if (state.GetKey(0x13C)) buttons |= TranslatedTurntableButtonMask.System;
-
-            short crossfaderAxis = (short)~state.GetAxis(4);
-            return new TranslatedTurntableState()
-            {
-                buttons = (ushort)buttons,
-                turntableButtons = (byte)((byte)left | ((byte)right << 3)),
-                leftTableVelocity = (sbyte)(state.GetAxis(0) & 0xFF),
-                rightTableVelocity = (sbyte)(~state.GetAxis(1) & 0xFF),
-                effectsDial = (ushort)state.GetAxis(3),
-                crossfader = (sbyte)(crossfaderAxis >> 8),
-            };
         }
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
             EvdevLayoutFinder.RequireXInputAxes(this);
-            m_Translator = TranslateState;
-            StateTranslator<EvdevState, TranslatedTurntableState>.VerifyDevice(this);
         }
     }
 }

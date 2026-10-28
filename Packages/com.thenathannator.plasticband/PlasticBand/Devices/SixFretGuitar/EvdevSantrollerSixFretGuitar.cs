@@ -1,19 +1,50 @@
+using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct EvdevSantrollerSixFretGuitarState : ISixFretGuitarState
+    {
+        public static FourCC Format => new FourCC('E', 'V', 'D', 'V');
+        public FourCC format => Format;
+
+        public EvdevState state;
+
+        public bool black1 { get => state.GetKey(0x130); set => state.SetKey(0x130, value); }
+        public bool black2 { get => state.GetKey(0x131); set => state.SetKey(0x131, value); }
+        public bool black3 { get => state.GetKey(0x134); set => state.SetKey(0x134, value); }
+        public bool white1 { get => state.GetKey(0x133); set => state.SetKey(0x133, value); }
+        public bool white2 { get => state.GetKey(0x136); set => state.SetKey(0x136, value); }
+        public bool white3 { get => state.GetKey(0x137); set => state.SetKey(0x137, value); }
+
+        public bool select { get => state.GetKey(0x13A); set => state.SetKey(0x13A, value); }
+        public bool start  { get => state.GetKey(0x13B); set => state.SetKey(0x13B, value); }
+        public bool ghtv   { get => state.GetKey(0x13D); set => state.SetKey(0x13D, value); }
+        public bool system { get => state.GetKey(0x13C); set => state.SetKey(0x13C, value); }
+
+        public bool dpadLeft  { get => state.GetAxis(0x10) < 0; set => state.SetAxis(0x10, value ? -1 : 0); }
+        public bool dpadRight { get => state.GetAxis(0x10) > 0; set => state.SetAxis(0x10, value ? 1 : 0); }
+        public bool dpadUp    { get => state.GetAxis(0x11) < 0; set => state.SetAxis(0x11, value ? -1 : 0); }
+        public bool dpadDown  { get => state.GetAxis(0x11) > 0; set => state.SetAxis(0x11, value ? 1 : 0); }
+
+        public bool strumUp   { get => false; set {} }
+        public bool strumDown { get => false; set {} }
+
+        public byte whammy { get => (byte)state.GetAxis(0); set => state.SetAxis(0, value); }
+        public sbyte tilt  { get => (sbyte)(state.GetAxis(1) - 128); set => state.SetAxis(1, value + 128); }
+    }
+
     [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "Santroller Evdev Guitar Hero Live Guitar")]
-    internal class EvdevSantrollerSixFretGuitar : SixFretGuitar, IInputStateCallbackReceiver
+    internal class EvdevSantrollerSixFretGuitar : TranslatingSixFretGuitar<EvdevSantrollerSixFretGuitarState>
     {
         private static readonly int[] s_Keys =
         {
             0x130, 0x131, 0x134, 0x133, 0x136, 0x137, 0x13A, 0x13B, 0x13D, 0x13C
         };
-
-        private TranslateStateHandler<EvdevState, TranslatedSixFretState> m_Translator;
 
         internal new static void Initialize()
         {
@@ -26,33 +57,6 @@ namespace PlasticBand.Devices
             var caps = EvdevLayoutFinder.GetCapabilities(this);
             caps.RequireAxes(0, 1, 0x10, 0x11);
             caps.RequireKeys(s_Keys);
-            m_Translator = TranslateState;
-            StateTranslator<EvdevState, TranslatedSixFretState>.VerifyDevice(this);
-        }
-
-        void IInputStateCallbackReceiver.OnNextUpdate() {}
-        void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<EvdevState, TranslatedSixFretState>.OnStateEvent(this, eventPtr, m_Translator);
-        bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<EvdevState, TranslatedSixFretState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
-
-        private TranslatedSixFretState TranslateState(ref EvdevState state)
-        {
-            ushort buttons = 0;
-            for (int bit = 0; bit < s_Keys.Length; bit++)
-            {
-                if (state.GetKey(s_Keys[bit]))
-                    buttons |= (ushort)(1 << bit);
-            }
-
-            var legacy = new SantrollerHIDSixFretGuitarState()
-            {
-                buttons = (SantrollerHIDSixFretGuitarState.Button)buttons,
-                dpad = state.GetDpad(),
-                whammy = (byte)state.GetAxis(0),
-                tilt = (sbyte)(state.GetAxis(1) - 128),
-            };
-            return TranslatingSixFretGuitar<SantrollerHIDSixFretGuitarState>.TranslateState(ref legacy);
         }
     }
 }

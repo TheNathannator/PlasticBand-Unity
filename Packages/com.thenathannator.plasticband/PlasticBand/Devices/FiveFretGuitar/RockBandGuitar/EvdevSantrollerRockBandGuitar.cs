@@ -1,19 +1,52 @@
+using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct EvdevSantrollerRockBandGuitarState : IRockBandGuitarState_Distinct
+    {
+        public static FourCC Format => new FourCC('E', 'V', 'D', 'V');
+        public FourCC format => Format;
+
+        public EvdevState state;
+
+        public bool green   { get => state.GetKey(0x130); set => state.SetKey(0x130, value); }
+        public bool red     { get => state.GetKey(0x131); set => state.SetKey(0x131, value); }
+        public bool yellow  { get => state.GetKey(0x134); set => state.SetKey(0x134, value); }
+        public bool blue    { get => state.GetKey(0x133); set => state.SetKey(0x133, value); }
+        public bool orange  { get => state.GetKey(0x136); set => state.SetKey(0x136, value); }
+
+        public bool soloGreen   { get => state.GetKey(0x137); set => state.SetKey(0x137, value); }
+        public bool soloRed     { get => state.GetKey(0x138); set => state.SetKey(0x138, value); }
+        public bool soloYellow  { get => state.GetKey(0x139); set => state.SetKey(0x139, value); }
+        public bool soloBlue    { get => state.GetKey(0x132); set => state.SetKey(0x132, value); }
+        public bool soloOrange  { get => state.GetKey(0x135); set => state.SetKey(0x135, value); }
+
+        public bool select { get => state.GetKey(0x13A); set => state.SetKey(0x13A, value); }
+        public bool start  { get => state.GetKey(0x13B); set => state.SetKey(0x13B, value); }
+        public bool system { get => state.GetKey(0x13C); set => state.SetKey(0x13C, value); }
+
+        public bool dpadLeft  { get => state.GetAxis(0x10) < 0; set => state.SetAxis(0x10, value ? -1 : 0); }
+        public bool dpadRight { get => state.GetAxis(0x10) > 0; set => state.SetAxis(0x10, value ? 1 : 0); }
+        public bool dpadUp    { get => state.GetAxis(0x11) < 0; set => state.SetAxis(0x11, value ? -1 : 0); }
+        public bool dpadDown  { get => state.GetAxis(0x11) > 0; set => state.SetAxis(0x11, value ? 1 : 0); }
+
+        public byte whammy       { get => (byte)state.GetAxis(0); set => state.SetAxis(0, value); }
+        public int pickupSwitch { get => (byte)state.GetAxis(1); set => state.SetAxis(1, value); }
+        public sbyte tilt        { get => (sbyte)(state.GetAxis(3) - 128); set => state.SetAxis(3, value + 128); }
+    }
+
     [InputControlLayout(stateType = typeof(TranslatedRockBandGuitarState), displayName = "Santroller Evdev Rock Band Guitar")]
-    internal class EvdevSantrollerRockBandGuitar : RockBandGuitar, IInputStateCallbackReceiver
+    internal class EvdevSantrollerRockBandGuitar : TranslatingRockBandGuitar_Distinct<EvdevSantrollerRockBandGuitarState>
     {
         private static readonly int[] s_Keys =
         {
             0x130, 0x131, 0x134, 0x133, 0x136, 0x137, 0x138, 0x139, 0x132, 0x135, 0x13A, 0x13B, 0x13C
         };
-
-        private TranslateStateHandler<EvdevState, TranslatedRockBandGuitarState> m_Translator;
 
         internal new static void Initialize()
         {
@@ -26,34 +59,6 @@ namespace PlasticBand.Devices
             var caps = EvdevLayoutFinder.GetCapabilities(this);
             caps.RequireAxes(0, 1, 3, 0x10, 0x11);
             caps.RequireKeys(s_Keys);
-            m_Translator = TranslateState;
-            StateTranslator<EvdevState, TranslatedRockBandGuitarState>.VerifyDevice(this);
-        }
-
-        void IInputStateCallbackReceiver.OnNextUpdate() {}
-        void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<EvdevState, TranslatedRockBandGuitarState>.OnStateEvent(this, eventPtr, m_Translator);
-        bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<EvdevState, TranslatedRockBandGuitarState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
-
-        private unsafe TranslatedRockBandGuitarState TranslateState(ref EvdevState state)
-        {
-            ushort buttons = 0;
-            for (int bit = 0; bit < s_Keys.Length; bit++)
-            {
-                if (state.GetKey(s_Keys[bit]))
-                    buttons |= (ushort)(1 << bit);
-            }
-
-            var legacy = new SantrollerHIDRockBandGuitarState()
-            {
-                buttons = (SantrollerHIDRockBandGuitarState.Button)buttons,
-                dpad = state.GetDpad(),
-                whammy = (byte)state.GetAxis(0),
-                pickupSwitch = (byte)state.GetAxis(1),
-                tilt = (sbyte)(state.GetAxis(3) - 128),
-            };
-            return TranslatingRockBandGuitar_Distinct<SantrollerHIDRockBandGuitarState>.TranslateState(ref legacy);
         }
     }
 }

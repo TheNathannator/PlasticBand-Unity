@@ -433,7 +433,6 @@ namespace PlasticBand.Tests.LowLevel
                 leftStickX = 0x1234, leftStickY = -0x2345,
                 rightStickX = 0x4567, rightStickY = -0x5678,
             };
-            Assert.That(state.ToXInput(false), Is.EqualTo(raw));
             Assert.That(device.layout, Does.StartWith("EvdevSantrollerV2"));
             InputSystem.QueueStateEvent(device, state);
             InputSystem.Update();

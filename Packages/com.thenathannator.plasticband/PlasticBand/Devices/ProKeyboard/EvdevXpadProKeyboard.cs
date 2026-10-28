@@ -1,75 +1,64 @@
+using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct EvdevXpadProKeyboardState : IProKeyboardState
+    {
+        public static FourCC Format => new FourCC('E', 'V', 'D', 'V');
+        public FourCC format => Format;
+
+        public EvdevState state;
+
+        public bool south { get => state.GetKey(0x130); set => state.SetKey(0x130, value); }
+        public bool east  { get => state.GetKey(0x131); set => state.SetKey(0x131, value); }
+        public bool west  { get => state.GetKey(0x133); set => state.SetKey(0x133, value); }
+        public bool north { get => state.GetKey(0x134); set => state.SetKey(0x134, value); }
+
+        public bool select { get => state.GetKey(0x13A); set => state.SetKey(0x13A, value); }
+        public bool start  { get => state.GetKey(0x13B); set => state.SetKey(0x13B, value); }
+        public bool system { get => state.GetKey(0x13C); set => state.SetKey(0x13C, value); }
+
+        public bool dpadLeft  { get => state.GetAxis(0x10) < 0 || state.GetKey(0x222); set => state.SetAxis(0x10, value ? -1 : 0); }
+        public bool dpadRight { get => state.GetAxis(0x10) > 0 || state.GetKey(0x223); set => state.SetAxis(0x10, value ? 1 : 0); }
+        public bool dpadUp    { get => state.GetAxis(0x11) < 0 || state.GetKey(0x220); set => state.SetAxis(0x11, value ? -1 : 0); }
+        public bool dpadDown  { get => state.GetAxis(0x11) > 0 || state.GetKey(0x221); set => state.SetAxis(0x11, value ? 1 : 0); }
+
+        public byte keys1 { get => (byte)state.GetAxis(2); set {} }
+        public byte keys2 { get => (byte)state.GetAxis(5); set {} }
+        public byte keys3 { get => (byte)state.GetAxis(0); set {} }
+
+        public byte velocity1 { get => (byte)(state.GetAxis(0) >> 8); set {} }
+        public byte velocity2 { get => (byte)~state.GetAxis(1); set {} }
+        public byte velocity3 { get => (byte)(~state.GetAxis(1) >> 8); set {} }
+        public byte velocity4 { get => (byte)state.GetAxis(3); set {} }
+        public byte velocity5 { get => (byte)(state.GetAxis(3) >> 8); set {} }
+
+        public byte overdrive { get => (byte)~state.GetAxis(4); set {} }
+        public byte pedal     { get => (byte)(~state.GetAxis(4) >> 8); set {} }
+        public byte touchStrip { get => 0; set {} }
+    }
+
     // Xpad's standard trigger and stick events preserve the keyboard key bitmap,
     // overdrive and pedal bytes. Velocity bytes are retained in state but have no
     // public InputControl; the XInput layout does not expose velocity1..5. XInput
     // also omits the touch strip, so xpad has no corresponding evdev field.
-    [InputControlLayout(stateType = typeof(XInputProKeyboardState), displayName = "Evdev XInput Rock Band Pro Keyboard")]
-    internal class EvdevXpadProKeyboard : ProKeyboard, IInputStateCallbackReceiver
+    [InputControlLayout(stateType = typeof(TranslatedProKeyboardState), displayName = "Evdev XInput Rock Band Pro Keyboard")]
+    internal class EvdevXpadProKeyboard : TranslatingProKeyboard<EvdevXpadProKeyboardState>
     {
-        private TranslateStateHandler<EvdevState, XInputProKeyboardState> m_Translator;
-
         internal new static void Initialize()
         {
             EvdevLayoutFinder.RegisterXInput<EvdevXpadProKeyboard>(15);
-        }
-
-        void IInputStateCallbackReceiver.OnNextUpdate() {}
-        void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<EvdevState, XInputProKeyboardState>.OnStateEvent(this, eventPtr, m_Translator);
-        bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<EvdevState, XInputProKeyboardState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
-
-        private XInputProKeyboardState TranslateState(ref EvdevState state)
-        {
-            ushort buttons = 0;
-            if (state.GetKey(0x130)) buttons |= (ushort)XInputButton.A;
-            if (state.GetKey(0x131)) buttons |= (ushort)XInputButton.B;
-            if (state.GetKey(0x133)) buttons |= (ushort)XInputButton.X;
-            if (state.GetKey(0x134)) buttons |= (ushort)XInputButton.Y;
-            if (state.GetKey(0x136)) buttons |= (ushort)XInputButton.LeftShoulder;
-            if (state.GetKey(0x137)) buttons |= (ushort)XInputButton.RightShoulder;
-            if (state.GetKey(0x13A)) buttons |= (ushort)XInputButton.Back;
-            if (state.GetKey(0x13B)) buttons |= (ushort)XInputButton.Start;
-            if (state.GetKey(0x13C)) buttons |= (ushort)XInputButton.Guide;
-            if (state.GetKey(0x13D)) buttons |= (ushort)XInputButton.LeftThumb;
-            if (state.GetKey(0x13E)) buttons |= (ushort)XInputButton.RightThumb;
-            if (state.GetAxis(0x10) < 0 || state.GetKey(0x222)) buttons |= (ushort)XInputButton.DpadLeft;
-            if (state.GetAxis(0x10) > 0 || state.GetKey(0x223)) buttons |= (ushort)XInputButton.DpadRight;
-            if (state.GetAxis(0x11) < 0 || state.GetKey(0x220)) buttons |= (ushort)XInputButton.DpadUp;
-            if (state.GetAxis(0x11) > 0 || state.GetKey(0x221)) buttons |= (ushort)XInputButton.DpadDown;
-
-            short leftStickY = (short)~state.GetAxis(1);
-            short rightStickY = (short)~state.GetAxis(4);
-
-            return new XInputProKeyboardState
-            {
-                buttons = buttons,
-                keys1 = (byte)state.GetAxis(2),
-                keys2 = (byte)state.GetAxis(5),
-                keys3 = (byte)state.GetAxis(0),
-                velocity1 = (byte)(state.GetAxis(0) >> 8),
-                velocity2 = (byte)leftStickY,
-                velocity3 = (byte)(leftStickY >> 8),
-                velocity4 = (byte)state.GetAxis(3),
-                velocity5 = (byte)(state.GetAxis(3) >> 8),
-                overdrive = (byte)rightStickY,
-                pedal = (byte)(rightStickY >> 8),
-                touchPad = 0,
-            };
         }
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
             EvdevLayoutFinder.RequireXInputAxes(this);
-            m_Translator = TranslateState;
-            StateTranslator<EvdevState, XInputProKeyboardState>.VerifyDevice(this);
         }
     }
 }

@@ -4,9 +4,41 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
+    internal interface IProKeyboardState : IInputStateTypeInfo
+    {
+        bool south { get; set; }
+        bool east { get; set; }
+        bool west { get; set; }
+        bool north { get; set; }
+
+        bool dpadUp { get; set; }
+        bool dpadDown { get; set; }
+        bool dpadLeft { get; set; }
+        bool dpadRight { get; set; }
+
+        bool start { get; set; }
+        bool select { get; set; }
+        bool system { get; set; }
+
+        byte keys1 { get; set; }
+        byte keys2 { get; set; }
+        byte keys3 { get; set; }
+
+        byte velocity1 { get; set; }
+        byte velocity2 { get; set; }
+        byte velocity3 { get; set; }
+        byte velocity4 { get; set; }
+        byte velocity5 { get; set; }
+
+        byte overdrive { get; set; }
+        byte pedal { get; set; }
+        byte touchStrip { get; set; }
+    }
+
     /// <summary>
     /// A Rock Band 3 Pro Keyboard controller (also referred to as a keyboard).
     /// </summary>

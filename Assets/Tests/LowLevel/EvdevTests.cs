@@ -95,23 +95,6 @@ namespace PlasticBand.Tests.LowLevel
             Assert.That((int)state.GetSonyButtons(0), Is.EqualTo(0x1FFF));
         }
 
-        [Test]
-        public void XpadReconstructsButtonsAndBitwiseInvertedAxes()
-        {
-            EvdevState state = default;
-            state.SetKey(0x133, true);
-            state.SetKey(0x134, true);
-            state.SetKey(0x13D, true);
-            state.SetKey(0x220, true);
-            state.SetAxis(1, short.MinValue);
-            state.SetAxis(4, short.MaxValue);
-            var raw = state.ToXInput();
-            Assert.That((XInputButton)raw.buttons, Is.EqualTo(
-                XInputButton.X | XInputButton.Y | XInputButton.LeftThumb | XInputButton.DpadUp));
-            Assert.That(raw.leftStickY, Is.EqualTo(short.MaxValue));
-            Assert.That(raw.rightStickY, Is.EqualTo(short.MinValue));
-        }
-
         [TestCase("xpad", 0x1430, 0x4748)]
         [TestCase("sony", 0x12BA, 0x0100)]
         public void GuitarHeroReportsFretsStrumAndWhammy(string driver, int vendor, int product)

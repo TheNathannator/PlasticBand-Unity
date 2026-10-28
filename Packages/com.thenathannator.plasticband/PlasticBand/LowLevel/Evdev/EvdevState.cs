@@ -55,37 +55,6 @@ namespace PlasticBand.LowLevel
                 values[code] = value;
         }
 
-        public XInputGamepad ToXInput(bool invertY = true)
-        {
-            XInputButton buttons = 0;
-            if (GetKey(0x130)) buttons |= XInputButton.A;
-            if (GetKey(0x131)) buttons |= XInputButton.B;
-            if (GetKey(0x133)) buttons |= XInputButton.X;
-            if (GetKey(0x134)) buttons |= XInputButton.Y;
-            if (GetKey(0x136)) buttons |= XInputButton.LeftShoulder;
-            if (GetKey(0x137)) buttons |= XInputButton.RightShoulder;
-            if (GetKey(0x13A)) buttons |= XInputButton.Back;
-            if (GetKey(0x13B)) buttons |= XInputButton.Start;
-            if (GetKey(0x13C)) buttons |= XInputButton.Guide;
-            if (GetKey(0x13D)) buttons |= XInputButton.LeftThumb;
-            if (GetKey(0x13E)) buttons |= XInputButton.RightThumb;
-            if (GetAxis(0x10) < 0 || GetKey(0x222)) buttons |= XInputButton.DpadLeft;
-            if (GetAxis(0x10) > 0 || GetKey(0x223)) buttons |= XInputButton.DpadRight;
-            if (GetAxis(0x11) < 0 || GetKey(0x220)) buttons |= XInputButton.DpadUp;
-            if (GetAxis(0x11) > 0 || GetKey(0x221)) buttons |= XInputButton.DpadDown;
-            return new XInputGamepad()
-            {
-                buttons = (ushort)buttons,
-                leftTrigger = (byte)GetAxis(2),
-                rightTrigger = (byte)GetAxis(5),
-                leftStickX = (short)GetAxis(0),
-                // xpad applies a bitwise inversion, not arithmetic negation.
-                leftStickY = (short)(invertY ? ~GetAxis(1) : GetAxis(1)),
-                rightStickX = (short)GetAxis(3),
-                rightStickY = (short)(invertY ? ~GetAxis(4) : GetAxis(4)),
-            };
-        }
-
         public PS3Button GetSonyButtons(int buttonBase)
         {
             ushort buttons = 0;

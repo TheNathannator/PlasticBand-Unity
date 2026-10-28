@@ -1,89 +1,74 @@
+using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    internal unsafe struct EvdevSantrollerV2ProGuitarState : IProGuitarState
+    {
+        public static FourCC Format => new FourCC('E', 'V', 'D', 'V');
+        public FourCC format => Format;
+
+        public EvdevState state;
+
+        public bool south { get => state.GetKey(0x130); set => state.SetKey(0x130, value); }
+        public bool east  { get => state.GetKey(0x131); set => state.SetKey(0x131, value); }
+        public bool west  { get => state.GetKey(0x133); set => state.SetKey(0x133, value); }
+        public bool north { get => state.GetKey(0x134); set => state.SetKey(0x134, value); }
+
+        public bool select { get => state.GetKey(0x13A); set => state.SetKey(0x13A, value); }
+        public bool start  { get => state.GetKey(0x13B); set => state.SetKey(0x13B, value); }
+        public bool system { get => state.GetKey(0x13C); set => state.SetKey(0x13C, value); }
+
+        public bool dpadLeft  { get => state.GetAxis(0x10) < 0; set => state.SetAxis(0x10, value ? -1 : 0); }
+        public bool dpadRight { get => state.GetAxis(0x10) > 0; set => state.SetAxis(0x10, value ? 1 : 0); }
+        public bool dpadUp    { get => state.GetAxis(0x11) < 0; set => state.SetAxis(0x11, value ? -1 : 0); }
+        public bool dpadDown  { get => state.GetAxis(0x11) > 0; set => state.SetAxis(0x11, value ? 1 : 0); }
+
+        public ushort frets1 => (ushort)((byte)state.GetAxis(2) | ((byte)state.GetAxis(5) << 8));
+        public ushort frets2 => (ushort)((ushort)state.GetAxis(0) & 0x7FFF);
+
+        public bool solo { get => ((ushort)state.GetAxis(0) & 0x8000) != 0; set {} }
+
+        public byte fret1 { get => (byte)frets1.GetMask(0x1F, 0); set {} }
+        public byte fret2 { get => (byte)frets1.GetMask(0x1F, 5); set {} }
+        public byte fret3 { get => (byte)frets1.GetMask(0x1F, 10); set {} }
+        public byte fret4 { get => (byte)frets2.GetMask(0x1F, 0); set {} }
+        public byte fret5 { get => (byte)frets2.GetMask(0x1F, 5); set {} }
+        public byte fret6 { get => (byte)frets2.GetMask(0x1F, 10); set {} }
+
+        public byte velocity1 { get => (byte)(state.GetAxis(1) & 0x7F); set {} }
+        public byte velocity2 { get => (byte)((state.GetAxis(1) >> 8) & 0x7F); set {} }
+        public byte velocity3 { get => (byte)(state.GetAxis(3) & 0x7F); set {} }
+        public byte velocity4 { get => (byte)((state.GetAxis(3) >> 8) & 0x7F); set {} }
+        public byte velocity5 { get => (byte)(state.GetAxis(4) & 0x7F); set {} }
+        public byte velocity6 { get => (byte)((state.GetAxis(4) >> 8) & 0x7F); set {} }
+
+        public bool green  { get => (state.GetAxis(1) & 0x80) != 0; set {} }
+        public bool red    { get => ((state.GetAxis(1) >> 8) & 0x80) != 0; set {} }
+        public bool yellow { get => (state.GetAxis(3) & 0x80) != 0; set {} }
+        public bool blue   { get => ((state.GetAxis(3) >> 8) & 0x80) != 0; set {} }
+        public bool orange { get => (state.GetAxis(4) & 0x80) != 0; set {} }
+
+        public bool tilt { get => false; set {} }
+        public bool digitalPedal { get => false; set {} }
+    }
+
     [InputControlLayout(stateType = typeof(TranslatedProGuitarState), displayName = "Santroller v2 Evdev Rock Band Pro Guitar")]
-    internal class EvdevSantrollerV2ProGuitar : TranslatingProGuitar<XInputProGuitarState>, IInputStateCallbackReceiver
+    internal class EvdevSantrollerV2ProGuitar : TranslatingProGuitar<EvdevSantrollerV2ProGuitarState>
     {
         private static readonly int[] s_Keys =
         {
             0x130, 0x131, 0x133, 0x134, 0x136, 0x137, 0x13A, 0x13B, 0x13C, 0x13D, 0x13E
         };
 
-        private TranslateStateHandler<EvdevState, TranslatedProGuitarState> m_EvdevTranslator;
-
         internal new static void Initialize()
         {
             EvdevLayoutFinder.RegisterSantroller<EvdevSantrollerV2ProGuitar>(SantrollerDeviceType.ProGuitarMustang, 2);
             EvdevLayoutFinder.RegisterSantroller<EvdevSantrollerV2ProGuitar>(SantrollerDeviceType.ProGuitarSquire, 2);
-        }
-
-        unsafe void IInputStateCallbackReceiver.OnNextUpdate()
-        {
-            using (var buffer = StateEvent.From(this, out var eventPtr))
-            {
-                ref var translated = ref *(TranslatedProGuitarState*)StateEvent.From(eventPtr)->state;
-                translated.buttons &= ~(uint)(TranslatedProGuitarButtonMask.Strum1 | TranslatedProGuitarButtonMask.Strum2 |
-                    TranslatedProGuitarButtonMask.Strum3 | TranslatedProGuitarButtonMask.Strum4 |
-                    TranslatedProGuitarButtonMask.Strum5 | TranslatedProGuitarButtonMask.Strum6);
-                InputState.Change(this, eventPtr);
-            }
-        }
-
-        void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<EvdevState, TranslatedProGuitarState>.OnStateEvent(this, eventPtr, m_EvdevTranslator);
-        bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<EvdevState, TranslatedProGuitarState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_EvdevTranslator);
-
-        private TranslatedProGuitarState TranslateState(ref EvdevState state)
-        {
-            XInputButton buttons = 0;
-            if (state.GetKey(0x130)) buttons |= XInputButton.A;
-            if (state.GetKey(0x131)) buttons |= XInputButton.B;
-            if (state.GetKey(0x133)) buttons |= XInputButton.X;
-            if (state.GetKey(0x134)) buttons |= XInputButton.Y;
-            if (state.GetKey(0x13B)) buttons |= XInputButton.Start;
-            if (state.GetKey(0x13A)) buttons |= XInputButton.Back;
-            if (state.GetKey(0x13C)) buttons |= XInputButton.Guide;
-            if (state.GetAxis(0x10) < 0) buttons |= XInputButton.DpadLeft;
-            if (state.GetAxis(0x10) > 0) buttons |= XInputButton.DpadRight;
-            if (state.GetAxis(0x11) < 0) buttons |= XInputButton.DpadUp;
-            if (state.GetAxis(0x11) > 0) buttons |= XInputButton.DpadDown;
-
-            short leftStickY = (short)state.GetAxis(1);
-            short rightStickX = (short)state.GetAxis(3);
-            short rightStickY = (short)state.GetAxis(4);
-
-            var guitar = new XInputProGuitarState()
-            {
-                buttons = buttons,
-                velocity1 = (byte)(leftStickY & 0x7F),
-                velocity2 = (byte)((leftStickY >> 8) & 0x7F),
-                velocity3 = (byte)(rightStickX & 0x7F),
-                velocity4 = (byte)((rightStickX >> 8) & 0x7F),
-                velocity5 = (byte)(rightStickY & 0x7F),
-                velocity6 = (byte)((rightStickY >> 8) & 0x7F),
-                green = (leftStickY & 0x80) != 0,
-                red = ((leftStickY >> 8) & 0x80) != 0,
-                yellow = (rightStickX & 0x80) != 0,
-                blue = ((rightStickX >> 8) & 0x80) != 0,
-                orange = (rightStickY & 0x80) != 0,
-            };
-
-            ushort frets1 = (ushort)((byte)state.GetAxis(2) | ((byte)state.GetAxis(5) << 8));
-            ushort frets2 = (ushort)state.GetAxis(0);
-            guitar.fret1 = (byte)frets1.GetMask(0x1F, 0);
-            guitar.fret2 = (byte)frets1.GetMask(0x1F, 5);
-            guitar.fret3 = (byte)frets1.GetMask(0x1F, 10);
-            guitar.fret4 = (byte)frets2.GetMask(0x1F, 0);
-            guitar.fret5 = (byte)frets2.GetMask(0x1F, 5);
-            guitar.fret6 = (byte)frets2.GetMask(0x1F, 10);
-            guitar.solo = (frets2 & 0x8000) != 0;
-
-            return base.TranslateState(ref guitar);
         }
 
         protected override void FinishSetup()
@@ -92,8 +77,6 @@ namespace PlasticBand.Devices
             var caps = EvdevLayoutFinder.GetCapabilities(this);
             caps.RequireAxes(0, 1, 2, 3, 4, 5, 0x10, 0x11);
             caps.RequireKeys(s_Keys);
-            m_EvdevTranslator = TranslateState;
-            StateTranslator<EvdevState, TranslatedProGuitarState>.VerifyDevice(this);
         }
     }
 }
