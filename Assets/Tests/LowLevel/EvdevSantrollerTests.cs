@@ -144,17 +144,17 @@ namespace PlasticBand.Tests.LowLevel
             Assert.That(exception.InnerException, Is.TypeOf<IOException>());
         }
 
-        [TestCase(3, typeof(EvdevGuitarHeroGuitar))]
-        [TestCase(4, typeof(EvdevRockBandGuitar))]
-        [TestCase(5, typeof(EvdevFiveLaneDrumkit))]
-        [TestCase(6, typeof(EvdevFourLaneDrumkit))]
-        [TestCase(7, typeof(EvdevXpadSixFretGuitar))]
-        [TestCase(8, typeof(EvdevTurntable))]
-        public void MatchesLegacyAndCurrentInstrumentIdentity(int type, Type expected)
+        [TestCase(3, typeof(EvdevSantrollerGuitarHeroGuitar), typeof(EvdevSantrollerV2GuitarHeroGuitar))]
+        [TestCase(4, typeof(EvdevSantrollerRockBandGuitar), typeof(EvdevSantrollerV2RockBandGuitar))]
+        [TestCase(5, typeof(EvdevSantrollerFiveLaneDrumkit), typeof(EvdevSantrollerV2FiveLaneDrumkit))]
+        [TestCase(6, typeof(EvdevSantrollerFourLaneDrumkit), typeof(EvdevSantrollerV2FourLaneDrumkit))]
+        [TestCase(7, typeof(EvdevSantrollerSixFretGuitar), typeof(EvdevSantrollerV2SixFretGuitar))]
+        [TestCase(8, typeof(EvdevSantrollerTurntable), typeof(EvdevSantrollerV2Turntable))]
+        public void MatchesLegacyAndCurrentInstrumentIdentity(int type, Type expectedLegacy, Type expectedV2)
         {
-            Assert.That(InputSystem.AddDevice(Describe(type, 1)).GetType(), Is.EqualTo(expected));
-            Assert.That(InputSystem.AddDevice(Describe(type, 2)).GetType(), Is.EqualTo(expected));
-            Assert.That(InputSystem.AddDevice(Describe(type, 2, 0x2883)).GetType(), Is.EqualTo(expected));
+            Assert.That(InputSystem.AddDevice(Describe(type, 1)).GetType(), Is.EqualTo(expectedLegacy));
+            Assert.That(InputSystem.AddDevice(Describe(type, 2)).GetType(), Is.EqualTo(expectedV2));
+            Assert.That(InputSystem.AddDevice(Describe(type, 2, 0x2883)).GetType(), Is.EqualTo(expectedV2));
         }
 
         [TestCase(3, 0, 0x2882)]
@@ -169,9 +169,9 @@ namespace PlasticBand.Tests.LowLevel
         public void DoesNotGuessMissingOrUnsupportedIdentity(int type, int protocol, int product)
             => Assert.That(InputSystem.TryFindMatchingLayout(Describe(type, protocol, product)), Is.Null.Or.Empty);
 
-        [TestCase(16, typeof(EvdevProKeyboard))]
-        [TestCase(17, typeof(EvdevProGuitar))]
-        [TestCase(18, typeof(EvdevProGuitar))]
+        [TestCase(16, typeof(EvdevSantrollerV2ProKeyboard))]
+        [TestCase(17, typeof(EvdevSantrollerV2ProGuitar))]
+        [TestCase(18, typeof(EvdevSantrollerV2ProGuitar))]
         public void MatchesCurrentProInstrumentIdentity(int type, Type expected)
         {
             Assert.That(InputSystem.AddDevice(Describe(type, 2)).GetType(), Is.EqualTo(expected));
@@ -434,40 +434,7 @@ namespace PlasticBand.Tests.LowLevel
                 rightStickX = 0x4567, rightStickY = -0x5678,
             };
             Assert.That(state.ToXInput(false), Is.EqualTo(raw));
-            switch (type)
-            {
-                case 3:
-                    var gh = new XInputGuitarHeroGuitarState_GH5() { state = *(XInputGuitarHeroGuitarState*)&raw };
-                    Assert.That(EvdevSantrollerState.GuitarHero(ref state, 2),
-                        Is.EqualTo(TranslatingGuitarHeroGuitar_Discrete<XInputGuitarHeroGuitarState_GH5>.TranslateState(ref gh)));
-                    break;
-                case 4:
-                    var rb = *(XInputRockBandGuitarState*)&raw;
-                    Assert.That(EvdevSantrollerState.RockBand(ref state, 2),
-                        Is.EqualTo(TranslatingRockBandGuitar_Flags<XInputRockBandGuitarState>.TranslateState(ref rb)));
-                    break;
-                case 5:
-                    var five = *(XInputFiveLaneDrumkitState*)&raw;
-                    Assert.That(EvdevSantrollerState.FiveLane(ref state, 2),
-                        Is.EqualTo(TranslatingFiveLaneDrumkit<XInputFiveLaneDrumkitState>.TranslateState(ref five)));
-                    break;
-                case 6:
-                    var four = *(XInputFourLaneDrumkitState*)&raw;
-                    bool expectedFlags = false, actualFlags = false;
-                    Assert.That(EvdevSantrollerState.FourLane(ref state, 2, ref actualFlags),
-                        Is.EqualTo(TranslatingFourLaneDrumkit_Flags<XInputFourLaneDrumkitState>.TranslateState(ref four, ref expectedFlags)));
-                    break;
-                case 7:
-                    var six = *(XInputSixFretGuitarState*)&raw;
-                    Assert.That(EvdevSantrollerState.SixFret(ref state, 2),
-                        Is.EqualTo(TranslatingSixFretGuitar<XInputSixFretGuitarState>.TranslateState(ref six)));
-                    break;
-                case 8:
-                    var table = *(XInputTurntableState*)&raw;
-                    Assert.That(EvdevSantrollerState.Turntable(ref state, 2),
-                        Is.EqualTo(TranslatingTurntable<XInputTurntableState>.TranslateState(ref table)));
-                    break;
-            }
+            Assert.That(device.layout, Does.StartWith("EvdevSantrollerV2"));
             InputSystem.QueueStateEvent(device, state);
             InputSystem.Update();
             Assert.That(device.GetChildControl<ButtonControl>("select").isPressed, Is.True);

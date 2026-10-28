@@ -27,6 +27,19 @@ namespace PlasticBand.Devices
         private byte m_Velocity5;
         private byte m_Velocity6;
 
+        public XInputProGuitarState(XInputGamepad raw)
+        {
+            buttons = (XInputButton)raw.buttons;
+            m_Frets1 = (ushort)(raw.leftTrigger | (raw.rightTrigger << 8));
+            m_Frets2 = (ushort)raw.leftStickX;
+            m_Velocity1 = (byte)raw.leftStickY;
+            m_Velocity2 = (byte)(raw.leftStickY >> 8);
+            m_Velocity3 = (byte)raw.rightStickX;
+            m_Velocity4 = (byte)(raw.rightStickX >> 8);
+            m_Velocity5 = (byte)raw.rightStickY;
+            m_Velocity6 = (byte)(raw.rightStickY >> 8);
+        }
+
         public bool south
         {
             get => (buttons & XInputButton.A) != 0;

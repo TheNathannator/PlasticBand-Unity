@@ -15,11 +15,11 @@ namespace PlasticBand.Tests.LowLevel
             base.Setup();
             Initialization.Initialize();
             EvdevXpadSixFretGuitar.Initialize();
-            EvdevFourLaneDrumkit.Initialize();
-            EvdevFiveLaneDrumkit.Initialize();
-            EvdevTurntable.Initialize();
-            EvdevProGuitar.Initialize();
-            EvdevProKeyboard.Initialize();
+            EvdevXpadFourLaneDrumkit.Initialize();
+            EvdevXpadFiveLaneDrumkit.Initialize();
+            EvdevXpadTurntable.Initialize();
+            EvdevXpadProGuitar.Initialize();
+            EvdevXpadProKeyboard.Initialize();
         }
 
         private static InputDeviceDescription Describe(int subType, int vendor = 0x1209, int product = 0x2883, string name = null)
@@ -38,25 +38,27 @@ namespace PlasticBand.Tests.LowLevel
             };
         }
 
-        [TestCase(15, typeof(EvdevProKeyboard))]
-        [TestCase(23, typeof(EvdevTurntable))]
-        [TestCase(25, typeof(EvdevProGuitar))]
+        [TestCase(7, typeof(EvdevXpadGuitarHeroGuitar))]
+        [TestCase(6, typeof(EvdevXpadRockBandGuitar))]
+        [TestCase(15, typeof(EvdevXpadProKeyboard))]
+        [TestCase(23, typeof(EvdevXpadTurntable))]
+        [TestCase(25, typeof(EvdevXpadProGuitar))]
         public void MatchesSubtypeBasedXpadInstruments(int subType, Type expected)
         {
             Assert.That(InputSystem.AddDevice(Describe(subType)).GetType(), Is.EqualTo(expected));
         }
 
-        [TestCase("Xbox 360 Wireless Guitar Hero Drum Kit", typeof(EvdevFiveLaneDrumkit))]
-        [TestCase("Xbox 360 Wireless Rock Band Drum Kit", typeof(EvdevFourLaneDrumkit))]
+        [TestCase("Xbox 360 Wireless Guitar Hero Drum Kit", typeof(EvdevXpadFiveLaneDrumkit))]
+        [TestCase("Xbox 360 Wireless Rock Band Drum Kit", typeof(EvdevXpadFourLaneDrumkit))]
         public void MatchesWirelessDrumProfilesByDriverName(string name, Type expected)
         {
             Assert.That(InputSystem.AddDevice(Describe(8, 0x045e, 0x02a8, name)).GetType(), Is.EqualTo(expected));
         }
 
-        [TestCase(0x1BAD, 0x0003, typeof(EvdevFourLaneDrumkit))]
-        [TestCase(0x1BAD, 0x0130, typeof(EvdevFourLaneDrumkit))]
-        [TestCase(0x15E4, 0x0130, typeof(EvdevFourLaneDrumkit))]
-        [TestCase(0x1430, 0x0805, typeof(EvdevFiveLaneDrumkit))]
+        [TestCase(0x1BAD, 0x0003, typeof(EvdevXpadFourLaneDrumkit))]
+        [TestCase(0x1BAD, 0x0130, typeof(EvdevXpadFourLaneDrumkit))]
+        [TestCase(0x15E4, 0x0130, typeof(EvdevXpadFourLaneDrumkit))]
+        [TestCase(0x1430, 0x0805, typeof(EvdevXpadFiveLaneDrumkit))]
         public void MatchesKnownWiredDrumIds(int vendor, int product, Type expected)
         {
             Assert.That(InputSystem.AddDevice(Describe(8, vendor, product)).GetType(), Is.EqualTo(expected));
@@ -111,6 +113,19 @@ namespace PlasticBand.Tests.LowLevel
             Assert.That(guitar.dpad.up.isPressed, Is.True);
             Assert.That(guitar.tilt.ReadValue(), Is.EqualTo(1).Within(0.01));
             Assert.That(guitar.whammy.ReadValue(), Is.EqualTo(1).Within(0.01));
+        }
+
+        [Test]
+        public void FourLaneDrumkitDecodesVelocitiesAndPadsFromXpadAxes()
+        {
+            var drums = (FourLaneDrumkit)InputSystem.AddDevice(Describe(8, 0x1BAD, 0x0003));
+            var state = default(EvdevState);
+            state.SetKey(0x130, true);
+            state.SetAxis(4, unchecked((short)~(-32767 + ((120 << 7) | (120 >> 1)))));
+            InputSystem.QueueStateEvent(drums, state);
+            InputSystem.Update();
+            Assert.That(drums.greenPad.isPressed, Is.True);
+            Assert.That(drums.greenPad.ReadValue(), Is.EqualTo(120));
         }
 
         [TestCase(9)]

@@ -49,7 +49,10 @@ namespace PlasticBand
 
             // Guitar Hero guitars
             GuitarHeroGuitar.Initialize();
-            EvdevGuitarHeroGuitar.Initialize();
+            EvdevXpadGuitarHeroGuitar.Initialize();
+            EvdevSonyGuitarHeroGuitar.Initialize();
+            EvdevSantrollerGuitarHeroGuitar.Initialize();
+            EvdevSantrollerV2GuitarHeroGuitar.Initialize();
             XInputGuitarHeroGuitar.Initialize();
             PS3GuitarHeroGuitar.Initialize();
             PCGuitarHeroGuitar.Initialize();
@@ -59,7 +62,10 @@ namespace PlasticBand
 
             // Rock Band guitars
             RockBandGuitar.Initialize();
-            EvdevRockBandGuitar.Initialize();
+            EvdevXpadRockBandGuitar.Initialize();
+            EvdevSonyRockBandGuitar.Initialize();
+            EvdevSantrollerRockBandGuitar.Initialize();
+            EvdevSantrollerV2RockBandGuitar.Initialize();
             XInputRockBandGuitar.Initialize();
             XboxOneRockBandGuitar.Initialize();
             PS3RockBandGuitar.Initialize();
@@ -86,6 +92,8 @@ namespace PlasticBand
             SixFretGuitar.Initialize();
             EvdevSonySixFretGuitar.Initialize();
             EvdevXpadSixFretGuitar.Initialize();
+            EvdevSantrollerSixFretGuitar.Initialize();
+            EvdevSantrollerV2SixFretGuitar.Initialize();
             XInputSixFretGuitar.Initialize();
             XboxOneSixFretGuitar.Initialize();
             PS3WiiUSixFretGuitar.Initialize();
@@ -96,7 +104,8 @@ namespace PlasticBand
 
             // Pro Guitars
             ProGuitar.Initialize();
-            EvdevProGuitar.Initialize();
+            EvdevXpadProGuitar.Initialize();
+            EvdevSantrollerV2ProGuitar.Initialize();
             XInputProGuitar.Initialize();
             PS3ProGuitar.Initialize();
             WiiProGuitar.Initialize();
@@ -104,7 +113,9 @@ namespace PlasticBand
             // 4-lane drumkits
             FourLaneDrumkit.Initialize();
             EvdevSonyFourLaneDrumkit.Initialize();
-            EvdevFourLaneDrumkit.Initialize();
+            EvdevXpadFourLaneDrumkit.Initialize();
+            EvdevSantrollerFourLaneDrumkit.Initialize();
+            EvdevSantrollerV2FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
             XboxOneFourLaneDrumkit.Initialize();
             XboxOneCrkdDrumkit.Initialize();
@@ -118,7 +129,9 @@ namespace PlasticBand
             // 5-lane drumkits
             FiveLaneDrumkit.Initialize();
             EvdevSonyFiveLaneDrumkit.Initialize();
-            EvdevFiveLaneDrumkit.Initialize();
+            EvdevXpadFiveLaneDrumkit.Initialize();
+            EvdevSantrollerFiveLaneDrumkit.Initialize();
+            EvdevSantrollerV2FiveLaneDrumkit.Initialize();
             XInputFiveLaneDrumkit.Initialize();
             PS3FiveLaneDrumkit.Initialize();
             SantrollerHIDFiveLaneDrumkit.Initialize();
@@ -128,7 +141,9 @@ namespace PlasticBand
             // Turntables
             Turntable.Initialize();
             EvdevSonyTurntable.Initialize();
-            EvdevTurntable.Initialize();
+            EvdevXpadTurntable.Initialize();
+            EvdevSantrollerTurntable.Initialize();
+            EvdevSantrollerV2Turntable.Initialize();
             XInputTurntable.Initialize();
             PS3Turntable.Initialize();
             SantrollerHIDTurntable.Initialize();
@@ -137,7 +152,8 @@ namespace PlasticBand
 
             // Pro Keyboards
             ProKeyboard.Initialize();
-            EvdevProKeyboard.Initialize();
+            EvdevXpadProKeyboard.Initialize();
+            EvdevSantrollerV2ProKeyboard.Initialize();
             XInputProKeyboard.Initialize();
             PS3ProKeyboard.Initialize();
             WiiProKeyboard.Initialize();

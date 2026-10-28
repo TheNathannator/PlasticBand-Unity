@@ -45,6 +45,16 @@ namespace PlasticBand.LowLevel
                     throw new NotSupportedException($"Evdev instrument is missing required ABS code {code}.");
             }
         }
+
+        public void RequireKeys(params int[] codes)
+        {
+            byte[] bits = Convert.FromBase64String(keys);
+            foreach (int code in codes)
+            {
+                if (!HasBit(bits, code))
+                    throw new NotSupportedException($"Evdev instrument is missing required KEY code {code}.");
+            }
+        }
     }
 
     internal static class EvdevLayoutFinder
@@ -76,19 +86,23 @@ namespace PlasticBand.LowLevel
                 .WithCapability("subType", subType).WithCapability("vendorId", vendorId)
                 .WithCapability("productId", productId));
 
+        internal static void RegisterSantroller<TDevice>(SantrollerDeviceType deviceType, int protocol)
+            where TDevice : InputDevice
+        {
+            int maxProduct = protocol == 1 ? SantrollerLayoutFinder.ProductID : SantrollerLayoutFinder.ProductIDV2;
+            for (int product = SantrollerLayoutFinder.ProductID; product <= maxProduct; product++)
+                InputSystem.RegisterLayout<TDevice>(matches: Matcher("hid-generic")
+                    .WithCapability("vendorId", SantrollerLayoutFinder.VendorID)
+                    .WithCapability("productId", product)
+                    .WithCapability("santrollerProtocol", protocol)
+                    .WithCapability("subType", (int)deviceType));
+        }
+
         internal static void RegisterSantroller<TDevice>(SantrollerDeviceType deviceType, bool legacy = true)
             where TDevice : InputDevice
         {
             for (int protocol = legacy ? 1 : 2; protocol <= 2; protocol++)
-            {
-                int maxProduct = protocol == 1 ? SantrollerLayoutFinder.ProductID : SantrollerLayoutFinder.ProductIDV2;
-                for (int product = SantrollerLayoutFinder.ProductID; product <= maxProduct; product++)
-                    InputSystem.RegisterLayout<TDevice>(matches: Matcher("hid-generic")
-                        .WithCapability("vendorId", SantrollerLayoutFinder.VendorID)
-                        .WithCapability("productId", product)
-                        .WithCapability("santrollerProtocol", protocol)
-                        .WithCapability("subType", (int)deviceType));
-            }
+                RegisterSantroller<TDevice>(deviceType, protocol);
         }
 
         internal static EvdevCapabilities GetCapabilities(InputDevice device)

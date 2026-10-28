@@ -26,6 +26,15 @@ namespace PlasticBand.Devices
         public short blueVelocity;
         public short greenVelocity;
 
+        public XInputFourLaneDrumkitState(XInputGamepad raw)
+        {
+            buttons = (XInputButton)raw.buttons;
+            redVelocity = raw.leftStickX;
+            yellowVelocity = raw.leftStickY;
+            blueVelocity = raw.rightStickX;
+            greenVelocity = raw.rightStickY;
+        }
+
         public bool south
         {
             get => (buttons & XInputButton.A) != 0;

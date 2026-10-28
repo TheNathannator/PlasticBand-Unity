@@ -24,6 +24,14 @@ namespace PlasticBand.Devices
         private short m_Tilt;
         private short m_Whammy;
 
+        public XInputSixFretGuitarState(XInputGamepad raw)
+        {
+            buttons = (XInputButton)raw.buttons;
+            strumBar = raw.leftStickY;
+            m_Tilt = raw.rightStickX;
+            m_Whammy = raw.rightStickY;
+        }
+
         public bool black1
         {
             get => (buttons & XInputButton.A) != 0;

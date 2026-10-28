@@ -28,6 +28,11 @@ namespace PlasticBand.Tests.LowLevel
             };
         }
 
+        [TestCase(0x12BA, 0x0100, typeof(EvdevSonyGuitarHeroGuitar))]
+        [TestCase(0x1430, 0x474C, typeof(EvdevSonyGuitarHeroGuitar))]
+        [TestCase(0x12BA, 0x0200, typeof(EvdevSonyRockBandGuitar))]
+        [TestCase(0x1BAD, 0x0004, typeof(EvdevSonyRockBandGuitar))]
+        [TestCase(0x1BAD, 0x3010, typeof(EvdevSonyRockBandGuitar))]
         [TestCase(0x12BA, 0x074B, typeof(EvdevSonySixFretGuitar))]
         [TestCase(0x1430, 0x07BB, typeof(EvdevSonySixFretGuitar))]
         [TestCase(0x12BA, 0x0120, typeof(EvdevSonyFiveLaneDrumkit))]

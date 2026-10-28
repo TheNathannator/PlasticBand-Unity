@@ -41,17 +41,17 @@ namespace PlasticBand.Tests.LowLevel
             Assert.That(default(EvdevState).format.ToString(), Is.EqualTo("EVDV"));
         }
 
-        [TestCase("xpad", 0x1430, 0x4748, typeof(EvdevGuitarHeroGuitar))]
-        [TestCase("sony", 0x12BA, 0x0100, typeof(EvdevGuitarHeroGuitar))]
-        [TestCase("xpad", 0x1BAD, 0x0002, typeof(EvdevRockBandGuitar))]
-        [TestCase("sony", 0x12BA, 0x0200, typeof(EvdevRockBandGuitar))]
+        [TestCase("xpad", 0x1430, 0x4748, typeof(EvdevXpadGuitarHeroGuitar))]
+        [TestCase("sony", 0x12BA, 0x0100, typeof(EvdevSonyGuitarHeroGuitar))]
+        [TestCase("xpad", 0x1BAD, 0x0002, typeof(EvdevXpadRockBandGuitar))]
+        [TestCase("sony", 0x12BA, 0x0200, typeof(EvdevSonyRockBandGuitar))]
         public void MatchesKnownInstruments(string driver, int vendor, int product, Type expected)
         {
             Assert.That(InputSystem.AddDevice(Describe(driver, vendor, product)).GetType(), Is.EqualTo(expected));
         }
 
-        [TestCase("Xbox 360 Wireless Guitar", typeof(EvdevRockBandGuitar))]
-        [TestCase("Xbox 360 Wireless Alternate Guitar", typeof(EvdevGuitarHeroGuitar))]
+        [TestCase("Xbox 360 Wireless Guitar", typeof(EvdevXpadRockBandGuitar))]
+        [TestCase("Xbox 360 Wireless Alternate Guitar", typeof(EvdevXpadGuitarHeroGuitar))]
         public void MatchesWirelessInstrumentIdentity(string name, Type expected)
         {
             Assert.That(InputSystem.AddDevice(Describe("xpad", 0x045E, 0x0719, name)).GetType(), Is.EqualTo(expected));
@@ -65,9 +65,9 @@ namespace PlasticBand.Tests.LowLevel
             Assert.That(InputSystem.TryFindMatchingLayout(Describe(driver, vendor, product)), Is.Null.Or.Empty);
         }
 
-        [TestCase(6, typeof(EvdevRockBandGuitar))]
-        [TestCase(7, typeof(EvdevGuitarHeroGuitar))]
-        [TestCase(11, typeof(EvdevRockBandGuitar))]
+        [TestCase(6, typeof(EvdevXpadRockBandGuitar))]
+        [TestCase(7, typeof(EvdevXpadGuitarHeroGuitar))]
+        [TestCase(11, typeof(EvdevXpadRockBandGuitar))]
         public void MatchesXInputDescriptorSubtypeWithoutKnownUsbIds(int subType, Type expected)
         {
             var description = Describe("xpad", 0x1209, 0x2883);

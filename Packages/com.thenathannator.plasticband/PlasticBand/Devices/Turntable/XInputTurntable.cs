@@ -27,6 +27,17 @@ namespace PlasticBand.Devices
         private ushort m_EffectsDial;
         private short m_Crossfader;
 
+        public XInputTurntableState(XInputGamepad raw)
+        {
+            buttons = (XInputButton)raw.buttons;
+            leftTableButtons = raw.leftTrigger;
+            rightTableButtons = raw.rightTrigger;
+            m_LeftTableVelocity = raw.leftStickX;
+            m_RightTableVelocity = raw.leftStickY;
+            m_EffectsDial = (ushort)raw.rightStickX;
+            m_Crossfader = raw.rightStickY;
+        }
+
         public bool south
         {
             get => (buttons & XInputButton.A) != 0;
