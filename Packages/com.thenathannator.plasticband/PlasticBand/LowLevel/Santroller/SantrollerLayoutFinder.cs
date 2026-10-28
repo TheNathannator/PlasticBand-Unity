@@ -22,7 +22,6 @@ namespace PlasticBand.LowLevel
         ProjectDiva = 13,
         GuitarFreaks = 14,
         Wheel = 15,
-        ProKeys = 16,
         ProKeyboard = 16,
         ProGuitarMustang = 17,
         ProGuitarSquire = 18,
