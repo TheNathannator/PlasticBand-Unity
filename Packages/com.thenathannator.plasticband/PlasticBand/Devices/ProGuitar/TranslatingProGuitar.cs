@@ -191,7 +191,7 @@ namespace PlasticBand.Devices
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
             => StateTranslator<TState, TranslatedProGuitarState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
 
-        private TranslatedProGuitarState TranslateState(ref TState state)
+        protected TranslatedProGuitarState TranslateState(ref TState state)
         {
             var translated = new TranslatedProGuitarState()
             {

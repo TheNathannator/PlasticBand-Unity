@@ -8,6 +8,16 @@ Dates are relative to UTC.
 
 ## [Unreleased]
 
+### Added
+
+- Linux evdev instrument layouts through HIDrogen's hidraw-first fallback:
+  xpad guitars, drums, turntables and pro instruments, and hid-sony guitars,
+  digital drums and turntables. Documented kernel-filtered controls and
+  identification requirements prevent implying raw-HID feature parity.
+- Native Santroller HID evdev fallback for legacy and current firmware guitars,
+  drums and turntables, plus current-firmware pro guitars/keyboards. Current
+  firmware requires per-interface USB identity descriptors.
+
 ### Changed
 
 - The `startButton` and `selectButton` controls have been renamed to `start` and `select` to match the ones on the `Gamepad` layout.

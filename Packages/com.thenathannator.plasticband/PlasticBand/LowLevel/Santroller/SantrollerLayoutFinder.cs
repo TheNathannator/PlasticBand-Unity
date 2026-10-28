@@ -15,7 +15,10 @@ namespace PlasticBand.LowLevel
         RockBandDrums = 0x06,
         LiveGuitar = 0x07,
         DjHeroTurntable = 0x08,
-        StageKit = 0x09
+        StageKit = 0x09,
+        ProKeyboard = 0x10,
+        ProGuitarMustang = 0x11,
+        ProGuitarSquire = 0x12,
     }
 
     /// <summary>

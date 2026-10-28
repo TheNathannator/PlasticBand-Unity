@@ -20,8 +20,8 @@ namespace PlasticBand.Devices
 
         private fixed byte unused1[2];
 
-        private byte m_Whammy;
-        private byte m_PickupSwitch;
+        internal byte m_Whammy;
+        internal byte m_PickupSwitch;
 
         public bool green
         {

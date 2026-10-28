@@ -42,8 +42,71 @@ This package has no dependencies, however I highly recommend installing the [HID
 - Unity 2022.2 and onward do not natively support XInput instruments. This can be addressed by using v0.4.0 or higher of [HIDrogen](https://github.com/TheNathannator/HIDrogen).
 - Pre-compiling the layouts from this package is not currently possible without breaking things. A large number of them have to determine or construct things at runtime, and pre-compilation circumvents the mechanisms that allow these layouts to determine things in the first place.
   - At some point I could consider looking into workarounds for this (e.g. initializing everything in an `OnAdded` override), but for the time being it's not a priority. (PRs welcome if you can get it worked out!)
-- Xbox 360/One controllers will only work properly on Windows currently. Mac and Linux require custom drivers or support through raw USB handling.
+- Xbox 360/One support outside Windows depends on drivers or raw USB handling.
+  The instrument profiles described below also support Linux evdev input.
 - Xbox One support on Windows requires the [HIDrogen](https://github.com/TheNathannator/HIDrogen) package to be installed alongside this one. No errors will occur without it, but they will not be detected by the input system otherwise.
+
+#### Linux evdev Input
+
+With the corresponding evdev-enabled HIDrogen checkout installed, supported
+instruments can use Linux event devices as an input fallback.
+Hidraw remains preferred when usable; no application-side selection is needed.
+Mappings target native Santroller HID instruments and the instrument identities exposed by `xpad` and `hid-sony`
+(`sony` in sysfs), not ordinary PlayStation or Xbox gamepads.
+
+| Driver / family | Evdev input |
+| --- | --- |
+| xpad GH/RB five-fret guitars and bass | Existing guitar translation, including solo frets |
+| xpad GH Live six-fret guitar | Known Xbox dongle identity (`1430:079B`); generic guitar subtype alone is ambiguous |
+| xpad GH/RB drums | Existing drum translation; known wired identities or distinct wireless GH/RB names |
+| xpad DJ Hero turntable | Platter buttons/axes, crossfader, effects dial and navigation |
+| xpad pro guitar / keyboard | Available packed gameplay data reconstructed from xpad axes |
+| hid-generic Santroller native HID (legacy and current firmware) | GH/RB five-fret guitars, GH Live, GH/RB drums with velocities, and DJ Hero turntable |
+| hid-generic Santroller native HID (current firmware) | Pro guitar and keyboard using their exposed packed XInput-compatible controls |
+| hid-sony PS3 GH/RB guitars, including registered Wii RB guitars | Frets, navigation and exposed guitar axes |
+| hid-sony PS3/Wii U and PS4 GH Live | Six frets, strum, whammy, tilt and navigation; kernel handles keepalive |
+| hid-sony PS3/Wii RB drums and PS3 GH drums | Digital pad/cymbal/kick hits and navigation; **no hit velocity** |
+| hid-sony PS3 DJ Hero turntable | Platter buttons/axes, crossfader, effects dial and menu buttons; D-pad is filtered by the driver |
+| hid-sony PS4 RB guitars, PS4/PS5 Riffmaster and CRKD guitars | Shared fret buttons with solo routing, whammy, tilt and navigation; Riffmaster-style joystick and P1 where exposed |
+
+Both older sequential HID-button mappings and newer hid-sony instrument mappings
+are accepted. Xpad's Y-axis inversion is reversed before translation.
+Native Santroller axes are not inverted. Legacy HID (`1209:2882`) uses the
+instrument type in the USB version. Current firmware (`1209:2882` or
+`1209:2883`) must expose a vendor-specific USB identity descriptor after each
+gamepad interface's endpoints: `09 FF 53 41 4E 54 02 TT CC` (hexadecimal),
+where `SANT` is the signature, `02` is the protocol version, and `TT` / `CC`
+are the instrument type / capability flags. HIDrogen reads the cached sysfs
+USB descriptors without accessing hidraw. Interface/profile names are unchanged.
+Older current-generation firmware lacking
+this metadata remains unmatched rather than guessing from a shared descriptor.
+This per-interface identification supports composite devices with different
+instrument profiles. Native Stage Kit and legacy pro guitar/keyboard modes
+remain unmatched; output/haptics are not available through evdev. Current
+native pro keyboard shares the XInput layout's touch-strip/velocity limitations.
+
+These are input-only layouts. Evdev does not provide the raw HID output/feature
+commands, nor recover fields discarded or filtered by the kernel driver.
+In particular:
+
+- Sony drum hits are reported at full digital strength, not measured velocity.
+- PS4/PS5 guitars cannot report independent simultaneous normal/solo fret sets or
+  the pickup selector through these mappings. The shared buttons are routed using
+  the solo flag. Riffmaster joystick click is omitted because it overlaps that flag;
+  touchpad-only P1 input is not exposed.
+- PS3/Wii pro guitars and keyboards remain unmatched: the driver does not preserve
+  enough of their packed gameplay report. Their existing raw HID support is unchanged.
+- Wireless xpad identification requires the instrument names supplied by the
+  enhanced wireless-device driver. Older drivers that report generic controller
+  identities are left unmatched. Product IDs alone cannot recover the subtype,
+  since real product IDs can replace subtype-derived IDs.
+- Wired drum subtype alone does not distinguish GH from RB; a known identity is
+  required. Stage Kit output is not available through this input-only backend.
+- XInput pro keyboard touch strip is absent from the source report; individual
+  key-velocity controls remain unexposed, as in the existing XInput layout.
+
+Available controls depend on the descriptors and mappings of the installed kernel.
+An instrument's registration does not imply raw-HID feature parity.
 
 ### Configuration
 
