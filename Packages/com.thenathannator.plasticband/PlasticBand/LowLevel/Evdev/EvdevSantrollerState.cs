@@ -17,9 +17,10 @@ namespace PlasticBand.LowLevel
         {
             var caps = EvdevLayoutFinder.GetCapabilities(device);
             if (caps.driver != "hid-generic" || caps.vendorId != SantrollerLayoutFinder.VendorID ||
-                (caps.productId != 0x2882 && caps.productId != 0x2883) || caps.subType != (int)type ||
+                (caps.productId != SantrollerLayoutFinder.ProductID && caps.productId != SantrollerLayoutFinder.ProductIDV2) ||
+                caps.subType != (int)type ||
                 (caps.santrollerProtocol != 1 && caps.santrollerProtocol != 2) ||
-                (caps.santrollerProtocol == 1 && caps.productId != 0x2882))
+                (caps.santrollerProtocol == 1 && caps.productId != SantrollerLayoutFinder.ProductID))
                 throw new NotSupportedException("Missing or unsupported Santroller evdev identity.");
 
             var keys = s_CurrentKeys;

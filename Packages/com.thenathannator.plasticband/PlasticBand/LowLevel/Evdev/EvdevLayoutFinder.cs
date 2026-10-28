@@ -11,7 +11,7 @@ namespace PlasticBand.LowLevel
         public int productId;
         public int subType;
         public int santrollerProtocol;
-        public int santrollerFlags;
+        public SantrollerCapabilities santrollerFlags;
         public string driver;
         public string keys;
         public string axes;
@@ -81,7 +81,8 @@ namespace PlasticBand.LowLevel
         {
             for (int protocol = legacy ? 1 : 2; protocol <= 2; protocol++)
             {
-                for (int product = 0x2882; product <= (protocol == 1 ? 0x2882 : 0x2883); product++)
+                int maxProduct = protocol == 1 ? SantrollerLayoutFinder.ProductID : SantrollerLayoutFinder.ProductIDV2;
+                for (int product = SantrollerLayoutFinder.ProductID; product <= maxProduct; product++)
                     InputSystem.RegisterLayout<TDevice>(matches: Matcher("hid-generic")
                         .WithCapability("vendorId", SantrollerLayoutFinder.VendorID)
                         .WithCapability("productId", product)
