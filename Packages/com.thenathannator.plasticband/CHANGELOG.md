@@ -8,6 +8,10 @@ Dates are relative to UTC.
 
 ## [Unreleased]
 
+### Added
+
+- The unit tests that existed as part of the development project are now included in the package folder. This makes it easier for anyone modifying the package to verify changes to existing layouts and add tests for new layouts.
+
 ### Changed
 
 - The `startButton` and `selectButton` controls have been renamed to `start` and `select` to match the ones on the `Gamepad` layout.
