@@ -17,6 +17,7 @@ Dates are relative to UTC.
 - The `startButton` and `selectButton` controls have been renamed to `start` and `select` to match the ones on the `Gamepad` layout.
   - `startButton` and `selectButton` are maintained as aliases on these controls, so backwards compatibility should be maintained.
 - The package now initializes during `BeforeSplashScreen` instead of `BeforeSceneLoad`.
+- The display names for Pro Keyboard keys has been reformatted from `C#/Db-1` to `C#1 / Db1`.
 
 ### Fixed
 
