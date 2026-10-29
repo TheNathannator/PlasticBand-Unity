@@ -83,13 +83,13 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The Start button in the navigation button compartment.
         /// </summary>
-        [InputControl(displayName = "Start", usage = "Menu")]
+        [InputControl(displayName = "Start", usage = "Menu", alias = "startButton")]
         public ButtonControl start { get; private set; }
 
         /// <summary>
         /// The Select button in the navigation button compartment.
         /// </summary>
-        [InputControl(displayName = "Select")]
+        [InputControl(displayName = "Select", alias = "selectButton")]
         public ButtonControl select { get; private set; }
 
         /// <summary>
