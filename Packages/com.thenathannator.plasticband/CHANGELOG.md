@@ -15,6 +15,7 @@ Dates are relative to UTC.
 ### Changed
 
 - The `startButton` and `selectButton` controls have been renamed to `start` and `select` to match the ones on the `Gamepad` layout.
+- The package now initializes during `BeforeSplashScreen` instead of `BeforeSceneLoad`.
 
 ## [0.10.0] - 2026/09/07
 
