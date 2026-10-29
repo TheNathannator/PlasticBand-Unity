@@ -112,7 +112,7 @@ namespace PlasticBand.Controls
             }
             else
             {
-                return -DoDenormalize(value, maxValue, minValue, zeroPoint);
+                return DoDenormalize(-value, maxValue, minValue, zeroPoint);
             }
         }
 

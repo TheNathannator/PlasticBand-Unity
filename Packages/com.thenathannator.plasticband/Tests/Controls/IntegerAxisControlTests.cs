@@ -294,5 +294,45 @@ namespace PlasticBand.Tests.Controls
                 lastExpected = expected;
             }
         });
+
+        [Test]
+        public void RoundTrips()
+        {
+            const int stepSize = 50;
+            const float epsilon = 1f / stepSize;
+
+            void TestAxisByte(byte min, byte max, byte zero)
+            {
+                for (int i = -stepSize; i < stepSize; i++)
+                {
+                    float normalized = i / (float) stepSize;
+
+                    byte denormalized = (byte) IntegerAxisControl.Denormalize(normalized, min, max, zero);
+                    float renormalized = IntegerAxisControl.Normalize(denormalized, min, max, zero);
+
+                    Assert.That(renormalized, Is.InRange(normalized - epsilon, normalized + epsilon));
+                }
+            }
+
+            void TestAxisSbyte(sbyte min, sbyte max, sbyte zero)
+            {
+                for (int i = -stepSize; i < stepSize; i++)
+                {
+                    float normalized = i / (float) stepSize;
+
+                    sbyte denormalized = (sbyte) IntegerAxisControl.Denormalize(normalized, min, max, zero);
+                    float renormalized = IntegerAxisControl.Normalize(denormalized, min, max, zero);
+
+                    Assert.That(renormalized, Is.InRange(normalized - epsilon, normalized + epsilon));
+                }
+            }
+
+            TestAxisByte(0, 255, 128); // byteAxis
+            TestAxisSbyte(-128, 127, 0); // sbyteAxis
+            TestAxisByte(255, 0, 128); // invertedByteAxis
+            TestAxisSbyte(127, -128, 0); // invertedSbyteAxis
+            TestAxisByte(0, 255, 128); // nullByteAxis
+            TestAxisSbyte(-128, 127, 0); // nullSbyteAxis
+        }
     }
 }

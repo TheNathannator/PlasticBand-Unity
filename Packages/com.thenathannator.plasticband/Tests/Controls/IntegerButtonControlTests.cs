@@ -366,5 +366,45 @@ namespace PlasticBand.Tests.Controls
                 AssertButtonPress(device, state);
             }
         }
+
+        [Test]
+        public void RoundTrips()
+        {
+            const int stepSize = 50;
+            const float epsilon = 1f / stepSize;
+
+            void TestButtonByte(byte min, byte max, byte zero)
+            {
+                for (int i = 0; i < stepSize; i++)
+                {
+                    float normalized = i / (float) stepSize;
+
+                    byte denormalized = (byte) IntegerAxisControl.Denormalize(normalized, min, max, zero);
+                    float renormalized = IntegerAxisControl.Normalize(denormalized, min, max, zero);
+
+                    Assert.That(renormalized, Is.InRange(normalized - epsilon, normalized + epsilon));
+                }
+            }
+
+            void TestButtonSbyte(sbyte min, sbyte max, sbyte zero)
+            {
+                for (int i = 0; i < stepSize; i++)
+                {
+                    float normalized = i / (float) stepSize;
+
+                    sbyte denormalized = (sbyte) IntegerAxisControl.Denormalize(normalized, min, max, zero);
+                    float renormalized = IntegerAxisControl.Normalize(denormalized, min, max, zero);
+
+                    Assert.That(renormalized, Is.InRange(normalized - epsilon, normalized + epsilon));
+                }
+            }
+
+            TestButtonByte(0, 255, 0); // byteButton
+            TestButtonSbyte(-128, 127, -128); // sbyteButton
+            TestButtonByte(255, 0, 255); // invertedByteButton
+            TestButtonSbyte(127, -128, 127); // invertedSbyteButton
+            TestButtonByte(0, 255, 0); // nullByteButton
+            TestButtonSbyte(-128, 127, -128); // nullSbyteButton
+        }
     }
 }
