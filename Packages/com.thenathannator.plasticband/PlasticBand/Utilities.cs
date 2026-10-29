@@ -22,7 +22,7 @@ namespace PlasticBand
                 try
                 {
                     data = JsonUtility.FromJson<TData>(json);
-                    return true;
+                    return data != null;
                 }
                 catch
                 {
