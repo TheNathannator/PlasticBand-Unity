@@ -9,16 +9,20 @@ namespace PlasticBand.Devices
     {
         bool p1 { get; set; }
 
-        sbyte joystickX { get; set; }
-        sbyte joystickY { get; set; }
+        sbyte leftStickX { get; set; }
+        sbyte leftStickY { get; set; }
+        bool leftStickPress { get; set; }
 
-        bool joystickClick { get; set; }
+        sbyte rightStickX { get; set; }
+        sbyte rightStickY { get; set; }
+        bool rightStickPress { get; set; }
     }
 
     /// <summary>
-    /// A Riffmaster Rock Band guitar.
-    /// Features the standard Rock Band solo frets, as well as a joystick on the back of its headstock.
-    /// Does not have the pickup switch present on other Rock Band guitars.
+    /// A Riffmaster guitar.
+    /// Has all features of Rock Band guitars, excluding the pickup switch.
+    /// Also features a joystick on the headstock, although two joysticks are exposed here for CRKD guitars,
+    /// the earlier models of which which have both left and right joysticks.
     /// </summary>
     [InputControlLayout(displayName = "Riffmaster 5-Fret Guitar")]
     public class RiffmasterGuitar : RockBandGuitar
@@ -40,23 +44,37 @@ namespace PlasticBand.Devices
         }
 
         /// <summary>
-        /// The joystick on the guitar's headstock.
+        /// The left joystick on the guitar.
         /// </summary>
-        [InputControl(displayName = "Joystick")]
-        public StickControl joystick { get; private set; }
+        [InputControl(displayName = "Left Stick")]
+        public StickControl leftStick { get; private set; }
 
         /// <summary>
-        /// The click of the joystick on the guitar's headstock.
+        /// The right joystick on the guitar.
         /// </summary>
-        [InputControl(displayName = "Joystick")]
-        public ButtonControl joystickClick { get; private set; }
+        [InputControl(displayName = "Right Stick")]
+        public StickControl rightStick { get; private set; }
+
+        /// <summary>
+        /// The click of the left joystick.
+        /// </summary>
+        [InputControl(displayName = "Left Stick Press")]
+        public ButtonControl leftStickPress { get; private set; }
+
+        /// <summary>
+        /// The click of the right joystick.
+        /// </summary>
+        [InputControl(displayName = "Right Stick Press")]
+        public ButtonControl rightStickPress { get; private set; }
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
 
-            joystick = GetChildControl<StickControl>(nameof(joystick));
-            joystickClick = GetChildControl<ButtonControl>(nameof(joystickClick));
+            leftStick = GetChildControl<StickControl>(nameof(leftStick));
+            rightStick = GetChildControl<StickControl>(nameof(rightStick));
+            leftStickPress = GetChildControl<ButtonControl>(nameof(leftStickPress));
+            rightStickPress = GetChildControl<ButtonControl>(nameof(rightStickPress));
         }
 
         /// <inheritdoc/>

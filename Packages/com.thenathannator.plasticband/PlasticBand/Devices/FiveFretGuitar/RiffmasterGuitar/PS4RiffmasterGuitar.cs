@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
@@ -18,9 +18,14 @@ namespace PlasticBand.Devices
         public FourCC format => HidDefinitions.InputFormat;
 
         [FieldOffset(0)]
-        private byte m_JoystickX;
+        private byte m_LeftStickX;
         [FieldOffset(1)]
-        private byte m_JoystickY;
+        private byte m_LeftStickY;
+
+        [FieldOffset(2)]
+        private byte m_RightStickX;
+        [FieldOffset(3)]
+        private byte m_RightStickY;
 
         [FieldOffset(4)]
         public PS4Button1 buttons1;
@@ -143,15 +148,23 @@ namespace PlasticBand.Devices
 
         public bool p1
         {
-            get => (buttons1 & PS4Button1.R3) != 0 || (buttons2 & PS4Button2.Touchpad) != 0;
-            set
-            {
-                buttons1.SetBit(PS4Button1.R3, value);
-                buttons2.SetBit(PS4Button2.Touchpad, false);
-            }
+            get => (buttons2 & PS4Button2.Touchpad) != 0;
+            set => buttons2.SetBit(PS4Button2.Touchpad, value);
         }
 
-        public bool joystickClick
+        public sbyte leftStickX
+        {
+            get => PS4Handling.GetStickX(m_LeftStickX);
+            set => m_LeftStickX = PS4Handling.SetStickX(value);
+        }
+
+        public sbyte leftStickY
+        {
+            get => PS4Handling.GetStickY(m_LeftStickY);
+            set => m_LeftStickY = PS4Handling.SetStickY(value);
+        }
+
+        public bool leftStickPress
         {
             // Click input needs to be ignored if the solo frets are active,
             // as it overlaps with the solo fret flag
@@ -159,16 +172,22 @@ namespace PlasticBand.Devices
             set => buttons1.SetBit(PS4Button1.L3, value);
         }
 
-        public sbyte joystickX
+        public sbyte rightStickX
         {
-            get => PS4Handling.GetStickX(m_JoystickX);
-            set => m_JoystickX = PS4Handling.SetStickX(value);
+            get => PS4Handling.GetStickX(m_RightStickX);
+            set => m_RightStickX = PS4Handling.SetStickX(value);
         }
 
-        public sbyte joystickY
+        public sbyte rightStickY
         {
-            get => PS4Handling.GetStickY(m_JoystickY);
-            set => m_JoystickY = PS4Handling.SetStickY(value);
+            get => PS4Handling.GetStickY(m_RightStickY);
+            set => m_RightStickY = PS4Handling.SetStickY(value);
+        }
+
+        public bool rightStickPress
+        {
+            get => (buttons1 & PS4Button1.R3) != 0;
+            set => buttons1.SetBit(PS4Button1.R3, value);
         }
 
         byte IFiveFretGuitarState.whammy
@@ -224,10 +243,14 @@ namespace PlasticBand.Devices
         public bool system { get => state.system; set => state.system = value; }
 
         public bool p1 { get => state.p1; set => state.p1 = value; }
-        public bool joystickClick { get => state.joystickClick; set => state.joystickClick = value; }
 
-        public sbyte joystickX { get => state.joystickX; set => state.joystickX = value; }
-        public sbyte joystickY { get => state.joystickY; set => state.joystickY = value; }
+        public sbyte leftStickX { get => state.leftStickX; set => state.leftStickX = value; }
+        public sbyte leftStickY { get => state.leftStickY; set => state.leftStickY = value; }
+        public bool leftStickPress { get => state.leftStickPress; set => state.leftStickPress = value; }
+
+        public sbyte rightStickX { get => state.rightStickX; set => state.rightStickX = value; }
+        public sbyte rightStickY { get => state.rightStickY; set => state.rightStickY = value; }
+        public bool rightStickPress { get => state.rightStickPress; set => state.rightStickPress = value; }
 
         public byte whammy { get => state.whammy; set => state.whammy = value; }
         public sbyte tilt { get => state.tilt; set => state.tilt = value; }

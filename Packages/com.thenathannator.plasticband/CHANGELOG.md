@@ -18,6 +18,8 @@ Dates are relative to UTC.
   - `startButton` and `selectButton` are maintained as aliases on these controls, so backwards compatibility should be maintained.
 - The package now initializes during `BeforeSplashScreen` instead of `BeforeSceneLoad`.
 - The display names for Pro Keyboard keys has been reformatted from `C#/Db-1` to `C#1 / Db1`.
+- The Riffmaster guitar layout now supports both left and right sticks, to better support CRKD guitars.
+  - This is a breaking change, as `joystick` has been renamed to `leftStick`.
 
 ### Fixed
 
