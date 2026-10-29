@@ -11,32 +11,76 @@ namespace PlasticBand.Tests.Controls
     {
         public FourCC format => new FourCC('I', 'A', 'X', 'S');
 
-        // For this test to work, the min and max value must be
-        // equal (in terms of absolute value) and of opposite signs
-        public const int MinValue = -MaxValue;
-        public const int MaxValue = 100;
-        public const int ZeroPoint = 0;
-        public const int NullValue = MaxValue / 10;
+        [InputControl(layout = "IntAxis", defaultState = 128, parameters = "minValue=0,maxValue=255,zeroPoint=128")]
+        public byte byteAxis;
 
-        [InputControl(layout = "IntAxis", parameters = "minValue=-100,maxValue=100,zeroPoint=0,hasNullValue,nullValue=10")]
-        public int intAxis;
+        [InputControl(layout = "IntAxis", defaultState = 0, parameters = "minValue=-128,maxValue=127,zeroPoint=0")]
+        public sbyte sbyteAxis;
+
+        [InputControl(layout = "IntAxis", defaultState = 128, parameters = "minValue=255,maxValue=0,zeroPoint=128")]
+        public byte invertedByteAxis;
+
+        [InputControl(layout = "IntAxis", defaultState = 0, parameters = "minValue=127,maxValue=-128,zeroPoint=0")]
+        public sbyte invertedSbyteAxis;
+
+        [InputControl(layout = "IntAxis", defaultState = 128, parameters = "minValue=0,maxValue=255,zeroPoint=128,hasNullValue,nullValue=192")]
+        public byte nullByteAxis;
+
+        [InputControl(layout = "IntAxis", defaultState = 0, parameters = "minValue=-128,maxValue=127,zeroPoint=0,hasNullValue,nullValue=64")]
+        public sbyte nullSbyteAxis;
+
+        public static IntegerAxisState Default()
+        {
+            return new IntegerAxisState()
+            {
+                byteAxis = 128,
+                sbyteAxis = 0,
+                invertedByteAxis = 128,
+                invertedSbyteAxis = 0,
+                nullByteAxis = 128,
+                nullSbyteAxis = 0,
+            };
+        }
     }
 
     [InputControlLayout(stateType = typeof(IntegerAxisState), hideInUI = true)]
     internal class IntegerAxisDevice : InputDevice
     {
-        public IntegerAxisControl intAxis { get; private set; }
+        public IntegerAxisControl byteAxis { get; private set; }
+        public IntegerAxisControl sbyteAxis { get; private set; }
+        public IntegerAxisControl invertedByteAxis { get; private set; }
+        public IntegerAxisControl invertedSbyteAxis { get; private set; }
+        public IntegerAxisControl nullByteAxis { get; private set; }
+        public IntegerAxisControl nullSbyteAxis { get; private set; }
+
+        public IntegerAxisControl[] allAxes { get; private set; }
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            intAxis = GetChildControl<IntegerAxisControl>(nameof(intAxis));
+
+            byteAxis = GetChildControl<IntegerAxisControl>(nameof(byteAxis));
+            sbyteAxis = GetChildControl<IntegerAxisControl>(nameof(sbyteAxis));
+            invertedByteAxis = GetChildControl<IntegerAxisControl>(nameof(invertedByteAxis));
+            invertedSbyteAxis = GetChildControl<IntegerAxisControl>(nameof(invertedSbyteAxis));
+            nullByteAxis = GetChildControl<IntegerAxisControl>(nameof(nullByteAxis));
+            nullSbyteAxis = GetChildControl<IntegerAxisControl>(nameof(nullSbyteAxis));
+
+            allAxes = new IntegerAxisControl[]
+            {
+                byteAxis,
+                sbyteAxis,
+                invertedByteAxis,
+                invertedSbyteAxis,
+                nullByteAxis,
+                nullSbyteAxis,
+            };
         }
     }
 
     internal class IntegerAxisControlTests : PlasticBandTestFixture<IntegerAxisDevice>
     {
-        private const float kEpsilon = 1f / IntegerAxisState.MaxValue;
+        private const float kEpsilon = 1f / 255f;
 
         public override void Setup()
         {
@@ -53,90 +97,202 @@ namespace PlasticBand.Tests.Controls
         [Test]
         public void SetsMinValue() => CreateAndRun((device) =>
         {
-            Assert.That(device.intAxis.minValue, Is.EqualTo(IntegerAxisState.MinValue));
+            Assert.That(device.byteAxis.minValue,          Is.EqualTo(0), "byteAxis has an incorrect minimum value!");
+            Assert.That(device.sbyteAxis.minValue,         Is.EqualTo(-128), "sbyteAxis has an incorrect minimum value!");
+            Assert.That(device.invertedByteAxis.minValue,  Is.EqualTo(255), "invertedByteAxis has an incorrect minimum value!");
+            Assert.That(device.invertedSbyteAxis.minValue, Is.EqualTo(127), "invertedSbyteAxis has an incorrect minimum value!");
+            Assert.That(device.nullByteAxis.minValue,      Is.EqualTo(0), "nullByteAxis has an incorrect minimum value!");
+            Assert.That(device.nullSbyteAxis.minValue,     Is.EqualTo(-128), "nullSbyteAxis has an incorrect minimum value!");
         });
 
         [Test]
         public void SetsMaxValue() => CreateAndRun((device) =>
         {
-            Assert.That(device.intAxis.maxValue, Is.EqualTo(IntegerAxisState.MaxValue));
+            Assert.That(device.byteAxis.maxValue,          Is.EqualTo(255), "byteAxis has an incorrect maximum value!");
+            Assert.That(device.sbyteAxis.maxValue,         Is.EqualTo(127), "sbyteAxis has an incorrect maximum value!");
+            Assert.That(device.invertedByteAxis.maxValue,  Is.EqualTo(0), "invertedByteAxis has an incorrect maximum value!");
+            Assert.That(device.invertedSbyteAxis.maxValue, Is.EqualTo(-128), "invertedSbyteAxis has an incorrect maximum value!");
+            Assert.That(device.nullByteAxis.maxValue,      Is.EqualTo(255), "nullByteAxis has an incorrect maximum value!");
+            Assert.That(device.nullSbyteAxis.maxValue,     Is.EqualTo(127), "nullSbyteAxis has an incorrect maximum value!");
         });
 
         [Test]
         public void SetsZeroPoint() => CreateAndRun((device) =>
         {
-            Assert.That(device.intAxis.zeroPoint, Is.EqualTo(IntegerAxisState.ZeroPoint));
+            Assert.That(device.byteAxis.zeroPoint,          Is.EqualTo(128), "byteAxis has an incorrect zero point!");
+            Assert.That(device.sbyteAxis.zeroPoint,         Is.EqualTo(0), "sbyteAxis has an incorrect zero point!");
+            Assert.That(device.invertedByteAxis.zeroPoint,  Is.EqualTo(128), "invertedByteAxis has an incorrect zero point!");
+            Assert.That(device.invertedSbyteAxis.zeroPoint, Is.EqualTo(0), "invertedSbyteAxis has an incorrect zero point!");
+            Assert.That(device.nullByteAxis.zeroPoint,      Is.EqualTo(128), "nullByteAxis has an incorrect zero point!");
+            Assert.That(device.nullSbyteAxis.zeroPoint,     Is.EqualTo(0), "nullSbyteAxis has an incorrect zero point!");
         });
 
         [Test]
         public void SetsHasNullValue() => CreateAndRun((device) =>
         {
-            Assert.That(device.intAxis.hasNullValue, Is.True);
+            Assert.That(device.byteAxis.hasNullValue,          Is.EqualTo(false), "byteAxis reported the wrong null value presence!");
+            Assert.That(device.sbyteAxis.hasNullValue,         Is.EqualTo(false), "sbyteAxis reported the wrong null value presence!");
+            Assert.That(device.invertedByteAxis.hasNullValue,  Is.EqualTo(false), "invertedByteAxis reported the wrong null value presence!");
+            Assert.That(device.invertedSbyteAxis.hasNullValue, Is.EqualTo(false), "invertedSbyteAxis reported the wrong null value presence!");
+            Assert.That(device.nullByteAxis.hasNullValue,      Is.EqualTo(true), "nullByteAxis reported the wrong null value presence!");
+            Assert.That(device.nullSbyteAxis.hasNullValue,     Is.EqualTo(true), "nullSbyteAxis reported the wrong null value presence!");
         });
 
         [Test]
         public void SetsNullValue() => CreateAndRun((device) =>
         {
-            Assert.That(device.intAxis.nullValue, Is.EqualTo(IntegerAxisState.NullValue));
-        });
-
-        [Test]
-        public void HandlesMaxValue() => CreateAndRun((device) =>
-        {
-            var state = new IntegerAxisState() { intAxis = IntegerAxisState.MaxValue };
-            AssertAxisValue(device, state, 1f, kEpsilon, device.intAxis);
+            Assert.That(device.byteAxis.nullValue,          Is.EqualTo(0), "byteAxis has an incorrect null value!");
+            Assert.That(device.sbyteAxis.nullValue,         Is.EqualTo(0), "sbyteAxis has an incorrect null value!");
+            Assert.That(device.invertedByteAxis.nullValue,  Is.EqualTo(0), "invertedByteAxis has an incorrect null value!");
+            Assert.That(device.invertedSbyteAxis.nullValue, Is.EqualTo(0), "invertedSbyteAxis has an incorrect null value!");
+            Assert.That(device.nullByteAxis.nullValue,      Is.EqualTo(192), "nullByteAxis has an incorrect null value!");
+            Assert.That(device.nullSbyteAxis.nullValue,     Is.EqualTo(64), "nullSbyteAxis has an incorrect null value!");
         });
 
         [Test]
         public void HandlesMinValue() => CreateAndRun((device) =>
         {
-            var state = new IntegerAxisState() { intAxis = IntegerAxisState.MinValue };
-            AssertAxisValue(device, state, -1f, kEpsilon, device.intAxis);
+            var state = new IntegerAxisState()
+            {
+                byteAxis = 0,
+                sbyteAxis = -128,
+                invertedByteAxis = 255,
+                invertedSbyteAxis = 127,
+                nullByteAxis = 0,
+                nullSbyteAxis = -128,
+            };
+            AssertAxisValue(device, state, -1f, 0f, device.allAxes);
+        });
+
+        [Test]
+        public void HandlesMaxValue() => CreateAndRun((device) =>
+        {
+            var state = new IntegerAxisState()
+            {
+                byteAxis = 255,
+                sbyteAxis = 127,
+                invertedByteAxis = 0,
+                invertedSbyteAxis = -128,
+                nullByteAxis = 255,
+                nullSbyteAxis = 127,
+            };
+            AssertAxisValue(device, state, 1f, 0f, device.allAxes);
         });
 
         [Test]
         public void HandlesZeroPoint() => CreateAndRun((device) =>
         {
-            var state = new IntegerAxisState() { intAxis = IntegerAxisState.ZeroPoint };
-            AssertAxisValue(device, state, 0f, kEpsilon, device.intAxis);
+            var state = new IntegerAxisState()
+            {
+                byteAxis = 128,
+                sbyteAxis = 0,
+                invertedByteAxis = 128,
+                invertedSbyteAxis = 0,
+                nullByteAxis = 128,
+                nullSbyteAxis = 0,
+            };
+            AssertAxisValue(device, state, 0f, 0f, device.allAxes);
         });
 
         [Test]
         public void HandlesNullValue() => CreateAndRun((device) =>
         {
-            AssertValueNullChecked(device, IntegerAxisState.MaxValue, 1f);
-            AssertValueNullChecked(device, IntegerAxisState.MinValue, -1f);
-            AssertValueNullChecked(device, IntegerAxisState.ZeroPoint, 0f);
+            var state = IntegerAxisState.Default();
+            AssertAxisValue(device, state, 0f, 0f, device.allAxes);
+
+            for (int i = -128; i <= 127; i++)
+            {
+                if (i == 64)
+                {
+                    continue;
+                }
+
+                float expected = i / (i < 0 ? 128f : 127f);
+                state.nullByteAxis = (byte)(128 + i);
+                state.nullSbyteAxis = (sbyte)i;
+                AssertAxisValue(device, state, expected, kEpsilon, device.nullByteAxis, device.nullSbyteAxis);
+
+                // No change in value should occur at the null state
+                state.nullByteAxis = 192;
+                state.nullSbyteAxis = 64;
+                AssertAxisValue(device, state, expected, kEpsilon, device.nullByteAxis, device.nullSbyteAxis);
+            }
         });
 
         [Test]
         public void HandlesRange() => CreateAndRun((device) =>
         {
-            var state = new IntegerAxisState() { intAxis = IntegerAxisState.ZeroPoint };
-            for (int i = 0; i <= IntegerAxisState.MaxValue; i++)
+            var state = IntegerAxisState.Default();
+            AssertAxisValue(device, state, 0f, 0f, device.allAxes);
+
+            // byteAxis
+            for (int i = -128; i <= 127; i++)
             {
-                // Ignore null value
-                if (i == IntegerAxisState.NullValue)
-                    continue;
+                float expected = i / (i < 0 ? 128f : 127f);
+                state.byteAxis = (byte)(128 + i);
 
-                float expectedValue = (float)i / IntegerAxisState.MaxValue;
+                AssertAxisValue(device, state, expected, kEpsilon, device.byteAxis);
+            }
 
-                // Positive
-                AssertValueNullChecked(device, i, expectedValue);
+            // sbyteAxis
+            state = IntegerAxisState.Default();
+            for (int i = -128; i <= 127; i++)
+            {
+                float expected = i / (i < 0 ? 128f : 127f);
+                state.sbyteAxis = (sbyte)i;
 
-                // Negative
-                AssertValueNullChecked(device, -i, -expectedValue);
+                AssertAxisValue(device, state, expected, kEpsilon, device.sbyteAxis);
+            }
+
+            // invertedByteAxis
+            state = IntegerAxisState.Default();
+            for (int i = -127; i <= 128; i++)
+            {
+                float expected = i / (i < 0 ? 127f : 128f);
+                state.invertedByteAxis = (byte)(128 - i);
+
+                AssertAxisValue(device, state, expected, kEpsilon, device.invertedByteAxis);
+            }
+
+            // invertedSbyteAxis
+            state = IntegerAxisState.Default();
+            for (int i = -127; i <= 128; i++)
+            {
+                float expected = i / (i < 0 ? 127f : 128f);
+                state.invertedSbyteAxis = (sbyte)-i;
+
+                AssertAxisValue(device, state, expected, kEpsilon, device.invertedSbyteAxis);
+            }
+
+            // nullByteAxis
+            state = IntegerAxisState.Default();
+            float lastExpected = float.NegativeInfinity;
+            for (int i = -128; i <= 127; i++)
+            {
+                float expected = i == 64 // Null value
+                    ? lastExpected
+                    : i / (i < 0 ? 128f : 127f);
+                state.nullByteAxis = (byte)(128 + i);
+
+                AssertAxisValue(device, state, expected, kEpsilon, device.nullByteAxis);
+
+                lastExpected = expected;
+            }
+
+            // nullSbyteAxis
+            state = IntegerAxisState.Default();
+            lastExpected = float.NegativeInfinity;
+            for (int i = -128; i <= 127; i++)
+            {
+                float expected = i == 64 // Null value
+                    ? lastExpected
+                    : i / (i < 0 ? 128f : 127f);
+                state.nullSbyteAxis = (sbyte)i;
+
+                AssertAxisValue(device, state, expected, kEpsilon, device.nullSbyteAxis);
+
+                lastExpected = expected;
             }
         });
-
-        private static void AssertValueNullChecked(IntegerAxisDevice device, int rawValue, float normalValue)
-        {
-            var state = new IntegerAxisState() { intAxis = rawValue };
-            AssertAxisValue(device, state, normalValue, kEpsilon, device.intAxis);
-
-            // Test that null value does not affect state
-            state.intAxis = IntegerAxisState.NullValue;
-            AssertAxisValue(device, state, normalValue, kEpsilon, device.intAxis);
-        }
     }
 }

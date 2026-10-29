@@ -70,7 +70,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedFiveLaneButton.System)]
         public ushort buttons;
 
-        private const string kPadParameters = "intPressPoint=1,minValue=0,maxValue=255";
+        private const string kPadParameters = "minValue=0,maxValue=255,intPressPoint=1";
 
         [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
         public byte redPad;
