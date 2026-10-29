@@ -20,6 +20,7 @@ Dates are relative to UTC.
 - The display names for Pro Keyboard keys has been reformatted from `C#/Db-1` to `C#1 / Db1`.
 - The Riffmaster guitar layout now supports both left and right sticks, to better support CRKD guitars.
   - This is a breaking change, as `joystick` has been renamed to `leftStick`.
+- The analog pedal input on Pro Keyboards is no longer speculatively inverted, as not much research has been done into how this input is actually intended to function.
 
 ### Fixed
 
