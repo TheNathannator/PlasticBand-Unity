@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.XInput;
 
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Other/Rock%20Band%20Adapters/Xbox%20One%20Wired%20Legacy%20Adapter.md
@@ -127,8 +126,8 @@ namespace PlasticBand.Devices
                     interfaceName = XInputLayoutFinder.InterfaceName,
                     capabilities = JsonUtility.ToJson(new XInputCapabilities()
                     {
-                        type = 1,
-                        subType = (XInputController.DeviceSubType)info->subType,
+                        type = XInputDeviceType.Gamepad,
+                        subType = (XInputDeviceSubType)info->subType,
                         gamepad = new XInputGamepad()
                         {
                             leftStickX = (short)info->vendorId,

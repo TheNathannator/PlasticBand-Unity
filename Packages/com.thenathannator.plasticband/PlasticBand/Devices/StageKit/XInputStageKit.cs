@@ -72,7 +72,7 @@ namespace PlasticBand.Devices
     {
         internal static new void Initialize()
         {
-            XInputLayoutFinder.RegisterLayout<XInputStageKit>(XInputNonStandardSubType.StageKit);
+            XInputLayoutFinder.RegisterLayout<XInputStageKit>(XInputDeviceSubType.StageKit);
         }
 
         protected override void FinishSetup()

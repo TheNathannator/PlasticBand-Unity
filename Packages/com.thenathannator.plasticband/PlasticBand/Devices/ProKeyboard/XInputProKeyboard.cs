@@ -95,7 +95,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            XInputLayoutFinder.RegisterLayout<XInputProKeyboard>(XInputNonStandardSubType.ProKeyboard);
+            XInputLayoutFinder.RegisterLayout<XInputProKeyboard>(XInputDeviceSubType.ProKeyboard);
         }
     }
 }

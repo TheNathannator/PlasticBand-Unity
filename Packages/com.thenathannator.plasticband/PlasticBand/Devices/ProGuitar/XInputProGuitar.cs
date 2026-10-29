@@ -238,7 +238,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            XInputLayoutFinder.RegisterLayout<XInputProGuitar>(XInputNonStandardSubType.ProGuitar);
+            XInputLayoutFinder.RegisterLayout<XInputProGuitar>(XInputDeviceSubType.ProGuitar);
         }
     }
 }

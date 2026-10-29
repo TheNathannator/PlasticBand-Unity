@@ -1,11 +1,7 @@
-using System.Runtime.InteropServices;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.Devices
 {
@@ -15,7 +11,7 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputGuitarHeroGuitar>(
-                XInputController.DeviceSubType.GuitarAlternate, SantrollerDeviceType.GuitarHeroGuitar);
+                XInputDeviceSubType.GuitarAlternate, SantrollerDeviceType.GuitarHeroGuitar);
         }
 
         protected override void FinishSetup()

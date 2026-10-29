@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.XInput;
 
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Lane%20Drums/Xbox%20360.md
@@ -168,14 +167,15 @@ namespace PlasticBand.Devices
             // Guitar Hero and Rock Band drumkits share the same subtype, so additional differentiation is needed.
             // Rock Band drumkits have the Force Feedback flag set in their capabilities, while Guitar Hero drumkits do not.
             XInputLayoutFinder.RegisterLayout<XInputFiveLaneDrumkit>(
-                XInputController.DeviceSubType.DrumKit,
-                (caps) => (caps.flags & XInputController.DeviceFlags.ForceFeedbackSupported) == 0 ? 1 : -1
+                XInputDeviceSubType.DrumKit,
+                (caps) => (caps.flags & XInputDeviceFlags.ForceFeedbackSupported) == 0 ? 1 : -1
             );
 
             // Additional known hardware IDs:
             // Guitar Hero 5 drumkit
             XInputLayoutFinder.RegisterLayout<XInputFiveLaneDrumkit>(
-                XInputController.DeviceSubType.DrumKit, 0x1430, 0x0805);
+                XInputDeviceSubType.DrumKit, 0x1430, 0x0805
+            );
         }
     }
 }

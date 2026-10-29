@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.XInput;
 
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/Xbox%20360.md
@@ -179,17 +178,21 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(XInputController.DeviceSubType.DrumKit);
+            XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(
+                XInputDeviceSubType.DrumKit
+            );
 
             // Additional known hardware IDs:
 
             // RB1 drumkit; uses all 0s for its axis capabilities
             XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(
-                XInputController.DeviceSubType.DrumKit, 0, 0, 0);
+                XInputDeviceSubType.DrumKit, 0, 0, 0
+            );
 
             // ION Drum Rocker
             XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(
-                XInputController.DeviceSubType.DrumKit, 0x15E4, 0x0130);
+                XInputDeviceSubType.DrumKit, 0x15E4, 0x0130
+            );
         }
     }
 }

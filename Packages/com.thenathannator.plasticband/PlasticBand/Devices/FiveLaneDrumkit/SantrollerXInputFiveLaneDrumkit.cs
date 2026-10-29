@@ -2,7 +2,6 @@ using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.Devices
 {
@@ -12,7 +11,8 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputFiveLaneDrumkit>(
-                XInputController.DeviceSubType.DrumKit, SantrollerDeviceType.GuitarHeroDrums);
+                XInputDeviceSubType.DrumKit, SantrollerDeviceType.GuitarHeroDrums
+            );
         }
 
         protected override void FinishSetup()

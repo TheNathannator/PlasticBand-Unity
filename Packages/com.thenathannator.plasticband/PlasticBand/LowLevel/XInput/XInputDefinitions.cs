@@ -4,12 +4,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.LowLevel
 {
-    using static XInputController;
-
     [Flags]
     internal enum XInputButton : ushort
     {
@@ -94,14 +91,50 @@ namespace PlasticBand.LowLevel
         public short rightMotor;
     }
 
+    internal enum XInputDeviceType
+    {
+        Gamepad
+    }
+
+    internal enum XInputDeviceSubType
+    {
+        Unknown = 0,
+        Gamepad = 1,
+        Wheel = 2,
+        ArcadeStick = 3,
+        FlightStick = 4,
+        DancePad = 5,
+        Guitar = 6,
+        GuitarAlternate = 7,
+        DrumKit = 8,
+        StageKit = 9,
+        GuitarBass = 11,
+        ProKeyboard = 15,
+        ArcadePad = 19,
+        Turntable = 23,
+        ProGuitar = 25,
+    }
+
+    [Flags]
+    public enum XInputDeviceFlags
+    {
+        None = 0,
+
+        ForceFeedbackSupported = 0x01,
+        Wireless = 0x02,
+        VoiceSupported = 0x04,
+        PluginModulesSupported = 0x08,
+        NoNavigation = 0x10
+    }
+
     // This doesn't match the actual XINPUT_CAPABILITIES,
-    /// rather it's the format reported by Unity for the device capabilities JSON.
+    // rather it's the format reported by Unity for the device capabilities JSON.
     internal struct XInputCapabilities
     {
         // public int userIndex; // We don't need to read this in, and it's not necessary to be set
-        public int type;
-        public DeviceSubType subType;
-        public DeviceFlags flags;
+        public XInputDeviceType type;
+        public XInputDeviceSubType subType;
+        public XInputDeviceFlags flags;
         public XInputGamepad gamepad;
         public XInputVibration vibration;
     }
@@ -129,14 +162,6 @@ namespace PlasticBand.LowLevel
         }
     }
     */
-
-    internal enum XInputNonStandardSubType
-    {
-        StageKit = 9,
-        ProKeyboard = 15,
-        Turntable = 23,
-        ProGuitar = 25,
-    }
 
     internal static class XInputExtensions
     {

@@ -1,6 +1,4 @@
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.XInput;
 
 namespace PlasticBand.LowLevel
 {
@@ -38,16 +36,11 @@ namespace PlasticBand.LowLevel
             HidLayoutFinder.RegisterLayout<TDevice>(VendorID, ProductID, GetRevisionValue(deviceType));
         }
 
-        internal static void RegisterXInputLayout<TDevice>(XInputController.DeviceSubType subType,
+        internal static void RegisterXInputLayout<TDevice>(XInputDeviceSubType subType,
             SantrollerDeviceType deviceType)
             where TDevice : InputDevice
         {
             XInputLayoutFinder.RegisterLayout<TDevice>(subType, VendorID, ProductID, GetRevisionValue(deviceType));
         }
-
-        internal static void RegisterXInputLayout<TDevice>(XInputNonStandardSubType subType,
-            SantrollerDeviceType deviceType)
-            where TDevice : InputDevice
-            => RegisterXInputLayout<TDevice>((XInputController.DeviceSubType)subType, deviceType);
     }
 }

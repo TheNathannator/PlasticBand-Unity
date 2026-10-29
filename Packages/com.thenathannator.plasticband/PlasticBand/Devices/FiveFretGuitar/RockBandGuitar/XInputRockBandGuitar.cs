@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.XInput;
 
 // PlasticBand reference doc:
 // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/5-Fret%20Guitar/Rock%20Band/Xbox%20360.md
@@ -138,10 +137,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            XInputLayoutFinder.RegisterLayout<XInputRockBandGuitar>(XInputController.DeviceSubType.Guitar);
+            XInputLayoutFinder.RegisterLayout<XInputRockBandGuitar>(XInputDeviceSubType.Guitar);
 
             // TODO: Determine if this has any input differences
-            XInputLayoutFinder.RegisterLayout<XInputRockBandGuitar>(XInputController.DeviceSubType.GuitarBass);
+            XInputLayoutFinder.RegisterLayout<XInputRockBandGuitar>(XInputDeviceSubType.GuitarBass);
         }
     }
 }
