@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace PlasticBand.Tests.Devices
 {
-    internal class XboxOneRiffmasterGuitarTests_ReportId
+    internal class XboxOneRiffmasterGuitarTests
         : RiffmasterGuitarTests<XboxOneRiffmasterGuitar, XboxOneRiffmasterGuitarState>
     {
         protected override AxisMode tiltMode => AxisMode.Unsigned;

@@ -17,6 +17,11 @@ Dates are relative to UTC.
 - The `startButton` and `selectButton` controls have been renamed to `start` and `select` to match the ones on the `Gamepad` layout.
 - The package now initializes during `BeforeSplashScreen` instead of `BeforeSceneLoad`.
 
+### Fixed
+
+- PS5 GH5 guitars are no longer accidentally treated as having a report ID.
+- PC World Tour guitars with a report ID are no longer treated as not having one.
+
 ## [0.10.0] - 2026/09/07
 
 ### Fixed

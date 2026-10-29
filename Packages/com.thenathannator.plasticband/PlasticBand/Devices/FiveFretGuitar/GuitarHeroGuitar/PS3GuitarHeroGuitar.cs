@@ -171,7 +171,7 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar>(0x12BA, 0x0100);
-            HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_GH5, PS3GuitarHeroGuitar_GH5_ReportId>(
+            HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_GH5_ReportId, PS3GuitarHeroGuitar_GH5>(
                 0x12BA, 0x0100, productName: "Guitar Hero5 for PlayStation (R) 3"
             );
         }

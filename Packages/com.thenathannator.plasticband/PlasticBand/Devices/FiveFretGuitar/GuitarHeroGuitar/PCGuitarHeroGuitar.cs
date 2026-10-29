@@ -13,5 +13,5 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(TranslatedGuitarHeroGuitarState), displayName = "PC Guitar Hero Guitar", hideInUI = true)]
-    internal class PCGuitarHeroGuitar_ReportId : TranslatingGuitarHeroGuitar_Ranges<PS3GuitarHeroGuitarState_NoReportId> { }
+    internal class PCGuitarHeroGuitar_ReportId : TranslatingGuitarHeroGuitar_Ranges<PS3GuitarHeroGuitarState_ReportId> { }
 }
