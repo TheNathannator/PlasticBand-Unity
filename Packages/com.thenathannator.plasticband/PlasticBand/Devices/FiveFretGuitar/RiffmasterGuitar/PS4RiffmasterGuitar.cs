@@ -161,14 +161,14 @@ namespace PlasticBand.Devices
 
         public sbyte joystickX
         {
-            get => (sbyte)(m_JoystickX ^ 0x80);
-            set => m_JoystickX = (byte)(value ^ 0x80);
+            get => PS4Handling.GetStickX(m_JoystickX);
+            set => m_JoystickX = PS4Handling.SetStickX(value);
         }
 
         public sbyte joystickY
         {
-            get => (sbyte)((0xFF - m_JoystickY) ^ 0x80);
-            set => m_JoystickY = (byte)((0xFF - value) ^ 0x80);
+            get => PS4Handling.GetStickY(m_JoystickY);
+            set => m_JoystickY = PS4Handling.SetStickY(value);
         }
 
         byte IFiveFretGuitarState.whammy
