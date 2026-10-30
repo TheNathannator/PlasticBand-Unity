@@ -10,6 +10,7 @@ Dates are relative to UTC.
 
 ### Added
 
+- The Xbox One wireless legacy adapter now requests device info again whenever the game regains focus, like Rock Band 4 does, so instruments that disconnected or changed while the game was in the background are picked up.
 - The unit tests that existed as part of the development project are now included in the package folder. This makes it easier for anyone modifying the package to verify changes to existing layouts and add tests for new layouts.
 
 ### Changed
@@ -26,6 +27,12 @@ Dates are relative to UTC.
 
 - PS5 GH5 guitars are no longer accidentally treated as having a report ID.
 - PC World Tour guitars with a report ID are no longer treated as not having one.
+
+### Fixed
+
+- Instruments on the Xbox One wireless legacy adapter are now created, as device info and disconnect reports are no longer read with the wrong user index.
+- The Xbox One wireless legacy adapter no longer requests device info for every input report from a device it has no layout for, such as a gamepad.
+- Instruments on the Xbox One wireless legacy adapter are no longer re-created whenever device info is sent again.
 
 ## [0.10.0] - 2026/09/07
 
