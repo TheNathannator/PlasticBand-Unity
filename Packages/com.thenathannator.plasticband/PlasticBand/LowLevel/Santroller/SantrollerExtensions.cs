@@ -47,6 +47,15 @@ namespace PlasticBand.Devices.LowLevel
                 value &= ~mask;
         }
 
+        internal static void SetBit(ref this SantrollerHidStageKitState.Button value,
+            SantrollerHidStageKitState.Button mask, bool set)
+        {
+            if (set)
+                value |= mask;
+            else
+                value &= ~mask;
+        }
+
         internal static void SetBit(ref this SantrollerHIDTurntableState.Button value,
             SantrollerHIDTurntableState.Button mask, bool set)
         {

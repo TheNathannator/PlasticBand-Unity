@@ -164,7 +164,21 @@ namespace PlasticBand.Tests
                     flags = flags,
                     gamepad = new XInputGamepad()
                     {
-                        buttons = 0xF7FF,
+                        buttons = // 0xF7FF
+                            XInputButton.DpadUp |
+                            XInputButton.DpadDown |
+                            XInputButton.DpadLeft |
+                            XInputButton.DpadRight |
+                            XInputButton.Start |
+                            XInputButton.Back |
+                            XInputButton.LeftThumb |
+                            XInputButton.RightThumb |
+                            XInputButton.LeftShoulder |
+                            XInputButton.RightShoulder |
+                            XInputButton.A |
+                            XInputButton.B |
+                            XInputButton.X |
+                            XInputButton.Y,
                         leftTrigger = 0xFF,
                         rightTrigger = 0xFF,
                         leftStickX = (short)vendorId,

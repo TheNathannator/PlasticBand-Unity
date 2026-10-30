@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(XInputStageKitState), displayName = "Santroller XInput Stage Kit")]
+    [InputControlLayout(stateType = typeof(XInputGamepad), displayName = "Santroller XInput Stage Kit")]
     internal class SantrollerXInputStageKit : XInputStageKit, ISantrollerHaptics
     {
         internal new static void Initialize()

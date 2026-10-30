@@ -164,14 +164,14 @@ namespace PlasticBand.Devices
 
         public sbyte leftStickX
         {
-            get => PS4Handling.GetStickX(m_LeftStickX);
-            set => m_LeftStickX = PS4Handling.SetStickX(value);
+            get => HidDefinitions.GetByteX(m_LeftStickX);
+            set => m_LeftStickX = HidDefinitions.SetByteX(value);
         }
 
         public sbyte leftStickY
         {
-            get => PS4Handling.GetStickY(m_LeftStickY);
-            set => m_LeftStickY = PS4Handling.SetStickY(value);
+            get => HidDefinitions.GetInvertedByteY(m_LeftStickY);
+            set => m_LeftStickY = HidDefinitions.SetInvertedByteY(value);
         }
 
         public bool leftStickPress
@@ -184,14 +184,14 @@ namespace PlasticBand.Devices
 
         public sbyte rightStickX
         {
-            get => PS4Handling.GetStickX(m_RightStickX);
-            set => m_RightStickX = PS4Handling.SetStickX(value);
+            get => HidDefinitions.GetByteX(m_RightStickX);
+            set => m_RightStickX = HidDefinitions.SetByteX(value);
         }
 
         public sbyte rightStickY
         {
-            get => PS4Handling.GetStickY(m_RightStickY);
-            set => m_RightStickY = PS4Handling.SetStickY(value);
+            get => HidDefinitions.GetInvertedByteY(m_RightStickY);
+            set => m_RightStickY = HidDefinitions.SetInvertedByteY(value);
         }
 
         public bool rightStickPress

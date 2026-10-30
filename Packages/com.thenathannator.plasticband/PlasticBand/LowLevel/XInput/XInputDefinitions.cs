@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
+using PlasticBand.Devices;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.LowLevel
@@ -29,61 +29,203 @@ namespace PlasticBand.LowLevel
 
     [Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct XInputGamepad : IInputStateTypeInfo
+    internal struct XInputGamepad : IGamepadState
     {
         public static readonly FourCC Format = new FourCC('X', 'I', 'N', 'P');
         public FourCC format => Format;
 
-        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, bit = 0, displayName = "D-Pad", usage = "Hatswitch")]
+        [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, bit = 0, displayName = "D-Pad")]
         [InputControl(name = "dpad/up", bit = 0)]
         [InputControl(name = "dpad/down", bit = 1)]
         [InputControl(name = "dpad/left", bit = 2)]
         [InputControl(name = "dpad/right", bit = 3)]
 
-        [InputControl(name = "start", layout = "Button", format = "BIT", bit = 4, displayName = "Start", usage = "Menu")]
-        [InputControl(name = "select", layout = "Button", format = "BIT", bit = 5, displayName = "Back")]
-        [InputControl(name = "leftStickClick", layout = "Button", format = "BIT", bit = 6, displayName = "Left Stick Click")]
-        [InputControl(name = "rightStickClick", layout = "Button", format = "BIT", bit = 7, displayName = "Right Stick Click")]
+        [InputControl(name = "start", layout = "Button", format = "BIT", bit = 4, displayName = "Menu", usage = "Menu")]
+        [InputControl(name = "select", layout = "Button", format = "BIT", bit = 5, displayName = "View")]
+        [InputControl(name = "leftStickPress", layout = "Button", format = "BIT", bit = 6, displayName = "Left Stick Press")]
+        [InputControl(name = "rightStickPress", layout = "Button", format = "BIT", bit = 7, displayName = "Right Stick Press")]
 
-        [InputControl(name = "leftBumper", layout = "Button", format = "BIT", bit = 8, displayName = "Left Bumper")]
-        [InputControl(name = "rightBumper", layout = "Button", format = "BIT", bit = 9, displayName = "Right Bumper")]
-        [InputControl(name = "guide", layout = "Button", format = "BIT", bit = 10, displayName = "Xbox")]
+        [InputControl(name = "leftShoulder", layout = "Button", format = "BIT", bit = 8, displayName = "Left Bumper")]
+        [InputControl(name = "rightShoulder", layout = "Button", format = "BIT", bit = 9, displayName = "Right Bumper")]
+        [InputControl(name = "systemButton", layout = "Button", format = "BIT", bit = 10, displayName = "Guide")]
 
-        [InputControl(name = "buttonA", layout = "Button", format = "BIT", bit = 12, displayName = "A", usages = new[] { "PrimaryAction", "Submit" })]
-        [InputControl(name = "buttonB", layout = "Button", format = "BIT", bit = 13, displayName = "B", usages = new[] { "Back", "Cancel" })]
-        [InputControl(name = "buttonX", layout = "Button", format = "BIT", bit = 14, displayName = "X")]
-        [InputControl(name = "buttonY", layout = "Button", format = "BIT", bit = 15, displayName = "Y")]
-        public ushort buttons;
+        [InputControl(name = "buttonSouth", layout = "Button", format = "BIT", bit = 12, displayName = "A")]
+        [InputControl(name = "buttonEast", layout = "Button", format = "BIT", bit = 13, displayName = "B")]
+        [InputControl(name = "buttonWest", layout = "Button", format = "BIT", bit = 14, displayName = "X")]
+        [InputControl(name = "buttonNorth", layout = "Button", format = "BIT", bit = 15, displayName = "Y")]
+        public XInputButton buttons;
 
-        [InputControl(name = "leftTrigger", layout = "Button", format = "BYTE", displayName = "Left Trigger")]
+        [InputControl(name = "leftTrigger", layout = "IntButton", format = "BYTE", parameters = "minValue=0x00,maxValue=0xFF", displayName = "Left Trigger")]
         public byte leftTrigger;
 
-        [InputControl(name = "rightTrigger", layout = "Button", format = "BYTE", displayName = "Right Trigger")]
+        [InputControl(name = "rightTrigger", layout = "IntButton", format = "BYTE", parameters = "minValue=0x00,maxValue=0xFF", displayName = "Right Trigger")]
         public byte rightTrigger;
 
         [InputControl(name = "leftStick", layout = "Stick", format = "VC2S", displayName = "Left Stick")]
-        [InputControl(name = "leftStick/x", format = "SHRT", parameters = "clamp=false,invert=false,normalize=false")]
-        [InputControl(name = "leftStick/left", format = "SHRT")]
-        [InputControl(name = "leftStick/right", format = "SHRT")]
-
+        [InputControl(name = "leftStick/x", offset = 0, layout = "IntAxis", format = "SHRT", parameters = "minValue=-32768,maxValue=32767,zeroPoint=0")]
+        [InputControl(name = "leftStick/left", offset = 0, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=-32768")]
+        [InputControl(name = "leftStick/right", offset = 0, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=32767")]
         // These must be placed up here, otherwise a stack overflow will occur when building the layout
-        [InputControl(name = "leftStick/y", format = "SHRT", offset = 2, parameters = "clamp=false,invert=false,normalize=false")]
-        [InputControl(name = "leftStick/up", format = "SHRT", offset = 2)]
-        [InputControl(name = "leftStick/down", format = "SHRT", offset = 2)]
+        [InputControl(name = "leftStick/y", offset = 2, layout = "IntAxis", format = "SHRT", parameters = "minValue=-32768,maxValue=32767,zeroPoint=0")]
+        [InputControl(name = "leftStick/up", offset = 2, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=32767")]
+        [InputControl(name = "leftStick/down", offset = 2, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=-32768")]
         public short leftStickX;
         public short leftStickY;
 
         [InputControl(name = "rightStick", layout = "Stick", format = "VC2S", displayName = "Right Stick")]
-        [InputControl(name = "rightStick/x", format = "SHRT", parameters = "clamp=false,invert=false,normalize=false")]
-        [InputControl(name = "rightStick/left", format = "SHRT")]
-        [InputControl(name = "rightStick/right", format = "SHRT")]
-
+        [InputControl(name = "rightStick/x", offset = 0, layout = "IntAxis", format = "SHRT", parameters = "minValue=-32768,maxValue=32767,zeroPoint=0")]
+        [InputControl(name = "rightStick/left", offset = 0, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=-32768")]
+        [InputControl(name = "rightStick/right", offset = 0, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=32767")]
         // These must be placed up here, otherwise a stack overflow will occur when building the layout
-        [InputControl(name = "rightStick/y", format = "SHRT", offset = 2, parameters = "clamp=false,invert=false,normalize=false")]
-        [InputControl(name = "rightStick/up", format = "SHRT", offset = 2)]
-        [InputControl(name = "rightStick/down", format = "SHRT", offset = 2)]
+        [InputControl(name = "rightStick/y", offset = 2, layout = "IntAxis", format = "SHRT", parameters = "minValue=-32768,maxValue=32767,zeroPoint=0")]
+        [InputControl(name = "rightStick/up", offset = 2, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=32767")]
+        [InputControl(name = "rightStick/down", offset = 2, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=-32768")]
         public short rightStickX;
         public short rightStickY;
+
+        public bool start
+        {
+            get => (buttons & XInputButton.Start) != 0;
+            set => buttons.SetBit(XInputButton.Start, value);
+        }
+
+        public bool select
+        {
+            get => (buttons & XInputButton.Back) != 0;
+            set => buttons.SetBit(XInputButton.Back, value);
+        }
+
+        public bool system
+        {
+            get => (buttons & XInputButton.Guide) != 0;
+            set => buttons.SetBit(XInputButton.Guide, value);
+        }
+
+        public bool share
+        {
+            get => false;
+            set { }
+        }
+
+        public bool south
+        {
+            get => (buttons & XInputButton.A) != 0;
+            set => buttons.SetBit(XInputButton.A, value);
+        }
+
+        public bool east
+        {
+            get => (buttons & XInputButton.B) != 0;
+            set => buttons.SetBit(XInputButton.B, value);
+        }
+
+        public bool west
+        {
+            get => (buttons & XInputButton.X) != 0;
+            set => buttons.SetBit(XInputButton.X, value);
+        }
+
+        public bool north
+        {
+            get => (buttons & XInputButton.Y) != 0;
+            set => buttons.SetBit(XInputButton.Y, value);
+        }
+
+        public bool dpadUp
+        {
+            get => (buttons & XInputButton.DpadUp) != 0;
+            set => buttons.SetBit(XInputButton.DpadUp, value);
+        }
+
+        public bool dpadDown
+        {
+            get => (buttons & XInputButton.DpadDown) != 0;
+            set => buttons.SetBit(XInputButton.DpadDown, value);
+        }
+
+        public bool dpadLeft
+        {
+            get => (buttons & XInputButton.DpadLeft) != 0;
+            set => buttons.SetBit(XInputButton.DpadLeft, value);
+        }
+
+        public bool dpadRight
+        {
+            get => (buttons & XInputButton.DpadRight) != 0;
+            set => buttons.SetBit(XInputButton.DpadRight, value);
+        }
+
+        public bool leftShoulder
+        {
+            get => (buttons & XInputButton.LeftShoulder) != 0;
+            set => buttons.SetBit(XInputButton.LeftShoulder, value);
+        }
+
+        public bool rightShoulder
+        {
+            get => (buttons & XInputButton.RightShoulder) != 0;
+            set => buttons.SetBit(XInputButton.RightShoulder, value);
+        }
+
+        public bool leftTriggerPress
+        {
+            get => false;
+            set { }
+        }
+
+        public bool rightTriggerPress
+        {
+            get => false;
+            set { }
+        }
+
+        public bool leftStickPress
+        {
+            get => (buttons & XInputButton.LeftThumb) != 0;
+            set => buttons.SetBit(XInputButton.LeftThumb, value);
+        }
+
+        public bool rightStickPress
+        {
+            get => (buttons & XInputButton.RightThumb) != 0;
+            set => buttons.SetBit(XInputButton.RightThumb, value);
+        }
+
+        byte IGamepadState.leftTrigger
+        {
+            get => leftTrigger;
+            set => leftTrigger = value;
+        }
+
+        byte IGamepadState.rightTrigger
+        {
+            get => rightTrigger;
+            set => rightTrigger = value;
+        }
+
+        sbyte IGamepadState.leftStickX
+        {
+            get => (sbyte)(leftStickX >> 8);
+            set => leftStickX = (short)((value << 8) | (byte)value);
+        }
+
+        sbyte IGamepadState.leftStickY
+        {
+            get => (sbyte)(leftStickY >> 8);
+            set => leftStickY = (short)((value << 8) | (byte)value);
+        }
+
+        sbyte IGamepadState.rightStickX
+        {
+            get => (sbyte)(rightStickX >> 8);
+            set => rightStickX = (short)((value << 8) | (byte)value);
+        }
+
+        sbyte IGamepadState.rightStickY
+        {
+            get => (sbyte)(rightStickY >> 8);
+            set => rightStickY = (short)((value << 8) | (byte)value);
+        }
     }
 
     [Serializable]

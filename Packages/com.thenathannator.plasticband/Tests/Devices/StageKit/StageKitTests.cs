@@ -11,9 +11,9 @@ namespace PlasticBand.Tests.Devices
         protected override void CheckExpectedDescriptions() { }
     }
 
-    public abstract class StageKitTests<TStageKit, TState> : GamepadDeviceTestFixture<TStageKit, TState>
+    internal abstract class StageKitTests<TStageKit, TState> : GamepadDeviceTestFixture<TStageKit, TState>
         where TStageKit : StageKit
-        where TState : unmanaged, IInputStateTypeInfo
+        where TState : unmanaged, IGamepadState
     {
         // Nothing specific to stage kits that needs to be tested currently,
         // only the base tests are needed

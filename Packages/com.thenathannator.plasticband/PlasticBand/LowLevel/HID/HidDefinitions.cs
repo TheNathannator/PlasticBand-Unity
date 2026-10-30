@@ -26,6 +26,52 @@ namespace PlasticBand.LowLevel
         public static readonly FourCC InputFormat = new FourCC('H', 'I', 'D');
         public static readonly FourCC OutputFormat = new FourCC('H', 'I', 'D', 'O');
 
+        /// <summary>
+        /// Converts a signed, left-origin X-axis value represented as an unsigned byte
+        /// into a signed, left-origin X-axis value represented as a signed byte.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static sbyte GetByteX(byte value)
+        {
+            int signed = value + sbyte.MinValue;
+            return (sbyte)signed;
+        }
+
+        /// <summary>
+        /// Converts a signed, top-origin Y-axis value represented as an unsigned byte
+        /// into a signed, bottom-origin Y-axis value represented as a signed byte.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static sbyte GetInvertedByteY(byte value)
+        {
+            int inverted = byte.MaxValue - value;
+            int signed = inverted + sbyte.MinValue;
+            return (sbyte)signed;
+        }
+
+        /// <summary>
+        /// Converts a signed, left-origin X-axis value represented as a signed byte
+        /// into a signed, left-origin X-axis value represented as an unsigned byte.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte SetByteX(sbyte value)
+        {
+            int unsigned = value - sbyte.MinValue;
+            return (byte)unsigned;
+        }
+
+        /// <summary>
+        /// Converts a signed, bottom-origin Y-axis value represented as a signed byte
+        /// into a signed, top-origin Y-axis value represented as an unsigned byte.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte SetInvertedByteY(sbyte value)
+        {
+            int unsigned = value - sbyte.MinValue;
+            int inverted = byte.MaxValue - unsigned;
+            return (byte)inverted;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsUp(this HidDpad dpad) => dpad == HidDpad.UpLeft || dpad <= HidDpad.UpRight;
 
