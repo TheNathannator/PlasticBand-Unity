@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using PlasticBand.Devices;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -31,13 +32,7 @@ namespace PlasticBand.LowLevel
         private static readonly Dictionary<XInputDeviceSubType, List<XInputLayoutMatcher>> s_LayoutMatchers
             = new Dictionary<XInputDeviceSubType, List<XInputLayoutMatcher>>();
 
-        private static string s_DefaultLayout
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            // XInputControllerWindows is only available when building for Windows
-            => nameof(XInputControllerWindows);
-#else
-            => null;
-#endif
+        private const string kDefaultLayout = nameof(XInputControllerUniversal);
 
         internal static void Initialize()
         {
@@ -93,7 +88,7 @@ namespace PlasticBand.LowLevel
         }
 
         private static string DefaultLayoutIfNull(string matchedLayout)
-            => string.IsNullOrEmpty(matchedLayout) ? s_DefaultLayout : null;
+            => string.IsNullOrEmpty(matchedLayout) ? kDefaultLayout : null;
 
         private static void RegisterMatcher<TDevice>(
             XInputDeviceSubType subType,

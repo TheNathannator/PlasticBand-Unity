@@ -38,6 +38,9 @@ namespace PlasticBand
             IntegerButtonControl.Initialize();
             MaskButtonControl.Initialize();
 
+            // Gamepads
+            XInputControllerUniversal.Initialize();
+
             // 5-fret guitars
             FiveFretGuitar.Initialize();
             GuitarPraiseGuitar.Initialize();
