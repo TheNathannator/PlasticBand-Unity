@@ -11,7 +11,6 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Processors;
 using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Tests
@@ -271,9 +270,9 @@ namespace PlasticBand.Tests
             float value, float epsilon, params ButtonControl[] buttons)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            void UpdateAssert() => AssertButton((button) => button.isPressed, (button) => button.value);
+            void UpdateAssert() => AssertButton((button) => button.isPressed, (button) => button.ReadUnprocessedValue());
             void EventAssert(InputEventPtr eventPtr)
-                => AssertButton((button) => button.IsPressedInEvent(eventPtr), (button) => button.ReadValueFromEvent(eventPtr));
+                => AssertButton((button) => button.IsPressedInEvent(eventPtr), (button) => button.ReadUnprocessedValueFromEvent(eventPtr));
 
             AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
@@ -323,9 +322,9 @@ namespace PlasticBand.Tests
             float value, float epsilon, params AxisControl[] axes)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            void UpdateAssert() => AssertAxis((axis) => axis.value);
+            void UpdateAssert() => AssertAxis((axis) => axis.ReadUnprocessedValue());
             void EventAssert(InputEventPtr eventPtr)
-                => AssertAxis((axis) => axis.ReadValueFromEvent(eventPtr));
+                => AssertAxis((axis) => axis.ReadUnprocessedValueFromEvent(eventPtr));
 
             AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
@@ -352,9 +351,9 @@ namespace PlasticBand.Tests
             float epsilon, List<(AxisControl axis, float value)> axes)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            void UpdateAssert() => AssertAxis((axis) => axis.value);
+            void UpdateAssert() => AssertAxis((axis) => axis.ReadUnprocessedValue());
             void EventAssert(InputEventPtr eventPtr)
-                => AssertAxis((axis) => axis.ReadValueFromEvent(eventPtr));
+                => AssertAxis((axis) => axis.ReadUnprocessedValueFromEvent(eventPtr));
 
             AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
@@ -393,9 +392,9 @@ namespace PlasticBand.Tests
             int value, params IntegerControl[] integers)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            void UpdateAssert() => AssertInteger((axis) => axis.value);
+            void UpdateAssert() => AssertInteger((axis) => axis.ReadUnprocessedValue());
             void EventAssert(InputEventPtr eventPtr)
-                => AssertInteger((axis) => axis.ReadValueFromEvent(eventPtr));
+                => AssertInteger((axis) => axis.ReadUnprocessedValueFromEvent(eventPtr));
 
             AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
@@ -482,14 +481,6 @@ namespace PlasticBand.Tests
             SetStickAction<TState> setStick)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            // Sticks automatically have deadzones applied to them,
-            // so we must account for it
-            var axisDeadzone = new AxisDeadzoneProcessor()
-            {
-                min = InputSystem.settings.defaultDeadzoneMin,
-                max = InputSystem.settings.defaultDeadzoneMax,
-            };
-
             void AddAxes(List<(AxisControl, float)> axisList, float value,
                 AxisControl axis, AxisControl pos, AxisControl neg)
             {
@@ -513,24 +504,23 @@ namespace PlasticBand.Tests
             for (int i = -range; i <= range; i++)
             {
                 float value = i / division;
-                float deadzoned = axisDeadzone.Process(value);
 
                 // X axis
                 setStick(ref state, value, 0f);
-                AddX(axes, deadzoned);
+                AddX(axes, value);
                 AssertAxisValues(device, state, epsilon, axes);
                 axes.Clear();
 
                 // Y axis
                 setStick(ref state, 0f, value);
-                AddY(axes, deadzoned);
+                AddY(axes, value);
                 AssertAxisValues(device, state, epsilon, axes);
                 axes.Clear();
 
                 // Both axes
                 setStick(ref state, value, value);
-                AddX(axes, deadzoned);
-                AddY(axes, deadzoned);
+                AddX(axes, value);
+                AddY(axes, value);
                 AssertAxisValues(device, state, epsilon, axes);
                 axes.Clear();
             }
