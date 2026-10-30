@@ -30,6 +30,18 @@ namespace PlasticBand.Tests.Devices
         };
     }
 
+    internal class XboxOneCrkdDrumkitTests
+        : FourLaneDrumkitTests_Distinct<XboxOneCrkdDrumkit, XboxOneFourLaneDrumkitState>
+    {
+        protected override int VelocityPrecision => 16;
+
+        protected override XboxOneFourLaneDrumkitState CreateState()
+            => new XboxOneFourLaneDrumkitState()
+        {
+            reportId = 0x20,
+        };
+    }
+
     internal class PS3FourLaneDrumkitTests_NoReportId
         : FourLaneDrumkitTests_Flags<PS3FourLaneDrumkit, PS3WiiFourLaneDrumkitState_NoReportId>
     {
