@@ -8,6 +8,8 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // Stage Tour Drumkit for Xbox
+            // - Also used for PC1 mode on all models
             GameInputLayoutFinder.RegisterLayout<XboxOneCrkdDrumkit>(0x3958, 0xD300);
         }
     }

@@ -26,10 +26,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // RB1 guitars
+            // MadCatz Rock Band Guitar for Wii (all models made for RB1)
             HidLayoutFinder.RegisterLayout<WiiRockBandGuitar_ReportId, WiiRockBandGuitar>(0x1BAD, 0x0004);
 
-            // RB2 and later
+            // MadCatz Rock Band Guitar for Wii (all models made for RB2 and later)
             HidLayoutFinder.RegisterLayout<WiiRockBandGuitar_ReportId, WiiRockBandGuitar>(0x1BAD, 0x3010);
         }
     }

@@ -108,10 +108,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // Keyboard
+            // MadCatz Rock Band 3 Pro Keyboard for PS3
             HidLayoutFinder.RegisterLayout<PS3ProKeyboard_ReportId, PS3ProKeyboard>(0x12BA, 0x2330);
 
-            // MIDI Pro Adapter
+            // MadCatz Rock Band 3 MIDI Pro Adapter for PS3 (Keys mode)
             HidLayoutFinder.RegisterLayout<PS3ProKeyboard_ReportId, PS3ProKeyboard>(0x12BA, 0x2338);
         }
     }

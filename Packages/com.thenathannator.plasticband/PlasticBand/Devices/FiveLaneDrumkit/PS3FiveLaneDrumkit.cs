@@ -197,6 +197,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // RedOctane Guitar Hero Drumkit for PS3 (all models)
             HidLayoutFinder.RegisterLayout<PS3FiveLaneDrumkit_ReportId, PS3FiveLaneDrumkit>(0x12BA, 0x0120);
         }
     }

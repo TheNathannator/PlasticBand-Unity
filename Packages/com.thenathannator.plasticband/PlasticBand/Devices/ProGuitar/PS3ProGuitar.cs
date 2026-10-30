@@ -300,16 +300,16 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // Mustang
+            // MadCatz Rock Band 3 Fender Mustang Guitar for PS3 (17-fret)
             HidLayoutFinder.RegisterLayout<PS3ProGuitar_ReportId, PS3ProGuitar>(0x12BA, 0x2430);
 
-            // MIDI Pro Adapter (Mustang)
+            // MadCatz Rock Band 3 MIDI Pro Adapter for PS3 (Guitar mode; 17-fret)
             HidLayoutFinder.RegisterLayout<PS3ProGuitar_ReportId, PS3ProGuitar>(0x12BA, 0x2438);
 
-            // Squire
+            // MadCatz Rock Band 3 Fender Squire Guitar for PS3 (22-fret)
             HidLayoutFinder.RegisterLayout<PS3ProGuitar_ReportId, PS3ProGuitar>(0x12BA, 0x2530);
 
-            // MIDI Pro Adapter (Squire)
+            // MadCatz Rock Band 3 MIDI Pro Adapter for PS3 (Guitar mode; 22-fret)
             HidLayoutFinder.RegisterLayout<PS3ProGuitar_ReportId, PS3ProGuitar>(0x12BA, 0x2538);
         }
     }

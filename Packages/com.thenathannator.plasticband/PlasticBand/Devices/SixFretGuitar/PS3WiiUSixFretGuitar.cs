@@ -183,6 +183,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // Activision Guitar Hero Live Guitar for PS3 and Wii U
             HidLayoutFinder.RegisterLayout<PS3WiiUSixFretGuitar_ReportId, PS3WiiUSixFretGuitar>(0x12BA, 0x074B);
         }
 

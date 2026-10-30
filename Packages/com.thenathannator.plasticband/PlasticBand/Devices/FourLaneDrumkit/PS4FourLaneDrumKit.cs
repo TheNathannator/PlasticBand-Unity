@@ -204,10 +204,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // MadCatz
+            // MadCatz Rock Band 4 Drumkit for PS4
             HidLayoutFinder.RegisterLayout<PS4FourLaneDrumkit, PS4FourLaneDrumkit_NoReportId>(0x0738, 0x8262, reportIdDefault: true);
 
-            // PDP
+            // PDP Rock Band 4 Drumkit for PS4
             HidLayoutFinder.RegisterLayout<PS4FourLaneDrumkit, PS4FourLaneDrumkit_NoReportId>(0x0E6F, 0x0174, reportIdDefault: true);
         }
     }

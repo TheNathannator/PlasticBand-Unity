@@ -215,10 +215,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // Stratocaster
+            // MadCatz Rock Band 4 Fender Stratocaster Guitar for PS4
             HidLayoutFinder.RegisterLayout<PS4RockBandGuitar, PS4RockBandGuitar_NoReportId>(0x0738, 0x8261, reportIdDefault: true);
 
-            // Jaguar
+            // PDP Rock Band 4 Fender Jaguar Guitar for PS4
             HidLayoutFinder.RegisterLayout<PS4RockBandGuitar, PS4RockBandGuitar_NoReportId>(0x0E6F, 0x0173, reportIdDefault: true);
         }
     }

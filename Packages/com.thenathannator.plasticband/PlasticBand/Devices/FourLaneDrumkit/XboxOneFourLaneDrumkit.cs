@@ -180,7 +180,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // MadCatz Rock Band 4 Drumkit for Xbox One
             GameInputLayoutFinder.RegisterLayout<XboxOneFourLaneDrumkit>(0x0738, 0x4262);
+
+            // PDP Rock Band 4 Drumkit for Xbox One
             GameInputLayoutFinder.RegisterLayout<XboxOneFourLaneDrumkit>(0x0E6F, 0x0171);
         }
 

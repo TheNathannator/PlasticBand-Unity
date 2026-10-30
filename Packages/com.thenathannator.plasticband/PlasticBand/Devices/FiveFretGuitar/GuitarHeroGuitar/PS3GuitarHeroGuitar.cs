@@ -170,7 +170,11 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // RedOctane Guitar Hero Guitar for PS3 (all models)
             HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar>(0x12BA, 0x0100);
+
+            // RedOctane Guitar Hero 5 Guitar for PS3
+            // Needs special handling for its slider bar
             HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_GH5_ReportId, PS3GuitarHeroGuitar_GH5>(
                 0x12BA, 0x0100, productName: "Guitar Hero5 for PlayStation (R) 3"
             );

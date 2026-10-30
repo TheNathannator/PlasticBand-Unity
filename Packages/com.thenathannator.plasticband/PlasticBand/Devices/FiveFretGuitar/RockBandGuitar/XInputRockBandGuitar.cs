@@ -137,8 +137,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // MadCatz Rock Band Guitar for Xbox 360 (all models)
             XInputLayoutFinder.RegisterLayout<XInputRockBandGuitar>(XInputDeviceSubType.Guitar);
 
+            // MadCatz Fender Precision Bass Guitar for Xbox 360
             // TODO: Determine if this has any input differences
             XInputLayoutFinder.RegisterLayout<XInputRockBandGuitar>(XInputDeviceSubType.GuitarBass);
         }

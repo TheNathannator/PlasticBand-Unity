@@ -164,15 +164,19 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // Guitar Hero and Rock Band drumkits share the same subtype, so additional differentiation is needed.
-            // Rock Band drumkits have the Force Feedback flag set in their capabilities, while Guitar Hero drumkits do not.
+            // XInput GH drumkits share a subtype with XInput RB drumkits, so additional differentiation is needed.
+            // RB drumkits have the Force Feedback flag set in their capabilities, while GH drumkits do not.
+            // Additionally, GH drumkits constantly hold the right stick press input; however, differentiating
+            // based on this is cumbersome in the Unity input system, and using capabilities is more reliable anyways.
+
+            // RedOctane Guitar Hero Drumkit for Xbox 360 (all models)
             XInputLayoutFinder.RegisterLayout<XInputFiveLaneDrumkit>(
                 XInputDeviceSubType.DrumKit,
                 (caps) => (caps.flags & XInputDeviceFlags.ForceFeedbackSupported) == 0 ? 1 : -1
             );
 
-            // Additional known hardware IDs:
-            // Guitar Hero 5 drumkit
+            // RedOctane Guitar Hero 5, Band Hero, and Warriors of Rock Drumkit for Xbox 360
+            // Not really necessary to match against this, but included for posterity
             XInputLayoutFinder.RegisterLayout<XInputFiveLaneDrumkit>(
                 XInputDeviceSubType.DrumKit, 0x1430, 0x0805
             );

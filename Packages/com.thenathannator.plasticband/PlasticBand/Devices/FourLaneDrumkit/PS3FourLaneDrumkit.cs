@@ -200,10 +200,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // Drumkit
+            // MadCatz Rock Band Drumkit for PS3 (all models)
             HidLayoutFinder.RegisterLayout<PS3FourLaneDrumkit_ReportId, PS3FourLaneDrumkit>(0x12BA, 0x0210);
 
-            // MIDI Pro Adapter
+            // MadCatz Rock Band 3 MIDI Pro Adapter for PS3 (Drums mode)
             HidLayoutFinder.RegisterLayout<PS3FourLaneDrumkit_ReportId, PS3FourLaneDrumkit>(0x12BA, 0x0218);
         }
     }

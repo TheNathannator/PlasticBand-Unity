@@ -222,6 +222,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // RedOctane DJ Hero Turntable for PS3
             HidLayoutFinder.RegisterLayout<PS3Turntable_ReportId, PS3Turntable>(0x12BA, 0x0140);
         }
 

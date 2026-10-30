@@ -72,6 +72,7 @@ namespace PlasticBand.Devices
     {
         internal static new void Initialize()
         {
+            // PDP Rock Band Stage Kit for Xbox 360
             XInputLayoutFinder.RegisterLayout<XInputStageKit>(XInputDeviceSubType.StageKit);
         }
 

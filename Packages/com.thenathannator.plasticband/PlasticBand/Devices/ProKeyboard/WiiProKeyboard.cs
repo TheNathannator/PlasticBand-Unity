@@ -41,10 +41,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // Keyboard
+            // MadCatz Rock Band 3 Pro Keyboard for Wii
             HidLayoutFinder.RegisterLayout<WiiProKeyboard_ReportId, WiiProKeyboard>(0x1BAD, 0x3330);
 
-            // MIDI Pro Adapter
+            // MadCatz Rock Band 3 MIDI Pro Adapter for Wii (Keys mode)
             HidLayoutFinder.RegisterLayout<WiiProKeyboard_ReportId, WiiProKeyboard>(0x1BAD, 0x3338);
         }
     }

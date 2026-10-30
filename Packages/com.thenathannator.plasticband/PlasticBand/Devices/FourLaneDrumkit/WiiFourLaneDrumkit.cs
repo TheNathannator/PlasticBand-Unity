@@ -31,13 +31,13 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // RB1
+            // MadCatz Rock Band Drumkit for Wii (all models made for RB1)
             HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit>(0x1BAD, 0x0005);
 
-            // RB2 and later
+            // MadCatz Rock Band Drumkit for Wii (all models made for RB2 and later)
             HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit>(0x1BAD, 0x3110);
 
-            // MIDI Pro Adapter
+            // MadCatz Rock Band 3 MIDI Pro Adapter for Wii (Drums mode)
             HidLayoutFinder.RegisterLayout<WiiFourLaneDrumkit_ReportId, WiiFourLaneDrumkit>(0x1BAD, 0x3138);
         }
     }

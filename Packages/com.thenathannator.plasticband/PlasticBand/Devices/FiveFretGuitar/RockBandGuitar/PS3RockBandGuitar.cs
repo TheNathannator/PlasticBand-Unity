@@ -163,6 +163,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // MadCatz Rock Band Guitar for PS3 (all models)
             HidLayoutFinder.RegisterLayout<PS3RockBandGuitar_ReportId, PS3RockBandGuitar>(0x12BA, 0x0200);
         }
     }

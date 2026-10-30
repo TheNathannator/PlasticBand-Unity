@@ -138,10 +138,12 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // Annoyingly, GHL guitars do not have a unique subtype. So, we have to use some other information to identify them.
+            // Strangely, they report the No Navigation flag. Most likely none of the other guitars report this information,
+            // so we check for that as the differentiator.
+
+            // Activision Guitar Hero Live Guitar for Xbox 360
             XInputLayoutFinder.RegisterLayout<XInputSixFretGuitar>(
                 XInputDeviceSubType.GuitarAlternate,
-                // Strangely, they report the No Navigation flag. Most likely none of the other guitars report this information,
-                // so we check for it here.
                 (caps) => (caps.flags & XInputDeviceFlags.NoNavigation) != 0 ? 1 : -1
             );
         }

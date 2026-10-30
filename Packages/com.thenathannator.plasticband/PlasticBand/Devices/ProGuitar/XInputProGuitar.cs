@@ -238,6 +238,12 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // TODO: Differentiate 17-fret and 22-fret
+
+            // MadCatz Rock Band 3 Fender Mustang Guitar for Xbox 360 (17-fret)
+            // MadCatz Rock Band 3 Fender Squire Guitar for Xbox 360 (22-fret)
+            // MadCatz Rock Band 3 MIDI Pro Adapter for Xbox 360 (Guitar mode; 17-fret)
+            // MadCatz Rock Band 3 MIDI Pro Adapter for Xbox 360 (Guitar mode; 22-fret)
             XInputLayoutFinder.RegisterLayout<XInputProGuitar>(XInputDeviceSubType.ProGuitar);
         }
     }

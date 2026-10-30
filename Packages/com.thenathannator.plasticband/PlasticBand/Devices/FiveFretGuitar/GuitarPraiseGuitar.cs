@@ -123,6 +123,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // Guitar Praise Guitar for PC
             HidLayoutFinder.RegisterLayout<GuitarPraiseGuitar, GuitarPraiseGuitar_NoReportId>(0x0314, 0x0830);
         }
     }

@@ -31,16 +31,16 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            // Mustang
+            // MadCatz Rock Band 3 Fender Mustang Guitar for Wii (17-fret)
             HidLayoutFinder.RegisterLayout<WiiProGuitar_ReportId, WiiProGuitar>(0x1BAD, 0x3430);
 
-            // MIDI Pro Adapter (Mustang)
+            // MadCatz Rock Band 3 MIDI Pro Adapter for Wii (Guitar mode; 17-fret)
             HidLayoutFinder.RegisterLayout<WiiProGuitar_ReportId, WiiProGuitar>(0x1BAD, 0x3438);
 
-            // Squire
+            // MadCatz Rock Band 3 Fender Squire Guitar for Wii (22-fret)
             HidLayoutFinder.RegisterLayout<WiiProGuitar_ReportId, WiiProGuitar>(0x1BAD, 0x3530);
 
-            // MIDI Pro Adapter (Squire)
+            // MadCatz Rock Band 3 MIDI Pro Adapter for Wii (Guitar mode; 22-fret)
             HidLayoutFinder.RegisterLayout<WiiProGuitar_ReportId, WiiProGuitar>(0x1BAD, 0x3538);
         }
     }

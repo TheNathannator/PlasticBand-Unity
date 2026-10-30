@@ -95,6 +95,8 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // MadCatz Rock Band 3 Pro Keyboard for Xbox 360
+            // MadCatz Rock Band 3 MIDI Pro Adapter for Xbox 360 (Keys mode)
             XInputLayoutFinder.RegisterLayout<XInputProKeyboard>(XInputDeviceSubType.ProKeyboard);
         }
     }

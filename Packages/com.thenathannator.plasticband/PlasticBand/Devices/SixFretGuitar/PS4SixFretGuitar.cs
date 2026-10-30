@@ -190,6 +190,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // Activision Guitar Hero Live Guitar for PS4
             HidLayoutFinder.RegisterLayout<PS4SixFretGuitar, PS4SixFretGuitar_NoReportId>(0x1430, 0x07BB, reportIdDefault: true);
         }
 

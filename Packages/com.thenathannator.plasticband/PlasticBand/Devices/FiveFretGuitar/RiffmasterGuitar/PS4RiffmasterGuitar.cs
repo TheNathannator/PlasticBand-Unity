@@ -276,6 +276,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // PDP Riffmaster Guitar for PlayStation (PS4 mode)
             HidLayoutFinder.RegisterLayout<PS4RiffmasterGuitar, PS4RiffmasterGuitar_NoReportId>(0x0E6F, 0x024A, reportIdDefault: true);
         }
     }

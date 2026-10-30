@@ -8,6 +8,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // RedOctane Guitar Hero World Tour Guitar for PC
             HidLayoutFinder.RegisterLayout<PCGuitarHeroGuitar_ReportId, PCGuitarHeroGuitar>(0x1430, 0x474C);
         }
     }

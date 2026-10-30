@@ -11,7 +11,8 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             SantrollerLayoutFinder.RegisterXInputLayout<SantrollerXInputGuitarHeroGuitar>(
-                XInputDeviceSubType.GuitarAlternate, SantrollerDeviceType.GuitarHeroGuitar);
+                XInputDeviceSubType.GuitarAlternate, SantrollerDeviceType.GuitarHeroGuitar
+            );
         }
 
         protected override void FinishSetup()

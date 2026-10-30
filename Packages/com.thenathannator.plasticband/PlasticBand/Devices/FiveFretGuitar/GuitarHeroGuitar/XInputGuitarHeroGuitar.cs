@@ -170,8 +170,12 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // RedOctane Guitar Hero Guitar for Xbox 360 (all models)
             XInputLayoutFinder.RegisterLayout<XInputGuitarHeroGuitar>(XInputDeviceSubType.GuitarAlternate);
-            XInputLayoutFinder.RegisterLayout<XInputGuitarHeroGuitar_GH5>(XInputDeviceSubType.GuitarAlternate, 0x1430, 0x705);
+
+            // RedOctane Guitar Hero 5 and Band Hero Guitar for Xbox 360
+            // Needs special handling for its slider bar
+            XInputLayoutFinder.RegisterLayout<XInputGuitarHeroGuitar_GH5>(XInputDeviceSubType.GuitarAlternate, 0x1430, 0x0705);
         }
     }
 

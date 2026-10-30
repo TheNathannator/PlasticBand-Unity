@@ -61,6 +61,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // Activision Guitar Hero Live Guitar for Xbox One
             GameInputLayoutFinder.RegisterLayout<XboxOneSixFretGuitar>(0x1430, 0x079B);
         }
 

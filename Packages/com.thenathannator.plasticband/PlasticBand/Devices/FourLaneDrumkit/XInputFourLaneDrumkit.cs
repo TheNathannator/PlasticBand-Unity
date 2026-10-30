@@ -178,18 +178,30 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // XInput RB drumkits share a subtype with XInput GH drumkits, so additional differentiation is needed.
+            // RB drumkits have the Force Feedback flag set in their capabilities, while GH drumkits do not.
+            // Additionally, GH drumkits constantly hold the right stick press input; however, differentiating
+            // based on this is cumbersome in the Unity input system, and using capabilities is more reliable anyways.
+
+            // MadCatz Rock Band Drumkit for Xbox 360 (all models)
+            // MadCatz Rock Band 3 MIDI Pro Adapter for Xbox 360 (Drums mode)
             XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(
                 XInputDeviceSubType.DrumKit
             );
 
             // Additional known hardware IDs:
 
-            // RB1 drumkit; uses all 0s for its axis capabilities
+            // MadCatz Rock Band Drumkit 1 for Xbox 360
+            // Needed since these drumkits do *not* set the Force Feedback flag.
+            // Uses all 0s for its axis capabilities.
             XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(
                 XInputDeviceSubType.DrumKit, 0, 0, 0
             );
 
-            // ION Drum Rocker
+            // ION Drum Rocker for Xbox 360
+            // No longer needed, but kept for posterity and reliability.
+            // Previously, GH and RB kits were differentiated by right stick press; however,
+            // the Drum Rocker will constantly hold right stick press when a kick pedal is plugged in.
             XInputLayoutFinder.RegisterLayout<XInputFourLaneDrumkit>(
                 XInputDeviceSubType.DrumKit, 0x15E4, 0x0130
             );

@@ -171,7 +171,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // MadCatz Rock Band 4 Fender Stratocaster Guitar for Xbox One
             GameInputLayoutFinder.RegisterLayout<XboxOneRockBandGuitar>(0x0738, 0x4161);
+
+            // PDP Rock Band 4 Fender Jaguar Guitar for Xbox One
             GameInputLayoutFinder.RegisterLayout<XboxOneRockBandGuitar>(0x0E6F, 0x0170);
         }
 

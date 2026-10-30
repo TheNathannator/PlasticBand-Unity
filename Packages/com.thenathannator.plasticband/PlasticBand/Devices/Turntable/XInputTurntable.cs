@@ -175,6 +175,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
+            // RedOctane DJ Hero Turntable for Xbox 360
             XInputLayoutFinder.RegisterLayout<XInputTurntable>(XInputDeviceSubType.Turntable);
         }
 
