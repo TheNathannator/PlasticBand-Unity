@@ -13,6 +13,14 @@ namespace PlasticBand.Tests.Devices
             // The default value for this property is not 0, so we must set it explicitly
             whammy = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band Guitar for Xbox 360 (all models)
+            AssertXInputMatch(XInputDeviceSubType.Guitar);
+            // MadCatz Fender Precision Bass Guitar for Xbox 360
+            AssertXInputMatch(XInputDeviceSubType.GuitarBass);
+        }
     }
 
     internal class XboxOneRockBandGuitarTests
@@ -23,6 +31,14 @@ namespace PlasticBand.Tests.Devices
         {
             reportId = 0x20,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band 4 Fender Stratocaster Guitar for Xbox One
+            AssertGameInputMatch(0x0738, 0x4161);
+            // PDP Rock Band 4 Fender Jaguar Guitar for Xbox One
+            AssertGameInputMatch(0x0E6F, 0x0170);
+        }
     }
 
     internal class SantrollerXInputRockBandGuitarTests
@@ -36,6 +52,22 @@ namespace PlasticBand.Tests.Devices
             // The default value for this property is not 0, so we must set it explicitly
             whammy = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertXInputMatch(
+                XInputDeviceSubType.Guitar,
+                vendorId: 0x1209,
+                productId: 0x2882,
+                revision: 0x0400
+            );
+            AssertXInputMatch(
+                XInputDeviceSubType.GuitarBass,
+                vendorId: 0x1209,
+                productId: 0x2882,
+                revision: 0x0400
+            );
+        }
     }
 
     internal class PS3RockBandGuitarTests_NoReportId
@@ -46,6 +78,12 @@ namespace PlasticBand.Tests.Devices
         {
             dpad = HidDpad.Neutral,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band Guitar for PS3 (all models)
+            AssertHidMatch(0x12BA, 0x0200, reportId: false);
+        }
     }
 
     internal class PS3RockBandGuitarTests_ReportId
@@ -59,6 +97,12 @@ namespace PlasticBand.Tests.Devices
                 dpad = HidDpad.Neutral,
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band Guitar for PS3 (all models)
+            AssertHidMatch(0x12BA, 0x0200, reportId: true);
+        }
     }
 
     internal class WiiRockBandGuitarTests_NoReportId
@@ -69,6 +113,14 @@ namespace PlasticBand.Tests.Devices
         {
             dpad = HidDpad.Neutral,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band Guitar for Wii (all models made for RB1)
+            AssertHidMatch(0x1BAD, 0x0004, reportId: false);
+            // MadCatz Rock Band Guitar for Wii (all models made for RB2 and later)
+            AssertHidMatch(0x1BAD, 0x3010, reportId: false);
+        }
     }
 
     internal class WiiRockBandGuitarTests_ReportId
@@ -82,6 +134,14 @@ namespace PlasticBand.Tests.Devices
                 dpad = HidDpad.Neutral,
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band Guitar for Wii (all models made for RB1)
+            AssertHidMatch(0x1BAD, 0x0004, reportId: true);
+            // MadCatz Rock Band Guitar for Wii (all models made for RB2 and later)
+            AssertHidMatch(0x1BAD, 0x3010, reportId: true);
+        }
     }
 
     internal class PS4RockBandGuitarTests_ReportId
@@ -97,6 +157,14 @@ namespace PlasticBand.Tests.Devices
                 buttons1 = HidDpad.Neutral.AsPS4Buttons(),
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band 4 Fender Stratocaster Guitar for PS4
+            AssertHidMatch(0x0738, 0x8261, reportId: true);
+            // PDP Rock Band 4 Fender Jaguar Guitar for PS4
+            AssertHidMatch(0x0E6F, 0x0173, reportId: true);
+        }
     }
 
     internal class PS4RockBandGuitarTests_NoReportId
@@ -109,6 +177,14 @@ namespace PlasticBand.Tests.Devices
         {
             buttons1 = HidDpad.Neutral.AsPS4Buttons(),
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band 4 Fender Stratocaster Guitar for PS4
+            AssertHidMatch(0x0738, 0x8261, reportId: false);
+            // PDP Rock Band 4 Fender Jaguar Guitar for PS4
+            AssertHidMatch(0x0E6F, 0x0173, reportId: false);
+        }
     }
 
     internal class SantrollerHIDRockBandGuitarTests
@@ -125,5 +201,10 @@ namespace PlasticBand.Tests.Devices
             // The default value for this property is not 0, so we must set it explicitly
             tilt = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertHidMatch(0x1209, 0x2882, revision: 0x0400, reportId: true);
+        }
     }
 }

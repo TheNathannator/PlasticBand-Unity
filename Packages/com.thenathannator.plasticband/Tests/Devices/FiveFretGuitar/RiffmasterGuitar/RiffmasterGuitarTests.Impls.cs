@@ -15,6 +15,12 @@ namespace PlasticBand.Tests.Devices
         {
             reportId = 0x20,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // PDP Riffmaster Guitar for Xbox
+            AssertGameInputMatch(0x0E6F, 0x0248);
+        }
     }
 
     internal class PS4RiffmasterGuitarTests_ReportId
@@ -36,6 +42,12 @@ namespace PlasticBand.Tests.Devices
                 rightStickY = 0,
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // PDP Riffmaster Guitar for PlayStation (PS4 mode)
+            AssertHidMatch(0x0E6F, 0x024A, reportId: true);
+        }
     }
 
     internal class PS4RiffmasterGuitarTests_NoReportId
@@ -54,6 +66,12 @@ namespace PlasticBand.Tests.Devices
             rightStickX = 0,
             rightStickY = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // PDP Riffmaster Guitar for PlayStation (PS4 mode)
+            AssertHidMatch(0x0E6F, 0x024A, reportId: false);
+        }
     }
 
     internal class PS5RiffmasterGuitarTests_ReportId
@@ -75,6 +93,12 @@ namespace PlasticBand.Tests.Devices
                 rightStickY = 0,
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // PDP Riffmaster Guitar for PlayStation (PS5 mode)
+            AssertHidMatch(0x0E6F, 0x0249, reportId: true);
+        }
     }
 
     internal class PS5RiffmasterGuitarTests_NoReportId
@@ -93,5 +117,11 @@ namespace PlasticBand.Tests.Devices
             rightStickX = 0,
             rightStickY = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // PDP Riffmaster Guitar for PlayStation (PS5 mode)
+            AssertHidMatch(0x0E6F, 0x0249, reportId: false);
+        }
     }
 }

@@ -47,6 +47,12 @@ namespace PlasticBand.Tests.Devices
             state.rightStickX = DeviceHandling.DenormalizeInt16(x);
             state.rightStickY = DeviceHandling.DenormalizeInt16(y);
         }
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // PDP Rock Band Stage Kit for Xbox 360
+            AssertXInputMatch(XInputDeviceSubType.StageKit);
+        }
     }
 
     internal class SantrollerXInputStageKitTests
@@ -90,6 +96,16 @@ namespace PlasticBand.Tests.Devices
         {
             state.rightStickX = DeviceHandling.DenormalizeInt16(x);
             state.rightStickY = DeviceHandling.DenormalizeInt16(y);
+        }
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertXInputMatch(
+                XInputDeviceSubType.StageKit,
+                vendorId: 0x1209,
+                productId: 0x2882,
+                revision: 0x0900
+            );
         }
     }
 
@@ -157,6 +173,11 @@ namespace PlasticBand.Tests.Devices
         {
             state.rightStickX = DeviceHandling.DenormalizeByteSigned(x);
             state.rightStickY = DeviceHandling.DenormalizeByteSigned(-y);
+        }
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertHidMatch(0x1209, 0x2882, revision: 0x0900, reportId: true);
         }
     }
 

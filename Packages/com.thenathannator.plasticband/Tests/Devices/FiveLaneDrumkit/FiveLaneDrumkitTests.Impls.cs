@@ -8,6 +8,14 @@ namespace PlasticBand.Tests.Devices
     {
         protected override XInputFiveLaneDrumkitState CreateState()
             => new XInputFiveLaneDrumkitState();
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane Guitar Hero Drumkit for Xbox 360 (all models)
+            AssertXInputMatch(XInputDeviceSubType.DrumKit, XInputDeviceFlags.None);
+            // RedOctane GH5, Band Hero, and WoR Drumkit for Xbox 360
+            AssertXInputMatch(XInputDeviceSubType.DrumKit, vendorId: 0x1430, productId: 0x0805);
+        }
     }
 
     internal class SantrollerXInputFiveLaneDrumkitTests
@@ -15,6 +23,16 @@ namespace PlasticBand.Tests.Devices
     {
         protected override XInputFiveLaneDrumkitState CreateState()
             => new XInputFiveLaneDrumkitState();
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertXInputMatch(
+                XInputDeviceSubType.DrumKit,
+                vendorId: 0x1209,
+                productId: 0x2882,
+                revision: 0x0500
+            );
+        }
     }
 
     internal class PS3FiveLaneDrumkitTests_NoReportId
@@ -25,6 +43,12 @@ namespace PlasticBand.Tests.Devices
         {
             dpad = HidDpad.Neutral,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane Guitar Hero Drumkit for PS3 (all models)
+            AssertHidMatch(0x12BA, 0x0120, reportId: false);
+        }
     }
 
     internal class PS3FiveLaneDrumkitTests_ReportId
@@ -38,6 +62,12 @@ namespace PlasticBand.Tests.Devices
                 dpad = HidDpad.Neutral,
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane Guitar Hero Drumkit for PS3 (all models)
+            AssertHidMatch(0x12BA, 0x0120, reportId: true);
+        }
     }
 
     internal class SantrollerHIDFiveLaneDrumkitTests
@@ -48,5 +78,10 @@ namespace PlasticBand.Tests.Devices
         {
             dpad = HidDpad.Neutral,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertHidMatch(0x1209, 0x2882, revision: 0x0500, reportId: true);
+        }
     }
 }

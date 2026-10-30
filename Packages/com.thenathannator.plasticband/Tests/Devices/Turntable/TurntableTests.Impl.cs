@@ -8,6 +8,12 @@ namespace PlasticBand.Tests.Devices
     {
         protected override XInputTurntableState CreateState()
             => new XInputTurntableState();
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane DJ Hero Turntable for Xbox 360
+            AssertXInputMatch(XInputDeviceSubType.Turntable);
+        }
     }
 
     internal class SantrollerXInputTurntableTests
@@ -15,9 +21,19 @@ namespace PlasticBand.Tests.Devices
     {
         protected override XInputTurntableState CreateState()
             => new XInputTurntableState();
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertXInputMatch(
+                XInputDeviceSubType.Turntable,
+                vendorId: 0x1209,
+                productId: 0x2882,
+                revision: 0x0800
+            );
+        }
     }
 
-    internal class PS3TurntableTests
+    internal class PS3TurntableTests_NoReportId
         : TurntableTests<PS3Turntable, PS3TurntableState_NoReportId>
     {
         protected override PS3TurntableState_NoReportId CreateState()
@@ -30,6 +46,12 @@ namespace PlasticBand.Tests.Devices
             rightVelocity = 0,
             crossfader = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane DJ Hero Turntable for PS3
+            AssertHidMatch(0x12BA, 0x0140, reportId: false);
+        }
     }
 
     internal class PS3TurntableTests_ReportId
@@ -48,6 +70,12 @@ namespace PlasticBand.Tests.Devices
                 crossfader = 0,
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane DJ Hero Turntable for PS3
+            AssertHidMatch(0x12BA, 0x0140, reportId: true);
+        }
     }
 
     internal class SantrollerHIDTurntableTests_ReportId
@@ -63,5 +91,10 @@ namespace PlasticBand.Tests.Devices
             rightVelocity = 0,
             crossfader = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertHidMatch(0x1209, 0x2882, revision: 0x0800, reportId: true);
+        }
     }
 }

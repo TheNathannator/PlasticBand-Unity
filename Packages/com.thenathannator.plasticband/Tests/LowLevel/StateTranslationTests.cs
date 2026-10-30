@@ -109,6 +109,8 @@ namespace PlasticBand.Tests.LowLevel
             base.TearDown();
         }
 
+        protected override void CheckExpectedDescriptions() { }
+
         // Sanity check tests to ensure the controls are set up properly
         [Test]
         public void RecognizesButtons() => CreateAndRun((device) =>

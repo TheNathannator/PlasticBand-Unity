@@ -1,6 +1,7 @@
 using System;
 using PlasticBand.Controls;
 using PlasticBand.Devices;
+using PlasticBand.LowLevel;
 
 namespace PlasticBand.Tests.Devices
 {
@@ -22,12 +23,10 @@ namespace PlasticBand.Tests.Devices
             => XInputDeviceHandling.SetMenuButtons(ref state.buttons, buttons);
 
         protected override void SetKey(ref XInputProKeyboardState state, int key, bool pressed)
-            => ProKeyboardHandling.SetKey(ref state.keys1, ref state.keys2, ref state.keys3, ref state.velocity1,
-                key, pressed);
+            => ProKeyboardHandling.SetKey(ref state.keys1, ref state.keys2, ref state.keys3, ref state.velocity1, key, pressed);
 
         protected override void SetKeys(ref XInputProKeyboardState state, int keyMask)
-            => ProKeyboardHandling.SetKeys(ref state.keys1, ref state.keys2, ref state.keys3, ref state.velocity1,
-                keyMask);
+            => ProKeyboardHandling.SetKeys(ref state.keys1, ref state.keys2, ref state.keys3, ref state.velocity1, keyMask);
 
         protected override void SetDigitalPedal(ref XInputProKeyboardState state, bool pressed)
             => ProKeyboardHandling.SetDigitalPedal(ref state.pedal, pressed);
@@ -37,6 +36,13 @@ namespace PlasticBand.Tests.Devices
 
         protected override void SetOverdriveButton(ref XInputProKeyboardState state, bool pressed)
             => ProKeyboardHandling.SetDigitalPedal(ref state.overdrive, pressed);
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band 3 Pro Keyboard for Xbox 360
+            // MadCatz Rock Band 3 MIDI Pro Adapter for Xbox 360 (Keys mode)
+            AssertXInputMatch(XInputDeviceSubType.ProKeyboard);
+        }
     }
 
     internal class PS3ProKeyboardTests_NoReportId
@@ -60,12 +66,10 @@ namespace PlasticBand.Tests.Devices
             => PS3DeviceHandling.SetMenuButtons(ref state.buttons, buttons);
 
         protected override void SetKey(ref PS3ProKeyboardState_NoReportId state, int key, bool pressed)
-            => ProKeyboardHandling.SetKey(ref state.keys1, ref state.keys2, ref state.keys3, ref state.velocity1,
-                key, pressed);
+            => ProKeyboardHandling.SetKey(ref state.keys1, ref state.keys2, ref state.keys3, ref state.velocity1, key, pressed);
 
         protected override void SetKeys(ref PS3ProKeyboardState_NoReportId state, int keyMask)
-            => ProKeyboardHandling.SetKeys(ref state.keys1, ref state.keys2, ref state.keys3, ref state.velocity1,
-                keyMask);
+            => ProKeyboardHandling.SetKeys(ref state.keys1, ref state.keys2, ref state.keys3, ref state.velocity1, keyMask);
 
         protected override void SetDigitalPedal(ref PS3ProKeyboardState_NoReportId state, bool pressed)
             => ProKeyboardHandling.SetDigitalPedal(ref state.pedal, pressed);
@@ -78,6 +82,14 @@ namespace PlasticBand.Tests.Devices
 
         protected override void SetTouchStrip(ref PS3ProKeyboardState_NoReportId state, float value)
             => ProKeyboardHandling.SetTouchStrip(ref state.touchStrip, value);
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band 3 Pro Keyboard for PS3
+            AssertHidMatch(0x12BA, 0x2330, reportId: false);
+            // MadCatz Rock Band 3 MIDI Pro Adapter for PS3 (Keys mode)
+            AssertHidMatch(0x12BA, 0x2338, reportId: false);
+        }
     }
 
     internal class PS3ProKeyboardTests_ReportId
@@ -104,12 +116,10 @@ namespace PlasticBand.Tests.Devices
             => PS3DeviceHandling.SetFaceButtons(ref state.state.buttons, buttons);
 
         protected override void SetKey(ref PS3ProKeyboardState_ReportId state, int key, bool pressed)
-            => ProKeyboardHandling.SetKey(ref state.state.keys1, ref state.state.keys2, ref state.state.keys3,
-                ref state.state.velocity1, key, pressed);
+            => ProKeyboardHandling.SetKey(ref state.state.keys1, ref state.state.keys2, ref state.state.keys3, ref state.state.velocity1, key, pressed);
 
         protected override void SetKeys(ref PS3ProKeyboardState_ReportId state, int keyMask)
-            => ProKeyboardHandling.SetKeys(ref state.state.keys1, ref state.state.keys2, ref state.state.keys3,
-                ref state.state.velocity1, keyMask);
+            => ProKeyboardHandling.SetKeys(ref state.state.keys1, ref state.state.keys2, ref state.state.keys3, ref state.state.velocity1, keyMask);
 
         protected override void SetDigitalPedal(ref PS3ProKeyboardState_ReportId state, bool pressed)
             => ProKeyboardHandling.SetDigitalPedal(ref state.state.pedal, pressed);
@@ -122,6 +132,14 @@ namespace PlasticBand.Tests.Devices
 
         protected override void SetTouchStrip(ref PS3ProKeyboardState_ReportId state, float value)
             => ProKeyboardHandling.SetTouchStrip(ref state.state.touchStrip, value);
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band 3 Pro Keyboard for PS3
+            AssertHidMatch(0x12BA, 0x2330, reportId: true);
+            // MadCatz Rock Band 3 MIDI Pro Adapter for PS3 (Keys mode)
+            AssertHidMatch(0x12BA, 0x2338, reportId: true);
+        }
     }
 
     internal class WiiProKeyboardTests_NoReportId
@@ -148,12 +166,10 @@ namespace PlasticBand.Tests.Devices
             => PS3DeviceHandling.SetMenuButtons(ref state.state.buttons, buttons);
 
         protected override void SetKey(ref WiiProKeyboardState_NoReportId state, int key, bool pressed)
-            => ProKeyboardHandling.SetKey(ref state.state.keys1, ref state.state.keys2, ref state.state.keys3,
-                ref state.state.velocity1, key, pressed);
+            => ProKeyboardHandling.SetKey(ref state.state.keys1, ref state.state.keys2, ref state.state.keys3, ref state.state.velocity1, key, pressed);
 
         protected override void SetKeys(ref WiiProKeyboardState_NoReportId state, int keyMask)
-            => ProKeyboardHandling.SetKeys(ref state.state.keys1, ref state.state.keys2, ref state.state.keys3,
-                ref state.state.velocity1, keyMask);
+            => ProKeyboardHandling.SetKeys(ref state.state.keys1, ref state.state.keys2, ref state.state.keys3, ref state.state.velocity1, keyMask);
 
         protected override void SetDigitalPedal(ref WiiProKeyboardState_NoReportId state, bool pressed)
             => ProKeyboardHandling.SetDigitalPedal(ref state.state.pedal, pressed);
@@ -166,6 +182,14 @@ namespace PlasticBand.Tests.Devices
 
         protected override void SetTouchStrip(ref WiiProKeyboardState_NoReportId state, float value)
             => ProKeyboardHandling.SetTouchStrip(ref state.state.touchStrip, value);
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band 3 Pro Keyboard for Wii
+            AssertHidMatch(0x1BAD, 0x3330, reportId: false);
+            // MadCatz Rock Band 3 MIDI Pro Adapter for Wii (Keys mode)
+            AssertHidMatch(0x1BAD, 0x3338, reportId: false);
+        }
     }
 
     internal class WiiProKeyboardTests_ReportId
@@ -196,12 +220,10 @@ namespace PlasticBand.Tests.Devices
             => PS3DeviceHandling.SetMenuButtons(ref state.state.state.buttons, buttons);
 
         protected override void SetKey(ref WiiProKeyboardState_ReportId state, int key, bool pressed)
-            => ProKeyboardHandling.SetKey(ref state.state.state.keys1, ref state.state.state.keys2,
-                ref state.state.state.keys3, ref state.state.state.velocity1, key, pressed);
+            => ProKeyboardHandling.SetKey(ref state.state.state.keys1, ref state.state.state.keys2, ref state.state.state.keys3, ref state.state.state.velocity1, key, pressed);
 
         protected override void SetKeys(ref WiiProKeyboardState_ReportId state, int keyMask)
-            => ProKeyboardHandling.SetKeys(ref state.state.state.keys1, ref state.state.state.keys2,
-                ref state.state.state.keys3, ref state.state.state.velocity1, keyMask);
+            => ProKeyboardHandling.SetKeys(ref state.state.state.keys1, ref state.state.state.keys2, ref state.state.state.keys3, ref state.state.state.velocity1, keyMask);
 
         protected override void SetDigitalPedal(ref WiiProKeyboardState_ReportId state, bool pressed)
             => ProKeyboardHandling.SetDigitalPedal(ref state.state.state.pedal, pressed);
@@ -214,6 +236,14 @@ namespace PlasticBand.Tests.Devices
 
         protected override void SetTouchStrip(ref WiiProKeyboardState_ReportId state, float value)
             => ProKeyboardHandling.SetTouchStrip(ref state.state.state.touchStrip, value);
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // MadCatz Rock Band 3 Pro Keyboard for Wii
+            AssertHidMatch(0x1BAD, 0x3330, reportId: true);
+            // MadCatz Rock Band 3 MIDI Pro Adapter for Wii (Keys mode)
+            AssertHidMatch(0x1BAD, 0x3338, reportId: true);
+        }
     }
 
     public static class ProKeyboardHandling

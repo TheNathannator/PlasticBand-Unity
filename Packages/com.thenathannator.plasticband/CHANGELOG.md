@@ -24,8 +24,9 @@ Dates are relative to UTC.
 
 ### Fixed
 
-- PS5 GH5 guitars are no longer accidentally treated as having a report ID.
+- PS3 GH5 guitars are no longer incorrectly identified.
 - PC World Tour guitars with a report ID are no longer treated as not having one.
+- Santroller 1 drumkits are no longer misidentified or outright not identified at all.
 
 ## [0.10.0] - 2026/09/07
 

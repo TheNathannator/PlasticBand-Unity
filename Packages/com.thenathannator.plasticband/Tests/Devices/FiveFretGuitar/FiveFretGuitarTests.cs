@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using PlasticBand.Controls;
 using PlasticBand.Devices;
-using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
@@ -28,6 +26,8 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void GetFretThrowsCorrectly()
             => CreateAndRun(_GetFretThrowsCorrectly);
+
+        protected override void CheckExpectedDescriptions() { }
 
         // These must be named differently from the actual test methods, or else the input system test fixture
         // will fail to get the current method due to name ambiguity from reflection

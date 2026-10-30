@@ -13,6 +13,12 @@ namespace PlasticBand.Tests.Devices
             whammy = 0,
             rawTouchBar = 0x80,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane Guitar Hero Guitar for Xbox 360 (all models)
+            AssertXInputMatch(XInputDeviceSubType.GuitarAlternate);
+        }
     }
 
     internal class XInputGuitarHeroGuitarTests_GH5
@@ -25,6 +31,16 @@ namespace PlasticBand.Tests.Devices
             whammy = 0,
             rawTouchBar = 0x80,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane Guitar Hero 5 and Band Hero Guitar for Xbox 360
+            AssertXInputMatch(
+                XInputDeviceSubType.GuitarAlternate,
+                vendorId: 0x1430,
+                productId: 0x0705
+            );
+        }
     }
 
     internal class SantrollerXInputGuitarHeroGuitarTests
@@ -37,6 +53,16 @@ namespace PlasticBand.Tests.Devices
             whammy = 0,
             rawTouchBar = 0x80,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertXInputMatch(
+                XInputDeviceSubType.GuitarAlternate,
+                vendorId: 0x1209,
+                productId: 0x2882,
+                revision: 0x0300
+            );
+        }
     }
 
     internal class PS3GuitarHeroGuitarTests_NoReportId
@@ -50,6 +76,12 @@ namespace PlasticBand.Tests.Devices
             tilt = 0,
             rawTouchBar = 0x80,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane Guitar Hero Guitar for PS3 (all models)
+            AssertHidMatch(0x12BA, 0x0100, reportId: false);
+        }
     }
 
     internal class PS3GuitarHeroGuitarTests_ReportId
@@ -66,6 +98,12 @@ namespace PlasticBand.Tests.Devices
                 rawTouchBar = 0x80,
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane Guitar Hero Guitar for PS3 (all models)
+            AssertHidMatch(0x12BA, 0x0100, reportId: true);
+        }
     }
 
     internal class PS3GuitarHeroGuitarTests_GH5_NoReportId
@@ -79,6 +117,17 @@ namespace PlasticBand.Tests.Devices
             tilt = 0,
             rawTouchBar = 0x80,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane Guitar Hero 5 Guitar for PS3
+            AssertHidMatch(
+                0x12BA,
+                0x0100,
+                productName: "Guitar Hero5 for PlayStation (R) 3",
+                reportId: false
+            );
+        }
     }
 
     internal class PS3GuitarHeroGuitarTests_GH5_ReportId
@@ -95,6 +144,17 @@ namespace PlasticBand.Tests.Devices
                 rawTouchBar = 0x80,
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane Guitar Hero 5 Guitar for PS3
+            AssertHidMatch(
+                0x12BA,
+                0x0100,
+                productName: "Guitar Hero5 for PlayStation (R) 3",
+                reportId: true
+            );
+        }
     }
 
     internal class PCGuitarHeroGuitarTests_NoReportId
@@ -108,6 +168,12 @@ namespace PlasticBand.Tests.Devices
             tilt = 0,
             rawTouchBar = 0x80,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane Guitar Hero World Tour Guitar for PC
+            AssertHidMatch(0x1430, 0x474C, reportId: false);
+        }
     }
 
     internal class PCGuitarHeroGuitarTests_ReportId
@@ -124,6 +190,12 @@ namespace PlasticBand.Tests.Devices
                 rawTouchBar = 0x80,
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // RedOctane Guitar Hero World Tour Guitar for PC
+            AssertHidMatch(0x1430, 0x474C, reportId: true);
+        }
     }
 
     internal class SantrollerHIDGuitarHeroGuitarTests
@@ -138,5 +210,10 @@ namespace PlasticBand.Tests.Devices
             tilt = 0,
             rawTouchBar = 0x80,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertHidMatch(0x1209, 0x2882, revision: 0x0300, reportId: true);
+        }
     }
 }

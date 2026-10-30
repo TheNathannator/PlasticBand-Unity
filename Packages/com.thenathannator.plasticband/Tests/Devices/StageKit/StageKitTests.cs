@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
 using PlasticBand.Devices;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Tests.Devices
@@ -11,6 +7,8 @@ namespace PlasticBand.Tests.Devices
     {
         // Nothing specific to stage kits that needs to be tested currently,
         // only the base tests are needed
+
+        protected override void CheckExpectedDescriptions() { }
     }
 
     public abstract class StageKitTests<TStageKit, TState> : GamepadDeviceTestFixture<TStageKit, TState>

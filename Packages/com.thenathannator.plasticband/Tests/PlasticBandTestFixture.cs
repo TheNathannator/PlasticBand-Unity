@@ -4,9 +4,12 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using PlasticBand.LowLevel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.HID;
+using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Processors;
 using UnityEngine.InputSystem.Utilities;
@@ -20,7 +23,7 @@ namespace PlasticBand.Tests
         Button
     }
 
-    public class PlasticBandTestFixture<TDevice> : InputTestFixture
+    public abstract class PlasticBandTestFixture<TDevice> : InputTestFixture
         where TDevice : InputDevice
     {
         public delegate void SetButtonAction<TState>(ref TState state, bool pressed)
@@ -45,6 +48,11 @@ namespace PlasticBand.Tests
 
         [Test]
         public void CanCreate() => Assert.DoesNotThrow(() => CreateAndRun((device) => {}));
+
+        [Test]
+        public void MatchesExpectedDescriptions() => CheckExpectedDescriptions();
+
+        protected abstract void CheckExpectedDescriptions();
 
         [Test]
         public void AllControlPropertiesSet() => CreateAndRun((device) =>
@@ -87,6 +95,100 @@ namespace PlasticBand.Tests
         }
 
         protected virtual void InitializeDevice(TDevice device) { }
+
+        public void AssertDescriptionMatches(InputDeviceDescription description)
+        {
+            var device = InputSystem.AddDevice(description);
+            try
+            {
+                Assert.That(device, Is.TypeOf<TDevice>(), $"'{description}' did not match the correct kind of device!");
+            }
+            finally
+            {
+                InputSystem.RemoveDevice(device);
+            }
+        }
+
+        public void AssertHidMatch(
+            ushort vendorId,
+            ushort productId,
+            bool reportId,
+            string manufacturer = null,
+            string productName = null,
+            ushort? revision = null,
+            HID.UsagePage usagePage = HID.UsagePage.GenericDesktop,
+            ushort usage = (int)HID.GenericDesktop.Gamepad
+        )
+        {
+            AssertDescriptionMatches(new InputDeviceDescription()
+            {
+                interfaceName = "HID",
+                manufacturer = manufacturer,
+                product = productName,
+                version = revision?.ToString(),
+                capabilities = JsonUtility.ToJson(new HID.HIDDeviceDescriptor()
+                {
+                    vendorId = vendorId,
+                    productId = productId,
+                    usage = usage,
+                    usagePage = usagePage,
+
+                    // for report ID testing
+                    elements = new HID.HIDElementDescriptor[]
+                    {
+                        new HID.HIDElementDescriptor()
+                        {
+                            reportType = HID.HIDReportType.Input,
+                            reportOffsetInBits = reportId ? 8 : 0,
+                        }
+                    },
+                }),
+            });
+        }
+
+        internal void AssertXInputMatch(
+            XInputDeviceSubType subType,
+            XInputDeviceFlags flags = XInputDeviceFlags.None,
+            ushort vendorId = 0xFFC0,
+            ushort productId = 0xFFC0,
+            ushort revision = 0xFFC0
+        )
+        {
+            AssertDescriptionMatches(new InputDeviceDescription()
+            {
+                interfaceName = "XInput",
+                capabilities = JsonUtility.ToJson(new XInputCapabilities()
+                {
+                    type = XInputDeviceType.Gamepad,
+                    subType = subType,
+                    flags = flags,
+                    gamepad = new XInputGamepad()
+                    {
+                        buttons = 0xF7FF,
+                        leftTrigger = 0xFF,
+                        rightTrigger = 0xFF,
+                        leftStickX = (short)vendorId,
+                        leftStickY = (short)productId,
+                        rightStickX = (short)revision,
+                        rightStickY = unchecked((short)0xFFC0),
+                    },
+                    vibration = new XInputVibration()
+                    {
+                        leftMotor = 0,
+                        rightMotor = 0,
+                    },
+                }),
+            });
+        }
+
+        public void AssertGameInputMatch(ushort vendorId, ushort productId)
+        {
+            AssertDescriptionMatches(new InputDeviceDescription()
+            {
+                interfaceName = "GameInput",
+                capabilities = $"{{\"vendorId\":{vendorId},\"productId\":{productId}}}",
+            });
+        }
 
         public static void AssertEventUpdate<TState>(InputDevice device, TState state,
             Action<InputEventPtr> onInputEvent, Action onAfterUpdate = null)

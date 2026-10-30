@@ -4,7 +4,6 @@ using NUnit.Framework;
 using PlasticBand.Devices;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
-using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Tests.Devices
 {
@@ -21,6 +20,8 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void GetPadThrowsCorrectly()
             => CreateAndRun(_GetPadThrowsCorrectly);
+
+        protected override void CheckExpectedDescriptions() { }
 
         // These must be named differently from the actual test methods, or else the input system test fixture
         // will fail to get the current method due to name ambiguity from reflection

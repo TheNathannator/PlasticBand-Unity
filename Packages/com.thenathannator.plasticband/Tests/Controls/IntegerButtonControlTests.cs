@@ -94,6 +94,8 @@ namespace PlasticBand.Tests.Controls
             base.TearDown();
         }
 
+        protected override void CheckExpectedDescriptions() { }
+
         [Test]
         public void SetsMinValue() => CreateAndRun((device) =>
         {

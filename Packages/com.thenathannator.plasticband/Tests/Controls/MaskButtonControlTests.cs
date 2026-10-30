@@ -56,6 +56,8 @@ namespace PlasticBand.Tests.Controls
             base.TearDown();
         }
 
+        protected override void CheckExpectedDescriptions() { }
+
         [Test]
         public void SetsMask() => CreateAndRun((device) =>
         {

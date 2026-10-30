@@ -27,6 +27,7 @@ namespace PlasticBand.LowLevel
         Y = 0x8000
     }
 
+    [Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct XInputGamepad : IInputStateTypeInfo
     {
@@ -85,6 +86,7 @@ namespace PlasticBand.LowLevel
         public short rightStickY;
     }
 
+    [Serializable]
     internal struct XInputVibration
     {
         public short leftMotor;
@@ -93,7 +95,7 @@ namespace PlasticBand.LowLevel
 
     internal enum XInputDeviceType
     {
-        Gamepad
+        Gamepad = 1,
     }
 
     internal enum XInputDeviceSubType
@@ -129,6 +131,7 @@ namespace PlasticBand.LowLevel
 
     // This doesn't match the actual XINPUT_CAPABILITIES,
     // rather it's the format reported by Unity for the device capabilities JSON.
+    [Serializable]
     internal struct XInputCapabilities
     {
         // public int userIndex; // We don't need to read this in, and it's not necessary to be set

@@ -15,6 +15,8 @@ namespace PlasticBand.Tests.Devices
         public void GetSoloFretThrowsCorrectly()
             => CreateAndRun(_GetSoloFretThrowsCorrectly);
 
+        protected override void CheckExpectedDescriptions() { }
+
         // These must be named differently from the actual test methods, or else the input system test fixture
         // will fail to get the current method due to name ambiguity from reflection
         public static void _GetSoloFretReturnsCorrectFrets(RockBandGuitar guitar)

@@ -9,6 +9,12 @@ namespace PlasticBand.Tests.Devices
     {
         protected override XInputSixFretGuitarState CreateState()
             => new XInputSixFretGuitarState();
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // Activision Guitar Hero Live Guitar for Xbox 360
+            AssertXInputMatch(XInputDeviceSubType.GuitarAlternate, XInputDeviceFlags.NoNavigation);
+        }
     }
 
     internal class XboxOneSixFretGuitarTests
@@ -27,6 +33,12 @@ namespace PlasticBand.Tests.Devices
                 tilt = 0,
             },
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // Activision Guitar Hero Live Guitar for Xbox One
+            AssertGameInputMatch(0x1430, 0x079B);
+        }
     }
 
     internal class SantrollerXInputSixFretGuitarTests
@@ -34,6 +46,16 @@ namespace PlasticBand.Tests.Devices
     {
         protected override XInputSixFretGuitarState CreateState()
             => new XInputSixFretGuitarState();
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertXInputMatch(
+                XInputDeviceSubType.GuitarAlternate,
+                vendorId: 0x1209,
+                productId: 0x2882,
+                revision: 0x0700
+            );
+        }
     }
 
     internal class PS3WiiUSixFretGuitarTests_NoReportId
@@ -48,6 +70,12 @@ namespace PlasticBand.Tests.Devices
             // The default value for these properties is not 0, so we must set them explicitly
             tilt = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // Activision Guitar Hero Live Guitar for PS3 and Wii U
+            AssertHidMatch(0x12BA, 0x074B, reportId: false);
+        }
     }
 
     internal class PS3WiiUSixFretGuitarTests_ReportId
@@ -65,6 +93,12 @@ namespace PlasticBand.Tests.Devices
                 tilt = 0,
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // Activision Guitar Hero Live Guitar for PS3 and Wii U
+            AssertHidMatch(0x12BA, 0x074B, reportId: true);
+        }
     }
 
     internal class PS4SixFretGuitarTests_ReportId
@@ -82,6 +116,12 @@ namespace PlasticBand.Tests.Devices
                 tilt = 0,
             }
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // Activision Guitar Hero Live Guitar for PS4
+            AssertHidMatch(0x1430, 0x07BB, reportId: true);
+        }
     }
 
     internal class PS4SixFretGuitarTests_NoReportId
@@ -96,6 +136,12 @@ namespace PlasticBand.Tests.Devices
             // The default value for these properties is not 0, so we must set them explicitly
             tilt = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // Activision Guitar Hero Live Guitar for PS4
+            AssertHidMatch(0x1430, 0x07BB, reportId: false);
+        }
     }
 
     internal class SantrollerHIDSixFretGuitarTests
@@ -109,5 +155,10 @@ namespace PlasticBand.Tests.Devices
             // The default value for these properties is not 0, so we must set them explicitly
             tilt = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertHidMatch(0x1209, 0x2882, revision: 0x0700, reportId: true);
+        }
     }
 }
