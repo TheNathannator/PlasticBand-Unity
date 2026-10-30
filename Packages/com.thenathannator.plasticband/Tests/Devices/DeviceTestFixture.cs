@@ -47,6 +47,17 @@ namespace PlasticBand.Tests.Devices
         All = South | East | West | North
     }
 
+    [Flags]
+    public enum HorizontalSide
+    {
+        None = 0,
+
+        Left = 0x01,
+        Right = 0x02,
+
+        All = Left | Right
+    }
+
     public abstract class DeviceTestFixture<TDevice, TState> : PlasticBandTestFixture<TDevice>
         where TDevice : InputDevice
         where TState : unmanaged, IInputStateTypeInfo
@@ -134,6 +145,95 @@ namespace PlasticBand.Tests.Devices
                 AssertButtonPress(device, state, buttonList.ToArray());
                 buttonList.Clear();
             }
+        });
+    }
+
+    public abstract class GamepadDeviceTestFixture<TGamepad, TState> : FaceButtonDeviceTestFixture<TGamepad, TState>
+        where TGamepad : Gamepad
+        where TState : unmanaged, IInputStateTypeInfo
+    {
+        protected delegate void SetHorizontalSideAction(ref TState state, HorizontalSide buttons);
+
+        protected override ButtonControl GetFaceButton(TGamepad gamepad, FaceButton button)
+        {
+            switch (button)
+            {
+                case FaceButton.South: return gamepad.buttonSouth;
+                case FaceButton.East: return gamepad.buttonEast;
+                case FaceButton.West: return gamepad.buttonWest;
+                case FaceButton.North: return gamepad.buttonNorth;
+                default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
+            }
+        }
+
+        protected override ButtonControl GetMenuButton(TGamepad gamepad, MenuButton button)
+        {
+            switch (button)
+            {
+                case MenuButton.Start: return gamepad.startButton;
+                case MenuButton.Select: return gamepad.selectButton;
+                default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
+            }
+        }
+
+        protected override DpadControl GetDpad(TGamepad gamepad) => gamepad.dpad;
+
+        protected abstract void SetShoulderButtons(ref TState state, HorizontalSide buttons);
+        protected abstract void SetStickButtons(ref TState state, HorizontalSide buttons);
+
+        protected abstract void SetLeftTrigger(ref TState state, float value);
+        protected abstract void SetRightTrigger(ref TState state, float value);
+        protected abstract void SetLeftStick(ref TState state, float x, float y);
+        protected abstract void SetRightStick(ref TState state, float x, float y);
+
+        [Test]
+        public void RecognizesShoulderButtons() => CreateAndRun((gamepad) =>
+        {
+            var state = CreateState();
+
+            var buttonList = new List<ButtonControl>(2);
+            for (var buttons = HorizontalSide.None; buttons <= HorizontalSide.All; buttons++)
+            {
+                SetShoulderButtons(ref state, buttons);
+
+                if ((buttons & HorizontalSide.Left) != 0) buttonList.Add(gamepad.leftShoulder);
+                if ((buttons & HorizontalSide.Right) != 0) buttonList.Add(gamepad.rightShoulder);
+
+                AssertButtonPress(gamepad, state, buttonList.ToArray());
+                buttonList.Clear();
+            }
+        });
+
+        [Test]
+        public void RecognizesStickButtons() => CreateAndRun((gamepad) =>
+        {
+            var state = CreateState();
+
+            var buttonList = new List<ButtonControl>(2);
+            for (var buttons = HorizontalSide.None; buttons <= HorizontalSide.All; buttons++)
+            {
+                SetStickButtons(ref state, buttons);
+
+                if ((buttons & HorizontalSide.Left) != 0) buttonList.Add(gamepad.leftStickButton);
+                if ((buttons & HorizontalSide.Right) != 0) buttonList.Add(gamepad.rightStickButton);
+
+                AssertButtonPress(gamepad, state, buttonList.ToArray());
+                buttonList.Clear();
+            }
+        });
+
+        [Test]
+        public void RecognizesTriggers() => CreateAndRun((gamepad) =>
+        {
+            RecognizesUnsignedAxis(gamepad, CreateState(), gamepad.leftTrigger, SetLeftTrigger);
+            RecognizesUnsignedAxis(gamepad, CreateState(), gamepad.rightTrigger, SetRightTrigger);
+        });
+
+        [Test]
+        public void RecognizesSticks() => CreateAndRun((gamepad) =>
+        {
+            RecognizesStick(gamepad, CreateState(), gamepad.leftStick, SetLeftStick);
+            RecognizesStick(gamepad, CreateState(), gamepad.rightStick, SetRightStick);
         });
     }
 }

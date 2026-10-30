@@ -10,7 +10,6 @@ namespace PlasticBand.Tests.Devices
         protected override XInputProKeyboardState CreateState()
             => new XInputProKeyboardState()
         {
-            pedal = 0x7F,
         };
 
         protected override void SetDpad(ref XInputProKeyboardState state, DpadDirection dpad)
@@ -47,7 +46,6 @@ namespace PlasticBand.Tests.Devices
             => new PS3ProKeyboardState_NoReportId()
         {
             dpad = 8,
-            pedal = 0x7F,
         };
 
         protected override void SetDpad(ref PS3ProKeyboardState_NoReportId state, DpadDirection dpad)
@@ -91,7 +89,6 @@ namespace PlasticBand.Tests.Devices
             state = new PS3ProKeyboardState_NoReportId()
             {
                 dpad = 8,
-                pedal = 0x7F,
             }
         };
 
@@ -136,7 +133,6 @@ namespace PlasticBand.Tests.Devices
             state = new PS3ProKeyboardState_NoReportId()
             {
                 dpad = 8,
-                pedal = 0x7F,
             }
         };
 
@@ -184,7 +180,6 @@ namespace PlasticBand.Tests.Devices
                 state = new PS3ProKeyboardState_NoReportId()
                 {
                     dpad = 8,
-                    pedal = 0x7F,
                 }
             }
         };
@@ -280,7 +275,7 @@ namespace PlasticBand.Tests.Devices
 
         public static void SetAnalogPedal(ref byte pedal, float value)
         {
-            byte rawValue = (byte)IntegerAxisControl.Denormalize(value, 0x7F, 0, 0x7F);
+            byte rawValue = (byte)IntegerAxisControl.Denormalize(value, 0, 0x7F, 0);
             pedal.SetMask(rawValue, 0x7F, 0);
         }
 

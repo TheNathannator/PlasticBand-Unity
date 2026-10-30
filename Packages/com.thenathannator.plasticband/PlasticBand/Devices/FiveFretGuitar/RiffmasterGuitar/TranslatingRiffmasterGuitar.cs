@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
@@ -15,12 +15,13 @@ namespace PlasticBand.Devices
         DpadLeft = 2,
         DpadRight = 3,
 
-        JoystickClick = 4,
-        P1 = 5,
+        LeftStickPress = 4,
+        RightStickPress = 5,
+        P1 = 6,
 
-        Start = 6,
-        Select = 7,
-        System = 8,
+        Start = 7,
+        Select = 8,
+        System = 9,
     }
 
     [Flags]
@@ -33,7 +34,8 @@ namespace PlasticBand.Devices
         DpadLeft = 1 << TranslatedRiffmasterGuitarButton.DpadLeft,
         DpadRight = 1 << TranslatedRiffmasterGuitarButton.DpadRight,
 
-        JoystickClick = 1 << TranslatedRiffmasterGuitarButton.JoystickClick,
+        LeftStickPress = 1 << TranslatedRiffmasterGuitarButton.LeftStickPress,
+        RightStickPress = 1 << TranslatedRiffmasterGuitarButton.RightStickPress,
         P1 = 1 << TranslatedRiffmasterGuitarButton.P1,
 
         Start = 1 << TranslatedRiffmasterGuitarButton.Start,
@@ -57,7 +59,8 @@ namespace PlasticBand.Devices
         [InputControl(name = "dpad/left", bit = (int)TranslatedRiffmasterGuitarButton.DpadLeft)]
         [InputControl(name = "dpad/right", bit = (int)TranslatedRiffmasterGuitarButton.DpadRight)]
 
-        [InputControl(name = "joystickClick", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.JoystickClick)]
+        [InputControl(name = "leftStickPress", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.LeftStickPress)]
+        [InputControl(name = "rightStickPress", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.RightStickPress)]
         [InputControl(name = "p1Button", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.P1, displayName = "P1")]
 
         [InputControl(name = "start", layout = "Button", bit = (int)TranslatedRiffmasterGuitarButton.Start)]
@@ -79,15 +82,25 @@ namespace PlasticBand.Devices
         [InputControl(name = "soloOrange", layout = "Button", bit = 4)]
         public byte soloFrets;
 
-        [InputControl(name = "joystick", layout = "Stick", format = "VC2B")]
-        [InputControl(name = "joystick/x", format = "SBYT", offset = 0)]
-        [InputControl(name = "joystick/left", format = "SBYT", offset = 0)]
-        [InputControl(name = "joystick/right", format = "SBYT", offset = 0)]
-        [InputControl(name = "joystick/y", format = "SBYT", offset = 1)]
-        [InputControl(name = "joystick/up", format = "SBYT", offset = 1)]
-        [InputControl(name = "joystick/down", format = "SBYT", offset = 1)]
-        public sbyte joystickX;
-        public sbyte joystickY;
+        [InputControl(name = "leftStick", layout = "Stick", format = "VC2B")]
+        [InputControl(name = "leftStick/x", offset = 0, layout = "IntAxis", format = "SBYT", parameters = "minValue=-128,maxValue=127,zeroPoint=0")]
+        [InputControl(name = "leftStick/left", offset = 0, layout = "IntButton", format = "SBYT", parameters = "minValue=0,maxValue=-128")]
+        [InputControl(name = "leftStick/right", offset = 0, layout = "IntButton", format = "SBYT", parameters = "minValue=0,maxValue=127")]
+        [InputControl(name = "leftStick/y", offset = 1, layout = "IntAxis", format = "SBYT", parameters = "minValue=-128,maxValue=127,zeroPoint=0")]
+        [InputControl(name = "leftStick/up", offset = 1, layout = "IntButton", format = "SBYT", parameters = "minValue=0,maxValue=127")]
+        [InputControl(name = "leftStick/down", offset = 1, layout = "IntButton", format = "SBYT", parameters = "minValue=0,maxValue=-128")]
+        public sbyte leftStickX;
+        public sbyte leftStickY;
+
+        [InputControl(name = "rightStick", layout = "Stick", format = "VC2B")]
+        [InputControl(name = "rightStick/x", offset = 0, layout = "IntAxis", format = "SBYT", parameters = "minValue=-128,maxValue=127,zeroPoint=0")]
+        [InputControl(name = "rightStick/left", offset = 0, layout = "IntButton", format = "SBYT", parameters = "minValue=0,maxValue=-128")]
+        [InputControl(name = "rightStick/right", offset = 0, layout = "IntButton", format = "SBYT", parameters = "minValue=0,maxValue=127")]
+        [InputControl(name = "rightStick/y", offset = 1, layout = "IntAxis", format = "SBYT", parameters = "minValue=-128,maxValue=127,zeroPoint=0")]
+        [InputControl(name = "rightStick/up", offset = 1, layout = "IntButton", format = "SBYT", parameters = "minValue=0,maxValue=127")]
+        [InputControl(name = "rightStick/down", offset = 1, layout = "IntButton", format = "SBYT", parameters = "minValue=0,maxValue=-128")]
+        public sbyte rightStickX;
+        public sbyte rightStickY;
 
         [InputControl(name = "whammy", layout = "IntAxis", parameters = "minValue=0x00,maxValue=0xFF,zeroPoint=0x00")]
         public byte whammy;
@@ -132,7 +145,8 @@ namespace PlasticBand.Devices
             if (state.dpadRight) buttons |= TranslatedRiffmasterGuitarButtonMask.DpadRight;
 
             // Misc.
-            if (state.joystickClick) buttons |= TranslatedRiffmasterGuitarButtonMask.JoystickClick;
+            if (state.leftStickPress) buttons |= TranslatedRiffmasterGuitarButtonMask.LeftStickPress;
+            if (state.rightStickPress) buttons |= TranslatedRiffmasterGuitarButtonMask.RightStickPress;
             if (state.p1) buttons |= TranslatedRiffmasterGuitarButtonMask.P1;
 
             // Menu/system
@@ -151,8 +165,11 @@ namespace PlasticBand.Devices
                     state.soloGreen, state.soloRed, state.soloYellow, state.soloBlue, state.soloOrange
                 ),
 
-                joystickX = state.joystickX,
-                joystickY = state.joystickY,
+                leftStickX = state.leftStickX,
+                leftStickY = state.leftStickY,
+
+                rightStickX = state.rightStickX,
+                rightStickY = state.rightStickY,
 
                 whammy = state.whammy,
                 tilt = state.tilt,

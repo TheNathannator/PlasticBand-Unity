@@ -21,10 +21,10 @@ namespace PlasticBand.Tests.Devices
         protected override void SetMenuButtons(ref XInputStageKitState state, MenuButton buttons)
             => XInputDeviceHandling.SetMenuButtons(ref state.buttons, buttons);
 
-        protected override void SetShoulderButtons(ref XInputStageKitState state, SideButton buttons)
+        protected override void SetShoulderButtons(ref XInputStageKitState state, HorizontalSide buttons)
             => XInputStageKitHandling.SetShoulderButtons(ref state.buttons, buttons);
 
-        protected override void SetStickButtons(ref XInputStageKitState state, SideButton buttons)
+        protected override void SetStickButtons(ref XInputStageKitState state, HorizontalSide buttons)
             => XInputStageKitHandling.SetStickButtons(ref state.buttons, buttons);
 
         protected override void SetLeftTrigger(ref XInputStageKitState state, float value)
@@ -65,10 +65,10 @@ namespace PlasticBand.Tests.Devices
         protected override void SetMenuButtons(ref XInputStageKitState state, MenuButton buttons)
             => XInputDeviceHandling.SetMenuButtons(ref state.buttons, buttons);
 
-        protected override void SetShoulderButtons(ref XInputStageKitState state, SideButton buttons)
+        protected override void SetShoulderButtons(ref XInputStageKitState state, HorizontalSide buttons)
             => XInputStageKitHandling.SetShoulderButtons(ref state.buttons, buttons);
 
-        protected override void SetStickButtons(ref XInputStageKitState state, SideButton buttons)
+        protected override void SetStickButtons(ref XInputStageKitState state, HorizontalSide buttons)
             => XInputStageKitHandling.SetStickButtons(ref state.buttons, buttons);
 
         protected override void SetLeftTrigger(ref XInputStageKitState state, float value)
@@ -126,16 +126,16 @@ namespace PlasticBand.Tests.Devices
             state.buttons.SetBit((ushort)SantrollerHIDButton.Select, (buttons & MenuButton.Select) != 0);
         }
 
-        protected override void SetShoulderButtons(ref SantrollerHidStageKitState state, SideButton buttons)
+        protected override void SetShoulderButtons(ref SantrollerHidStageKitState state, HorizontalSide buttons)
         {
-            state.buttons.SetBit((ushort)SantrollerHIDButton.LeftShoulder, (buttons & SideButton.Left) != 0);
-            state.buttons.SetBit((ushort)SantrollerHIDButton.RightShoulder, (buttons & SideButton.Right) != 0);
+            state.buttons.SetBit((ushort)SantrollerHIDButton.LeftShoulder, (buttons & HorizontalSide.Left) != 0);
+            state.buttons.SetBit((ushort)SantrollerHIDButton.RightShoulder, (buttons & HorizontalSide.Right) != 0);
         }
 
-        protected override void SetStickButtons(ref SantrollerHidStageKitState state, SideButton buttons)
+        protected override void SetStickButtons(ref SantrollerHidStageKitState state, HorizontalSide buttons)
         {
-            state.buttons.SetBit((ushort)SantrollerHIDButton.LeftStickClick, (buttons & SideButton.Left) != 0);
-            state.buttons.SetBit((ushort)SantrollerHIDButton.RightStickClick, (buttons & SideButton.Right) != 0);
+            state.buttons.SetBit((ushort)SantrollerHIDButton.LeftStickClick, (buttons & HorizontalSide.Left) != 0);
+            state.buttons.SetBit((ushort)SantrollerHIDButton.RightStickClick, (buttons & HorizontalSide.Right) != 0);
         }
 
         protected override void SetLeftTrigger(ref SantrollerHidStageKitState state, float value)
@@ -227,16 +227,16 @@ namespace PlasticBand.Tests.Devices
 
     public static class XInputStageKitHandling
     {
-        public static void SetShoulderButtons(ref ushort buttonsField, SideButton buttons)
+        public static void SetShoulderButtons(ref ushort buttonsField, HorizontalSide buttons)
         {
-            buttonsField.SetBit((ushort)XInputButton.LeftShoulder, (buttons & SideButton.Left) != 0);
-            buttonsField.SetBit((ushort)XInputButton.RightShoulder, (buttons & SideButton.Right) != 0);
+            buttonsField.SetBit((ushort)XInputButton.LeftShoulder, (buttons & HorizontalSide.Left) != 0);
+            buttonsField.SetBit((ushort)XInputButton.RightShoulder, (buttons & HorizontalSide.Right) != 0);
         }
 
-        public static void SetStickButtons(ref ushort buttonsField, SideButton buttons)
+        public static void SetStickButtons(ref ushort buttonsField, HorizontalSide buttons)
         {
-            buttonsField.SetBit((ushort)XInputButton.LeftThumb, (buttons & SideButton.Left) != 0);
-            buttonsField.SetBit((ushort)XInputButton.RightThumb, (buttons & SideButton.Right) != 0);
+            buttonsField.SetBit((ushort)XInputButton.LeftThumb, (buttons & HorizontalSide.Left) != 0);
+            buttonsField.SetBit((ushort)XInputButton.RightThumb, (buttons & HorizontalSide.Right) != 0);
         }
     }
 }

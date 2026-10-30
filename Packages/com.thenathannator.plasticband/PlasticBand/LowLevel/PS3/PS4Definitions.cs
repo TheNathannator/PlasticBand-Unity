@@ -38,6 +38,37 @@ namespace PlasticBand.Devices.LowLevel
         Touchpad = 0x02,
     }
 
+    internal static class PS4Handling
+    {
+        public static sbyte GetStickX(byte value)
+        {
+            int signed = value + sbyte.MinValue;
+            return (sbyte)signed;
+        }
+
+        public static sbyte GetStickY(byte value)
+        {
+            // PS4 Y-axis is inverted compared to the input system's Y-axis
+            int inverted = byte.MaxValue - value;
+            int signed = inverted + sbyte.MinValue;
+            return (sbyte)signed;
+        }
+
+        public static byte SetStickX(sbyte value)
+        {
+            int unsigned = value - sbyte.MinValue;
+            return (byte)unsigned;
+        }
+
+        public static byte SetStickY(sbyte value)
+        {
+            int unsigned = value - sbyte.MinValue;
+            // PS4 Y-axis is inverted compared to the input system's Y-axis
+            int inverted = byte.MaxValue - unsigned;
+            return (byte)inverted;
+        }
+    }
+
     internal static class PS4Extensions
     {
         public static HidDpad GetDpad(this PS4Button1 buttons)

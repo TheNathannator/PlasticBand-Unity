@@ -171,7 +171,7 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_ReportId, PS3GuitarHeroGuitar>(0x12BA, 0x0100);
-            HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_GH5, PS3GuitarHeroGuitar_GH5_ReportId>(
+            HidLayoutFinder.RegisterLayout<PS3GuitarHeroGuitar_GH5_ReportId, PS3GuitarHeroGuitar_GH5>(
                 0x12BA, 0x0100, productName: "Guitar Hero5 for PlayStation (R) 3"
             );
         }
@@ -185,16 +185,4 @@ namespace PlasticBand.Devices
 
     [InputControlLayout(stateType = typeof(PS3GuitarHeroGuitarLayout), displayName = "PlayStation 3 Guitar Hero Guitar", hideInUI = true)]
     internal class PS3GuitarHeroGuitar_GH5_ReportId : TranslatingGuitarHeroGuitar_Discrete<PS3GuitarHeroGuitarState_ReportId> { }
-
-    [InputControlLayout(stateType = typeof(TranslatedGuitarHeroGuitarState), displayName = "PC Guitar Hero Guitar")]
-    internal class PCGuitarHeroGuitar : TranslatingGuitarHeroGuitar_Ranges<PS3GuitarHeroGuitarState_NoReportId>
-    {
-        internal new static void Initialize()
-        {
-            HidLayoutFinder.RegisterLayout<PCGuitarHeroGuitar_ReportId, PCGuitarHeroGuitar>(0x1430, 0x474C);
-        }
-    }
-
-    [InputControlLayout(stateType = typeof(TranslatedGuitarHeroGuitarState), displayName = "PC Guitar Hero Guitar", hideInUI = true)]
-    internal class PCGuitarHeroGuitar_ReportId : TranslatingGuitarHeroGuitar_Ranges<PS3GuitarHeroGuitarState_NoReportId> { }
 }

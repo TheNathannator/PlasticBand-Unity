@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
@@ -17,9 +17,14 @@ namespace PlasticBand.Devices
         public FourCC format => HidDefinitions.InputFormat;
 
         [FieldOffset(0)]
-        private byte m_JoystickX;
+        private byte m_LeftStickX;
         [FieldOffset(1)]
-        private byte m_JoystickY;
+        private byte m_LeftStickY;
+
+        [FieldOffset(2)]
+        private byte m_RightStickX;
+        [FieldOffset(3)]
+        private byte m_RightStickY;
 
         [FieldOffset(7)]
         public PS4Button1 buttons1;
@@ -153,15 +158,23 @@ namespace PlasticBand.Devices
 
         public bool p1
         {
-            get => (buttons1 & PS4Button1.R3) != 0 || (buttons2 & PS4Button2.Touchpad) != 0;
-            set
-            {
-                buttons1.SetBit(PS4Button1.R3, value);
-                buttons2.SetBit(PS4Button2.Touchpad, false);
-            }
+            get => (buttons2 & PS4Button2.Touchpad) != 0;
+            set => buttons2.SetBit(PS4Button2.Touchpad, value);
         }
 
-        public bool joystickClick
+        public sbyte leftStickX
+        {
+            get => PS4Handling.GetStickX(m_LeftStickX);
+            set => m_LeftStickX = PS4Handling.SetStickX(value);
+        }
+
+        public sbyte leftStickY
+        {
+            get => PS4Handling.GetStickY(m_LeftStickY);
+            set => m_LeftStickY = PS4Handling.SetStickY(value);
+        }
+
+        public bool leftStickPress
         {
             // Click input needs to be ignored if the solo frets are active,
             // as it overlaps with the solo fret flag
@@ -169,16 +182,22 @@ namespace PlasticBand.Devices
             set => buttons1.SetBit(PS4Button1.L3, value);
         }
 
-        public sbyte joystickX
+        public sbyte rightStickX
         {
-            get => (sbyte)(m_JoystickX ^ 0x80);
-            set => m_JoystickX = (byte)(value ^ 0x80);
+            get => PS4Handling.GetStickX(m_RightStickX);
+            set => m_RightStickX = PS4Handling.SetStickX(value);
         }
 
-        public sbyte joystickY
+        public sbyte rightStickY
         {
-            get => (sbyte)((0xFF - m_JoystickY) ^ 0x80);
-            set => m_JoystickY = (byte)((0xFF - value) ^ 0x80);
+            get => PS4Handling.GetStickY(m_RightStickY);
+            set => m_RightStickY = PS4Handling.SetStickY(value);
+        }
+
+        public bool rightStickPress
+        {
+            get => (buttons1 & PS4Button1.R3) != 0;
+            set => buttons1.SetBit(PS4Button1.R3, value);
         }
 
         byte IFiveFretGuitarState.whammy
@@ -234,10 +253,14 @@ namespace PlasticBand.Devices
         public bool system { get => state.system; set => state.system = value; }
 
         public bool p1 { get => state.p1; set => state.p1 = value; }
-        public bool joystickClick { get => state.joystickClick; set => state.joystickClick = value; }
 
-        public sbyte joystickX { get => state.joystickX; set => state.joystickX = value; }
-        public sbyte joystickY { get => state.joystickY; set => state.joystickY = value; }
+        public sbyte leftStickX { get => state.leftStickX; set => state.leftStickX = value; }
+        public sbyte leftStickY { get => state.leftStickY; set => state.leftStickY = value; }
+        public bool leftStickPress { get => state.leftStickPress; set => state.leftStickPress = value; }
+
+        public sbyte rightStickX { get => state.rightStickX; set => state.rightStickX = value; }
+        public sbyte rightStickY { get => state.rightStickY; set => state.rightStickY = value; }
+        public bool rightStickPress { get => state.rightStickPress; set => state.rightStickPress = value; }
 
         public byte whammy { get => state.whammy; set => state.whammy = value; }
         public sbyte tilt { get => state.tilt; set => state.tilt = value; }
@@ -253,20 +276,6 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             HidLayoutFinder.RegisterLayout<PS5RiffmasterGuitar, PS5RiffmasterGuitar_NoReportId>(0x0E6F, 0x0249, reportIdDefault: true);
-        }
-    }
-
-    [InputControlLayout(stateType = typeof(PSRiffmasterGuitarLayout), displayName = "PlayStation 5 CRKD Guitar", hideInUI = true)]
-    internal class PS5CrkdGuitar_NoReportId : PS5RiffmasterGuitar_NoReportId { }
-
-    [InputControlLayout(stateType = typeof(PSRiffmasterGuitarLayout), displayName = "PlayStation 5 CRKD Guitar")]
-    internal class PS5CrkdGuitar : PS5RiffmasterGuitar
-    {
-        internal new static void Initialize()
-        {
-            HidLayoutFinder.RegisterLayout<PS5CrkdGuitar, PS5CrkdGuitar_NoReportId>(0x3651, 0x1600, reportIdDefault: true);
-            HidLayoutFinder.RegisterLayout<PS5CrkdGuitar, PS5CrkdGuitar_NoReportId>(0x3651, 0x5600, reportIdDefault: true);
-            HidLayoutFinder.RegisterLayout<PS5CrkdGuitar, PS5CrkdGuitar_NoReportId>(0x3958, 0x5600, reportIdDefault: true);
         }
     }
 }

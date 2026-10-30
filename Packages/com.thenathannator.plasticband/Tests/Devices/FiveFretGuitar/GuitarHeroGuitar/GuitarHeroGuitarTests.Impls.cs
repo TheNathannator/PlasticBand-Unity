@@ -97,6 +97,35 @@ namespace PlasticBand.Tests.Devices
         };
     }
 
+    internal class PCGuitarHeroGuitarTests_NoReportId
+        : GuitarHeroGuitarTests<PCGuitarHeroGuitar, PS3GuitarHeroGuitarState_NoReportId>
+    {
+        protected override PS3GuitarHeroGuitarState_NoReportId CreateState()
+            => new PS3GuitarHeroGuitarState_NoReportId()
+        {
+            dpad = HidDpad.Neutral,
+            // The default value for these properties is not 0, so we must set them explicitly
+            tilt = 0,
+            rawTouchBar = 0x80,
+        };
+    }
+
+    internal class PCGuitarHeroGuitarTests_ReportId
+        : GuitarHeroGuitarTests<PCGuitarHeroGuitar_ReportId, PS3GuitarHeroGuitarState_ReportId>
+    {
+        protected override PS3GuitarHeroGuitarState_ReportId CreateState()
+            => new PS3GuitarHeroGuitarState_ReportId()
+        {
+            state = new PS3GuitarHeroGuitarState_NoReportId()
+            {
+                dpad = HidDpad.Neutral,
+                // The default value for these properties is not 0, so we must set them explicitly
+                tilt = 0,
+                rawTouchBar = 0x80,
+            }
+        };
+    }
+
     internal class SantrollerHIDGuitarHeroGuitarTests
         : GuitarHeroGuitarTests<SantrollerHIDGuitarHeroGuitar, SantrollerHIDGuitarHeroGuitarState>
     {

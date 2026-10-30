@@ -1,12 +1,7 @@
 using PlasticBand.Controls;
 using PlasticBand.Devices;
 using PlasticBand.LowLevel;
-using UnityEditor;
 using UnityEngine.InputSystem;
-
-#if !UNITY_EDITOR
-using UnityEngine;
-#endif
 
 namespace PlasticBand
 {
@@ -14,7 +9,7 @@ namespace PlasticBand
     /// Handles initialization of the package.
     /// </summary>
 #if UNITY_EDITOR
-    [InitializeOnLoad]
+    [UnityEditor.InitializeOnLoad]
 #endif
     internal static class Initialization
     {
@@ -26,12 +21,12 @@ namespace PlasticBand
 #endif
 
 #if !UNITY_EDITOR
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.BeforeSplashScreen)]
 #endif
         internal static void Initialize()
         {
 #if UNITY_EDITOR
-            AssemblyReloadEvents.beforeAssemblyReload += OnDomainReload;
+            UnityEditor.AssemblyReloadEvents.beforeAssemblyReload += OnDomainReload;
 #endif
 
             // Layout finders
