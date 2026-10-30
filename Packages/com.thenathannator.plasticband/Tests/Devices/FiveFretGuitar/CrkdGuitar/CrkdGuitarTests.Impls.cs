@@ -36,7 +36,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class PS4CrkdGuitarTests_NoReportId
-        : RiffmasterGuitarTests<PS4RiffmasterGuitar_NoReportId, PS4RiffmasterGuitarState_NoReportId>
+        : RiffmasterGuitarTests<PS4CrkdGuitar_NoReportId, PS4RiffmasterGuitarState_NoReportId>
     {
         protected override PS4RiffmasterGuitarState_NoReportId CreateState()
             => new PS4RiffmasterGuitarState_NoReportId()
@@ -71,7 +71,7 @@ namespace PlasticBand.Tests.Devices
     }
 
     internal class PS5CrkdGuitarTests_NoReportId
-        : RiffmasterGuitarTests<PS5RiffmasterGuitar_NoReportId, PS5RiffmasterGuitarState_NoReportId>
+        : RiffmasterGuitarTests<PS5CrkdGuitar_NoReportId, PS5RiffmasterGuitarState_NoReportId>
     {
         protected override PS5RiffmasterGuitarState_NoReportId CreateState()
             => new PS5RiffmasterGuitarState_NoReportId()
