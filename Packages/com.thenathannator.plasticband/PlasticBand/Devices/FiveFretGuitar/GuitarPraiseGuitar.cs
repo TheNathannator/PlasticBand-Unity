@@ -30,64 +30,15 @@ namespace PlasticBand.Devices
         Select = 0x0800,
     }
 
-    internal static class GuitarPraiseExtensions
-    {
-        public static HidDpad GetDpad(this GuitarPraiseButton buttons)
-        {
-            return (HidDpad)(buttons & GuitarPraiseButton.DpadMask);
-        }
-
-        public static void SetDpad(ref this GuitarPraiseButton buttons, HidDpad dpad)
-        {
-            buttons = (buttons & ~GuitarPraiseButton.DpadMask) | ((GuitarPraiseButton)dpad & GuitarPraiseButton.DpadMask);
-        }
-
-        public static void SetDpadUp(ref this GuitarPraiseButton buttons, bool pressed)
-        {
-            var dpad = buttons.GetDpad();
-            dpad.SetUp(pressed);
-            buttons.SetDpad(dpad);
-        }
-
-        public static void SetDpadRight(ref this GuitarPraiseButton buttons, bool pressed)
-        {
-            var dpad = buttons.GetDpad();
-            dpad.SetRight(pressed);
-            buttons.SetDpad(dpad);
-        }
-
-        public static void SetDpadDown(ref this GuitarPraiseButton buttons, bool pressed)
-        {
-            var dpad = buttons.GetDpad();
-            dpad.SetDown(pressed);
-            buttons.SetDpad(dpad);
-        }
-
-        public static void SetDpadLeft(ref this GuitarPraiseButton buttons, bool pressed)
-        {
-            var dpad = buttons.GetDpad();
-            dpad.SetLeft(pressed);
-            buttons.SetDpad(dpad);
-        }
-
-        public static void SetBit(ref this GuitarPraiseButton value, GuitarPraiseButton mask, bool set)
-        {
-            if (set)
-                value |= mask;
-            else
-                value &= ~mask;
-        }
-    }
-
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct GuitarPraiseGuitarState_NoReportId : IInputStateTypeInfo
+    internal unsafe struct GuitarPraiseGuitarState_NoReportId : IFiveFretGuitarState
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         private fixed byte unused1[3];
 
         [InputControl(name = "whammy", layout = "IntAxis", parameters = "minValue=0xFF,maxValue=0x00,zeroPoint=0xFF")]
-        public byte whammy;
+        private byte m_Whammy;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
         [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7")]
@@ -104,18 +55,138 @@ namespace PlasticBand.Devices
         [InputControl(name = "tilt", layout = "Button", bit = 9)]
         [InputControl(name = "start", layout = "Button", bit = 10)]
         [InputControl(name = "select", layout = "Button", bit = 11)]
-        public ushort buttons;
+        public GuitarPraiseButton buttons;
 
         private byte unused2;
+
+        public bool green
+        {
+            get => (buttons & GuitarPraiseButton.Green) != 0;
+            set => SetBit(ref buttons, GuitarPraiseButton.Green, value);
+        }
+
+        public bool red
+        {
+            get => (buttons & GuitarPraiseButton.Red) != 0;
+            set => SetBit(ref buttons, GuitarPraiseButton.Red, value);
+        }
+
+        public bool yellow
+        {
+            get => (buttons & GuitarPraiseButton.Yellow) != 0;
+            set => SetBit(ref buttons, GuitarPraiseButton.Yellow, value);
+        }
+
+        public bool blue
+        {
+            get => (buttons & GuitarPraiseButton.Blue) != 0;
+            set => SetBit(ref buttons, GuitarPraiseButton.Blue, value);
+        }
+
+        public bool orange
+        {
+            get => (buttons & GuitarPraiseButton.Orange) != 0;
+            set => SetBit(ref buttons, GuitarPraiseButton.Orange, value);
+        }
+
+        public bool dpadUp
+        {
+            get => GetDpad(buttons).IsUp();
+            set => SetDpad(ref buttons, GetDpad(buttons).ChangeUp(value));
+        }
+
+        public bool dpadDown
+        {
+            get => GetDpad(buttons).IsDown();
+            set => SetDpad(ref buttons, GetDpad(buttons).ChangeDown(value));
+        }
+
+        public bool dpadLeft
+        {
+            get => GetDpad(buttons).IsLeft();
+            set => SetDpad(ref buttons, GetDpad(buttons).ChangeLeft(value));
+        }
+
+        public bool dpadRight
+        {
+            get => GetDpad(buttons).IsRight();
+            set => SetDpad(ref buttons, GetDpad(buttons).ChangeRight(value));
+        }
+
+        public bool start
+        {
+            get => (buttons & GuitarPraiseButton.Start) != 0;
+            set => SetBit(ref buttons, GuitarPraiseButton.Start, value);
+        }
+
+        public bool select
+        {
+            get => (buttons & GuitarPraiseButton.Select) != 0;
+            set => SetBit(ref buttons, GuitarPraiseButton.Select, value);
+        }
+
+        public bool system
+        {
+            get => false;
+            set { }
+        }
+
+        public byte whammy
+        {
+            get => (byte)(byte.MaxValue - m_Whammy);
+            set => m_Whammy = (byte)(byte.MaxValue - value);
+        }
+
+        public sbyte tilt
+        {
+            get => (buttons & GuitarPraiseButton.Tilt) != 0 ? sbyte.MaxValue : (sbyte)0;
+            set => SetBit(ref buttons, GuitarPraiseButton.Tilt, value >= 64);
+        }
+
+        private static HidDpad GetDpad(GuitarPraiseButton buttons)
+        {
+            return (HidDpad)(buttons & GuitarPraiseButton.DpadMask);
+        }
+
+        private static void SetDpad(ref GuitarPraiseButton buttons, HidDpad dpad)
+        {
+            buttons = (buttons & ~GuitarPraiseButton.DpadMask) | ((GuitarPraiseButton)dpad & GuitarPraiseButton.DpadMask);
+        }
+
+        private static void SetBit(ref GuitarPraiseButton buttons, GuitarPraiseButton mask, bool set)
+        {
+            if (set)
+                buttons |= mask;
+            else
+                buttons &= ~mask;
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct GuitarPraiseGuitarState_ReportId : IInputStateTypeInfo
+    internal unsafe struct GuitarPraiseGuitarState_ReportId : IFiveFretGuitarState
     {
         public FourCC format => HidDefinitions.InputFormat;
 
         public byte reportId;
         public GuitarPraiseGuitarState_NoReportId state;
+
+        public bool green { get => state.green; set => state.green = value; }
+        public bool red { get => state.red; set => state.red = value; }
+        public bool yellow { get => state.yellow; set => state.yellow = value; }
+        public bool blue { get => state.blue; set => state.blue = value; }
+        public bool orange { get => state.orange; set => state.orange = value; }
+
+        public bool dpadUp { get => state.dpadUp; set => state.dpadUp = value; }
+        public bool dpadDown { get => state.dpadDown; set => state.dpadDown = value; }
+        public bool dpadLeft { get => state.dpadLeft; set => state.dpadLeft = value; }
+        public bool dpadRight { get => state.dpadRight; set => state.dpadRight = value; }
+
+        public bool start { get => state.start; set => state.start = value; }
+        public bool select { get => state.select; set => state.select = value; }
+        public bool system { get => state.system; set => state.system = value; }
+
+        public byte whammy { get => state.whammy; set => state.whammy = value; }
+        public sbyte tilt { get => state.tilt; set => state.tilt = value; }
     }
 
     [InputControlLayout(stateType = typeof(GuitarPraiseGuitarState_ReportId), displayName = "Guitar Praise Guitar")]

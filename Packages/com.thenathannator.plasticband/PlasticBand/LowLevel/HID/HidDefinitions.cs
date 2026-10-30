@@ -73,115 +73,147 @@ namespace PlasticBand.LowLevel
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsUp(this HidDpad dpad) => dpad == HidDpad.UpLeft || dpad <= HidDpad.UpRight;
+        public static bool IsUp(this HidDpad dpad) => dpad == HidDpad.UpLeft || dpad == HidDpad.Up || dpad == HidDpad.UpRight;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsRight(this HidDpad dpad) => dpad >= HidDpad.UpRight && dpad <= HidDpad.DownRight;
+        public static bool IsRight(this HidDpad dpad) => dpad == HidDpad.UpRight || dpad == HidDpad.Right || dpad == HidDpad.DownRight;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsDown(this HidDpad dpad) => dpad >= HidDpad.DownRight && dpad <= HidDpad.DownLeft;
+        public static bool IsDown(this HidDpad dpad) => dpad == HidDpad.DownLeft || dpad == HidDpad.Down || dpad == HidDpad.DownRight;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsLeft(this HidDpad dpad) => dpad >= HidDpad.DownLeft && dpad <= HidDpad.UpLeft;
+        public static bool IsLeft(this HidDpad dpad) => dpad == HidDpad.UpLeft || dpad == HidDpad.Left || dpad == HidDpad.DownLeft;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetUp(ref this HidDpad dpad, bool pressed)
         {
-            if (dpad.IsUp() == pressed)
-                return;
-
-            if (pressed)
-            {
-                if (dpad.IsLeft())
-                    dpad = HidDpad.UpLeft;
-                else if (dpad.IsRight())
-                    dpad = HidDpad.UpRight;
-                else
-                    dpad = HidDpad.Up;
-            }
-            else
-            {
-                if (dpad.IsLeft())
-                    dpad = HidDpad.Left;
-                else if (dpad.IsRight())
-                    dpad = HidDpad.Right;
-                else
-                    dpad = HidDpad.Neutral;
-            }
+            dpad = dpad.ChangeUp(pressed);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetRight(ref this HidDpad dpad, bool pressed)
         {
-            if (dpad.IsRight() == pressed)
-                return;
-
-            if (pressed)
-            {
-                if (dpad.IsUp())
-                    dpad = HidDpad.UpRight;
-                else if (dpad.IsDown())
-                    dpad = HidDpad.DownRight;
-                else
-                    dpad = HidDpad.Right;
-            }
-            else
-            {
-                if (dpad.IsUp())
-                    dpad = HidDpad.Up;
-                else if (dpad.IsDown())
-                    dpad = HidDpad.Down;
-                else
-                    dpad = HidDpad.Neutral;
-            }
+            dpad = dpad.ChangeRight(pressed);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetDown(ref this HidDpad dpad, bool pressed)
         {
-            if (dpad.IsDown() == pressed)
-                return;
-
-            if (pressed)
-            {
-                if (dpad.IsLeft())
-                    dpad = HidDpad.DownLeft;
-                else if (dpad.IsRight())
-                    dpad = HidDpad.DownRight;
-                else
-                    dpad = HidDpad.Down;
-            }
-            else
-            {
-                if (dpad.IsLeft())
-                    dpad = HidDpad.Left;
-                else if (dpad.IsRight())
-                    dpad = HidDpad.Right;
-                else
-                    dpad = HidDpad.Neutral;
-            }
+            dpad = dpad.ChangeDown(pressed);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SetLeft(ref this HidDpad dpad, bool pressed)
         {
-            if (dpad.IsLeft() == pressed)
-                return;
+            dpad = dpad.ChangeLeft(pressed);
+        }
 
-            if (pressed)
+        public static HidDpad ChangeUp(this HidDpad dpad, bool pressed)
+        {
+            if (dpad.IsUp() != pressed)
             {
-                if (dpad.IsUp())
-                    dpad = HidDpad.UpLeft;
-                else if (dpad.IsDown())
-                    dpad = HidDpad.DownLeft;
+                if (pressed)
+                {
+                    if (dpad.IsLeft())
+                        dpad = HidDpad.UpLeft;
+                    else if (dpad.IsRight())
+                        dpad = HidDpad.UpRight;
+                    else
+                        dpad = HidDpad.Up;
+                }
                 else
-                    dpad = HidDpad.Left;
+                {
+                    if (dpad.IsLeft())
+                        dpad = HidDpad.Left;
+                    else if (dpad.IsRight())
+                        dpad = HidDpad.Right;
+                    else
+                        dpad = HidDpad.Neutral;
+                }
             }
-            else
+
+            return dpad;
+        }
+
+        public static HidDpad ChangeRight(this HidDpad dpad, bool pressed)
+        {
+            if (dpad.IsRight() != pressed)
             {
-                if (dpad.IsUp())
-                    dpad = HidDpad.Up;
-                else if (dpad.IsDown())
-                    dpad = HidDpad.Down;
+                if (pressed)
+                {
+                    if (dpad.IsUp())
+                        dpad = HidDpad.UpRight;
+                    else if (dpad.IsDown())
+                        dpad = HidDpad.DownRight;
+                    else
+                        dpad = HidDpad.Right;
+                }
                 else
-                    dpad = HidDpad.Neutral;
+                {
+                    if (dpad.IsUp())
+                        dpad = HidDpad.Up;
+                    else if (dpad.IsDown())
+                        dpad = HidDpad.Down;
+                    else
+                        dpad = HidDpad.Neutral;
+                }
             }
+
+            return dpad;
+        }
+
+        public static HidDpad ChangeDown(this HidDpad dpad, bool pressed)
+        {
+            if (dpad.IsDown() != pressed)
+            {
+                if (pressed)
+                {
+                    if (dpad.IsLeft())
+                        dpad = HidDpad.DownLeft;
+                    else if (dpad.IsRight())
+                        dpad = HidDpad.DownRight;
+                    else
+                        dpad = HidDpad.Down;
+                }
+                else
+                {
+                    if (dpad.IsLeft())
+                        dpad = HidDpad.Left;
+                    else if (dpad.IsRight())
+                        dpad = HidDpad.Right;
+                    else
+                        dpad = HidDpad.Neutral;
+                }
+            }
+
+            return dpad;
+        }
+
+        public static HidDpad ChangeLeft(this HidDpad dpad, bool pressed)
+        {
+            if (dpad.IsLeft() != pressed)
+            {
+                if (pressed)
+                {
+                    if (dpad.IsUp())
+                        dpad = HidDpad.UpLeft;
+                    else if (dpad.IsDown())
+                        dpad = HidDpad.DownLeft;
+                    else
+                        dpad = HidDpad.Left;
+                }
+                else
+                {
+                    if (dpad.IsUp())
+                        dpad = HidDpad.Up;
+                    else if (dpad.IsDown())
+                        dpad = HidDpad.Down;
+                    else
+                        dpad = HidDpad.Neutral;
+                }
+            }
+
+            return dpad;
         }
     }
 }

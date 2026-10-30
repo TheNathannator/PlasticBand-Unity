@@ -40,42 +40,6 @@ namespace PlasticBand.Tests.Devices
 
         protected abstract void SetSoloFrets(ref TState state, FiveFret frets);
 
-        protected override void SetDpad(ref TState state, DpadDirection dpad)
-        {
-            state.dpadUp = dpad.IsUp();
-            state.dpadDown = dpad.IsDown();
-            state.dpadLeft = dpad.IsLeft();
-            state.dpadRight = dpad.IsRight();
-        }
-
-        protected override void SetMenuButtons(ref TState state, MenuButton buttons)
-        {
-            state.start = (buttons & MenuButton.Start) != 0;
-            state.select = (buttons & MenuButton.Select) != 0;
-        }
-
-        protected override ButtonControl GetMenuButton(TGuitar guitar, MenuButton button)
-        {
-            switch (button)
-            {
-                case MenuButton.Start: return guitar.start;
-                case MenuButton.Select: return guitar.select;
-                default: throw new ArgumentException($"Invalid button value {button}!", nameof(button));
-            }
-        }
-
-        protected override DpadControl GetDpad(TGuitar guitar) => guitar.dpad;
-
-        protected override void SetTilt(ref TState state, float value)
-        {
-            state.tilt = DeviceHandling.DenormalizeSByte(value);
-        }
-
-        protected override void SetWhammy(ref TState state, float value)
-        {
-            state.whammy = DeviceHandling.DenormalizeByteUnsigned(value);
-        }
-
         [Test]
         public void GetSoloFretReturnsCorrectFrets()
             => CreateAndRun(RockBandGuitarTests._GetSoloFretReturnsCorrectFrets);
@@ -115,7 +79,7 @@ namespace PlasticBand.Tests.Devices
         where TGuitar : RockBandGuitar
         where TState : unmanaged, IRockBandGuitarState_Flags
     {
-        protected override void SetFrets(ref TState state, FiveFret frets)
+        private void SetFrets(ref TState state, FiveFret frets)
         {
             state.green = (frets & FiveFret.Green) != 0;
             state.red = (frets & FiveFret.Red) != 0;
@@ -157,15 +121,6 @@ namespace PlasticBand.Tests.Devices
         where TGuitar : RockBandGuitar
         where TState : unmanaged, IRockBandGuitarState_Distinct
     {
-        protected override void SetFrets(ref TState state, FiveFret frets)
-        {
-            state.green = (frets & FiveFret.Green) != 0;
-            state.red = (frets & FiveFret.Red) != 0;
-            state.yellow = (frets & FiveFret.Yellow) != 0;
-            state.blue = (frets & FiveFret.Blue) != 0;
-            state.orange = (frets & FiveFret.Orange) != 0;
-        }
-
         protected override void SetSoloFrets(ref TState state, FiveFret frets)
         {
             state.soloGreen = (frets & FiveFret.Green) != 0;

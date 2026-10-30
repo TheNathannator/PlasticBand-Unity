@@ -137,17 +137,15 @@ namespace PlasticBand.Tests.Devices
         }
     }
 
-    public abstract class FiveFretGuitarTests<TGuitar, TState> : DeviceTestFixture<TGuitar, TState>
+    internal abstract class FiveFretGuitarTests<TGuitar, TState> : DeviceTestFixture<TGuitar, TState>
         where TGuitar : FiveFretGuitar
-        where TState : unmanaged, IInputStateTypeInfo
+        where TState : unmanaged, IFiveFretGuitarState
     {
         protected abstract AxisMode tiltMode { get; }
 
-        protected abstract void SetFrets(ref TState state, FiveFret frets);
-        protected abstract void SetWhammy(ref TState state, float value);
-        protected abstract void SetTilt(ref TState state, float value);
+        protected sealed override DpadControl GetDpad(TGuitar guitar) => guitar.dpad;
 
-        protected override ButtonControl GetMenuButton(TGuitar guitar, MenuButton button)
+        protected sealed override ButtonControl GetMenuButton(TGuitar guitar, MenuButton button)
         {
             switch (button)
             {
@@ -157,7 +155,38 @@ namespace PlasticBand.Tests.Devices
             }
         }
 
-        protected override DpadControl GetDpad(TGuitar guitar) => guitar.dpad;
+        protected sealed override void SetDpad(ref TState state, DpadDirection dpad)
+        {
+            state.dpadUp = dpad.IsUp();
+            state.dpadDown = dpad.IsDown();
+            state.dpadLeft = dpad.IsLeft();
+            state.dpadRight = dpad.IsRight();
+        }
+
+        protected sealed override void SetMenuButtons(ref TState state, MenuButton buttons)
+        {
+            state.start = (buttons & MenuButton.Start) != 0;
+            state.select = (buttons & MenuButton.Select) != 0;
+        }
+
+        private void SetFrets(ref TState state, FiveFret frets)
+        {
+            state.green = (frets & FiveFret.Green) != 0;
+            state.red = (frets & FiveFret.Red) != 0;
+            state.yellow = (frets & FiveFret.Yellow) != 0;
+            state.blue = (frets & FiveFret.Blue) != 0;
+            state.orange = (frets & FiveFret.Orange) != 0;
+        }
+
+        private void SetWhammy(ref TState state, float value)
+        {
+            state.whammy = DeviceHandling.DenormalizeByteUnsigned(value);
+        }
+
+        private void SetTilt(ref TState state, float value)
+        {
+            state.tilt = DeviceHandling.DenormalizeSByte(value);
+        }
 
         [Test]
         public void StrumAndDpadAreEquivalent()
