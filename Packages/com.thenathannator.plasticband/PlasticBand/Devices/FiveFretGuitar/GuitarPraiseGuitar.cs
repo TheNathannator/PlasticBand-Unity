@@ -86,7 +86,7 @@ namespace PlasticBand.Devices
 
         private fixed byte unused1[3];
 
-        [InputControl(name = "whammy", layout = "IntAxis", parameters = "minValue=0x00,maxValue=0xFF,zeroPoint=0x00,invert")]
+        [InputControl(name = "whammy", layout = "IntAxis", parameters = "minValue=0xFF,maxValue=0x00,zeroPoint=0xFF")]
         public byte whammy;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]

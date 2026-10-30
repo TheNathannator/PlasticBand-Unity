@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
@@ -45,13 +45,26 @@ namespace PlasticBand.Devices
         public bool select { get => baseState.select; set => baseState.select = value; }
         public bool system { get => baseState.system; set => baseState.system = value; }
 
+        // Not available here
         public bool p1
         {
-            get => false; // Not available on the Xbox One model
+            get => false;
             set {}
         }
 
-        public bool joystickClick
+        public sbyte leftStickX
+        {
+            get => (sbyte)(m_JoystickX >> 8);
+            set => m_JoystickX = (short)((value << 8) | (byte)value);
+        }
+
+        public sbyte leftStickY
+        {
+            get => (sbyte)(m_JoystickY >> 8);
+            set => m_JoystickY = (short)((value << 8) | (byte)value);
+        }
+
+        public bool leftStickPress
         {
             // Click input needs to be ignored if the solo frets are active,
             // as it overlaps with the solo fret flag
@@ -59,16 +72,23 @@ namespace PlasticBand.Devices
             set => baseState.buttons.SetBit(GameInputButton.LeftThumb, value);
         }
 
-        public sbyte joystickX
+        // Not available here
+        public sbyte rightStickX
         {
-            get => (sbyte)(m_JoystickX >> 8);
-            set => m_JoystickX = (short)((value << 8) | (byte)value);
+            get => 0;
+            set {}
         }
 
-        public sbyte joystickY
+        public sbyte rightStickY
         {
-            get => (sbyte)(m_JoystickY >> 8);
-            set => m_JoystickY = (short)((value << 8) | (byte)value);
+            get => 0;
+            set {}
+        }
+
+        public bool rightStickPress
+        {
+            get => false;
+            set {}
         }
 
         byte IFiveFretGuitarState.whammy { get => baseState.whammy; set => baseState.whammy = value; }

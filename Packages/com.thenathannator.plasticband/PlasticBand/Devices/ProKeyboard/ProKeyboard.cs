@@ -62,163 +62,163 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The Start button on the keyboard.
         /// </summary>
-        [InputControl(displayName = "Start", usage = "Menu")]
+        [InputControl(displayName = "Start", usage = "Menu", alias = "startButton")]
         public ButtonControl start { get; private set; }
 
         /// <summary>
         /// The Select button on the keyboard.
         /// </summary>
-        [InputControl(displayName = "Select")]
+        [InputControl(displayName = "Select", alias = "selectButton")]
         public ButtonControl select { get; private set; }
 
         /// <summary>
-        /// The 1st (leftmost) key on the keyboard (C-1).
+        /// The 1st (leftmost) key on the keyboard (C1).
         /// </summary>
-        [InputControl(displayName = "C-1")]
+        [InputControl(displayName = "C1")]
         public ButtonControl key1 { get; private set; }
 
         /// <summary>
-        /// The 2nd key on the keyboard (C#/Db-1).
+        /// The 2nd key on the keyboard (C#1 / Db1).
         /// </summary>
-        [InputControl(displayName = "C#/Db-1")]
+        [InputControl(displayName = "C#1 / Db1")]
         public ButtonControl key2 { get; private set; }
 
         /// <summary>
-        /// The 3rd key on the keyboard (D-1).
+        /// The 3rd key on the keyboard (D1).
         /// </summary>
-        [InputControl(displayName = "D-1")]
+        [InputControl(displayName = "D1")]
         public ButtonControl key3 { get; private set; }
 
         /// <summary>
-        /// The 4th key on the keyboard (D#/Eb-1).
+        /// The 4th key on the keyboard (D#1 / Eb1).
         /// </summary>
-        [InputControl(displayName = "D#/Eb-1")]
+        [InputControl(displayName = "D#1 / Eb1")]
         public ButtonControl key4 { get; private set; }
 
         /// <summary>
-        /// The 5th key on the keyboard (E-1).
+        /// The 5th key on the keyboard (E1).
         /// </summary>
-        [InputControl(displayName = "E-1")]
+        [InputControl(displayName = "E1")]
         public ButtonControl key5 { get; private set; }
 
         /// <summary>
-        /// The 6th key on the keyboard (F-1).
+        /// The 6th key on the keyboard (F1).
         /// </summary>
-        [InputControl(displayName = "F-1")]
+        [InputControl(displayName = "F1")]
         public ButtonControl key6 { get; private set; }
 
         /// <summary>
-        /// The 7th key on the keyboard (F#/Gb-1).
+        /// The 7th key on the keyboard (F#1 / Gb1).
         /// </summary>
-        [InputControl(displayName = "F#/Gb-1")]
+        [InputControl(displayName = "F#1 / Gb1")]
         public ButtonControl key7 { get; private set; }
 
         /// <summary>
-        /// The 8th key on the keyboard (G-1).
+        /// The 8th key on the keyboard (G1).
         /// </summary>
-        [InputControl(displayName = "G-1")]
+        [InputControl(displayName = "G1")]
         public ButtonControl key8 { get; private set; }
 
         /// <summary>
-        /// The 9th key on the keyboard (Gb/Ab-1).
+        /// The 9th key on the keyboard (G#1 / Ab1).
         /// </summary>
-        [InputControl(displayName = "Gb/Ab-1")]
+        [InputControl(displayName = "G#1 / Ab1")]
         public ButtonControl key9 { get; private set; }
 
         /// <summary>
-        /// The 10th key on the keyboard (A-1).
+        /// The 10th key on the keyboard (A1).
         /// </summary>
-        [InputControl(displayName = "A-1")]
+        [InputControl(displayName = "A1")]
         public ButtonControl key10 { get; private set; }
 
         /// <summary>
-        /// The 11th key on the keyboard (A#/Bb-1).
+        /// The 11th key on the keyboard (A#1 / Bb1).
         /// </summary>
-        [InputControl(displayName = "A#/Bb-1")]
+        [InputControl(displayName = "A#1 / Bb1")]
         public ButtonControl key11 { get; private set; }
 
         /// <summary>
-        /// The 12th key on the keyboard (B-1).
+        /// The 12th key on the keyboard (B1).
         /// </summary>
-        [InputControl(displayName = "B-1")]
+        [InputControl(displayName = "B1")]
         public ButtonControl key12 { get; private set; }
 
         /// <summary>
-        /// The 13th key on the keyboard (C-2).
+        /// The 13th key on the keyboard (C2).
         /// </summary>
-        [InputControl(displayName = "C-2")]
+        [InputControl(displayName = "C2")]
         public ButtonControl key13 { get; private set; }
 
         /// <summary>
-        /// The 14th key on the keyboard (C#/Db-2).
+        /// The 14th key on the keyboard (C#1 / Db2).
         /// </summary>
-        [InputControl(displayName = "C#/Db-2")]
+        [InputControl(displayName = "C#1 / Db2")]
         public ButtonControl key14 { get; private set; }
 
         /// <summary>
-        /// The 15th key on the keyboard (D-2).
+        /// The 15th key on the keyboard (D2).
         /// </summary>
-        [InputControl(displayName = "D-2")]
+        [InputControl(displayName = "D2")]
         public ButtonControl key15 { get; private set; }
 
         /// <summary>
-        /// The 16th key on the keyboard (D#/Eb-2).
+        /// The 16th key on the keyboard (D#1 / Eb2).
         /// </summary>
-        [InputControl(displayName = "D#/Eb-2")]
+        [InputControl(displayName = "D#1 / Eb2")]
         public ButtonControl key16 { get; private set; }
 
         /// <summary>
-        /// The 17th key on the keyboard (E-2).
+        /// The 17th key on the keyboard (E2).
         /// </summary>
-        [InputControl(displayName = "E-2")]
+        [InputControl(displayName = "E2")]
         public ButtonControl key17 { get; private set; }
 
         /// <summary>
-        /// The 18th key on the keyboard (F-2).
+        /// The 18th key on the keyboard (F2).
         /// </summary>
-        [InputControl(displayName = "F-2")]
+        [InputControl(displayName = "F2")]
         public ButtonControl key18 { get; private set; }
 
         /// <summary>
-        /// The 19th key on the keyboard (F#/Gb-2).
+        /// The 19th key on the keyboard (F#1 / Gb2).
         /// </summary>
-        [InputControl(displayName = "F#/Gb-2")]
+        [InputControl(displayName = "F#1 / Gb2")]
         public ButtonControl key19 { get; private set; }
 
         /// <summary>
-        /// The 20th key on the keyboard (G-2).
+        /// The 20th key on the keyboard (G2).
         /// </summary>
-        [InputControl(displayName = "G-2")]
+        [InputControl(displayName = "G2")]
         public ButtonControl key20 { get; private set; }
 
         /// <summary>
-        /// The 21st key on the keyboard (Gb/Ab-2).
+        /// The 21st key on the keyboard (G#1 / Ab2).
         /// </summary>
-        [InputControl(displayName = "Gb/Ab-2")]
+        [InputControl(displayName = "G#1 / Ab2")]
         public ButtonControl key21 { get; private set; }
 
         /// <summary>
-        /// The 22nd key on the keyboard (A-2).
+        /// The 22nd key on the keyboard (A2).
         /// </summary>
-        [InputControl(displayName = "A-2")]
+        [InputControl(displayName = "A2")]
         public ButtonControl key22 { get; private set; }
 
         /// <summary>
-        /// The 23rd key on the keyboard (A#/Bb-2).
+        /// The 23rd key on the keyboard (A#1 / Bb2).
         /// </summary>
-        [InputControl(displayName = "A#/Bb-2")]
+        [InputControl(displayName = "A#1 / Bb2")]
         public ButtonControl key23 { get; private set; }
 
         /// <summary>
-        /// The 24th key on the keyboard (B-2).
+        /// The 24th key on the keyboard (B2).
         /// </summary>
-        [InputControl(displayName = "B-2")]
+        [InputControl(displayName = "B2")]
         public ButtonControl key24 { get; private set; }
 
         /// <summary>
-        /// The 25th (rightmost) key on the keyboard (C-3).
+        /// The 25th (rightmost) key on the keyboard (C3).
         /// </summary>
-        [InputControl(displayName = "C-3")]
+        [InputControl(displayName = "C3")]
         public ButtonControl key25 { get; private set; }
 
         /// <summary>

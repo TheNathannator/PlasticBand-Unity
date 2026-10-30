@@ -20,31 +20,32 @@ namespace PlasticBand.Controls
             InputSystem.RegisterLayout<IntegerButtonControl>("IntButton");
         }
 
-        public int intPressPoint = int.MinValue;
         public int minValue = 0;
         public int maxValue = 0;
+        public int intPressPoint = int.MinValue;
 
         public bool hasNullValue; 
         public int nullValue;
+
+        private float m_LastValue;
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
 
-            if (!stateBlock.format.IsIntegerFormat())
-                throw new NotSupportedException($"Non-integer format '{stateBlock.format}' is not supported on {nameof(IntegerButtonControl)} '{this}'");
+            // For whatever reason, 'sbyte' is not checked for in IsIntegerFormat
+            if (!stateBlock.format.IsIntegerFormat() && stateBlock.format != InputStateBlock.FormatSByte)
+                throw new NotSupportedException($"Non-integer format '{stateBlock.format}' is not supported on '{this}'");
 
             if (maxValue == 0 && minValue == 0)
-                throw new NotSupportedException($"Range parameters have not been set on {nameof(IntegerButtonControl)} '{this}'! Please set {nameof(minValue)} and {nameof(maxValue)}.");
+                throw new NotSupportedException($"Range parameters have not been set on '{this}'! Please set {nameof(minValue)} and {nameof(maxValue)}.");
 
-            if (maxValue <= minValue)
-                throw new NotSupportedException($"Maximum value ({maxValue}) must be greater than minimum value ({minValue}) on {nameof(IntegerButtonControl)} '{this}'!");
+            int realMin = Math.Min(minValue, maxValue);
+            int realMax = Math.Max(minValue, maxValue);
 
-            if (pressPoint < 0 && intPressPoint > minValue)
+            if (pressPoint < 0 && intPressPoint > realMin && intPressPoint < realMax)
                 pressPoint = IntegerAxisControl.Normalize(intPressPoint, minValue, maxValue, minValue);
         }
-
-        private float m_LastValue;
 
         /// <inheritdoc/>
         public override unsafe float ReadUnprocessedValueFromState(void* statePtr)

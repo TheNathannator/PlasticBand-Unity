@@ -79,13 +79,13 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The Start button on the drumkit.
         /// </summary>
-        [InputControl(displayName = "Start", usage = "Menu")]
+        [InputControl(displayName = "Start", usage = "Menu", alias = "startButton")]
         public ButtonControl start { get; private set; }
 
         /// <summary>
         /// The Select button on the drumkit.
         /// </summary>
-        [InputControl(displayName = "Select")]
+        [InputControl(displayName = "Select", alias = "selectButton")]
         public ButtonControl select { get; private set; }
 
         /// <summary>

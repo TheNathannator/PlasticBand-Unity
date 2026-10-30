@@ -15,8 +15,14 @@
     "precompiledReferences": [
         "nunit.framework.dll"
     ],
-    "autoReferenced": false,
-    "defineConstraints": [],
-    "versionDefines": [],
+    "autoReferenced": true,
+    "defineConstraints": ["UNITY_TESTS_FRAMEWORK"],
+    "versionDefines": [
+        {
+            "name": "com.unity.test-framework",
+            "expression": "",
+            "define": "UNITY_TESTS_FRAMEWORK"
+        }
+    ],
     "noEngineReferences": false
 }

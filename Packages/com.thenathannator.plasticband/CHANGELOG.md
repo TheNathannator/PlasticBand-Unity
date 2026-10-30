@@ -11,10 +11,22 @@ Dates are relative to UTC.
 ### Added
 
 - The Xbox One wireless legacy adapter now requests device info again whenever the game regains focus, like Rock Band 4 does, so instruments that disconnected or changed while the game was in the background are picked up.
+- The unit tests that existed as part of the development project are now included in the package folder. This makes it easier for anyone modifying the package to verify changes to existing layouts and add tests for new layouts.
 
 ### Changed
 
 - The `startButton` and `selectButton` controls have been renamed to `start` and `select` to match the ones on the `Gamepad` layout.
+  - `startButton` and `selectButton` are maintained as aliases on these controls, so backwards compatibility should be maintained.
+- The package now initializes during `BeforeSplashScreen` instead of `BeforeSceneLoad`.
+- The display names for Pro Keyboard keys has been reformatted from `C#/Db-1` to `C#1 / Db1`.
+- The Riffmaster guitar layout now supports both left and right sticks, to better support CRKD guitars.
+  - This is a breaking change, as `joystick` has been renamed to `leftStick`.
+- The analog pedal input on Pro Keyboards is no longer speculatively inverted, as not much research has been done into how this input is actually intended to function.
+
+### Fixed
+
+- PS5 GH5 guitars are no longer accidentally treated as having a report ID.
+- PC World Tour guitars with a report ID are no longer treated as not having one.
 
 ### Fixed
 
