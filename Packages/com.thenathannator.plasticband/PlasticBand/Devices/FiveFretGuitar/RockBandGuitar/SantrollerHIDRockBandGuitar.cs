@@ -6,6 +6,7 @@ using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 // PlasticBand reference doc:
@@ -173,12 +174,12 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(TranslatedRockBandGuitarState), displayName = "Santroller HID Rock Band Guitar")]
-    internal class SantrollerHIDRockBandGuitar : TranslatingRockBandGuitar_Distinct<SantrollerHIDRockBandGuitarState>, ISantrollerFiveFretGuitarHaptics
+    internal class SantrollerHIDRockBandGuitar : TranslatingRockBandGuitar_Distinct<SantrollerHIDRockBandGuitarState>,
+        ISantrollerFiveFretGuitarHaptics
     {
         internal new static void Initialize()
         {
-            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDRockBandGuitar>(
-                SantrollerDeviceType.RockBandGuitar);
+            InputSystem.RegisterLayout<SantrollerHIDRockBandGuitar>();
         }
 
         protected override void FinishSetup()

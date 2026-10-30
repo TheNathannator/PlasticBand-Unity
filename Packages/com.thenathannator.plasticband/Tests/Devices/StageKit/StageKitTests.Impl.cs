@@ -1,4 +1,5 @@
 using PlasticBand.Devices;
+using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 
 namespace PlasticBand.Tests.Devices
@@ -157,6 +158,70 @@ namespace PlasticBand.Tests.Devices
         {
             state.rightStickX = DeviceHandling.DenormalizeByteSigned(x);
             state.rightStickY = DeviceHandling.DenormalizeByteSigned(-y);
+        }
+    }
+
+    internal class SantrollerV2HidStageKitTests
+        : StageKitTests<SantrollerV2HidStageKit, SantrollerV2HidStageKitState>
+    {
+        protected override SantrollerV2HidStageKitState CreateState()
+            => new SantrollerV2HidStageKitState()
+        {
+            reportId = 1,
+            buttons = (SantrollerV2Button)HidDpad.Neutral,
+        };
+
+        protected override void SetDpad(ref SantrollerV2HidStageKitState state, DpadDirection dpad)
+        {
+            state.buttons.SetDpad((HidDpad)HidDeviceHandling.GetDpadByte(dpad));
+        }
+
+        protected override void SetFaceButtons(ref SantrollerV2HidStageKitState state, FaceButton buttons)
+        {
+            state.buttons.SetBit(SantrollerV2Button.South, (buttons & FaceButton.South) != 0);
+            state.buttons.SetBit(SantrollerV2Button.East, (buttons & FaceButton.East) != 0);
+            state.buttons.SetBit(SantrollerV2Button.West, (buttons & FaceButton.West) != 0);
+            state.buttons.SetBit(SantrollerV2Button.North, (buttons & FaceButton.North) != 0);
+        }
+
+        protected override void SetMenuButtons(ref SantrollerV2HidStageKitState state, MenuButton buttons)
+        {
+            state.buttons.SetBit(SantrollerV2Button.Start, (buttons & MenuButton.Start) != 0);
+            state.buttons.SetBit(SantrollerV2Button.Select, (buttons & MenuButton.Select) != 0);
+        }
+
+        protected override void SetShoulderButtons(ref SantrollerV2HidStageKitState state, SideButton buttons)
+        {
+            state.buttons.SetBit(SantrollerV2Button.LeftShoulder, (buttons & SideButton.Left) != 0);
+            state.buttons.SetBit(SantrollerV2Button.RightShoulder, (buttons & SideButton.Right) != 0);
+        }
+
+        protected override void SetStickButtons(ref SantrollerV2HidStageKitState state, SideButton buttons)
+        {
+            state.buttons.SetBit(SantrollerV2Button.LeftStick, (buttons & SideButton.Left) != 0);
+            state.buttons.SetBit(SantrollerV2Button.RightStick, (buttons & SideButton.Right) != 0);
+        }
+
+        protected override void SetLeftTrigger(ref SantrollerV2HidStageKitState state, float value)
+        {
+            state.leftTrigger = DeviceHandling.DenormalizeByteUnsigned(value);
+        }
+
+        protected override void SetRightTrigger(ref SantrollerV2HidStageKitState state, float value)
+        {
+            state.rightTrigger = DeviceHandling.DenormalizeByteUnsigned(value);
+        }
+
+        protected override void SetLeftStick(ref SantrollerV2HidStageKitState state, float x, float y)
+        {
+            state.leftStickX = DeviceHandling.DenormalizeInt16(x);
+            state.leftStickY = DeviceHandling.DenormalizeInt16(y);
+        }
+
+        protected override void SetRightStick(ref SantrollerV2HidStageKitState state, float x, float y)
+        {
+            state.rightStickX = DeviceHandling.DenormalizeInt16(x);
+            state.rightStickY = DeviceHandling.DenormalizeInt16(y);
         }
     }
 
