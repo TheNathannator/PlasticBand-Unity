@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using PlasticBand.Controls;
 using PlasticBand.Devices;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
@@ -63,17 +64,9 @@ namespace PlasticBand.Tests.Devices
 
     internal abstract class ProKeyboardTests<TKeyboard, TState> : FaceButtonDeviceTestFixture<TKeyboard, TState>
         where TKeyboard : ProKeyboard
-        where TState : unmanaged, IInputStateTypeInfo
+        where TState : unmanaged, IProKeyboardState
     {
-        protected abstract void SetKey(ref TState state, int key, bool pressed);
-        protected abstract void SetKeys(ref TState state, int keyMask);
-
-        protected abstract void SetOverdriveButton(ref TState state, bool pressed);
-
-        protected abstract void SetDigitalPedal(ref TState state, bool pressed);
-        protected abstract void SetAnalogPedal(ref TState state, float value);
-
-        protected override ButtonControl GetFaceButton(TKeyboard keyboard, FaceButton button)
+        protected sealed override ButtonControl GetFaceButton(TKeyboard keyboard, FaceButton button)
         {
             switch (button)
             {
@@ -85,7 +78,7 @@ namespace PlasticBand.Tests.Devices
             }
         }
 
-        protected override ButtonControl GetMenuButton(TKeyboard keyboard, MenuButton button)
+        protected sealed override ButtonControl GetMenuButton(TKeyboard keyboard, MenuButton button)
         {
             switch (button)
             {
@@ -95,7 +88,116 @@ namespace PlasticBand.Tests.Devices
             }
         }
 
-        protected override DpadControl GetDpad(TKeyboard keyboard) => keyboard.dpad;
+        protected sealed override DpadControl GetDpad(TKeyboard keyboard) => keyboard.dpad;
+
+        protected sealed override void SetDpad(ref TState state, DpadDirection dpad)
+        {
+            state.dpadUp = dpad.IsUp();
+            state.dpadDown = dpad.IsDown();
+            state.dpadLeft = dpad.IsLeft();
+            state.dpadRight = dpad.IsRight();
+        }
+
+        protected sealed override void SetFaceButtons(ref TState state, FaceButton buttons)
+        {
+            state.south = (buttons & FaceButton.South) != 0;
+            state.east = (buttons & FaceButton.East) != 0;
+            state.west = (buttons & FaceButton.West) != 0;
+            state.north = (buttons & FaceButton.North) != 0;
+        }
+
+        protected sealed override void SetMenuButtons(ref TState state, MenuButton buttons)
+        {
+            state.start = (buttons & MenuButton.Start) != 0;
+            state.select = (buttons & MenuButton.Select) != 0;
+        }
+
+        private void SetKey(ref TState state, int key, bool pressed)
+        {
+            switch (key)
+            {
+                case 0: state.key1 = pressed; break;
+                case 1: state.key2 = pressed; break;
+                case 2: state.key3 = pressed; break;
+                case 3: state.key4 = pressed; break;
+                case 4: state.key5 = pressed; break;
+                case 5: state.key6 = pressed; break;
+                case 6: state.key7 = pressed; break;
+                case 7: state.key8 = pressed; break;
+                case 8: state.key9 = pressed; break;
+                case 9: state.key10 = pressed; break;
+                case 10: state.key11 = pressed; break;
+                case 11: state.key12 = pressed; break;
+                case 12: state.key13 = pressed; break;
+                case 13: state.key14 = pressed; break;
+                case 14: state.key15 = pressed; break;
+                case 15: state.key16 = pressed; break;
+                case 16: state.key17 = pressed; break;
+                case 17: state.key18 = pressed; break;
+                case 18: state.key19 = pressed; break;
+                case 19: state.key20 = pressed; break;
+                case 20: state.key21 = pressed; break;
+                case 21: state.key22 = pressed; break;
+                case 22: state.key23 = pressed; break;
+                case 23: state.key24 = pressed; break;
+                case 24: state.key25 = pressed; break;
+                default: throw new ArgumentOutOfRangeException(nameof(key));
+            }
+        }
+
+        private void SetKeys(ref TState state, int keyMask)
+        {
+            state.key1 = (keyMask & (1 << 0)) != 0;
+            state.key2 = (keyMask & (1 << 1)) != 0;
+            state.key3 = (keyMask & (1 << 2)) != 0;
+            state.key4 = (keyMask & (1 << 3)) != 0;
+            state.key5 = (keyMask & (1 << 4)) != 0;
+            state.key6 = (keyMask & (1 << 5)) != 0;
+            state.key7 = (keyMask & (1 << 6)) != 0;
+            state.key8 = (keyMask & (1 << 7)) != 0;
+            state.key9 = (keyMask & (1 << 8)) != 0;
+            state.key10 = (keyMask & (1 << 9)) != 0;
+            state.key11 = (keyMask & (1 << 10)) != 0;
+            state.key12 = (keyMask & (1 << 11)) != 0;
+            state.key13 = (keyMask & (1 << 12)) != 0;
+            state.key14 = (keyMask & (1 << 13)) != 0;
+            state.key15 = (keyMask & (1 << 14)) != 0;
+            state.key16 = (keyMask & (1 << 15)) != 0;
+            state.key17 = (keyMask & (1 << 16)) != 0;
+            state.key18 = (keyMask & (1 << 17)) != 0;
+            state.key19 = (keyMask & (1 << 18)) != 0;
+            state.key20 = (keyMask & (1 << 19)) != 0;
+            state.key21 = (keyMask & (1 << 20)) != 0;
+            state.key22 = (keyMask & (1 << 21)) != 0;
+            state.key23 = (keyMask & (1 << 22)) != 0;
+            state.key24 = (keyMask & (1 << 23)) != 0;
+            state.key25 = (keyMask & (1 << 24)) != 0;
+        }
+
+        private void SetOverdriveButton(ref TState state, bool pressed)
+        {
+            state.overdrive = pressed;
+        }
+
+        private void SetDigitalPedal(ref TState state, bool pressed)
+        {
+            state.digitalPedal = pressed;
+        }
+
+        private void SetAnalogPedal(ref TState state, float value)
+        {
+            state.analogPedal = DenormalizeByteMidi(value);
+        }
+
+        private void SetTouchStrip(ref TState state, float value)
+        {
+            state.touchStrip = DenormalizeByteMidi(value);
+        }
+
+        private static byte DenormalizeByteMidi(float value)
+        {
+            return (byte)IntegerAxisControl.Denormalize(value, 0, 127, 0);
+        }
 
         [Test]
         public void GetKeyReturnsCorrectFrets()
@@ -173,13 +275,6 @@ namespace PlasticBand.Tests.Devices
         {
             RecognizesUnsignedAxis(keyboard, CreateState(), keyboard.analogPedal, SetAnalogPedal);
         });
-    }
-
-    internal abstract class ProKeyboardTests_TouchStrip<TKeyboard, TState> : ProKeyboardTests<TKeyboard, TState>
-        where TKeyboard : ProKeyboard
-        where TState : unmanaged, IInputStateTypeInfo
-    {
-        protected abstract void SetTouchStrip(ref TState state, float value);
 
         [Test]
         public void RecognizesTouchStrip() => CreateAndRun((keyboard) =>

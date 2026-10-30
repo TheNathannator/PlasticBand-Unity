@@ -7,6 +7,54 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
+    internal interface IProKeyboardState : IInputStateTypeInfo
+    {
+        bool south { get; set; }
+        bool east { get; set; }
+        bool west { get; set; }
+        bool north { get; set; }
+
+        bool dpadUp { get; set; }
+        bool dpadDown { get; set; }
+        bool dpadLeft { get; set; }
+        bool dpadRight { get; set; }
+
+        bool start { get; set; }
+        bool select { get; set; }
+        bool system { get; set; }
+
+        bool key1 { get; set; }
+        bool key2 { get; set; }
+        bool key3 { get; set; }
+        bool key4 { get; set; }
+        bool key5 { get; set; }
+        bool key6 { get; set; }
+        bool key7 { get; set; }
+        bool key8 { get; set; }
+        bool key9 { get; set; }
+        bool key10 { get; set; }
+        bool key11 { get; set; }
+        bool key12 { get; set; }
+        bool key13 { get; set; }
+        bool key14 { get; set; }
+        bool key15 { get; set; }
+        bool key16 { get; set; }
+        bool key17 { get; set; }
+        bool key18 { get; set; }
+        bool key19 { get; set; }
+        bool key20 { get; set; }
+        bool key21 { get; set; }
+        bool key22 { get; set; }
+        bool key23 { get; set; }
+        bool key24 { get; set; }
+        bool key25 { get; set; }
+
+        bool overdrive { get; set; }
+        bool digitalPedal { get; set; }
+        byte analogPedal { get; set; }
+        byte touchStrip { get; set; }
+    }
+
     /// <summary>
     /// A Rock Band 3 Pro Keyboard controller (also referred to as a keyboard).
     /// </summary>
