@@ -70,7 +70,6 @@ namespace PlasticBand.Devices
         protected override void OnDomainReload()
         {
             base.OnDomainReload();
-            m_RealDevice = null;
             m_FeaturesRequested = false;
             m_RequestAttempts = 0;
             m_NextRequestTime = 0;
@@ -188,7 +187,7 @@ namespace PlasticBand.Devices
                 return;
             }
 
-            m_RealDevice = new VariantRealDevice(this, layout);
+            m_RealDevice = VariantRealDevice.Create(this, layout);
             Logging.Message($"[SantrollerHIDAdapter] Instantiated real device {m_RealDevice.device} with layout '{layout}'.");
         }
 

@@ -161,7 +161,7 @@ namespace PlasticBand.Devices
                         return;
                 }
 
-                m_RealDevices[state->userIndex] = new VariantRealDevice(this, layout);
+                m_RealDevices[state->userIndex] = VariantRealDevice.Create(this, layout);
             }
             else if (StateReader.ReadReportIdState(stateEvent, out XboxOneWirelessLegacyDeviceDisconnect* disconnect))
             {

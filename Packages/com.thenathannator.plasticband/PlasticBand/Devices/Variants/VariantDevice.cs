@@ -30,22 +30,38 @@ namespace PlasticBand.Devices
 
         public InputDevice device => m_Device;
 
-        public unsafe VariantRealDevice(VariantDevice parent, string layout)
+        public static VariantRealDevice Create(VariantDevice parent, string layout)
         {
-            m_Parent = parent;
-            m_Device = InputSystem.AddDevice(layout);
-            m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
-
-            if (parent != null)
+            try
             {
-                InputSystem.onDeviceCommand += OnDeviceCommand;
+                var device = InputSystem.AddDevice(layout);
+                return new VariantRealDevice(parent, device);
+            }
+            catch (Exception ex)
+            {
+                Logging.Exception("[VariantRealDevice] Failed to create input system device!", ex);
+                return null;
             }
         }
 
-        public unsafe VariantRealDevice(VariantDevice parent, InputDeviceDescription description)
+        public static VariantRealDevice Create(VariantDevice parent, InputDeviceDescription description)
+        {
+            try
+            {
+                var device = InputSystem.AddDevice(description);
+                return new VariantRealDevice(parent, device);
+            }
+            catch (Exception ex)
+            {
+                Logging.Exception("[VariantRealDevice] Failed to create input system device!", ex);
+                return null;
+            }
+        }
+
+        private unsafe VariantRealDevice(VariantDevice parent, InputDevice device)
         {
             m_Parent = parent;
-            m_Device = InputSystem.AddDevice(description);
+            m_Device = device;
             m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
 
             if (parent != null)
@@ -192,11 +208,13 @@ namespace PlasticBand.Devices
         {
             base.OnRemoved();
             m_RealDevice?.Dispose();
+            m_RealDevice = null;
         }
 
         protected override void OnDomainReload()
         {
             m_RealDevice?.Dispose();
+            m_RealDevice = null;
         }
     }
 
