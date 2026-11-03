@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct SantrollerV2HidStageKitState : IGamepadState
+    internal struct SantrollerV2HIDStageKitState : IGamepadState
     {
         public FourCC format => HidDefinitions.InputFormat;
 
@@ -211,12 +211,12 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(SantrollerV2HidStageKitState), displayName = "Santroller V2 HID Stage Kit", hideInUI = true)]
-    internal class SantrollerV2HidStageKit : StageKit, ISantrollerHaptics
+    [InputControlLayout(stateType = typeof(SantrollerV2HIDStageKitState), displayName = "Santroller V2 HID Stage Kit", hideInUI = true)]
+    internal class SantrollerV2HIDStageKit : StageKit, ISantrollerHaptics
     {
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerV2HidStageKit>();
+            InputSystem.RegisterLayout<SantrollerV2HIDStageKit>();
         }
 
         protected override void FinishSetup()

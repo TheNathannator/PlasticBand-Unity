@@ -14,7 +14,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace PlasticBand.Devices
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal unsafe struct SantrollerHidStageKitState : IGamepadState
+    internal unsafe struct SantrollerHIDStageKitState : IGamepadState
     {
         [Flags]
         public enum Button : ushort
@@ -243,12 +243,12 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(SantrollerHidStageKitState), displayName = "Santroller HID Stage Kit")]
-    internal class SantrollerHidStageKit : StageKit, ISantrollerHaptics
+    [InputControlLayout(stateType = typeof(SantrollerHIDStageKitState), displayName = "Santroller HID Stage Kit")]
+    internal class SantrollerHIDStageKit : StageKit, ISantrollerHaptics
     {
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerHidStageKit>();
+            InputSystem.RegisterLayout<SantrollerHIDStageKit>();
         }
 
         protected override void FinishSetup()

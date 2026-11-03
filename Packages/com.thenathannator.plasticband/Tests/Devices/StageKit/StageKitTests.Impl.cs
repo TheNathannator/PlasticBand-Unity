@@ -33,11 +33,11 @@ namespace PlasticBand.Tests.Devices
         }
     }
 
-    internal class SantrollerHidStageKitTests
-        : StageKitTests<SantrollerHidStageKit, SantrollerHidStageKitState>
+    internal class SantrollerHIDStageKitTests
+        : StageKitTests<SantrollerHIDStageKit, SantrollerHIDStageKitState>
     {
-        protected override SantrollerHidStageKitState CreateState()
-            => new SantrollerHidStageKitState()
+        protected override SantrollerHIDStageKitState CreateState()
+            => new SantrollerHIDStageKitState()
         {
             dpad = HidDpad.Neutral,
             leftStickX = 0x80,
@@ -51,11 +51,11 @@ namespace PlasticBand.Tests.Devices
         }
     }
 
-    internal class SantrollerV2HidStageKitTests
-        : StageKitTests<SantrollerV2HidStageKit, SantrollerV2HidStageKitState>
+    internal class SantrollerV2HIDStageKitTests
+        : StageKitTests<SantrollerV2HIDStageKit, SantrollerV2HIDStageKitState>
     {
-        protected override SantrollerV2HidStageKitState CreateState()
-            => new SantrollerV2HidStageKitState()
+        protected override SantrollerV2HIDStageKitState CreateState()
+            => new SantrollerV2HIDStageKitState()
         {
             reportId = 1,
             buttons = SantrollerV2Button.Neutral,

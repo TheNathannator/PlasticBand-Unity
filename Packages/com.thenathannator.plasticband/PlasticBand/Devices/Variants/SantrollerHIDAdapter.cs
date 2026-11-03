@@ -202,7 +202,7 @@ namespace PlasticBand.Devices
                 case SantrollerDeviceType.RockBandDrums:    return nameof(SantrollerHIDFourLaneDrumkit);
                 case SantrollerDeviceType.LiveGuitar:       return nameof(SantrollerHIDSixFretGuitar);
                 case SantrollerDeviceType.DjHeroTurntable:  return nameof(SantrollerHIDTurntable);
-                case SantrollerDeviceType.StageKit:         return nameof(SantrollerHidStageKit);
+                case SantrollerDeviceType.StageKit:         return nameof(SantrollerHIDStageKit);
                 default:                                    return null;
             }
         }
@@ -217,7 +217,7 @@ namespace PlasticBand.Devices
                 case SantrollerDeviceType.RockBandDrums:    return nameof(SantrollerV2HIDFourLaneDrumkit);
                 case SantrollerDeviceType.LiveGuitar:       return nameof(SantrollerV2HIDSixFretGuitar);
                 case SantrollerDeviceType.DjHeroTurntable:  return nameof(SantrollerV2HIDTurntable);
-                case SantrollerDeviceType.StageKit:         return nameof(SantrollerV2HidStageKit);
+                case SantrollerDeviceType.StageKit:         return nameof(SantrollerV2HIDStageKit);
                 default:                                    return null;
             }
         }

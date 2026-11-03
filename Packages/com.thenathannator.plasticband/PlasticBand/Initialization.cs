@@ -129,8 +129,8 @@ namespace PlasticBand
             // Rock Band stage kit
             StageKit.Initialize();
             XInputStageKit.Initialize();
-            SantrollerHidStageKit.Initialize();
-            SantrollerV2HidStageKit.Initialize();
+            SantrollerHIDStageKit.Initialize();
+            SantrollerV2HIDStageKit.Initialize();
             SantrollerXInputStageKit.Initialize();
 
             // Variant devices
