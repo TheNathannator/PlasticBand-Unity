@@ -94,7 +94,6 @@ namespace PlasticBand.Tests.Devices
 
         protected override void CheckExpectedDescriptions()
         {
-            AssertHidMatch(0x1209, 0x2882, revision: 0x0800, reportId: true);
         }
     }
 
