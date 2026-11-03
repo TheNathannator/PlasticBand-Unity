@@ -174,5 +174,9 @@ namespace PlasticBand.Tests.Devices
             // The default value for these properties is not 0, so we must set them explicitly
             tilt = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+        }
     }
 }

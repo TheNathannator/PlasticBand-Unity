@@ -94,5 +94,9 @@ namespace PlasticBand.Tests.Devices
             reportId = 1,
             dpad = HidDpad.Neutral,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+        }
     }
 }

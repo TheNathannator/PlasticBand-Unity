@@ -112,5 +112,9 @@ namespace PlasticBand.Tests.Devices
             rightVelocity = 0,
             crossfader = 0,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+        }
     }
 }

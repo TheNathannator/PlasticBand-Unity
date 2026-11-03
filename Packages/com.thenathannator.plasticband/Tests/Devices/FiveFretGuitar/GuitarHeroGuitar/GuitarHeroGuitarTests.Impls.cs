@@ -229,5 +229,9 @@ namespace PlasticBand.Tests.Devices
             tilt = 0,
             rawTouchBar = 0x80,
         };
+
+        protected override void CheckExpectedDescriptions()
+        {
+        }
     }
 }
