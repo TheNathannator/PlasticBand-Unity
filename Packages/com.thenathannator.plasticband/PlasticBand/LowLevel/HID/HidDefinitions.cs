@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using PlasticBand.Controls;
 using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.LowLevel
@@ -33,8 +34,11 @@ namespace PlasticBand.LowLevel
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static sbyte GetByteX(byte value)
         {
-            int signed = value + sbyte.MinValue;
-            return (sbyte)signed;
+            return (sbyte)IntegerAxisControl.Convert(
+                value,
+                byte.MinValue, byte.MaxValue, 128,
+                sbyte.MinValue, sbyte.MaxValue, 0
+            );
         }
 
         /// <summary>
@@ -44,9 +48,11 @@ namespace PlasticBand.LowLevel
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static sbyte GetInvertedByteY(byte value)
         {
-            int inverted = byte.MaxValue - value;
-            int signed = inverted + sbyte.MinValue;
-            return (sbyte)signed;
+            return (sbyte)IntegerAxisControl.Convert(
+                value,
+                byte.MaxValue, byte.MinValue, 128,
+                sbyte.MinValue, sbyte.MaxValue, 0
+            );
         }
 
         /// <summary>
@@ -56,8 +62,11 @@ namespace PlasticBand.LowLevel
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte SetByteX(sbyte value)
         {
-            int unsigned = value - sbyte.MinValue;
-            return (byte)unsigned;
+            return (byte)IntegerAxisControl.Convert(
+                value,
+                sbyte.MinValue, sbyte.MaxValue, 0,
+                byte.MinValue, byte.MaxValue, 128
+            );
         }
 
         /// <summary>
@@ -67,9 +76,11 @@ namespace PlasticBand.LowLevel
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte SetInvertedByteY(sbyte value)
         {
-            int unsigned = value - sbyte.MinValue;
-            int inverted = byte.MaxValue - unsigned;
-            return (byte)inverted;
+            return (byte)IntegerAxisControl.Convert(
+                value,
+                sbyte.MinValue, sbyte.MaxValue, 0,
+                byte.MaxValue, byte.MinValue, 128
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

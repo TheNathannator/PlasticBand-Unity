@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using PlasticBand.Controls;
 using PlasticBand.Devices;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -205,26 +206,26 @@ namespace PlasticBand.LowLevel
 
         sbyte IGamepadState.leftStickX
         {
-            get => (sbyte)(leftStickX >> 8);
-            set => leftStickX = (short)((value << 8) | (byte)value);
+            get => XInputDefinitions.GetAxisX(leftStickX);
+            set => leftStickX = XInputDefinitions.SetAxisX(value);
         }
 
         sbyte IGamepadState.leftStickY
         {
-            get => (sbyte)(leftStickY >> 8);
-            set => leftStickY = (short)((value << 8) | (byte)value);
+            get => XInputDefinitions.GetAxisY(leftStickY);
+            set => leftStickY = XInputDefinitions.SetAxisY(value);
         }
 
         sbyte IGamepadState.rightStickX
         {
-            get => (sbyte)(rightStickX >> 8);
-            set => rightStickX = (short)((value << 8) | (byte)value);
+            get => XInputDefinitions.GetAxisX(rightStickX);
+            set => rightStickX = XInputDefinitions.SetAxisX(value);
         }
 
         sbyte IGamepadState.rightStickY
         {
-            get => (sbyte)(rightStickY >> 8);
-            set => rightStickY = (short)((value << 8) | (byte)value);
+            get => XInputDefinitions.GetAxisY(rightStickY);
+            set => rightStickY = XInputDefinitions.SetAxisY(value);
         }
     }
 
@@ -307,6 +308,65 @@ namespace PlasticBand.LowLevel
         }
     }
     */
+
+    internal static class XInputDefinitions
+    {
+        public static sbyte GetAxisX(short value)
+        {
+            return (sbyte)IntegerAxisControl.Convert(
+                value,
+                short.MinValue, short.MaxValue, 0,
+                sbyte.MinValue, sbyte.MaxValue, 0
+            );
+        }
+
+        public static sbyte GetAxisY(short value)
+        {
+            return GetAxisX(value);
+        }
+
+        public static short SetAxisX(sbyte value)
+        {
+            return (short)IntegerAxisControl.Convert(
+                value,
+                sbyte.MinValue, sbyte.MaxValue, 0,
+                short.MinValue, short.MaxValue, 0
+            );
+        }
+
+        public static short SetAxisY(sbyte value)
+        {
+            return SetAxisX(value);
+        }
+
+        public static byte GetAxisUnsignedX(short value)
+        {
+            return (byte)IntegerAxisControl.Convert(
+                value,
+                short.MinValue, short.MaxValue, short.MinValue,
+                byte.MinValue, byte.MaxValue, byte.MinValue
+            );
+        }
+
+        public static byte GetAxisUnsignedY(short value)
+        {
+            return GetAxisUnsignedX(value);
+        }
+
+        public static short SetAxisUnsignedX(byte value)
+        {
+            return (short)IntegerAxisControl.Convert(
+                value,
+                byte.MinValue, byte.MaxValue, byte.MinValue,
+                short.MinValue, short.MaxValue, short.MinValue
+            );
+        }
+
+        public static short SetAxisUnsignedY(byte value)
+        {
+            return SetAxisUnsignedX(value);
+        }
+    }
 
     internal static class XInputExtensions
     {

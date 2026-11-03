@@ -148,7 +148,7 @@ namespace PlasticBand.Controls
 
         private static int IntLerp(int min, int max, float percentage)
         {
-            return (int)(min + (max - min) * percentage);
+            return (int)Math.Round(min + (max - min) * percentage);
         }
 
         public static int Convert(

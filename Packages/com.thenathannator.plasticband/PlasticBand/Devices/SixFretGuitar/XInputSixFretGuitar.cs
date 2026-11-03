@@ -127,8 +127,8 @@ namespace PlasticBand.Devices
 
         public sbyte tilt
         {
-            get => (sbyte)(m_Tilt >> 8);
-            set => m_Tilt = (short)(value << 8);
+            get => XInputDefinitions.GetAxisX(m_Tilt);
+            set => m_Tilt = XInputDefinitions.SetAxisY(value);
         }
     }
 

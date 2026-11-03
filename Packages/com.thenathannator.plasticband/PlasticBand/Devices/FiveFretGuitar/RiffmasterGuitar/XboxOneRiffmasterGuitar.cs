@@ -54,14 +54,14 @@ namespace PlasticBand.Devices
 
         public sbyte leftStickX
         {
-            get => (sbyte)(m_JoystickX >> 8);
-            set => m_JoystickX = (short)((value << 8) | (byte)value);
+            get => XInputDefinitions.GetAxisX(m_JoystickX);
+            set => m_JoystickX = XInputDefinitions.SetAxisX(value);
         }
 
         public sbyte leftStickY
         {
-            get => (sbyte)(m_JoystickY >> 8);
-            set => m_JoystickY = (short)((value << 8) | (byte)value);
+            get => XInputDefinitions.GetAxisY(m_JoystickY);
+            set => m_JoystickY = XInputDefinitions.SetAxisY(value);
         }
 
         public bool leftStickPress

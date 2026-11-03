@@ -105,14 +105,14 @@ namespace PlasticBand.Devices
         // Ranges from -32768 to 32767
         public byte whammy
         {
-            get => (byte)((m_Whammy >> 8) + 0x80);
-            set => m_Whammy = (short)(((value - 0x80) << 8) | value);
+            get => XInputDefinitions.GetAxisUnsignedX(m_Whammy);
+            set => m_Whammy = XInputDefinitions.SetAxisUnsignedX(value);
         }
 
         public sbyte tilt
         {
-            get => (sbyte)(m_Tilt >> 8);
-            set => m_Tilt = (short)((value << 8) | (byte)value);
+            get => XInputDefinitions.GetAxisX(m_Tilt);
+            set => m_Tilt = XInputDefinitions.SetAxisY(value);
         }
 
         public int pickupSwitch
