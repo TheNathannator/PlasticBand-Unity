@@ -1,3 +1,4 @@
+using System;
 using UnityEngine.InputSystem;
 
 namespace PlasticBand.LowLevel
@@ -5,15 +6,15 @@ namespace PlasticBand.LowLevel
     internal enum SantrollerDeviceType : byte
     {
         Unknown = 0,
-        Gamepad = 0x01,
-        DancePad = 0x02,
-        GuitarHeroGuitar = 0x03,
-        RockBandGuitar = 0x04,
-        GuitarHeroDrums = 0x05,
-        RockBandDrums = 0x06,
-        LiveGuitar = 0x07,
-        DjHeroTurntable = 0x08,
-        StageKit = 0x09,
+        Gamepad = 1,
+        DancePad = 2,
+        GuitarHeroGuitar = 3,
+        RockBandGuitar = 4,
+        GuitarHeroDrums = 5,
+        RockBandDrums = 6,
+        LiveGuitar = 7,
+        DjHeroTurntable = 8,
+        StageKit = 9,
         DisneyInfinity = 10,
         Skylanders = 11,
         LegoDimensions = 12,
@@ -36,7 +37,7 @@ namespace PlasticBand.LowLevel
         BeatMania = 29,
     }
 
-    [System.Flags]
+    [Flags]
     internal enum SantrollerCapabilities : byte
     {
         None = 0,

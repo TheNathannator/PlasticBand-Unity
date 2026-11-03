@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
@@ -46,7 +47,7 @@ namespace PlasticBand.LowLevel
     /// Bits 0-3 contain the 4-bit HidDpad hat switch.
     /// Bits 4-15 contain standard button flags matching XInput/Santroller V2 button layout.
     /// </summary>
-    [System.Flags]
+    [Flags]
     internal enum SantrollerV2Button : ushort
     {
         None = 0,

@@ -29,8 +29,9 @@ namespace PlasticBand.Devices
         private const int kMaxRequestAttempts = 8;
 
         private bool m_IsV2;
-        private SantrollerCapabilities m_Capabilities;
         private bool m_FeaturesRequested;
+        private SantrollerCapabilities m_Capabilities;
+
         private int m_RequestAttempts;
         private double m_NextRequestTime;
 
@@ -38,26 +39,32 @@ namespace PlasticBand.Devices
         {
             base.OnAdded();
 
-            // Detect Old vs New firmware:
-            // In V2 firmware, the device exposes vendor-defined usage (page 0xFF00, usage 0x2882)
-            // or Report ID 0x10 in its HID report descriptor, matching SDL's detection.
-            var desc = description;
-            var hidDescriptor = HidLayoutFinder.GetDeviceDescriptor(ref desc, ExecuteCommand);
-            bool isV2 = HasV2Usage(hidDescriptor);
+            var _desc = description;
+            var hidDescriptor = HidLayoutFinder.GetDeviceDescriptor(ref _desc, ExecuteCommand);
+            m_IsV2 = IsV2Descriptor(hidDescriptor);
 
-            if (isV2)
+            if (m_IsV2)
             {
-                m_IsV2 = true;
-                Logging.Message($"[SantrollerHIDAdapter] Device {this} detected as V2 firmware via HID descriptor. Waiting for update tick to request capabilities...");
+                Logging.Verbose($"[SantrollerHIDAdapter] Santroller V2 device detected. Waiting for update tick to request capabilities...");
             }
             else
             {
-                m_IsV2 = false;
-                int version = 0;
-                int.TryParse(description.version, out version);
+                if (!int.TryParse(description.version, out int version))
+                {
+                    version = 0;
+                }
+
                 var subType = (SantrollerDeviceType)(version >> 8);
-                Logging.Message($"[SantrollerHIDAdapter] Device {this} detected as legacy firmware via HID descriptor (version={version:X4}, subtype={subType}).");
-                CreateRealDevice(GetLegacyLayout(subType));
+                string layout = GetLegacyLayout(subType);
+                if (!string.IsNullOrEmpty(layout))
+                {
+                    Logging.Verbose($"[SantrollerHIDAdapter] Creating legacy Santroller device {layout} for subtype {subType} (revision 0x{version:X4}).");
+                    CreateRealDevice(layout);
+                }
+                else
+                {
+                    Logging.Warning($"[SantrollerHIDAdapter] No legacy layout available for subtype {subType} (revision 0x{version:X4}).");
+                }
             }
         }
 
@@ -75,24 +82,21 @@ namespace PlasticBand.Devices
             m_NextRequestTime = 0;
         }
 
-        private bool HasV2Usage(HIDDeviceDescriptor descriptor)
+        private bool IsV2Descriptor(HIDDeviceDescriptor descriptor)
         {
             int elementCount = descriptor.elements != null ? descriptor.elements.Length : 0;
             int collectionCount = descriptor.collections != null ? descriptor.collections.Length : 0;
-            Logging.Message($"[SantrollerHIDAdapter] Inspecting HID descriptor for {this}: {elementCount} elements, {collectionCount} collections.");
+
+            // Santroller V2 report descriptors include a vendor-defined usage of FF00:2882 and/or a report ID of 0x10
 
             if (descriptor.elements != null)
             {
                 foreach (var element in descriptor.elements)
                 {
-                    if ((int)element.usagePage == 0xFF00 && element.usage == SantrollerLayoutFinder.ProductID)
+                    if ((element.usagePage == UsagePage.VendorDefined && element.usage == SantrollerLayoutFinder.ProductID) ||
+                        element.reportId == 0x10)
                     {
-                        Logging.Message($"[SantrollerHIDAdapter] Found vendor usage 0xFF00:0x{SantrollerLayoutFinder.ProductID:X4} in element (reportId=0x{element.reportId:X2}).");
-                        return true;
-                    }
-                    if (element.reportId == 0x10)
-                    {
-                        Logging.Message($"[SantrollerHIDAdapter] Found Report ID 0x10 in element (usagePage={element.usagePage}, usage={element.usage}).");
+                        Logging.Verbose($"[SantrollerHIDAdapter] Found Santroller V2 via descriptor elements");
                         return true;
                     }
                 }
@@ -102,29 +106,34 @@ namespace PlasticBand.Devices
             {
                 foreach (var collection in descriptor.collections)
                 {
-                    if ((int)collection.usagePage == 0xFF00 && collection.usage == SantrollerLayoutFinder.ProductID)
+                    if (collection.usagePage == UsagePage.VendorDefined && collection.usage == SantrollerLayoutFinder.ProductID)
                     {
-                        Logging.Message($"[SantrollerHIDAdapter] Found vendor usage 0xFF00:0x{SantrollerLayoutFinder.ProductID:X4} in collection.");
+                        Logging.Verbose($"[SantrollerHIDAdapter] Found Santroller V2 via descriptor collections");
                         return true;
                     }
                 }
             }
 
+            // Only check revision if the descriptor is unavailable
             if (elementCount == 0 && collectionCount == 0)
             {
-                int version = 0;
-                bool isV2 = !int.TryParse(description.version, out version) || (version >> 8) == 0;
-                Logging.Message($"[SantrollerHIDAdapter] Descriptor elements/collections unavailable, falling back to version check: version={version:X4}, isV2={isV2}");
-                return isV2;
+                if (!int.TryParse(description.version, out int version) || (version >> 8) == 0)
+                {
+                    Logging.Verbose($"[SantrollerHIDAdapter] Found Santroller V2 via version");
+                    return true;
+                }
             }
 
+            Logging.Verbose($"[SantrollerHIDAdapter] Could not find Santroller V2 in descriptor, assuming legacy firmware.");
             return false;
         }
 
         private void TryRequestFeatures()
         {
             if (!m_IsV2 || m_RealDevice != null)
+            {
                 return;
+            }
 
             double currentTime = InputState.currentTime;
             if (!m_FeaturesRequested || (currentTime >= m_NextRequestTime && m_RequestAttempts < kMaxRequestAttempts))
@@ -132,7 +141,7 @@ namespace PlasticBand.Devices
                 m_FeaturesRequested = true;
                 m_RequestAttempts++;
                 m_NextRequestTime = currentTime + kRequestRetryInterval;
-                Logging.Message($"[SantrollerHIDAdapter] Requesting capabilities from {this} (attempt {m_RequestAttempts}/{kMaxRequestAttempts})...");
+                Logging.Verbose($"[SantrollerHIDAdapter] Requesting capabilities (attempt {m_RequestAttempts}/{kMaxRequestAttempts})...");
                 RequestFeatures();
             }
         }
@@ -142,36 +151,44 @@ namespace PlasticBand.Devices
             var command = SantrollerRequestFeaturesCommand.Create();
             long result = ExecuteCommand(ref command);
             if (result < 0)
-                Logging.Warning($"[SantrollerHIDAdapter] Sent capabilities request (Report ID 0x10) to {this}, but ExecuteCommand failed with error code: {result}");
-            else
-                Logging.Message($"[SantrollerHIDAdapter] Sent capabilities request (Report ID 0x10) to {this} (result = {result}).");
+            {
+                Logging.Warning($"[SantrollerHIDAdapter] Capabilities request failed with error code: {result}");
+            }
         }
 
         protected override unsafe void OnStateEvent(InputEventPtr eventPtr)
         {
             if (eventPtr.type != StateEvent.Type)
+            {
                 return;
+            }
 
             var stateEvent = StateEvent.From(eventPtr);
-            // Handle V2 Features response report (ID 0x10)
+
+            // V2 Features response report (ID 0x10)
             if (m_IsV2 && StateReader.ReadReportIdState(stateEvent, out SantrollerFeaturesResponse* features))
             {
-                Logging.Message($"[SantrollerHIDAdapter] Received capabilities response from {this}: SubType = {features->subType} ({(int)features->subType}), Capabilities = {features->capabilities}");
                 m_Capabilities = features->capabilities;
-                string layout = GetV2Layout(features->subType);
-                if (string.IsNullOrEmpty(layout))
-                    Logging.Warning($"[SantrollerHIDAdapter] No V2 layout mapping found for Santroller subtype: {features->subType} ({(int)features->subType})");
-                else
-                    Logging.Message($"[SantrollerHIDAdapter] Creating real device with layout: '{layout}'");
 
-                CreateRealDevice(layout);
+                string layout = GetV2Layout(features->subType);
+                if (!string.IsNullOrEmpty(layout))
+                {
+                    Logging.Verbose($"[SantrollerHIDAdapter] Capabilities received. Creating Santroller V2 device {layout} (subtype {features->subType}, capabilities {features->capabilities})");
+                    CreateRealDevice(layout);
+                }
+                else
+                {
+                    Logging.Warning($"[SantrollerHIDAdapter] Capabilities received, but no V2 layout available for subtype {features->subType} (capabilities {features->capabilities})");
+                }
                 return;
             }
 
             if (m_RealDevice == null)
             {
                 if (m_IsV2)
+                {
                     TryRequestFeatures();
+                }
                 return;
             }
 
@@ -180,15 +197,13 @@ namespace PlasticBand.Devices
 
         private void CreateRealDevice(string layout)
         {
-            m_RealDevice?.Dispose();
-            if (string.IsNullOrEmpty(layout))
+            if (m_RealDevice != null)
             {
-                m_RealDevice = null;
-                return;
+                Logging.Verbose($"[SantrollerHIDAdapter] Previous real device was not cleaned up!");
+                m_RealDevice.Dispose();
             }
 
             m_RealDevice = VariantRealDevice.Create(this, layout);
-            Logging.Message($"[SantrollerHIDAdapter] Instantiated real device {m_RealDevice.device} with layout '{layout}'.");
         }
 
         private static string GetLegacyLayout(SantrollerDeviceType subType)
