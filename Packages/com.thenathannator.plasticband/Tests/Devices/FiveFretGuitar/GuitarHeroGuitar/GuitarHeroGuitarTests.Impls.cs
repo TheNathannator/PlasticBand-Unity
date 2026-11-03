@@ -225,7 +225,7 @@ namespace PlasticBand.Tests.Devices
             reportId = 1,
             dpad = HidDpad.Neutral,
             // The default value for this property is not 0, so we must set it explicitly
-            tilt = 0,
+            whammy = 0,
             rawTouchBar = 0x80,
         };
 
