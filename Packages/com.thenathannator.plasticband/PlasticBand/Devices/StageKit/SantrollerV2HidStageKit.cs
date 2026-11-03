@@ -38,29 +38,31 @@ namespace PlasticBand.Devices
         [InputControl(name = "buttonNorth", layout = "Button", bit = 15)]
         public SantrollerV2Button buttons;
 
-        [InputControl(name = "leftTrigger", layout = "Button", format = "BYTE")]
+        [InputControl(name = "leftTrigger", layout = "IntButton", format = "BYTE", parameters = "minValue=0x00,maxValue=0xFF")]
         public byte leftTrigger;
 
-        [InputControl(name = "rightTrigger", layout = "Button", format = "BYTE")]
+        [InputControl(name = "rightTrigger", layout = "IntButton", format = "BYTE", parameters = "minValue=0x00,maxValue=0xFF")]
         public byte rightTrigger;
 
         [InputControl(name = "leftStick", layout = "Stick", format = "VC2S")]
-        [InputControl(name = "leftStick/x", format = "SHRT", offset = 0, parameters = "clamp=false,invert=false,normalize=false")]
-        [InputControl(name = "leftStick/left", format = "SHRT", offset = 0)]
-        [InputControl(name = "leftStick/right", format = "SHRT", offset = 0)]
-        [InputControl(name = "leftStick/y", format = "SHRT", offset = 2, parameters = "clamp=false,invert=false,normalize=false")]
-        [InputControl(name = "leftStick/up", format = "SHRT", offset = 2)]
-        [InputControl(name = "leftStick/down", format = "SHRT", offset = 2)]
+        [InputControl(name = "leftStick/x", offset = 0, layout = "IntAxis", format = "SHRT", parameters = "minValue=-32768,maxValue=32767,zeroPoint=0")]
+        [InputControl(name = "leftStick/left", offset = 0, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=-32768")]
+        [InputControl(name = "leftStick/right", offset = 0, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=32767")]
+        // These must be placed up here, otherwise a stack overflow will occur when building the layout
+        [InputControl(name = "leftStick/y", offset = 2, layout = "IntAxis", format = "SHRT", parameters = "minValue=-32768,maxValue=32767,zeroPoint=0")]
+        [InputControl(name = "leftStick/up", offset = 2, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=32767")]
+        [InputControl(name = "leftStick/down", offset = 2, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=-32768")]
         public short leftStickX;
         public short leftStickY;
 
         [InputControl(name = "rightStick", layout = "Stick", format = "VC2S")]
-        [InputControl(name = "rightStick/x", format = "SHRT", offset = 0, parameters = "clamp=false,invert=false,normalize=false")]
-        [InputControl(name = "rightStick/left", format = "SHRT", offset = 0)]
-        [InputControl(name = "rightStick/right", format = "SHRT", offset = 0)]
-        [InputControl(name = "rightStick/y", format = "SHRT", offset = 2, parameters = "clamp=false,invert=false,normalize=false")]
-        [InputControl(name = "rightStick/up", format = "SHRT", offset = 2)]
-        [InputControl(name = "rightStick/down", format = "SHRT", offset = 2)]
+        [InputControl(name = "rightStick/x", offset = 0, layout = "IntAxis", format = "SHRT", parameters = "minValue=-32768,maxValue=32767,zeroPoint=0")]
+        [InputControl(name = "rightStick/left", offset = 0, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=-32768")]
+        [InputControl(name = "rightStick/right", offset = 0, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=32767")]
+        // These must be placed up here, otherwise a stack overflow will occur when building the layout
+        [InputControl(name = "rightStick/y", offset = 2, layout = "IntAxis", format = "SHRT", parameters = "minValue=-32768,maxValue=32767,zeroPoint=0")]
+        [InputControl(name = "rightStick/up", offset = 2, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=32767")]
+        [InputControl(name = "rightStick/down", offset = 2, layout = "IntButton", format = "SHRT", parameters = "minValue=0,maxValue=-32768")]
         public short rightStickX;
         public short rightStickY;
 
