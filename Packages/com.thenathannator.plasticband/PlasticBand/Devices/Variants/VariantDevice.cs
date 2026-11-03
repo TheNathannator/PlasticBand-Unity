@@ -30,23 +30,16 @@ namespace PlasticBand.Devices
 
         public InputDevice device => m_Device;
 
-        public VariantRealDevice(string layout)
-            : this(null, layout)
-        {
-        }
-
-        public VariantRealDevice(InputDeviceDescription description)
-            : this(null, description)
-        {
-        }
-
         public unsafe VariantRealDevice(VariantDevice parent, string layout)
         {
             m_Parent = parent;
             m_Device = InputSystem.AddDevice(layout);
             m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
+
             if (parent != null)
+            {
                 InputSystem.onDeviceCommand += OnDeviceCommand;
+            }
         }
 
         public unsafe VariantRealDevice(VariantDevice parent, InputDeviceDescription description)
@@ -54,8 +47,11 @@ namespace PlasticBand.Devices
             m_Parent = parent;
             m_Device = InputSystem.AddDevice(description);
             m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
+
             if (parent != null)
+            {
                 InputSystem.onDeviceCommand += OnDeviceCommand;
+            }
         }
 
         ~VariantRealDevice()
@@ -66,7 +62,9 @@ namespace PlasticBand.Devices
         public unsafe void Dispose()
         {
             if (m_Parent != null)
+            {
                 InputSystem.onDeviceCommand -= OnDeviceCommand;
+            }
 
             InputSystem.RemoveDevice(m_Device);
             m_Device = null;
@@ -77,10 +75,15 @@ namespace PlasticBand.Devices
 
         private unsafe long? OnDeviceCommand(InputDevice device, InputDeviceCommand* command)
         {
-            if (device != m_Device || m_Parent == null)
-                return null;
+            if (device == m_Device)
+            {
+                // Command pointer must be turned back into a reference here, as the overload that directly accepts
+                // InputDeviceCommand* skips InputSystem.onDeviceCommand and goes straight to the native backend,
+                // which is not desirable for custom backends that need to intercept these commands
+                return m_Parent.ExecuteCommand(ref *command);
+            }
 
-            return m_Parent.ExecuteCommand(ref *command);
+            return null;
         }
 
         public unsafe void OnStateEvent<TState>(ref TState state)
