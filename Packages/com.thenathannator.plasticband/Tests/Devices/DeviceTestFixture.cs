@@ -72,6 +72,13 @@ namespace PlasticBand.Tests.Devices
         protected abstract void SetDpad(ref TState state, DpadDirection dpad);
 
         [Test]
+        public void HandlesDefaultState() => CreateAndRun((device) =>
+        {
+            AssertDefaultState(device); // Natural default state
+            AssertDefaultState(device, CreateState()); // Ensure created state is actually default
+        });
+
+        [Test]
         public void RecognizesMenuButtons() => CreateAndRun((device) =>
         {
             var state = CreateState();

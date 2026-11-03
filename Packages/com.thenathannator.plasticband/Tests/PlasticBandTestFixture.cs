@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using NUnit.Framework.Internal;
 using PlasticBand.LowLevel;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -221,6 +222,71 @@ namespace PlasticBand.Tests
             onAfterUpdate?.Invoke();
         }
 
+        public static void AssertDefaultState(InputDevice device)
+        {
+            foreach (var control in device.allControls)
+            {
+                AssertDefaultState(control);
+            }
+        }
+
+        public static void AssertDefaultState<TState>(InputDevice device, TState state)
+            where TState : unmanaged, IInputStateTypeInfo
+        {
+            void UpdateAssert() => AssertDefaultState(device);
+
+            void EventAssert(InputEventPtr eventPtr)
+            {
+                foreach (var control in device.allControls)
+                {
+                    AssertDefaultState(control, eventPtr);
+                }
+            }
+
+            AssertEventUpdate(device, state, EventAssert, UpdateAssert);
+        }
+
+        private static void AssertDefaultState(InputControl control)
+        {
+            // TODO: Ideally this would be reading the unprocessed value for a more informative assert message,
+            // but the non-generic InputControl does not have `ReadUnprocessedValueAsObject`
+            AssertDefaultState(
+                control,
+                control.CheckStateIsAtDefault(),
+                control.ReadValueAsObject()
+            );
+        }
+
+        private static unsafe void AssertDefaultState(InputControl control, InputEventPtr eventPtr)
+        {
+            // TODO: same note as above
+            AssertDefaultState(
+                control,
+                control.CheckStateIsAtDefault(control.GetStatePtrFromStateEvent(eventPtr)),
+                control.ReadValueFromEventAsObject(eventPtr)
+            );
+        }
+
+        private static void AssertDefaultState(InputControl control, bool success, object actualValue)
+        {
+            if (!success)
+            {
+                var defaultValue = control.ReadDefaultValueAsObject();
+
+                var messageWriter = new TextMessageWriter($"Expected control {control} to be in its default state");
+                new ConstraintResult(Is.EqualTo(defaultValue), actualValue, false).WriteMessageTo(messageWriter);
+                throw new AssertionException(messageWriter.ToString());
+            }
+        }
+
+        private static bool ControlSharesState(InputControl control, InputControl relative)
+        {
+            uint controlStart = (control.stateBlock.byteOffset * 8) + control.stateBlock.bitOffset;
+            uint controlEnd = controlStart + control.stateBlock.sizeInBits;
+            uint relativeOffset = (relative.stateBlock.byteOffset * 8) + relative.stateBlock.bitOffset;
+            return relativeOffset >= controlStart && relativeOffset < controlEnd;
+        }
+
         public static new void AssertButtonPress<TState>(InputDevice device, TState state, params ButtonControl[] buttons)
             where TState : unmanaged, IInputStateTypeInfo
         {
@@ -230,18 +296,29 @@ namespace PlasticBand.Tests
         public static void AssertButtonPress<TState>(InputDevice device, TState state, string context, params ButtonControl[] buttons)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            void UpdateAssert() => AssertButton((button) => button.isPressed);
-            void EventAssert(InputEventPtr eventPtr)
-                => AssertButton((button) => button.IsPressedInEvent(eventPtr));
+            void UpdateAssert() => AssertButton(
+                (button) => button.isPressed,
+                (control) => AssertDefaultState(control)
+            );
+            void EventAssert(InputEventPtr eventPtr) => AssertButton(
+                (button) => button.IsPressedInEvent(eventPtr),
+                (control) => AssertDefaultState(control, eventPtr)
+            );
 
             AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
-            void AssertButton(Func<ButtonControl, bool> getPressed)
+            void AssertButton(Func<ButtonControl, bool> getPressed, Action<InputControl> assertDefault)
             {
                 foreach (var control in device.allControls)
                 {
                     if (!(control is ButtonControl button))
+                    {
+                        if (!Array.Exists(buttons, (c) => ControlSharesState(control, c)))
+                        {
+                            assertDefault(control);
+                        }
                         continue;
+                    }
 
                     string message;
                     IResolveConstraint constraint;
@@ -270,18 +347,35 @@ namespace PlasticBand.Tests
             float value, float epsilon, params ButtonControl[] buttons)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            void UpdateAssert() => AssertButton((button) => button.isPressed, (button) => button.ReadUnprocessedValue());
-            void EventAssert(InputEventPtr eventPtr)
-                => AssertButton((button) => button.IsPressedInEvent(eventPtr), (button) => button.ReadUnprocessedValueFromEvent(eventPtr));
+            void UpdateAssert() => AssertButton(
+                (button) => button.isPressed,
+                (button) => button.ReadUnprocessedValue(),
+                (control) => AssertDefaultState(control)
+            );
+            void EventAssert(InputEventPtr eventPtr) => AssertButton(
+                (button) => button.IsPressedInEvent(eventPtr),
+                (button) => button.ReadUnprocessedValueFromEvent(eventPtr),
+                (control) => AssertDefaultState(control, eventPtr)
+            );
 
             AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
-            void AssertButton(Func<ButtonControl, bool> getPressed, Func<ButtonControl, float> getValue)
+            void AssertButton(
+                Func<ButtonControl, bool> getPressed,
+                Func<ButtonControl, float> getValue,
+                Action<InputControl> assertDefault
+            )
             {
                 foreach (var control in device.allControls)
                 {
                     if (!(control is ButtonControl button))
+                    {
+                        if (!Array.Exists(buttons, (c) => ControlSharesState(control, c)))
+                        {
+                            assertDefault(control);
+                        }
                         continue;
+                    }
 
                     if (buttons.Contains(button))
                     {
@@ -322,18 +416,29 @@ namespace PlasticBand.Tests
             float value, float epsilon, params AxisControl[] axes)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            void UpdateAssert() => AssertAxis((axis) => axis.ReadUnprocessedValue());
-            void EventAssert(InputEventPtr eventPtr)
-                => AssertAxis((axis) => axis.ReadUnprocessedValueFromEvent(eventPtr));
+            void UpdateAssert() => AssertAxis(
+                (axis) => axis.ReadUnprocessedValue(),
+                (control) => AssertDefaultState(control)
+            );
+            void EventAssert(InputEventPtr eventPtr) => AssertAxis(
+                (axis) => axis.ReadUnprocessedValueFromEvent(eventPtr),
+                (control) => AssertDefaultState(control, eventPtr)
+            );
 
             AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
-            void AssertAxis(Func<AxisControl, float> getValue)
+            void AssertAxis(Func<AxisControl, float> getValue, Action<InputControl> assertDefault)
             {
                 foreach (var control in device.allControls)
                 {
                     if (!(control is AxisControl axis))
+                    {
+                        if (!Array.Exists(axes, (c) => ControlSharesState(control, c)))
+                        {
+                            assertDefault(control);
+                        }
                         continue;
+                    }
 
                     if (axes.Contains(axis))
                     {
@@ -348,21 +453,32 @@ namespace PlasticBand.Tests
         }
 
         public static void AssertAxisValues<TState>(InputDevice device, TState state,
-            float epsilon, List<(AxisControl axis, float value)> axes)
+            float epsilon, (AxisControl axis, float value)[] axes)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            void UpdateAssert() => AssertAxis((axis) => axis.ReadUnprocessedValue());
-            void EventAssert(InputEventPtr eventPtr)
-                => AssertAxis((axis) => axis.ReadUnprocessedValueFromEvent(eventPtr));
+            void UpdateAssert() => AssertAxis(
+                (axis) => axis.ReadUnprocessedValue(),
+                (control) => AssertDefaultState(control)
+            );
+            void EventAssert(InputEventPtr eventPtr)=> AssertAxis(
+                (axis) => axis.ReadUnprocessedValueFromEvent(eventPtr),
+                (control) => AssertDefaultState(control, eventPtr)
+            );
 
             AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
-            void AssertAxis(Func<AxisControl, float> getValue)
+            void AssertAxis(Func<AxisControl, float> getValue, Action<InputControl> assertDefault)
             {
                 foreach (var control in device.allControls)
                 {
                     if (!(control is AxisControl axis))
+                    {
+                        if (!Array.Exists(axes, (c) => ControlSharesState(control, c.axis)))
+                        {
+                            assertDefault(control);
+                        }
                         continue;
+                    }
 
                     var (found, value) = axes.FirstOrDefault((v) => v.axis == axis);
                     if (found != null)
@@ -392,18 +508,29 @@ namespace PlasticBand.Tests
             int value, params IntegerControl[] integers)
             where TState : unmanaged, IInputStateTypeInfo
         {
-            void UpdateAssert() => AssertInteger((axis) => axis.ReadUnprocessedValue());
-            void EventAssert(InputEventPtr eventPtr)
-                => AssertInteger((axis) => axis.ReadUnprocessedValueFromEvent(eventPtr));
+            void UpdateAssert() => AssertInteger(
+                (axis) => axis.ReadUnprocessedValue(),
+                (control) => AssertDefaultState(control)
+            );
+            void EventAssert(InputEventPtr eventPtr) => AssertInteger(
+                (axis) => axis.ReadUnprocessedValueFromEvent(eventPtr),
+                (control) => AssertDefaultState(control, eventPtr)
+            );
 
             AssertEventUpdate(device, state, EventAssert, UpdateAssert);
 
-            void AssertInteger(Func<IntegerControl, int> getValue)
+            void AssertInteger(Func<IntegerControl, int> getValue, Action<InputControl> assertDefault)
             {
                 foreach (var control in device.allControls)
                 {
                     if (!(control is IntegerControl integer))
+                    {
+                        if (!Array.Exists(integers, (c) => ControlSharesState(control, c)))
+                        {
+                            assertDefault(control);
+                        }
                         continue;
+                    }
 
                     if (integers.Contains(integer))
                     {
@@ -508,20 +635,20 @@ namespace PlasticBand.Tests
                 // X axis
                 setStick(ref state, value, 0f);
                 AddX(axes, value);
-                AssertAxisValues(device, state, epsilon, axes);
+                AssertAxisValues(device, state, epsilon, axes.ToArray());
                 axes.Clear();
 
                 // Y axis
                 setStick(ref state, 0f, value);
                 AddY(axes, value);
-                AssertAxisValues(device, state, epsilon, axes);
+                AssertAxisValues(device, state, epsilon, axes.ToArray());
                 axes.Clear();
 
                 // Both axes
                 setStick(ref state, value, value);
                 AddX(axes, value);
                 AddY(axes, value);
-                AssertAxisValues(device, state, epsilon, axes);
+                AssertAxisValues(device, state, epsilon, axes.ToArray());
                 axes.Clear();
             }
         }
