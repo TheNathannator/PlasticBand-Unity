@@ -1,5 +1,4 @@
 using PlasticBand.Devices;
-using PlasticBand.Devices.LowLevel;
 
 namespace PlasticBand.Tests.Devices
 {
