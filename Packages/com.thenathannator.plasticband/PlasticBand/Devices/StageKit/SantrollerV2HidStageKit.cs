@@ -116,26 +116,26 @@ namespace PlasticBand.Devices
 
         public bool dpadUp
         {
-            get => GetDpad(buttons).IsUp();
-            set => SetDpad(ref buttons, GetDpad(buttons).ChangeUp(value));
+            get => buttons.GetDpad().IsUp();
+            set => buttons.SetDpadUp(value);
         }
 
         public bool dpadDown
         {
-            get => GetDpad(buttons).IsDown();
-            set => SetDpad(ref buttons, GetDpad(buttons).ChangeDown(value));
+            get => buttons.GetDpad().IsDown();
+            set => buttons.SetDpadDown(value);
         }
 
         public bool dpadLeft
         {
-            get => GetDpad(buttons).IsLeft();
-            set => SetDpad(ref buttons, GetDpad(buttons).ChangeLeft(value));
+            get => buttons.GetDpad().IsLeft();
+            set => buttons.SetDpadLeft(value);
         }
 
         public bool dpadRight
         {
-            get => GetDpad(buttons).IsRight();
-            set => SetDpad(ref buttons, GetDpad(buttons).ChangeRight(value));
+            get => buttons.GetDpad().IsRight();
+            set => buttons.SetDpadRight(value);
         }
 
         public bool leftShoulder
@@ -208,16 +208,6 @@ namespace PlasticBand.Devices
         {
             get => XInputDefinitions.GetAxisY(rightStickY);
             set => rightStickY = XInputDefinitions.SetAxisY(value);
-        }
-
-        private static HidDpad GetDpad(SantrollerV2Button buttons)
-        {
-            return (HidDpad)(buttons & SantrollerV2Button.DpadMask);
-        }
-
-        private static void SetDpad(ref SantrollerV2Button buttons, HidDpad dpad)
-        {
-            buttons = (buttons & ~SantrollerV2Button.DpadMask) | ((SantrollerV2Button)dpad & SantrollerV2Button.DpadMask);
         }
     }
 
