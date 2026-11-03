@@ -32,7 +32,12 @@ namespace PlasticBand.LowLevel
         private static readonly Dictionary<XInputDeviceSubType, List<XInputLayoutMatcher>> s_LayoutMatchers
             = new Dictionary<XInputDeviceSubType, List<XInputLayoutMatcher>>();
 
-        private const string kDefaultLayout = nameof(XInputControllerUniversal);
+        private const string kDefaultLayout =
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_WSA // See comment in XInputControllerUniversal.Initialize()
+            nameof(XInputControllerWindows);
+#else
+            nameof(XInputControllerUniversal);
+#endif
 
         internal static void Initialize()
         {

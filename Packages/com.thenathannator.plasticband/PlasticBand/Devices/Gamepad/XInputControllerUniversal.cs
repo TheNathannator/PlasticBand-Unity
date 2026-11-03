@@ -15,13 +15,16 @@ namespace PlasticBand.Devices
     {
         internal static void Initialize()
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_WSA
-            InputSystem.RemoveLayout(nameof(XInputControllerWindows));
-#endif
-            InputSystem.RegisterLayout<XInputControllerUniversal>(
-                matches: new InputDeviceMatcher().WithInterface(XInputLayoutFinder.InterfaceName)
+            InputSystem.RegisterLayout<XInputControllerUniversal>();
+
+#if !(UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_WSA)
+            // We only register matches on non-Windows platforms. Originally wanted to replace XInputControllerWindows
+            // even on Windows, but InputSystem.RemoveLayout does *not* remove layout matchers for some reason...
+            InputSystem.RegisterLayoutMatcher<XInputControllerUniversal>(
+                new InputDeviceMatcher().WithInterface(XInputLayoutFinder.InterfaceName)
             );
             XInputLayoutFinder.RegisterLayout<XInputControllerUniversal>(XInputDeviceSubType.Gamepad);
+#endif
         }
     }
 }
