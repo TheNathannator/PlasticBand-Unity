@@ -4,9 +4,7 @@ using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Haptics;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices

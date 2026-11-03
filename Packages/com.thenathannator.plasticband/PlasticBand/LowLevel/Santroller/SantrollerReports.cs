@@ -4,7 +4,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.LowLevel
 {
-
     /// <summary>
     /// Output report to request features/capabilities from a V2 Santroller device (Report ID 0x10).
     /// </summary>

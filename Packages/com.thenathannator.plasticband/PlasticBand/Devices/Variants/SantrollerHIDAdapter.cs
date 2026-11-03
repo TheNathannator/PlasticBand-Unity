@@ -1,4 +1,3 @@
-using PlasticBand;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
@@ -8,6 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 namespace PlasticBand.Devices
 {
     using static HID;
+
     [InputControlLayout(stateType = typeof(VariantDeviceDummyState), hideInUI = true)]
     internal class SantrollerHIDAdapter : VariantSingleDevice
     {
@@ -16,11 +16,13 @@ namespace PlasticBand.Devices
             InputSystem.RegisterLayout<SantrollerHIDAdapter>(matches: new InputDeviceMatcher()
                 .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", SantrollerLayoutFinder.VendorID)
-                .WithCapability("productId", SantrollerLayoutFinder.ProductID));
+                .WithCapability("productId", SantrollerLayoutFinder.ProductID)
+            );
             InputSystem.RegisterLayout<SantrollerHIDAdapter>(matches: new InputDeviceMatcher()
                 .WithInterface(HidDefinitions.InterfaceName)
                 .WithCapability("vendorId", SantrollerLayoutFinder.VendorID)
-                .WithCapability("productId", SantrollerLayoutFinder.ProductIDV2));
+                .WithCapability("productId", SantrollerLayoutFinder.ProductIDV2)
+            );
         }
 
         private const double kRequestRetryInterval = 0.5; // seconds
