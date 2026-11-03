@@ -38,7 +38,7 @@ namespace PlasticBand.Devices
         private fixed byte unused1[3];
 
         [InputControl(name = "whammy", layout = "IntAxis", parameters = "minValue=0xFF,maxValue=0x00,zeroPoint=0xFF")]
-        private byte m_Whammy;
+        public byte m_Whammy;
 
         [InputControl(name = "dpad", layout = "Dpad", format = "BIT", sizeInBits = 4, defaultState = 8)]
         [InputControl(name = "dpad/up", layout = "DiscreteButton", format = "BIT", bit = 0, sizeInBits = 4, parameters = "minValue=7,maxValue=1,nullValue=8,wrapAtValue=7")]
