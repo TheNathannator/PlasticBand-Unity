@@ -162,8 +162,8 @@ namespace PlasticBand.Devices
 
         public ushort effectsDial
         {
-            get => (ushort)(rightStickY + 0x8000);
-            set => rightStickY = (short)(value - 0x8000);
+            get => (ushort)rightStickY;
+            set => rightStickY = (short)value;
         }
     }
 

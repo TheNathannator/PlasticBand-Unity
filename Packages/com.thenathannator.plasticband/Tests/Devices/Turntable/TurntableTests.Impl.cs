@@ -105,11 +105,6 @@ namespace PlasticBand.Tests.Devices
         {
             reportId = 1,
             dpad = HidDpad.Neutral,
-
-            // The raw value for these properties is not 0, so we must set them explicitly
-            leftVelocity = 0,
-            rightVelocity = 0,
-            crossfader = 0,
         };
 
         protected override void CheckExpectedDescriptions()
