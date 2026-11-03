@@ -112,14 +112,14 @@ namespace PlasticBand.Devices
 
         public byte whammy
         {
-            get => (byte)((rightStickX >> 8) + 0x80);
-            set => rightStickX = (short)(((value - 0x80) << 8) | value);
+            get => XInputDefinitions.GetAxisUnsignedX(rightStickX);
+            set => rightStickX = XInputDefinitions.SetAxisUnsignedX(value);
         }
 
         public sbyte tilt
         {
-            get => (sbyte)(rightStickY >> 8);
-            set => rightStickY = (short)((value << 8) | (byte)value);
+            get => XInputDefinitions.GetAxisY(rightStickY);
+            set => rightStickY = XInputDefinitions.SetAxisY(value);
         }
 
         public int pickupSwitch
