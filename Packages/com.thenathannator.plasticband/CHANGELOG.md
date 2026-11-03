@@ -15,11 +15,11 @@ Dates are relative to UTC.
 ### Changed
 
 - The `startButton` and `selectButton` controls have been renamed to `start` and `select` to match the ones on the `Gamepad` layout.
-  - `startButton` and `selectButton` are maintained as aliases on these controls, so backwards compatibility should be maintained.
+  - `startButton` and `selectButton` are kept as aliases on these controls, so backwards compatibility should be maintained.
 - The package now initializes during `BeforeSplashScreen` instead of `BeforeSceneLoad`.
 - The display names for Pro Keyboard keys has been reformatted from `C#/Db-1` to `C#1 / Db1`.
 - The Riffmaster guitar layout now supports both left and right sticks, to better support CRKD guitars.
-  - This is a breaking change, as `joystick` has been renamed to `leftStick`.
+  - `joystick` has been renamed to `leftStick`, but `joystick` remains as an alias, so backwards compatibility should be maintained.
 - The analog pedal input on Pro Keyboards is no longer speculatively inverted, as not much research has been done into how this input is actually intended to function.
 
 ### Fixed

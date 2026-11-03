@@ -46,7 +46,7 @@ namespace PlasticBand.Devices
         /// <summary>
         /// The left joystick on the guitar.
         /// </summary>
-        [InputControl(displayName = "Left Stick")]
+        [InputControl(displayName = "Left Stick", alias = "joystick")]
         public StickControl leftStick { get; private set; }
 
         /// <summary>
