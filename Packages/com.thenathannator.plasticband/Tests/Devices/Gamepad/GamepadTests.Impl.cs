@@ -4,7 +4,7 @@ using PlasticBand.LowLevel;
 namespace PlasticBand.Tests.Devices
 {
     internal class XInputControllerUniversalTests
-        : GamepadDeviceTestFixture<XInputControllerUniversal, XInputGamepad>
+        : GamepadTests<XInputControllerUniversal, XInputGamepad>
     {
         protected override XInputGamepad CreateState()
             => new XInputGamepad();
