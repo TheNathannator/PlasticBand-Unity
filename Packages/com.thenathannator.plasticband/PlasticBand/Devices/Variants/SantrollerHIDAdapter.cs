@@ -206,6 +206,8 @@ namespace PlasticBand.Devices
             m_RealDevice = VariantRealDevice.Create(this, layout);
         }
 
+        // TODO: Use device descriptions/matchers instead of hard-coding layouts?
+
         private static string GetLegacyLayout(SantrollerDeviceType subType)
         {
             switch (subType)
