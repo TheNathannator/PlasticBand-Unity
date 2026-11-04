@@ -141,13 +141,13 @@ namespace PlasticBand.Devices
             }
             else if (StateReader.ReadReportIdState(stateEvent, out XboxOneWirelessLegacyDeviceInfo* info))
             {
-                if (state->userIndex >= m_RealDevices.Count)
+                if (info->userIndex >= m_RealDevices.Count)
                 {
-                    Logging.Error($"Unexpected wireless legacy adapter user index {state->userIndex}! Should not be >= {m_RealDevices.Count}");
+                    Logging.Error($"Unexpected wireless legacy adapter user index {info->userIndex}! Should not be >= {m_RealDevices.Count}");
                     return;
                 }
 
-                m_RealDevices[state->userIndex]?.Dispose();
+                m_RealDevices[info->userIndex]?.Dispose();
 
                 // The report data following the wireless legacy header matches that of the instruments,
                 // so we create the corresponding layouts for those instruments
@@ -161,18 +161,18 @@ namespace PlasticBand.Devices
                         return;
                 }
 
-                m_RealDevices[state->userIndex] = VariantRealDevice.Create(this, layout);
+                m_RealDevices[info->userIndex] = VariantRealDevice.Create(this, layout);
             }
             else if (StateReader.ReadReportIdState(stateEvent, out XboxOneWirelessLegacyDeviceDisconnect* disconnect))
             {
-                if (state->userIndex >= m_RealDevices.Count)
+                if (disconnect->userIndex >= m_RealDevices.Count)
                 {
-                    Logging.Error($"Unexpected wireless legacy adapter user index {state->userIndex}! Should not be >= {m_RealDevices.Count}");
+                    Logging.Error($"Unexpected wireless legacy adapter user index {disconnect->userIndex}! Should not be >= {m_RealDevices.Count}");
                     return;
                 }
 
-                m_RealDevices[state->userIndex]?.Dispose();
-                m_RealDevices[state->userIndex] = null;
+                m_RealDevices[disconnect->userIndex]?.Dispose();
+                m_RealDevices[disconnect->userIndex] = null;
             }
         }
 
