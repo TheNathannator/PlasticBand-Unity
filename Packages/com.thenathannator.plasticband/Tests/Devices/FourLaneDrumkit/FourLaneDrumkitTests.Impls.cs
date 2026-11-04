@@ -209,7 +209,21 @@ namespace PlasticBand.Tests.Devices
 
         protected override void CheckExpectedDescriptions()
         {
-            AssertHidMatch(0x1209, 0x2882, revision: 0x0600, reportId: true);
+        }
+    }
+
+    internal class SantrollerV2HIDFourLaneDrumkitTests
+        : FourLaneDrumkitTests_Flags<SantrollerV2HIDFourLaneDrumkit, SantrollerV2HIDFourLaneDrumkitState>
+    {
+        protected override SantrollerV2HIDFourLaneDrumkitState CreateState()
+            => new SantrollerV2HIDFourLaneDrumkitState()
+        {
+            reportId = 1,
+            dpad = HidDpad.Neutral,
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
         }
     }
 }

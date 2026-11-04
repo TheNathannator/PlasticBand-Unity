@@ -33,11 +33,11 @@ namespace PlasticBand.Tests.Devices
         }
     }
 
-    internal class SantrollerHidStageKitTests
-        : StageKitTests<SantrollerHidStageKit, SantrollerHidStageKitState>
+    internal class SantrollerHIDStageKitTests
+        : StageKitTests<SantrollerHIDStageKit, SantrollerHIDStageKitState>
     {
-        protected override SantrollerHidStageKitState CreateState()
-            => new SantrollerHidStageKitState()
+        protected override SantrollerHIDStageKitState CreateState()
+            => new SantrollerHIDStageKitState()
         {
             dpad = HidDpad.Neutral,
             leftStickX = 0x80,
@@ -48,7 +48,21 @@ namespace PlasticBand.Tests.Devices
 
         protected override void CheckExpectedDescriptions()
         {
-            AssertHidMatch(0x1209, 0x2882, revision: 0x0900, reportId: true);
+        }
+    }
+
+    internal class SantrollerV2HIDStageKitTests
+        : StageKitTests<SantrollerV2HIDStageKit, SantrollerV2HIDStageKitState>
+    {
+        protected override SantrollerV2HIDStageKitState CreateState()
+            => new SantrollerV2HIDStageKitState()
+        {
+            reportId = 1,
+            buttons = SantrollerV2Button.Neutral,
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
         }
     }
 }

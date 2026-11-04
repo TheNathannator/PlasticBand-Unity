@@ -204,7 +204,26 @@ namespace PlasticBand.Tests.Devices
 
         protected override void CheckExpectedDescriptions()
         {
-            AssertHidMatch(0x1209, 0x2882, revision: 0x0400, reportId: true);
+        }
+    }
+
+    internal class SantrollerV2HIDRockBandGuitarTests
+        : RockBandGuitarTests_Flags<SantrollerV2HIDRockBandGuitar, SantrollerV2HIDRockBandGuitarState>
+    {
+        protected override AxisMode tiltMode => AxisMode.Signed;
+
+        protected override SantrollerV2HIDRockBandGuitarState CreateState()
+            => new SantrollerV2HIDRockBandGuitarState()
+        {
+            reportId = 1,
+            dpad = HidDpad.Neutral,
+
+            // The default value for this property is not 0, so we must set it explicitly
+            whammy = 0,
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
         }
     }
 }

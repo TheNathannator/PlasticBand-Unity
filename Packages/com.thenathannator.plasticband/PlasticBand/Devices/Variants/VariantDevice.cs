@@ -24,19 +24,50 @@ namespace PlasticBand.Devices
 
     internal class VariantRealDevice : IDisposable
     {
+        private readonly VariantDevice m_Parent;
         private InputDevice m_Device;
         private IInputStateCallbackReceiver m_DeviceCallbacks;
 
-        public VariantRealDevice(string layout)
+        public InputDevice device => m_Device;
+
+        public static VariantRealDevice Create(VariantDevice parent, string layout)
         {
-            m_Device = InputSystem.AddDevice(layout);
-            m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
+            try
+            {
+                var device = InputSystem.AddDevice(layout);
+                return new VariantRealDevice(parent, device);
+            }
+            catch (Exception ex)
+            {
+                Logging.Exception("[VariantRealDevice] Failed to create input system device!", ex);
+                return null;
+            }
         }
 
-        public VariantRealDevice(InputDeviceDescription description)
+        public static VariantRealDevice Create(VariantDevice parent, InputDeviceDescription description)
         {
-            m_Device = InputSystem.AddDevice(description);
+            try
+            {
+                var device = InputSystem.AddDevice(description);
+                return new VariantRealDevice(parent, device);
+            }
+            catch (Exception ex)
+            {
+                Logging.Exception("[VariantRealDevice] Failed to create input system device!", ex);
+                return null;
+            }
+        }
+
+        private unsafe VariantRealDevice(VariantDevice parent, InputDevice device)
+        {
+            m_Parent = parent;
+            m_Device = device;
             m_DeviceCallbacks = m_Device as IInputStateCallbackReceiver;
+
+            if (parent != null)
+            {
+                InputSystem.onDeviceCommand += OnDeviceCommand;
+            }
         }
 
         ~VariantRealDevice()
@@ -44,13 +75,31 @@ namespace PlasticBand.Devices
             Logging.Error($"[PlasticBand] VariantRealDevice '{m_Device}' was not disposed! Device cannot be removed outside of the main thread");
         }
 
-        public void Dispose()
+        public unsafe void Dispose()
         {
+            if (m_Parent != null)
+            {
+                InputSystem.onDeviceCommand -= OnDeviceCommand;
+            }
+
             InputSystem.RemoveDevice(m_Device);
             m_Device = null;
             m_DeviceCallbacks = null;
 
             GC.SuppressFinalize(this);
+        }
+
+        private unsafe long? OnDeviceCommand(InputDevice device, InputDeviceCommand* command)
+        {
+            if (device == m_Device)
+            {
+                // Command pointer must be turned back into a reference here, as the overload that directly accepts
+                // InputDeviceCommand* skips InputSystem.onDeviceCommand and goes straight to the native backend,
+                // which is not desirable for custom backends that need to intercept these commands
+                return m_Parent.ExecuteCommand(ref *command);
+            }
+
+            return null;
         }
 
         public unsafe void OnStateEvent<TState>(ref TState state)
@@ -159,11 +208,13 @@ namespace PlasticBand.Devices
         {
             base.OnRemoved();
             m_RealDevice?.Dispose();
+            m_RealDevice = null;
         }
 
         protected override void OnDomainReload()
         {
             m_RealDevice?.Dispose();
+            m_RealDevice = null;
         }
     }
 
