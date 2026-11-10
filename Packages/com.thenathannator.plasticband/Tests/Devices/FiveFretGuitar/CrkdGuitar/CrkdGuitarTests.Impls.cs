@@ -4,8 +4,8 @@ using PlasticBand.LowLevel;
 
 namespace PlasticBand.Tests.Devices
 {
-    internal class XboxOneCrkdGuitarTests
-        : RockBandGuitarTests_Distinct<XboxOneCrkdGuitar, XboxOneRockBandGuitarState>
+    internal class XboxCrkdGuitarTests
+        : RockBandGuitarTests_Distinct<XboxCrkdGuitar, XboxOneRockBandGuitarState>
     {
         protected override XboxOneRockBandGuitarState CreateState()
             => new XboxOneRockBandGuitarState()

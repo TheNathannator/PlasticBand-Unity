@@ -72,7 +72,7 @@ namespace PlasticBand
             PS5RiffmasterGuitar.Initialize();
 
             // CRKD guitars
-            XboxOneCrkdGuitar.Initialize();
+            XboxCrkdGuitar.Initialize();
             PS4CrkdGuitar.Initialize();
             PS5CrkdGuitar.Initialize();
 
@@ -96,7 +96,7 @@ namespace PlasticBand
             FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
             XboxOneFourLaneDrumkit.Initialize();
-            XboxOneCrkdDrumkit.Initialize();
+            XboxCrkdDrumkit.Initialize();
             PS3FourLaneDrumkit.Initialize();
             PS4FourLaneDrumkit.Initialize();
             WiiFourLaneDrumkit.Initialize();

@@ -59,8 +59,8 @@ namespace PlasticBand.Tests.Devices
         }
     }
 
-    internal class XboxOneCrkdDrumkitTests
-        : FourLaneDrumkitTests_Distinct<XboxOneCrkdDrumkit, XboxOneFourLaneDrumkitState>
+    internal class XboxCrkdDrumkitTests
+        : FourLaneDrumkitTests_Distinct<XboxCrkdDrumkit, XboxOneFourLaneDrumkitState>
     {
         protected override int VelocityPrecision => 16;
 
