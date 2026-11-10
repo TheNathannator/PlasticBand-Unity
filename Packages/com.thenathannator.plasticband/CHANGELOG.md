@@ -28,6 +28,7 @@ Dates are relative to UTC.
 - PS3 GH5 guitars are no longer incorrectly identified.
 - PC World Tour guitars with a report ID are no longer treated as not having one.
 - Santroller 1 drumkits are no longer misidentified or outright not identified at all.
+- PS4 Rock Band drumkits no longer have their yellow and blue pads swapped.
 - Various other minor issues with axis normalization have been addressed.
 
 ## [0.10.0] - 2026/09/07

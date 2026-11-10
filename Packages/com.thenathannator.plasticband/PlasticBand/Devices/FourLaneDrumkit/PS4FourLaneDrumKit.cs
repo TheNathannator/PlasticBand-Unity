@@ -24,10 +24,10 @@ namespace PlasticBand.Devices
         public byte redPad;
 
         [FieldOffset(43)]
-        public byte bluePad;
+        public byte yellowPad;
 
         [FieldOffset(44)]
-        public byte yellowPad;
+        public byte bluePad;
 
         [FieldOffset(45)]
         public byte greenPad;
