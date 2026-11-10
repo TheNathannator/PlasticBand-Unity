@@ -12,6 +12,7 @@ Dates are relative to UTC.
 
 - The unit tests that existed as part of the development project are now included in the package folder. This makes it easier for anyone modifying the package to verify changes to existing layouts and add tests for new layouts.
 - Santroller V2 is now supported.
+- PlayStation CRKD drums in PS4/5 mode are now supported.
 
 ### Changed
 

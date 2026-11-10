@@ -96,13 +96,16 @@ namespace PlasticBand
             FourLaneDrumkit.Initialize();
             XInputFourLaneDrumkit.Initialize();
             XboxOneFourLaneDrumkit.Initialize();
-            XboxCrkdDrumkit.Initialize();
             PS3FourLaneDrumkit.Initialize();
             PS4FourLaneDrumkit.Initialize();
+            PS5FourLaneDrumkit.Initialize();
             WiiFourLaneDrumkit.Initialize();
             SantrollerHIDFourLaneDrumkit.Initialize();
             SantrollerV2HIDFourLaneDrumkit.Initialize();
             SantrollerXInputFourLaneDrumkit.Initialize();
+            XboxCrkdDrumkit.Initialize();
+            PS4CrkdDrumkit.Initialize();
+            PS5CrkdDrumkit.Initialize();
 
             // 5-lane drumkits
             FiveLaneDrumkit.Initialize();

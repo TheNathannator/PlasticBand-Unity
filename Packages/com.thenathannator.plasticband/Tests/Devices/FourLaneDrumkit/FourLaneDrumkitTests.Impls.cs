@@ -198,6 +198,109 @@ namespace PlasticBand.Tests.Devices
         }
     }
 
+    internal class PS5FourLaneDrumkitTests_ReportId
+        : FourLaneDrumkitTests_Distinct<PS5FourLaneDrumkit, PS5FourLaneDrumkitState_ReportId>
+    {
+        protected override PS5FourLaneDrumkitState_ReportId CreateState()
+            => new PS5FourLaneDrumkitState_ReportId()
+        {
+            state = new PS5FourLaneDrumkitState_NoReportId()
+            {
+                buttons1 = HidDpad.Neutral.AsPS4Buttons(),
+            }
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // None currently
+        }
+    }
+
+    internal class PS5FourLaneDrumkitTests_NoReportId
+        : FourLaneDrumkitTests_Distinct<PS5FourLaneDrumkit_NoReportId, PS5FourLaneDrumkitState_NoReportId>
+    {
+        protected override PS5FourLaneDrumkitState_NoReportId CreateState()
+            => new PS5FourLaneDrumkitState_NoReportId()
+        {
+            buttons1 = HidDpad.Neutral.AsPS4Buttons(),
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // None currently
+        }
+    }
+
+    internal class PS4CrkdDrumkitTests_ReportId
+        : FourLaneDrumkitTests_Distinct<PS4CrkdDrumkit, PS4FourLaneDrumkitState_ReportId>
+    {
+        protected override PS4FourLaneDrumkitState_ReportId CreateState()
+            => new PS4FourLaneDrumkitState_ReportId()
+        {
+            state = new PS4FourLaneDrumkitState_NoReportId()
+            {
+                buttons1 = HidDpad.Neutral.AsPS4Buttons(),
+            }
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // Stage Tour Drumkit for PlayStation (PS4 mode)
+            AssertHidMatch(0x3958, 0xD500, reportId: true);
+        }
+    }
+
+    internal class PS4CrkdDrumkitTests_NoReportId
+        : FourLaneDrumkitTests_Distinct<PS4CrkdDrumkit_NoReportId, PS4FourLaneDrumkitState_NoReportId>
+    {
+        protected override PS4FourLaneDrumkitState_NoReportId CreateState()
+            => new PS4FourLaneDrumkitState_NoReportId()
+        {
+            buttons1 = HidDpad.Neutral.AsPS4Buttons(),
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // Stage Tour Drumkit for PlayStation (PS4 mode)
+            AssertHidMatch(0x3958, 0xD500, reportId: false);
+        }
+    }
+
+    internal class PS5CrkdDrumkitTests_ReportId
+        : FourLaneDrumkitTests_Distinct<PS5CrkdDrumkit, PS5FourLaneDrumkitState_ReportId>
+    {
+        protected override PS5FourLaneDrumkitState_ReportId CreateState()
+            => new PS5FourLaneDrumkitState_ReportId()
+        {
+            state = new PS5FourLaneDrumkitState_NoReportId()
+            {
+                buttons1 = HidDpad.Neutral.AsPS4Buttons(),
+            }
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // Stage Tour Drumkit for PlayStation (PS5 mode)
+            AssertHidMatch(0x3958, 0xD600, reportId: true);
+        }
+    }
+
+    internal class PS5CrkdDrumkitTests_NoReportId
+        : FourLaneDrumkitTests_Distinct<PS5CrkdDrumkit_NoReportId, PS5FourLaneDrumkitState_NoReportId>
+    {
+        protected override PS5FourLaneDrumkitState_NoReportId CreateState()
+            => new PS5FourLaneDrumkitState_NoReportId()
+        {
+            buttons1 = HidDpad.Neutral.AsPS4Buttons(),
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            // Stage Tour Drumkit for PlayStation (PS5 mode)
+            AssertHidMatch(0x3958, 0xD600, reportId: false);
+        }
+    }
+
     internal class SantrollerHIDFourLaneDrumkitTests
         : FourLaneDrumkitTests_Hybrid<SantrollerHIDFourLaneDrumkit, SantrollerFourLaneDrumkitState>
     {
