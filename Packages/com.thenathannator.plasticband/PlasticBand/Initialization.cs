@@ -40,6 +40,7 @@ namespace PlasticBand
 
             // Gamepads
             XInputControllerUniversal.Initialize();
+            SwitchProControllerPatches.Initialize();
 
             // 5-fret guitars
             FiveFretGuitar.Initialize();
