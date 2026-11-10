@@ -17,6 +17,13 @@ namespace PlasticBand.Tests.Devices
         {
             // CRKD Gibson Les Paul Guitar (Blueberry/Tribal/Cherry/Olive)
             AssertGameInputMatch(0x3651, 0x4161);
+            // CRKD Gibson Les Paul Guitar (Oxblood)
+            // CRKD Gibson Xplorer Guitar
+            AssertGameInputMatch(0x3651, 0x2200);
+            // CRKD Gibson SG Guitar (Midnight Blue)
+            AssertGameInputMatch(0x3651, 0x8200);
+            // CRKD Gibson SG Guitar (Midnight Blue)
+            AssertGameInputMatch(0x3651, 0x8210);
             // Stage Tour Gibson Kramer Guitar for Xbox
             AssertGameInputMatch(0x3958, 0x4161);
         }
@@ -46,6 +53,10 @@ namespace PlasticBand.Tests.Devices
             AssertHidMatch(0x3651, 0x1500, reportId: true);
             // CRKD Gibson SG Guitar (Cherry/Black) (PS4 mode, wireless)
             AssertHidMatch(0x3651, 0x5500, reportId: true);
+            // CRKD Gibson SG Guitar (Midnight Blue) (PS4 mode, wired)
+            AssertHidMatch(0x3651, 0x8500, reportId: true);
+            // CRKD Gibson SG Guitar (Midnight Blue) (PS4 mode, wireless)
+            AssertHidMatch(0x3651, 0x8510, reportId: true);
             // Stage Tour Gibson Kramer Guitar (PS4 mode)
             AssertHidMatch(0x3958, 0x5500, reportId: true);
         }
@@ -72,6 +83,10 @@ namespace PlasticBand.Tests.Devices
             AssertHidMatch(0x3651, 0x1500, reportId: false);
             // CRKD Gibson SG Guitar (Cherry/Black) (PS4 mode, wireless)
             AssertHidMatch(0x3651, 0x5500, reportId: false);
+            // CRKD Gibson SG Guitar (Midnight Blue) (PS4 mode, wired)
+            AssertHidMatch(0x3651, 0x8500, reportId: false);
+            // CRKD Gibson SG Guitar (Midnight Blue) (PS4 mode, wireless)
+            AssertHidMatch(0x3651, 0x8510, reportId: false);
             // Stage Tour Gibson Kramer Guitar (PS4 mode)
             AssertHidMatch(0x3958, 0x5500, reportId: false);
         }
@@ -101,6 +116,10 @@ namespace PlasticBand.Tests.Devices
             AssertHidMatch(0x3651, 0x1600, reportId: true);
             // CRKD Gibson SG Guitar (Cherry/Black) (PS5 mode, wireless)
             AssertHidMatch(0x3651, 0x5600, reportId: true);
+            // CRKD Gibson SG Guitar (Midnight Blue) (PS5 mode, wired)
+            AssertHidMatch(0x3651, 0x8600, reportId: true);
+            // CRKD Gibson SG Guitar (Midnight Blue) (PS5 mode, wireless)
+            AssertHidMatch(0x3651, 0x8610, reportId: true);
             // Stage Tour Gibson Kramer Guitar (PS5 mode)
             AssertHidMatch(0x3958, 0x5600, reportId: true);
         }
@@ -127,6 +146,10 @@ namespace PlasticBand.Tests.Devices
             AssertHidMatch(0x3651, 0x1600, reportId: false);
             // CRKD Gibson SG Guitar (Cherry/Black) (PS5 mode, wireless)
             AssertHidMatch(0x3651, 0x5600, reportId: false);
+            // CRKD Gibson SG Guitar (Midnight Blue) (PS5 mode, wired)
+            AssertHidMatch(0x3651, 0x8600, reportId: false);
+            // CRKD Gibson SG Guitar (Midnight Blue) (PS5 mode, wireless)
+            AssertHidMatch(0x3651, 0x8610, reportId: false);
             // Stage Tour Gibson Kramer Guitar (PS5 mode)
             AssertHidMatch(0x3958, 0x5600, reportId: false);
         }
