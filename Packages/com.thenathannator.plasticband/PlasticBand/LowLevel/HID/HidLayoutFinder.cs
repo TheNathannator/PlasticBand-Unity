@@ -101,7 +101,8 @@ namespace PlasticBand.LowLevel
             where TReportId : InputDevice
             where TNoReportId : InputDevice
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || ((UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX) && HIDROGEN_FORCE_REPORT_IDS)
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+            // Windows always includes a report ID, even when the device doesn't have one
             var TDefault = typeof(TReportId);
 #else
             var TDefault = reportIdDefault ? typeof(TReportId) : typeof(TNoReportId);
