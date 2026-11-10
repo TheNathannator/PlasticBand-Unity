@@ -15,6 +15,7 @@ Dates are relative to UTC.
 - PlayStation CRKD drums in PS4/5 mode are now supported.
 - Most third-party Switch Pro controllers are now supported.
   - This should allow the Switch Riffmaster to be functional. It unfortunately cannot be distinguished further from other Switch Pro controllers, but this will at least allow its inputs to be used and configured.
+- The Switch 2 Stage Tour Kramer and drumkit are now recognized as Switch Pro controllers as well.
 
 ### Changed
 

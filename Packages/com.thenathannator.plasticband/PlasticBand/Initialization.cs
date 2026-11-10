@@ -76,6 +76,7 @@ namespace PlasticBand
             XboxCrkdGuitar.Initialize();
             PS4CrkdGuitar.Initialize();
             PS5CrkdGuitar.Initialize();
+            SwitchCrkdGuitar.Initialize();
 
             // 6-fret guitars
             SixFretGuitar.Initialize();
@@ -104,9 +105,12 @@ namespace PlasticBand
             SantrollerHIDFourLaneDrumkit.Initialize();
             SantrollerV2HIDFourLaneDrumkit.Initialize();
             SantrollerXInputFourLaneDrumkit.Initialize();
+
+            // CRKD drumkits
             XboxCrkdDrumkit.Initialize();
             PS4CrkdDrumkit.Initialize();
             PS5CrkdDrumkit.Initialize();
+            SwitchCrkdDrumkit.Initialize();
 
             // 5-lane drumkits
             FiveLaneDrumkit.Initialize();
