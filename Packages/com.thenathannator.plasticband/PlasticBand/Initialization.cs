@@ -8,19 +8,11 @@ namespace PlasticBand
     /// <summary>
     /// Handles initialization of the package.
     /// </summary>
-#if UNITY_EDITOR
-    [UnityEditor.InitializeOnLoad]
-#endif
     internal static class Initialization
     {
 #if UNITY_EDITOR
-        static Initialization()
-        {
-            Initialize();
-        }
-#endif
-
-#if !UNITY_EDITOR
+        [UnityEditor.InitializeOnLoadMethod]
+#else
         [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.BeforeSplashScreen)]
 #endif
         internal static void Initialize()
