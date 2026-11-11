@@ -25,4 +25,45 @@ namespace PlasticBand.Tests.Devices
 #endif
         }
     }
+
+    internal class AndroidGamepadTests_NoReportId
+        : GamepadTests<AndroidGamepad_NoReportId, AndroidGamepadState_NoReportId>
+    {
+        protected override AndroidGamepadState_NoReportId CreateState()
+            => new AndroidGamepadState_NoReportId()
+        {
+            dpad = HidDpad.Neutral,
+            leftStickX = 0,
+            leftStickY = 0,
+            rightStickX = 0,
+            rightStickY = 0,
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertHidMatch(0x20BC, 0x5500, reportId: false);
+        }
+    }
+
+    internal class AndroidGamepadTests_ReportId
+        : GamepadTests<AndroidGamepad, AndroidGamepadState_ReportId>
+    {
+        protected override AndroidGamepadState_ReportId CreateState()
+            => new AndroidGamepadState_ReportId()
+        {
+            state = new AndroidGamepadState_NoReportId()
+            {
+                dpad = HidDpad.Neutral,
+                leftStickX = 0,
+                leftStickY = 0,
+                rightStickX = 0,
+                rightStickY = 0,
+            },
+        };
+
+        protected override void CheckExpectedDescriptions()
+        {
+            AssertHidMatch(0x20BC, 0x5500, reportId: true);
+        }
+    }
 }

@@ -16,6 +16,8 @@ Dates are relative to UTC.
 - Most third-party Switch Pro controllers are now supported.
   - This should allow the Switch Riffmaster to be functional. It unfortunately cannot be distinguished further from other Switch Pro controllers, but this will at least allow its inputs to be used and configured.
 - The Switch 2 Stage Tour Kramer and drumkit are now recognized as Switch Pro controllers as well.
+- Android mode on CRKD multi-platform guitars is now recognized.
+  - This mode is not specially recognized as a guitar since its hardware IDs do not appear to be unique to CRKD, and its inputs are specifically that of a gamepad.
 
 ### Changed
 
