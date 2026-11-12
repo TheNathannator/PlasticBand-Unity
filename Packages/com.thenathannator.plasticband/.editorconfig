@@ -10,6 +10,7 @@ tab_width = 2
 [*.cs]
 indent_size = 4
 tab_width = 4
+insert_final_newline = true
 
 # Naming conventions
 # Public members are camelCase
