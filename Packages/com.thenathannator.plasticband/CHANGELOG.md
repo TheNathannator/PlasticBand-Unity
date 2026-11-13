@@ -21,6 +21,7 @@ Dates are relative to UTC.
 
 ### Changed
 
+- The minimum version of the Input System package has been bumped to v1.5.0, as the unit tests fail to compile when used with v1.4.4 or earlier due to [a misconfiguration](https://github.com/Unity-Technologies/InputSystem/commit/c8f99d515296ac502705725fc3f60a0f94aba4ea) on the Input System package's end.
 - The `startButton` and `selectButton` controls have been renamed to `start` and `select` to match the ones on the `Gamepad` layout.
   - `startButton` and `selectButton` are kept as aliases on these controls, so backwards compatibility should be maintained.
 - The package now initializes during `BeforeSplashScreen` instead of `BeforeSceneLoad`.
