@@ -88,7 +88,7 @@ namespace PlasticBand.Tests.Devices
 
         protected abstract void SetPad(ref TState state, FourLanePad pad, float velocity);
 
-        protected override void SetFaceButtons(ref TState state, FaceButton buttons)
+        protected sealed override void SetFaceButtons(ref TState state, FaceButton buttons)
         {
             state.green_south = (buttons & FaceButton.South) != 0;
             state.red_east = (buttons & FaceButton.East) != 0;
@@ -96,7 +96,7 @@ namespace PlasticBand.Tests.Devices
             state.yellow_north = (buttons & FaceButton.North) != 0;
         }
 
-        protected override void SetDpad(ref TState state, DpadDirection dpad)
+        protected sealed override void SetDpad(ref TState state, DpadDirection dpad)
         {
             state.dpadUp = dpad.IsUp();
             state.dpadDown = dpad.IsDown();
@@ -104,13 +104,13 @@ namespace PlasticBand.Tests.Devices
             state.dpadRight = dpad.IsRight();
         }
 
-        protected override void SetMenuButtons(ref TState state, MenuButton buttons)
+        protected sealed override void SetMenuButtons(ref TState state, MenuButton buttons)
         {
             state.start = (buttons & MenuButton.Start) != 0;
             state.select = (buttons & MenuButton.Select) != 0;
         }
 
-        protected override ButtonControl GetFaceButton(TDrumkit drumkit, FaceButton button)
+        protected sealed override ButtonControl GetFaceButton(TDrumkit drumkit, FaceButton button)
         {
             switch (button)
             {
@@ -122,7 +122,7 @@ namespace PlasticBand.Tests.Devices
             }
         }
 
-        protected override ButtonControl GetMenuButton(TDrumkit drumkit, MenuButton button)
+        protected sealed override ButtonControl GetMenuButton(TDrumkit drumkit, MenuButton button)
         {
             switch (button)
             {
@@ -132,7 +132,7 @@ namespace PlasticBand.Tests.Devices
             }
         }
 
-        protected override DpadControl GetDpad(TDrumkit drumkit) => drumkit.dpad;
+        protected sealed override DpadControl GetDpad(TDrumkit drumkit) => drumkit.dpad;
 
         [Test]
         public void GetPadReturnsCorrectPads()
@@ -157,7 +157,7 @@ namespace PlasticBand.Tests.Devices
             InputSystem.Update();
         }
 
-        private List<(FourLanePad pad, ButtonControl button)> CreatePadMap(TDrumkit drumkit)
+        protected List<(FourLanePad pad, ButtonControl button)> CreatePadMap(TDrumkit drumkit)
         {
             return new List<(FourLanePad, ButtonControl)>()
             {
@@ -175,7 +175,7 @@ namespace PlasticBand.Tests.Devices
             };
         }
 
-        private HashSet<FourLanePad> CreatePadsList()
+        protected HashSet<FourLanePad> CreatePadsList()
         {
             var pads = new FourLanePad[]
             {
@@ -343,7 +343,7 @@ namespace PlasticBand.Tests.Devices
 
         private static bool s_dummyHasFlags = true;
 
-        protected override void SetPad(ref TState state, FourLanePad pad, float velocity)
+        protected sealed override void SetPad(ref TState state, FourLanePad pad, float velocity)
         {
             bool hit = velocity > 0f;
             byte rawVelocity = DeviceHandling.DenormalizeByteUnsigned(velocity);
@@ -510,7 +510,7 @@ namespace PlasticBand.Tests.Devices
     {
         private static bool s_dummyHasFlags = true;
 
-        protected override void SetPad(ref TState state, FourLanePad pad, float velocity)
+        protected sealed override void SetPad(ref TState state, FourLanePad pad, float velocity)
         {
             bool hit = velocity > 0f;
             byte rawVelocity = DeviceHandling.DenormalizeByteUnsigned(velocity);
@@ -617,7 +617,7 @@ namespace PlasticBand.Tests.Devices
         where TDrumkit : FourLaneDrumkit
         where TState : unmanaged, IFourLaneDrumkitState_DistinctVelocities
     {
-        protected override void SetPad(ref TState state, FourLanePad pad, float velocity)
+        protected sealed override void SetPad(ref TState state, FourLanePad pad, float velocity)
         {
             byte rawVelocity = DeviceHandling.DenormalizeByteUnsigned(velocity);
             switch (pad)

@@ -112,7 +112,7 @@ namespace PlasticBand.Tests.Devices
             state.select = (buttons & MenuButton.Select) != 0;
         }
 
-        private void SetKey(ref TState state, int key, bool pressed)
+        protected void SetKey(ref TState state, int key, bool pressed)
         {
             switch (key)
             {
@@ -145,7 +145,7 @@ namespace PlasticBand.Tests.Devices
             }
         }
 
-        private void SetKeys(ref TState state, int keyMask)
+        protected void SetKeys(ref TState state, int keyMask)
         {
             state.key1 = (keyMask & (1 << 0)) != 0;
             state.key2 = (keyMask & (1 << 1)) != 0;
@@ -174,27 +174,27 @@ namespace PlasticBand.Tests.Devices
             state.key25 = (keyMask & (1 << 24)) != 0;
         }
 
-        private void SetOverdriveButton(ref TState state, bool pressed)
+        protected void SetOverdriveButton(ref TState state, bool pressed)
         {
             state.overdrive = pressed;
         }
 
-        private void SetDigitalPedal(ref TState state, bool pressed)
+        protected void SetDigitalPedal(ref TState state, bool pressed)
         {
             state.digitalPedal = pressed;
         }
 
-        private void SetAnalogPedal(ref TState state, float value)
+        protected void SetAnalogPedal(ref TState state, float value)
         {
             state.analogPedal = DenormalizeByteMidi(value);
         }
 
-        private void SetTouchStrip(ref TState state, float value)
+        protected void SetTouchStrip(ref TState state, float value)
         {
             state.touchStrip = DenormalizeByteMidi(value);
         }
 
-        private static byte DenormalizeByteMidi(float value)
+        protected static byte DenormalizeByteMidi(float value)
         {
             return (byte)IntegerAxisControl.Denormalize(value, 0, 127, 0);
         }

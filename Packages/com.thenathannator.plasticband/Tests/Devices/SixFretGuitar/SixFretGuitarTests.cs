@@ -82,7 +82,7 @@ namespace PlasticBand.Tests.Devices
         where TGuitar : SixFretGuitar
         where TState : unmanaged, ISixFretGuitarState
     {
-        protected override ButtonControl GetMenuButton(TGuitar guitar, MenuButton button)
+        protected sealed override ButtonControl GetMenuButton(TGuitar guitar, MenuButton button)
         {
             switch (button)
             {
@@ -92,9 +92,9 @@ namespace PlasticBand.Tests.Devices
             }
         }
 
-        protected override DpadControl GetDpad(TGuitar guitar) => guitar.dpad;
+        protected sealed override DpadControl GetDpad(TGuitar guitar) => guitar.dpad;
 
-        protected override void SetDpad(ref TState state, DpadDirection dpad)
+        protected sealed override void SetDpad(ref TState state, DpadDirection dpad)
         {
             state.dpadUp = dpad.IsUp();
             state.dpadDown = dpad.IsDown();
@@ -102,7 +102,7 @@ namespace PlasticBand.Tests.Devices
             state.dpadRight = dpad.IsRight();
         }
 
-        protected override void SetMenuButtons(ref TState state, MenuButton buttons)
+        protected sealed override void SetMenuButtons(ref TState state, MenuButton buttons)
         {
             state.start = (buttons & MenuButton.Start) != 0;
             state.select = (buttons & MenuButton.Select) != 0;

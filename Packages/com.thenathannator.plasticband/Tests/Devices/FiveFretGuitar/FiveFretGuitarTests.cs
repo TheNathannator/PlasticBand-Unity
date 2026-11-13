@@ -169,7 +169,7 @@ namespace PlasticBand.Tests.Devices
             state.select = (buttons & MenuButton.Select) != 0;
         }
 
-        private void SetFrets(ref TState state, FiveFret frets)
+        protected void SetFrets(ref TState state, FiveFret frets)
         {
             state.green = (frets & FiveFret.Green) != 0;
             state.red = (frets & FiveFret.Red) != 0;
@@ -178,12 +178,12 @@ namespace PlasticBand.Tests.Devices
             state.orange = (frets & FiveFret.Orange) != 0;
         }
 
-        private void SetWhammy(ref TState state, float value)
+        protected void SetWhammy(ref TState state, float value)
         {
             state.whammy = DeviceHandling.DenormalizeByteUnsigned(value);
         }
 
-        private void SetTilt(ref TState state, float value)
+        protected void SetTilt(ref TState state, float value)
         {
             state.tilt = DeviceHandling.DenormalizeSByte(value);
         }

@@ -62,46 +62,46 @@ namespace PlasticBand.Tests.Devices
             state.select = (buttons & MenuButton.Select) != 0;
         }
 
-        private void SetShareButton(ref TState state, bool pressed)
+        protected void SetShareButton(ref TState state, bool pressed)
         {
             state.share = pressed;
         }
 
-        private void SetShoulderButtons(ref TState state, HorizontalSide buttons)
+        protected void SetShoulderButtons(ref TState state, HorizontalSide buttons)
         {
             state.leftShoulder = (buttons & HorizontalSide.Left) != 0;
             state.rightShoulder = (buttons & HorizontalSide.Right) != 0;
         }
 
-        private void SetTriggerButtons(ref TState state, HorizontalSide buttons)
+        protected void SetTriggerButtons(ref TState state, HorizontalSide buttons)
         {
             state.leftTriggerPress = (buttons & HorizontalSide.Left) != 0;
             state.rightTriggerPress = (buttons & HorizontalSide.Right) != 0;
         }
 
-        private void SetStickButtons(ref TState state, HorizontalSide buttons)
+        protected void SetStickButtons(ref TState state, HorizontalSide buttons)
         {
             state.leftStickPress = (buttons & HorizontalSide.Left) != 0;
             state.rightStickPress = (buttons & HorizontalSide.Right) != 0;
         }
 
-        private void SetLeftTrigger(ref TState state, float value)
+        protected void SetLeftTrigger(ref TState state, float value)
         {
             state.leftTrigger = DeviceHandling.DenormalizeByteUnsigned(value);
         }
 
-        private void SetRightTrigger(ref TState state, float value)
+        protected void SetRightTrigger(ref TState state, float value)
         {
             state.rightTrigger = DeviceHandling.DenormalizeByteUnsigned(value);
         }
 
-        private void SetLeftStick(ref TState state, float x, float y)
+        protected void SetLeftStick(ref TState state, float x, float y)
         {
             state.leftStickX = DeviceHandling.DenormalizeSByte(x);
             state.leftStickY = DeviceHandling.DenormalizeSByte(y);
         }
 
-        private void SetRightStick(ref TState state, float x, float y)
+        protected void SetRightStick(ref TState state, float x, float y)
         {
             state.rightStickX = DeviceHandling.DenormalizeSByte(x);
             state.rightStickY = DeviceHandling.DenormalizeSByte(y);

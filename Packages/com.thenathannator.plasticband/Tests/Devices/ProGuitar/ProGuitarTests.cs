@@ -116,7 +116,7 @@ namespace PlasticBand.Tests.Devices
         where TGuitar : ProGuitar
         where TState : unmanaged, IProGuitarState
     {
-        protected override ButtonControl GetFaceButton(TGuitar guitar, FaceButton button)
+        protected sealed override ButtonControl GetFaceButton(TGuitar guitar, FaceButton button)
         {
             switch (button)
             {
@@ -128,7 +128,7 @@ namespace PlasticBand.Tests.Devices
             }
         }
 
-        protected override ButtonControl GetMenuButton(TGuitar guitar, MenuButton button)
+        protected sealed override ButtonControl GetMenuButton(TGuitar guitar, MenuButton button)
         {
             switch (button)
             {
@@ -138,9 +138,9 @@ namespace PlasticBand.Tests.Devices
             }
         }
 
-        protected override DpadControl GetDpad(TGuitar guitar) => guitar.dpad;
+        protected sealed override DpadControl GetDpad(TGuitar guitar) => guitar.dpad;
 
-        protected override void SetDpad(ref TState state, DpadDirection dpad)
+        protected sealed override void SetDpad(ref TState state, DpadDirection dpad)
         {
             state.dpadUp = dpad.IsUp();
             state.dpadDown = dpad.IsDown();
@@ -148,7 +148,7 @@ namespace PlasticBand.Tests.Devices
             state.dpadRight = dpad.IsRight();
         }
 
-        protected override void SetFaceButtons(ref TState state, FaceButton buttons)
+        protected sealed override void SetFaceButtons(ref TState state, FaceButton buttons)
         {
             state.south = (buttons & FaceButton.South) != 0;
             state.east = (buttons & FaceButton.East) != 0;
@@ -156,7 +156,7 @@ namespace PlasticBand.Tests.Devices
             state.north = (buttons & FaceButton.North) != 0;
         }
 
-        protected override void SetMenuButtons(ref TState state, MenuButton buttons)
+        protected sealed override void SetMenuButtons(ref TState state, MenuButton buttons)
         {
             state.start = (buttons & MenuButton.Start) != 0;
             state.select = (buttons & MenuButton.Select) != 0;

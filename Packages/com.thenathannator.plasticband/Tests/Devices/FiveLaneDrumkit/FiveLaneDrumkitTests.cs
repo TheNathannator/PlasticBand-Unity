@@ -72,7 +72,7 @@ namespace PlasticBand.Tests.Devices
         where TDrumkit : FiveLaneDrumkit
         where TState : unmanaged, IFiveLaneDrumkitState
     {
-        protected override ButtonControl GetFaceButton(TDrumkit drumkit, FaceButton button)
+        protected sealed override ButtonControl GetFaceButton(TDrumkit drumkit, FaceButton button)
         {
             switch (button)
             {
@@ -84,7 +84,7 @@ namespace PlasticBand.Tests.Devices
             }
         }
 
-        protected override ButtonControl GetMenuButton(TDrumkit drumkit, MenuButton button)
+        protected sealed override ButtonControl GetMenuButton(TDrumkit drumkit, MenuButton button)
         {
             switch (button)
             {
@@ -94,9 +94,9 @@ namespace PlasticBand.Tests.Devices
             }
         }
 
-        protected override DpadControl GetDpad(TDrumkit drumkit) => drumkit.dpad;
+        protected sealed override DpadControl GetDpad(TDrumkit drumkit) => drumkit.dpad;
 
-        protected override void SetDpad(ref TState state, DpadDirection dpad)
+        protected sealed override void SetDpad(ref TState state, DpadDirection dpad)
         {
             state.dpadUp = dpad.IsUp();
             state.dpadDown = dpad.IsDown();
@@ -104,7 +104,7 @@ namespace PlasticBand.Tests.Devices
             state.dpadRight = dpad.IsRight();
         }
 
-        protected override void SetFaceButtons(ref TState state, FaceButton buttons)
+        protected sealed override void SetFaceButtons(ref TState state, FaceButton buttons)
         {
             state.green_south = (buttons & FaceButton.South) != 0;
             state.red_east = (buttons & FaceButton.East) != 0;
@@ -112,7 +112,7 @@ namespace PlasticBand.Tests.Devices
             state.yellow_north = (buttons & FaceButton.North) != 0;
         }
 
-        protected override void SetMenuButtons(ref TState state, MenuButton buttons)
+        protected sealed override void SetMenuButtons(ref TState state, MenuButton buttons)
         {
             state.start = (buttons & MenuButton.Start) != 0;
             state.select = (buttons & MenuButton.Select) != 0;
@@ -167,7 +167,7 @@ namespace PlasticBand.Tests.Devices
         public void GetPadThrowsCorrectly()
             => CreateAndRun(FiveLaneDrumkitTests._GetPadThrowsCorrectly);
 
-        private List<(FiveLanePad pad, ButtonControl button)> CreatePadMap(TDrumkit drumkit)
+        protected List<(FiveLanePad pad, ButtonControl button)> CreatePadMap(TDrumkit drumkit)
         {
             return new List<(FiveLanePad, ButtonControl)>()
             {
@@ -180,7 +180,7 @@ namespace PlasticBand.Tests.Devices
             };
         }
 
-        private HashSet<FiveLanePad> CreatePadsList()
+        protected HashSet<FiveLanePad> CreatePadsList()
         {
             var pads = new FiveLanePad[]
             {

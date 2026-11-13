@@ -79,16 +79,7 @@ namespace PlasticBand.Tests.Devices
         where TGuitar : RockBandGuitar
         where TState : unmanaged, IRockBandGuitarState_Flags
     {
-        private void SetFrets(ref TState state, FiveFret frets)
-        {
-            state.green = (frets & FiveFret.Green) != 0;
-            state.red = (frets & FiveFret.Red) != 0;
-            state.yellow = (frets & FiveFret.Yellow) != 0;
-            state.blue = (frets & FiveFret.Blue) != 0;
-            state.orange = (frets & FiveFret.Orange) != 0;
-        }
-
-        protected override void SetSoloFrets(ref TState state, FiveFret frets)
+        protected sealed override void SetSoloFrets(ref TState state, FiveFret frets)
         {
             state.solo = frets != FiveFret.None;
             SetFrets(ref state, frets);
@@ -121,7 +112,7 @@ namespace PlasticBand.Tests.Devices
         where TGuitar : RockBandGuitar
         where TState : unmanaged, IRockBandGuitarState_Distinct
     {
-        protected override void SetSoloFrets(ref TState state, FiveFret frets)
+        protected sealed override void SetSoloFrets(ref TState state, FiveFret frets)
         {
             state.soloGreen = (frets & FiveFret.Green) != 0;
             state.soloRed = (frets & FiveFret.Red) != 0;
