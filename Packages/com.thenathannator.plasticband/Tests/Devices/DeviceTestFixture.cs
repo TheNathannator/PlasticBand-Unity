@@ -62,14 +62,29 @@ namespace PlasticBand.Tests.Devices
         where TDevice : InputDevice
         where TState : unmanaged, IInputStateTypeInfo
     {
+        protected virtual bool hasStart => true;
+        protected virtual bool hasSelect => true;
+        
+        protected virtual bool hasDpad => true;
+
+        protected virtual bool hasFaceButtons => true;
+
         protected abstract TState CreateState();
 
-        // All PlasticBand devices have start/select and a d-pad
-        protected abstract ButtonControl GetMenuButton(TDevice device, MenuButton button);
-        protected abstract void SetMenuButtons(ref TState state, MenuButton buttons);
+        protected virtual ButtonControl GetMenuButton(TDevice device, MenuButton button)
+            => throw new NotImplementedException();
+        protected virtual void SetMenuButtons(ref TState state, MenuButton buttons)
+            => throw new NotImplementedException();
 
-        protected abstract DpadControl GetDpad(TDevice device);
-        protected abstract void SetDpad(ref TState state, DpadDirection dpad);
+        protected virtual DpadControl GetDpad(TDevice device)
+            => throw new NotImplementedException();
+        protected virtual void SetDpad(ref TState state, DpadDirection dpad)
+            => throw new NotImplementedException();
+
+        protected virtual ButtonControl GetFaceButton(TDevice device, FaceButton button)
+            => throw new NotImplementedException();
+        protected virtual void SetFaceButtons(ref TState state, FaceButton buttons)
+            => throw new NotImplementedException();
 
         [Test]
         public void HandlesDefaultState() => CreateAndRun((device) =>
@@ -81,6 +96,12 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void RecognizesMenuButtons() => CreateAndRun((device) =>
         {
+            if (!hasStart && !hasSelect)
+            {
+                Assert.Pass("Device has no menu buttons to test");
+                return;
+            }
+
             var state = CreateState();
 
             var startButton = GetMenuButton(device, MenuButton.Start);
@@ -91,8 +112,8 @@ namespace PlasticBand.Tests.Devices
             {
                 SetMenuButtons(ref state, buttons);
 
-                if ((buttons & MenuButton.Start) != 0) buttonList.Add(startButton);
-                if ((buttons & MenuButton.Select) != 0) buttonList.Add(selectButton);
+                if (hasStart && (buttons & MenuButton.Start) != 0) buttonList.Add(startButton);
+                if (hasSelect && (buttons & MenuButton.Select) != 0) buttonList.Add(selectButton);
 
                 AssertButtonPress(device, state, buttonList.ToArray());
                 buttonList.Clear();
@@ -102,6 +123,12 @@ namespace PlasticBand.Tests.Devices
         [Test]
         public void RecognizesDpad() => CreateAndRun((device) =>
         {
+            if (!hasDpad)
+            {
+                Assert.Pass("Device has no d-pad to test");
+                return;
+            }
+
             var state = CreateState();
             var dpad = GetDpad(device);
 
@@ -119,19 +146,16 @@ namespace PlasticBand.Tests.Devices
                 directionList.Clear();
             }
         });
-    }
-
-    // D-pad and start/select are present on all PlasticBand devices, but the face buttons are not
-    public abstract class FaceButtonDeviceTestFixture<TDevice, TState> : DeviceTestFixture<TDevice, TState>
-        where TDevice : InputDevice
-        where TState : unmanaged, IInputStateTypeInfo
-    {
-        protected abstract ButtonControl GetFaceButton(TDevice device, FaceButton button);
-        protected abstract void SetFaceButtons(ref TState state, FaceButton buttons);
 
         [Test]
         public void RecognizesFaceButtons() => CreateAndRun((device) =>
         {
+            if (!hasFaceButtons)
+            {
+                Assert.Pass("Device has no face buttons to test");
+                return;
+            }
+
             var state = CreateState();
 
             var southButton = GetFaceButton(device, FaceButton.South);

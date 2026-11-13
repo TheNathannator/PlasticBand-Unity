@@ -141,6 +141,8 @@ namespace PlasticBand.Tests.Devices
         where TGuitar : FiveFretGuitar
         where TState : unmanaged, IFiveFretGuitarState
     {
+        protected override bool hasFaceButtons => false;
+
         protected abstract AxisMode tiltMode { get; }
 
         protected sealed override DpadControl GetDpad(TGuitar guitar) => guitar.dpad;

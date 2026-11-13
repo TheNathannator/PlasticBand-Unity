@@ -62,7 +62,7 @@ namespace PlasticBand.Tests.Devices
         }
     }
 
-    internal abstract class ProKeyboardTests<TKeyboard, TState> : FaceButtonDeviceTestFixture<TKeyboard, TState>
+    internal abstract class ProKeyboardTests<TKeyboard, TState> : DeviceTestFixture<TKeyboard, TState>
         where TKeyboard : ProKeyboard
         where TState : unmanaged, IProKeyboardState
     {

@@ -110,7 +110,7 @@ namespace PlasticBand.Tests.Devices
         }
     }
 
-    internal abstract class TurntableTests<TTurntable, TState> : FaceButtonDeviceTestFixture<TTurntable, TState>
+    internal abstract class TurntableTests<TTurntable, TState> : DeviceTestFixture<TTurntable, TState>
         where TTurntable : Turntable
         where TState : unmanaged, ITurntableState
     {

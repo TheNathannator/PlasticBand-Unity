@@ -82,6 +82,8 @@ namespace PlasticBand.Tests.Devices
         where TGuitar : SixFretGuitar
         where TState : unmanaged, ISixFretGuitarState
     {
+        protected override bool hasFaceButtons => false;
+
         protected sealed override ButtonControl GetMenuButton(TGuitar guitar, MenuButton button)
         {
             switch (button)

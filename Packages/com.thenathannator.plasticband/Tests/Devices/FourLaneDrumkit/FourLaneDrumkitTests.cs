@@ -80,7 +80,7 @@ namespace PlasticBand.Tests.Devices
         }
     }
 
-    internal abstract class FourLaneDrumkitTests<TDrumkit, TState> : FaceButtonDeviceTestFixture<TDrumkit, TState>
+    internal abstract class FourLaneDrumkitTests<TDrumkit, TState> : DeviceTestFixture<TDrumkit, TState>
         where TDrumkit : FourLaneDrumkit
         where TState : unmanaged, IFourLaneDrumkitState_Base
     {

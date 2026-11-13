@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace PlasticBand.Tests.Devices
 {
-    internal abstract class GamepadTests<TGamepad, TState> : FaceButtonDeviceTestFixture<TGamepad, TState>
+    internal abstract class GamepadTests<TGamepad, TState> : DeviceTestFixture<TGamepad, TState>
         where TGamepad : Gamepad
         where TState : unmanaged, IGamepadState
     {

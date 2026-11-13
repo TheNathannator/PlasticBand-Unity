@@ -112,7 +112,7 @@ namespace PlasticBand.Tests.Devices
         }
     }
 
-    internal abstract class ProGuitarTests<TGuitar, TState> : FaceButtonDeviceTestFixture<TGuitar, TState>
+    internal abstract class ProGuitarTests<TGuitar, TState> : DeviceTestFixture<TGuitar, TState>
         where TGuitar : ProGuitar
         where TState : unmanaged, IProGuitarState
     {
