@@ -41,25 +41,25 @@ namespace PlasticBand.Devices
         [FieldOffset(48)]
         public byte greenCymbal;
 
-        public bool south
+        public bool green_south
         {
             get => (buttons1 & PS4Button1.Cross) != 0;
             set => buttons1.SetBit(PS4Button1.Cross, value);
         }
 
-        public bool east
+        public bool red_east
         {
             get => (buttons1 & PS4Button1.Circle) != 0;
             set => buttons1.SetBit(PS4Button1.Circle, value);
         }
 
-        public bool west
+        public bool blue_west
         {
             get => (buttons1 & PS4Button1.Square) != 0;
             set => buttons1.SetBit(PS4Button1.Square, value);
         }
 
-        public bool north
+        public bool yellow_north
         {
             get => (buttons1 & PS4Button1.Triangle) != 0;
             set => buttons1.SetBit(PS4Button1.Triangle, value);
@@ -170,10 +170,10 @@ namespace PlasticBand.Devices
         public byte reportId;
         public PS4FourLaneDrumkitState_NoReportId state;
 
-        public bool south { get => state.south; set => state.south = value; }
-        public bool east { get => state.east; set => state.east = value; }
-        public bool west { get => state.west; set => state.west = value; }
-        public bool north { get => state.north; set => state.north = value; }
+        public bool green_south { get => state.green_south; set => state.green_south = value; }
+        public bool red_east { get => state.red_east; set => state.red_east = value; }
+        public bool blue_west { get => state.blue_west; set => state.blue_west = value; }
+        public bool yellow_north { get => state.yellow_north; set => state.yellow_north = value; }
 
         public bool dpadUp { get => state.dpadUp; set => state.dpadUp = value; }
         public bool dpadDown { get => state.dpadDown; set => state.dpadDown = value; }

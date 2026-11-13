@@ -56,25 +56,25 @@ namespace PlasticBand.Devices
         public byte yellowCymbalVelocity;
         public byte blueCymbalVelocity;
 
-        public bool south
+        public bool green_south
         {
             get => (buttons & Button.South) != 0;
             set => buttons.SetBit(Button.South, value);
         }
 
-        public bool east
+        public bool red_east
         {
             get => (buttons & Button.East) != 0;
             set => buttons.SetBit(Button.East, value);
         }
 
-        public bool west
+        public bool blue_west
         {
             get => (buttons & Button.West) != 0;
             set => buttons.SetBit(Button.West, value);
         }
 
-        public bool north
+        public bool yellow_north
         {
             get => (buttons & Button.North) != 0;
             set => buttons.SetBit(Button.North, value);

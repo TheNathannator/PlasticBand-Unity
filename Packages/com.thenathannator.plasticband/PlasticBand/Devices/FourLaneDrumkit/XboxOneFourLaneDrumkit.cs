@@ -32,25 +32,25 @@ namespace PlasticBand.Devices
         // These 3 bytes of padding bring this state struct to 10 bytes total to make use of that space.
         private fixed byte padding[3];
 
-        public bool south
+        public bool green_south
         {
             get => (buttons & GameInputButton.A) != 0;
             set => buttons.SetBit(GameInputButton.A, value);
         }
 
-        public bool east
+        public bool red_east
         {
             get => (buttons & GameInputButton.B) != 0;
             set => buttons.SetBit(GameInputButton.B, value);
         }
 
-        public bool west
+        public bool blue_west
         {
             get => (buttons & GameInputButton.X) != 0;
             set => buttons.SetBit(GameInputButton.X, value);
         }
 
-        public bool north
+        public bool yellow_north
         {
             get => (buttons & GameInputButton.Y) != 0;
             set => buttons.SetBit(GameInputButton.Y, value);

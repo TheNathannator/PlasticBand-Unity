@@ -115,10 +115,10 @@ namespace PlasticBand.Devices
             var pads = FourLanePad.None;
 
             // Retrieve flag values
-            bool red = state.GetRedFlag();
-            bool yellow = state.GetYellowFlag();
-            bool blue = state.GetBlueFlag();
-            bool green = state.GetGreenFlag();
+            bool red = state.red_east;
+            bool yellow = state.yellow_north;
+            bool blue = state.blue_west;
+            bool green = state.green_south;
             bool pad = state.pad;
             bool cymbal = state.cymbal;
             bool dpadUp = state.dpadUp;
@@ -214,16 +214,16 @@ namespace PlasticBand.Devices
 
             // Face buttons; these are ignored if the corresponding pad/cymbal is also active
             // A, cross
-            if ((pads & (FourLanePad.GreenPad | FourLanePad.GreenCymbal)) == 0 && state.south)
+            if ((pads & (FourLanePad.GreenPad | FourLanePad.GreenCymbal)) == 0 && state.green_south)
                 buttons |= TranslatedFourLaneButtonMask.South;
             // B, circle
-            if ((pads & FourLanePad.RedPad) == 0 && state.east)
+            if ((pads & FourLanePad.RedPad) == 0 && state.red_east)
                 buttons |= TranslatedFourLaneButtonMask.East;
             // X, square, 1
-            if ((pads & (FourLanePad.BluePad | FourLanePad.BlueCymbal)) == 0 && state.west)
+            if ((pads & (FourLanePad.BluePad | FourLanePad.BlueCymbal)) == 0 && state.blue_west)
                 buttons |= TranslatedFourLaneButtonMask.West;
             // Y, triangle, 2
-            if ((pads & (FourLanePad.YellowPad | FourLanePad.YellowCymbal)) == 0 && state.north)
+            if ((pads & (FourLanePad.YellowPad | FourLanePad.YellowCymbal)) == 0 && state.yellow_north)
                 buttons |= TranslatedFourLaneButtonMask.North;
 
             // D-pad

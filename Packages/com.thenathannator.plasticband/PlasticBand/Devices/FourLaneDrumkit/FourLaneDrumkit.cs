@@ -27,10 +27,10 @@ namespace PlasticBand.Devices
 
     internal interface IFourLaneDrumkitState_Base : IInputStateTypeInfo
     {
-        bool south { get; set; }
-        bool east { get; set; }
-        bool west { get; set; }
-        bool north { get; set; }
+        bool green_south { get; set; }
+        bool red_east { get; set; }
+        bool blue_west { get; set; }
+        bool yellow_north { get; set; }
 
         bool dpadUp { get; set; }
         bool dpadDown { get; set; }
@@ -328,40 +328,5 @@ namespace PlasticBand.Devices
             if (current == this)
                 current = null;
         }
-    }
-
-    internal static class FourLaneDrumExtensions
-    {
-        public static bool GetRedFlag<TState>(ref this TState state)
-            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
-            => state.east;
-
-        public static bool SetRedFlag<TState>(ref this TState state, bool value)
-            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
-            => state.east = value;
-
-        public static bool GetYellowFlag<TState>(ref this TState state)
-            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
-            => state.north;
-
-        public static bool SetYellowFlag<TState>(ref this TState state, bool value)
-            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
-            => state.north = value;
-
-        public static bool GetBlueFlag<TState>(ref this TState state)
-            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
-            => state.west;
-
-        public static bool SetBlueFlag<TState>(ref this TState state, bool value)
-            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
-            => state.west = value;
-
-        public static bool GetGreenFlag<TState>(ref this TState state)
-            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
-            => state.south;
-
-        public static bool SetGreenFlag<TState>(ref this TState state, bool value)
-            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
-            => state.south = value;
     }
 }

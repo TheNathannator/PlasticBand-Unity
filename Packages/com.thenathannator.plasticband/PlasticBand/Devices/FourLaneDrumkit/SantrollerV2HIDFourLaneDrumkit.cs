@@ -30,25 +30,25 @@ namespace PlasticBand.Devices
             set => buttons.SetDpad(value);
         }
 
-        public bool south
+        public bool green_south
         {
             get => (buttons & SantrollerV2Button.South) != 0;
             set => buttons.SetBit(SantrollerV2Button.South, value);
         }
 
-        public bool east
+        public bool red_east
         {
             get => (buttons & SantrollerV2Button.East) != 0;
             set => buttons.SetBit(SantrollerV2Button.East, value);
         }
 
-        public bool west
+        public bool blue_west
         {
             get => (buttons & SantrollerV2Button.West) != 0;
             set => buttons.SetBit(SantrollerV2Button.West, value);
         }
 
-        public bool north
+        public bool yellow_north
         {
             get => (buttons & SantrollerV2Button.North) != 0;
             set => buttons.SetBit(SantrollerV2Button.North, value);

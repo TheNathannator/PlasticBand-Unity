@@ -25,25 +25,25 @@ namespace PlasticBand.Devices
         public short blueVelocity;
         public short greenVelocity;
 
-        public bool south
+        public bool green_south
         {
             get => (buttons & XInputButton.A) != 0;
             set => buttons.SetBit(XInputButton.A, value);
         }
 
-        public bool east
+        public bool red_east
         {
             get => (buttons & XInputButton.B) != 0;
             set => buttons.SetBit(XInputButton.B, value);
         }
 
-        public bool west
+        public bool blue_west
         {
             get => (buttons & XInputButton.X) != 0;
             set => buttons.SetBit(XInputButton.X, value);
         }
 
-        public bool north
+        public bool yellow_north
         {
             get => (buttons & XInputButton.Y) != 0;
             set => buttons.SetBit(XInputButton.Y, value);

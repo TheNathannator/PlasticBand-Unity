@@ -30,25 +30,25 @@ namespace PlasticBand.Devices
         private byte m_GreenVelocity;
         private byte m_BlueVelocity;
 
-        public bool south
+        public bool green_south
         {
             get => (buttons & PS3Button.Cross) != 0;
             set => buttons.SetBit(PS3Button.Cross, value);
         }
 
-        public bool east
+        public bool red_east
         {
             get => (buttons & PS3Button.Circle) != 0;
             set => buttons.SetBit(PS3Button.Circle, value);
         }
 
-        public bool west
+        public bool blue_west
         {
             get => (buttons & PS3Button.Square) != 0;
             set => buttons.SetBit(PS3Button.Square, value);
         }
 
-        public bool north
+        public bool yellow_north
         {
             get => (buttons & PS3Button.Triangle) != 0;
             set => buttons.SetBit(PS3Button.Triangle, value);
@@ -154,10 +154,10 @@ namespace PlasticBand.Devices
         public byte reportId;
         public PS3WiiFourLaneDrumkitState_NoReportId state;
 
-        public bool south { get => state.south; set => state.south = value; }
-        public bool east { get => state.east; set => state.east = value; }
-        public bool west { get => state.west; set => state.west = value; }
-        public bool north { get => state.north; set => state.north = value; }
+        public bool green_south { get => state.green_south; set => state.green_south = value; }
+        public bool red_east { get => state.red_east; set => state.red_east = value; }
+        public bool blue_west { get => state.blue_west; set => state.blue_west = value; }
+        public bool yellow_north { get => state.yellow_north; set => state.yellow_north = value; }
 
         public bool kick1 { get => state.kick1; set => state.kick1 = value; }
         public bool kick2 { get => state.kick2; set => state.kick2 = value; }
