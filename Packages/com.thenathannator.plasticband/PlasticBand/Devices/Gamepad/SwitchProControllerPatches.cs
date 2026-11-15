@@ -7,7 +7,7 @@ namespace PlasticBand.Devices
     {
         internal static void Initialize()
         {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX || UNITY_WSA
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || (INPUT_SYSTEM_1_16_0_OR_LATER && UNITY_STANDALONE_LINUX) || UNITY_WSA
             // Some Switch Pro Controllers have their hardware IDs set to 0 and are only identifiable by name
             // Specific examples include:
             // - "Lic Pro Controller"

@@ -8,7 +8,7 @@ namespace PlasticBand.Devices
     {
         internal static void Initialize()
         {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX || UNITY_WSA
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || (INPUT_SYSTEM_1_16_0_OR_LATER && UNITY_STANDALONE_LINUX) || UNITY_WSA
             // Stage Tour Gibson Kramer Guitar for Switch 2
             // TODO: Proper layout
             InputSystem.RegisterLayoutMatcher<UnityEngine.InputSystem.Switch.SwitchProControllerHID>(new InputDeviceMatcher()
