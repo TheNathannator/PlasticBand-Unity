@@ -66,6 +66,7 @@ namespace PlasticBand.LowLevel
             where TDevice : InputDevice
         {
             XInputLayoutFinder.RegisterLayout<TDevice>(subType, VendorID, ProductID, GetRevisionValue(deviceType));
+            XInputLayoutFinder.RegisterLayout<TDevice>(subType, VendorID, ProductIDV2, GetRevisionValue(deviceType));
         }
     }
 }
