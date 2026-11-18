@@ -2,7 +2,8 @@
     "name": "PlasticBand",
     "rootNamespace": "PlasticBand",
     "references": [
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "HIDrogen"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -16,6 +17,11 @@
             "name": "com.unity.inputsystem",
             "expression": "1.16.0",
             "define": "INPUT_SYSTEM_1_16_0_OR_LATER"
+        },
+        {
+            "name": "com.thenathannator.hidrogen",
+            "expression": "",
+            "define": "PLASTICBAND_HAS_HIDROGEN"
         }
     ],
     "noEngineReferences": false
