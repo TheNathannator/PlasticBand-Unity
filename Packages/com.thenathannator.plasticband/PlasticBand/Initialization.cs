@@ -34,6 +34,7 @@ namespace PlasticBand
             XInputControllerUniversal.Initialize();
             SwitchProControllerPatches.Initialize();
             AndroidGamepad.Initialize();
+            EvdevGamepad.Initialize();
 
             // 5-fret guitars
             FiveFretGuitar.Initialize();
