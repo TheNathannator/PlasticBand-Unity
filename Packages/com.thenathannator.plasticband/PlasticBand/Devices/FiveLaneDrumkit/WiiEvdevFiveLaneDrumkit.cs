@@ -10,8 +10,10 @@ namespace PlasticBand.Devices
     // always built on-demand via EvdevLayoutFinder.
     // Covers Wii Guitar Hero World Tour drums, which are Wii Remote extensions: the kernel's hid-wiimote
     // driver exposes each part of a Wii Remote as its own evdev device, the drums being "Nintendo Wii
-    // Remote Drums". Each pad is an axis from 0 to 7 holding how hard it was last hit (hits without
-    // velocity data read 3), so pads count as pressed as soon as they leave 0.
+    // Remote Drums". The pads' hit bits aren't reported as keys; hid-wiimote folds each one into the pad's
+    // axis instead, which reads how hard it was hit (0 to 7, or 3 for hits without velocity data) while
+    // the pad is held, and 0 otherwise. Light hits can read as low as 1, so pads count as pressed as soon
+    // as they leave 0.
     // Not supported:
     // - the d-pad, which comes from the Wii Remote itself (a separate evdev device)
     // - the hi-hat pedal (ABS_HAT3Y), which has no equivalent control

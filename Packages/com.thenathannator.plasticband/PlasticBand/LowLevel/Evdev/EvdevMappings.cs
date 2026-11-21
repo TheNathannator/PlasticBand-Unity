@@ -56,6 +56,13 @@ namespace PlasticBand.LowLevel
         public static EvdevControlMapping PressOnAnyValue(string path)
             => new EvdevControlMapping() { path = path, options = EvdevControlOptions.PressOnAnyValue };
 
+        /// <summary>
+        /// An axis whose driver passes a raw two's complement field of the given width through as an
+        /// unsigned value (e.g. hid-wiimote's turntable velocities, where 63 means -1).
+        /// </summary>
+        public static EvdevControlMapping SignedBits(string path, int bits)
+            => new EvdevControlMapping() { path = path, signedBits = bits };
+
         // hid-sony instrument key mapping (instrument_keymap), by HID button usage.
         // PS3 instruments name these in PS3Button bit order; note that PS3Button's L2/R2/L1/R1
         // correspond to usages 5/6/7/8, while on PS4/PS5 usages 5-8 are L1/R1/L2/R2.

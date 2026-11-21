@@ -166,6 +166,7 @@ namespace PlasticBand
             SantrollerV2EvdevTurntable.Initialize();
             XInputEvdevTurntable.Initialize();
             PS3EvdevTurntable.Initialize();
+            WiiEvdevTurntable.Initialize();
 #endif
 
             // Pro Keyboards
