@@ -34,7 +34,13 @@ namespace PlasticBand
             XInputControllerUniversal.Initialize();
             SwitchProControllerPatches.Initialize();
             AndroidGamepad.Initialize();
+            SantrollerHIDGamepad.Initialize();
+            SantrollerV2HIDGamepad.Initialize();
+#if HIDROGEN_0_6_0_OR_LATER
             EvdevGamepad.Initialize();
+            SantrollerEvdevGamepad.Initialize();
+            SantrollerV2EvdevGamepad.Initialize();
+#endif
 
             // 5-fret guitars
             FiveFretGuitar.Initialize();
@@ -48,6 +54,13 @@ namespace PlasticBand
             SantrollerHIDGuitarHeroGuitar.Initialize();
             SantrollerV2HIDGuitarHeroGuitar.Initialize();
             SantrollerXInputGuitarHeroGuitar.Initialize();
+#if HIDROGEN_0_6_0_OR_LATER
+            SantrollerEvdevGuitarHeroGuitar.Initialize();
+            SantrollerV2EvdevGuitarHeroGuitar.Initialize();
+            WiiEvdevGuitarHeroGuitar.Initialize();
+            XInputEvdevGuitarHeroGuitar.Initialize();
+            PS3EvdevGuitarHeroGuitar.Initialize();
+#endif
 
             // Rock Band guitars
             RockBandGuitar.Initialize();
@@ -59,6 +72,13 @@ namespace PlasticBand
             SantrollerHIDRockBandGuitar.Initialize();
             SantrollerV2HIDRockBandGuitar.Initialize();
             SantrollerXInputRockBandGuitar.Initialize();
+#if HIDROGEN_0_6_0_OR_LATER
+            SantrollerEvdevRockBandGuitar.Initialize();
+            SantrollerV2EvdevRockBandGuitar.Initialize();
+            XInputEvdevRockBandGuitar.Initialize();
+            PS3EvdevRockBandGuitar.Initialize();
+            PS4EvdevRockBandGuitar.Initialize();
+#endif
 
             // Riffmaster guitars
             RiffmasterGuitar.Initialize();
@@ -81,6 +101,13 @@ namespace PlasticBand
             SantrollerHIDSixFretGuitar.Initialize();
             SantrollerV2HIDSixFretGuitar.Initialize();
             SantrollerXInputSixFretGuitar.Initialize();
+#if HIDROGEN_0_6_0_OR_LATER
+            SantrollerEvdevSixFretGuitar.Initialize();
+            SantrollerV2EvdevSixFretGuitar.Initialize();
+            XInputEvdevSixFretGuitar.Initialize();
+            PS3EvdevSixFretGuitar.Initialize();
+            PS4EvdevSixFretGuitar.Initialize();
+#endif
 
             // Pro Guitars
             ProGuitar.Initialize();
@@ -99,6 +126,12 @@ namespace PlasticBand
             SantrollerHIDFourLaneDrumkit.Initialize();
             SantrollerV2HIDFourLaneDrumkit.Initialize();
             SantrollerXInputFourLaneDrumkit.Initialize();
+#if HIDROGEN_0_6_0_OR_LATER
+            SantrollerEvdevFourLaneDrumkit.Initialize();
+            SantrollerV2EvdevFourLaneDrumkit.Initialize();
+            XInputEvdevFourLaneDrumkit.Initialize();
+            PS3EvdevFourLaneDrumkit.Initialize();
+#endif
 
             // CRKD drumkits
             XboxCrkdDrumkit.Initialize();
@@ -113,6 +146,13 @@ namespace PlasticBand
             SantrollerHIDFiveLaneDrumkit.Initialize();
             SantrollerV2HIDFiveLaneDrumkit.Initialize();
             SantrollerXInputFiveLaneDrumkit.Initialize();
+#if HIDROGEN_0_6_0_OR_LATER
+            SantrollerEvdevFiveLaneDrumkit.Initialize();
+            SantrollerV2EvdevFiveLaneDrumkit.Initialize();
+            XInputEvdevFiveLaneDrumkit.Initialize();
+            PS3EvdevFiveLaneDrumkit.Initialize();
+            WiiEvdevFiveLaneDrumkit.Initialize();
+#endif
 
             // Turntables
             Turntable.Initialize();
@@ -121,6 +161,12 @@ namespace PlasticBand
             SantrollerHIDTurntable.Initialize();
             SantrollerV2HIDTurntable.Initialize();
             SantrollerXInputTurntable.Initialize();
+#if HIDROGEN_0_6_0_OR_LATER
+            SantrollerEvdevTurntable.Initialize();
+            SantrollerV2EvdevTurntable.Initialize();
+            XInputEvdevTurntable.Initialize();
+            PS3EvdevTurntable.Initialize();
+#endif
 
             // Pro Keyboards
             ProKeyboard.Initialize();
@@ -134,6 +180,11 @@ namespace PlasticBand
             SantrollerHIDStageKit.Initialize();
             SantrollerV2HIDStageKit.Initialize();
             SantrollerXInputStageKit.Initialize();
+#if HIDROGEN_0_6_0_OR_LATER
+            SantrollerEvdevStageKit.Initialize();
+            SantrollerV2EvdevStageKit.Initialize();
+            XInputEvdevStageKit.Initialize();
+#endif
 
             // Variant devices
             XboxOneWirelessLegacyAdapter.Initialize();

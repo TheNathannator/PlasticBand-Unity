@@ -170,7 +170,7 @@ namespace PlasticBand.Devices
             {
                 m_Capabilities = features->capabilities;
 
-                string layout = GetV2Layout(features->subType);
+                string layout = GetV2Layout(features->subType, features->capabilities);
                 if (!string.IsNullOrEmpty(layout))
                 {
                     Logging.Verbose($"[SantrollerHIDAdapter] Capabilities received. Creating Santroller V2 device {layout} (subtype {features->subType}, capabilities {features->capabilities})");
@@ -212,6 +212,7 @@ namespace PlasticBand.Devices
         {
             switch (subType)
             {
+                case SantrollerDeviceType.Gamepad:          return nameof(SantrollerHIDGamepad);
                 case SantrollerDeviceType.GuitarHeroGuitar: return nameof(SantrollerHIDGuitarHeroGuitar);
                 case SantrollerDeviceType.RockBandGuitar:   return nameof(SantrollerHIDRockBandGuitar);
                 case SantrollerDeviceType.GuitarHeroDrums:  return nameof(SantrollerHIDFiveLaneDrumkit);
@@ -223,10 +224,14 @@ namespace PlasticBand.Devices
             }
         }
 
-        private static string GetV2Layout(SantrollerDeviceType subType)
+        private static string GetV2Layout(SantrollerDeviceType subType, SantrollerCapabilities capabilities)
         {
             switch (subType)
             {
+                case SantrollerDeviceType.Gamepad:
+                    return (capabilities & SantrollerCapabilities.YAxisInverted) != 0
+                        ? SantrollerV2HIDGamepad.kXInputYAxisLayout
+                        : nameof(SantrollerV2HIDGamepad);
                 case SantrollerDeviceType.GuitarHeroGuitar: return nameof(SantrollerV2HIDGuitarHeroGuitar);
                 case SantrollerDeviceType.RockBandGuitar:   return nameof(SantrollerV2HIDRockBandGuitar);
                 case SantrollerDeviceType.GuitarHeroDrums:  return nameof(SantrollerV2HIDFiveLaneDrumkit);

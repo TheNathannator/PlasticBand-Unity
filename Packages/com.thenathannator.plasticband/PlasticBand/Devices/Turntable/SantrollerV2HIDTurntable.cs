@@ -154,16 +154,17 @@ namespace PlasticBand.Devices
             set => leftStickY = (short)(value << 8);
         }
 
+        // Same placement as XInput turntables: effects dial on right stick X, crossfader on right stick Y
         public sbyte crossfader
         {
-            get => (sbyte)(rightStickX >> 8);
-            set => rightStickX = (short)(value << 8);
+            get => (sbyte)(rightStickY >> 8);
+            set => rightStickY = (short)(value << 8);
         }
 
         public ushort effectsDial
         {
-            get => (ushort)rightStickY;
-            set => rightStickY = (short)value;
+            get => (ushort)rightStickX;
+            set => rightStickX = (short)value;
         }
     }
 
