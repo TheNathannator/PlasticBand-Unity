@@ -1,5 +1,9 @@
 using System;
+#if HIDROGEN_0_6_0_OR_LATER
+using HIDrogen.Backend.Linux;
+#endif
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.LowLevel
 {
@@ -68,5 +72,63 @@ namespace PlasticBand.LowLevel
             XInputLayoutFinder.RegisterLayout<TDevice>(subType, VendorID, ProductID, GetRevisionValue(deviceType));
             XInputLayoutFinder.RegisterLayout<TDevice>(subType, VendorID, ProductIDV2, GetRevisionValue(deviceType));
         }
+
+#if HIDROGEN_0_6_0_OR_LATER
+        /// <summary>
+        /// Registers an evdev layout for Santroller V2 devices, which are exposed through hid-generic.
+        /// </summary>
+        internal static void RegisterEvdevLayout<TDevice>(
+            EvdevDeviceMapping mapping,
+            SantrollerDeviceType type
+        )
+            where TDevice : InputDevice
+        {
+            EvdevLayoutFinder.RegisterLayout<TDevice>(mapping, new InputDeviceMatcher()
+                .WithInterface(EvdevDefinitions.InterfaceName)
+                .WithCapability("vendorId", VendorID)
+                .WithCapability("productId", ProductIDV2)
+                .WithCapability("santrollerSubtype", (int)type));
+        }
+
+        /// <summary>
+        /// Registers an evdev layout for Santroller V1 devices running in HID mode, which are exposed
+        /// through hid-generic (or hid-santroller, which uses the same input mapping).
+        /// </summary>
+        /// <remarks>
+        /// V1 devices share their vendor/product IDs and revision between HID and XInput mode,
+        /// so a zero xpad subtype is required to avoid matching devices bound to xpad.
+        /// </remarks>
+        internal static void RegisterEvdevV1HidLayout<TDevice>(
+            EvdevDeviceMapping mapping,
+            SantrollerDeviceType type
+        )
+            where TDevice : InputDevice
+        {
+            EvdevLayoutFinder.RegisterLayout<TDevice>(mapping, new InputDeviceMatcher()
+                .WithInterface(EvdevDefinitions.InterfaceName)
+                .WithVersion(GetRevisionValue(type).ToString())
+                .WithCapability("vendorId", VendorID)
+                .WithCapability("productId", ProductID)
+                .WithCapability("xpadSubtype", 0));
+        }
+
+        /// <summary>
+        /// Registers an evdev layout for Santroller V1 devices running in XInput mode, which are exposed through xpad.
+        /// </summary>
+        internal static void RegisterEvdevXpadLayout<TDevice>(
+            EvdevDeviceMapping mapping,
+            XInputDeviceSubType subType,
+            SantrollerDeviceType type
+        )
+            where TDevice : InputDevice
+        {
+            EvdevLayoutFinder.RegisterLayout<TDevice>(mapping, new InputDeviceMatcher()
+                .WithInterface(EvdevDefinitions.InterfaceName)
+                .WithVersion(GetRevisionValue(type).ToString())
+                .WithCapability("vendorId", VendorID)
+                .WithCapability("productId", ProductID)
+                .WithCapability("xpadSubtype", (int)subType));
+        }
+#endif
     }
 }
