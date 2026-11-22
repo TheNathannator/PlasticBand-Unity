@@ -160,7 +160,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerHIDSixFretGuitar>();
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDSixFretGuitar>(SantrollerHIDProtocol.V1, SantrollerDeviceType.LiveGuitar);
         }
 
         protected override void FinishSetup()

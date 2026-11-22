@@ -248,7 +248,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerHIDStageKit>();
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDStageKit>(SantrollerHIDProtocol.V1, SantrollerDeviceType.StageKit);
         }
 
         protected override void FinishSetup()

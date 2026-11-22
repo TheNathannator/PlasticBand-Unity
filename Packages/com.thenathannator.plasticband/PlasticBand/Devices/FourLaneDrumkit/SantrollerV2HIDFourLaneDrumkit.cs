@@ -168,7 +168,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerV2HIDFourLaneDrumkit>();
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerV2HIDFourLaneDrumkit>(SantrollerHIDProtocol.V2, SantrollerDeviceType.RockBandDrums);
         }
 
         protected override void FinishSetup()

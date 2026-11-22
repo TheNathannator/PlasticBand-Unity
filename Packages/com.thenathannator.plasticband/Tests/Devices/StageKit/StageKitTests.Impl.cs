@@ -48,14 +48,15 @@ namespace PlasticBand.Tests.Devices
 
         protected override void CheckExpectedDescriptions()
         {
+            AssertSantrollerHidMatch(SantrollerHIDProtocol.V1, SantrollerDeviceType.StageKit);
         }
     }
 
     internal class SantrollerV2HIDStageKitTests
-        : StageKitTests<SantrollerV2HIDStageKit, SantrollerV2HIDStageKitState>
+        : StageKitTests<SantrollerV2HIDStageKit, SantrollerV2HIDGamepadState>
     {
-        protected override SantrollerV2HIDStageKitState CreateState()
-            => new SantrollerV2HIDStageKitState()
+        protected override SantrollerV2HIDGamepadState CreateState()
+            => new SantrollerV2HIDGamepadState()
         {
             reportId = 1,
             buttons = SantrollerV2Button.Neutral,
@@ -63,6 +64,7 @@ namespace PlasticBand.Tests.Devices
 
         protected override void CheckExpectedDescriptions()
         {
+            AssertSantrollerHidMatch(SantrollerHIDProtocol.V2, SantrollerDeviceType.StageKit);
         }
     }
 }

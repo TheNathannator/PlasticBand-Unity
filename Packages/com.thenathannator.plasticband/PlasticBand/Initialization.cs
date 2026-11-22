@@ -24,6 +24,7 @@ namespace PlasticBand
             // Layout finders
             HidLayoutFinder.Initialize();
             XInputLayoutFinder.Initialize();
+            SantrollerLayoutFinder.Initialize();
 
             // General controls
             IntegerAxisControl.Initialize();
@@ -34,6 +35,8 @@ namespace PlasticBand
             XInputControllerUniversal.Initialize();
             SwitchProControllerPatches.Initialize();
             AndroidGamepad.Initialize();
+            SantrollerHIDGamepad.Initialize();
+            SantrollerV2HIDGamepad.Initialize();
 
             // 5-fret guitars
             FiveFretGuitar.Initialize();

@@ -127,14 +127,14 @@ namespace PlasticBand.Devices
 
         public byte whammy
         {
-            get => XInputDefinitions.GetAxisUnsignedX(rightStickX);
-            set => rightStickX = XInputDefinitions.SetAxisUnsignedX(value);
+            get => XInputDefinitions.GetAxisUnsignedY(rightStickY);
+            set => rightStickY = XInputDefinitions.SetAxisUnsignedY(value);
         }
 
         public sbyte tilt
         {
-            get => XInputDefinitions.GetAxisY(rightStickY);
-            set => rightStickY = XInputDefinitions.SetAxisY(value);
+            get => XInputDefinitions.GetAxisX(rightStickX);
+            set => rightStickX = XInputDefinitions.SetAxisX(value);
         }
     }
 
@@ -144,7 +144,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerV2HIDSixFretGuitar>();
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerV2HIDSixFretGuitar>(SantrollerHIDProtocol.V2, SantrollerDeviceType.LiveGuitar);
         }
 
         protected override void FinishSetup()
