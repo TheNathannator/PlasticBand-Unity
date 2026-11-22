@@ -120,30 +120,46 @@ namespace PlasticBand.Devices
             get => (buttons & SantrollerV2Button.System) != 0;
             set => buttons.SetBit(SantrollerV2Button.System, value);
         }
-
         public byte redVelocity
         {
-            get => (byte)(leftStickX >> 8);
-            set => leftStickX = (short)(value << 8);
+            get => GetVelocity_Positive(leftStickX);
+            set => leftStickX = SetVelocity_Positive(value);
         }
 
         public byte yellowVelocity
         {
-            get => (byte)(leftStickY >> 8);
-            set => leftStickY = (short)(value << 8);
+            get => GetVelocity_Negative(leftStickY);
+            set => leftStickY = SetVelocity_Negative(value);
         }
 
         public byte blueVelocity
         {
-            get => (byte)(rightStickX >> 8);
-            set => rightStickX = (short)(value << 8);
+            get => GetVelocity_Positive(rightStickX);
+            set => rightStickX = SetVelocity_Positive(value);
         }
 
         public byte greenVelocity
         {
-            get => (byte)(rightStickY >> 8);
-            set => rightStickY = (short)(value << 8);
+            get => GetVelocity_Negative(rightStickY);
+            set => rightStickY = SetVelocity_Negative(value);
         }
+
+        private static byte GetVelocity_Positive(short velocity)
+            => (byte)(255 - (byte)(velocity >> 7));
+
+        private static byte GetVelocity_Negative(short velocity)
+        {
+            if (velocity == 0)
+                return 255;
+
+            return (byte)(255 - (byte)((~velocity) >> 7));
+        }
+
+        private static short SetVelocity_Positive(byte value)
+            => (short)(32767 - ((value << 7) | (value >> 1)));
+
+        private static short SetVelocity_Negative(byte value)
+            => (short)(-32767 + ((value << 7) | (value >> 1)));
     }
 
     [InputControlLayout(stateType = typeof(TranslatedFourLaneState), displayName = "Santroller V2 HID Rock Band Drumkit", hideInUI = true)]

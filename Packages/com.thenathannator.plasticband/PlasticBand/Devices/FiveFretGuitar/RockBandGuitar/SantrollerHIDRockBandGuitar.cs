@@ -168,8 +168,8 @@ namespace PlasticBand.Devices
 
         int IRockBandGuitarState_Base.pickupSwitch
         {
-            get => pickupSwitch;
-            set => pickupSwitch = (byte)value;
+            get => RockBandGuitarState.GetPickupSwitchNotch(pickupSwitch);
+            set => pickupSwitch = RockBandGuitarState.SetPickupSwitchNotch(value);
         }
     }
 

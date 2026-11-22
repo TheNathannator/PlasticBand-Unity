@@ -16,12 +16,14 @@ namespace PlasticBand.Devices
         public byte reportId;
         public byte reserved;
         public SantrollerV2Button buttons;
-        public byte leftTrigger;
-        public byte rightTrigger;
-        public short leftStickX;
-        public short leftStickY;
-        public short rightStickX;
-        public short rightStickY;
+        private unsafe fixed byte unused[4];
+
+        public byte m_GreenVelocity;
+        public byte m_RedVelocity;
+        public byte m_YellowVelocity;
+        public byte m_BlueVelocity;
+        public byte m_OrangeVelocity;
+        public byte m_KickVelocity;
 
         public HidDpad dpad
         {
@@ -107,40 +109,40 @@ namespace PlasticBand.Devices
             set => buttons.SetBit(SantrollerV2Button.System, value);
         }
 
+        public byte greenVelocity
+        {
+            get => m_GreenVelocity;
+            set => m_GreenVelocity = value;
+        }
+
         public byte redVelocity
         {
-            get => (byte)(leftStickX >> 8);
-            set => leftStickX = (short)(value << 8);
+            get => m_RedVelocity;
+            set => m_RedVelocity = value;
         }
 
         public byte yellowVelocity
         {
-            get => (byte)(leftStickY >> 8);
-            set => leftStickY = (short)(value << 8);
+            get => m_YellowVelocity;
+            set => m_YellowVelocity = value;
         }
 
         public byte blueVelocity
         {
-            get => (byte)(rightStickX >> 8);
-            set => rightStickX = (short)(value << 8);
+            get => m_BlueVelocity;
+            set => m_BlueVelocity = value;
         }
 
         public byte orangeVelocity
         {
-            get => (byte)(rightStickY >> 8);
-            set => rightStickY = (short)(value << 8);
-        }
-
-        public byte greenVelocity
-        {
-            get => rightTrigger;
-            set => rightTrigger = value;
+            get => m_OrangeVelocity;
+            set => m_OrangeVelocity = value;
         }
 
         public byte kickVelocity
         {
-            get => leftTrigger;
-            set => leftTrigger = value;
+            get => m_KickVelocity;
+            set => m_KickVelocity = value;
         }
     }
 
