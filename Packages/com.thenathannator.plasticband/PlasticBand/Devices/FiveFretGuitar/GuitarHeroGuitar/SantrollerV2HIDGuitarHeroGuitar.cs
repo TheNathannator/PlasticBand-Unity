@@ -118,11 +118,10 @@ namespace PlasticBand.Devices
             get => (buttons & SantrollerV2Button.RightShoulder) != 0;
             set => buttons.SetBit(SantrollerV2Button.RightShoulder, value);
         }
-
         public byte rawTouchBar
         {
-            get => (byte)((leftStickX >> 8) ^ 0x80);
-            set => leftStickX = (short)((byte)(value ^ 0x80) << 8);
+            get => (byte)(leftStickX ^ 0x80);
+            set => leftStickX = (short)((sbyte)(value ^ 0x80) * 257);
         }
     }
 
