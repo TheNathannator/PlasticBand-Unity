@@ -132,7 +132,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerV2HIDRockBandGuitar>();
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerV2HIDRockBandGuitar>(SantrollerHIDProtocol.V2, SantrollerDeviceType.RockBandGuitar);
         }
 
         protected override void FinishSetup()

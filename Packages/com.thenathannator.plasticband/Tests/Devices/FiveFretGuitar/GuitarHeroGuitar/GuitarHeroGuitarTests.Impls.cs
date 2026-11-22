@@ -213,6 +213,7 @@ namespace PlasticBand.Tests.Devices
 
         protected override void CheckExpectedDescriptions()
         {
+            AssertSantrollerHidMatch(SantrollerHIDProtocol.V1, SantrollerDeviceType.GuitarHeroGuitar);
         }
     }
 
@@ -231,6 +232,7 @@ namespace PlasticBand.Tests.Devices
 
         protected override void CheckExpectedDescriptions()
         {
+            AssertSantrollerHidMatch(SantrollerHIDProtocol.V2, SantrollerDeviceType.GuitarHeroGuitar);
         }
     }
 }

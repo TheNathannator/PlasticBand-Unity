@@ -55,16 +55,8 @@ namespace PlasticBand.Devices
                 }
 
                 var subType = (SantrollerDeviceType)(version >> 8);
-                string layout = GetLegacyLayout(subType);
-                if (!string.IsNullOrEmpty(layout))
-                {
-                    Logging.Verbose($"[SantrollerHIDAdapter] Creating legacy Santroller device {layout} for subtype {subType} (revision 0x{version:X4}).");
-                    CreateRealDevice(layout);
-                }
-                else
-                {
-                    Logging.Warning($"[SantrollerHIDAdapter] No legacy layout available for subtype {subType} (revision 0x{version:X4}).");
-                }
+                CreateRealDevice(SantrollerHIDProtocol.V1, subType, SantrollerCapabilities.None,
+                    $"revision 0x{version:X4}");
             }
         }
 
@@ -114,16 +106,6 @@ namespace PlasticBand.Devices
                 }
             }
 
-            // Only check revision if the descriptor is unavailable
-            if (elementCount == 0 && collectionCount == 0)
-            {
-                if (!int.TryParse(description.version, out int version) || (version >> 8) == 0)
-                {
-                    Logging.Verbose($"[SantrollerHIDAdapter] Found Santroller V2 via version");
-                    return true;
-                }
-            }
-
             Logging.Verbose($"[SantrollerHIDAdapter] Could not find Santroller V2 in descriptor, assuming legacy firmware.");
             return false;
         }
@@ -170,16 +152,8 @@ namespace PlasticBand.Devices
             {
                 m_Capabilities = features->capabilities;
 
-                string layout = GetV2Layout(features->subType);
-                if (!string.IsNullOrEmpty(layout))
-                {
-                    Logging.Verbose($"[SantrollerHIDAdapter] Capabilities received. Creating Santroller V2 device {layout} (subtype {features->subType}, capabilities {features->capabilities})");
-                    CreateRealDevice(layout);
-                }
-                else
-                {
-                    Logging.Warning($"[SantrollerHIDAdapter] Capabilities received, but no V2 layout available for subtype {features->subType} (capabilities {features->capabilities})");
-                }
+                CreateRealDevice(SantrollerHIDProtocol.V2, features->subType, features->capabilities,
+                    $"capabilities {features->capabilities}");
                 return;
             }
 
@@ -195,47 +169,25 @@ namespace PlasticBand.Devices
             m_RealDevice.OnStateEvent(stateEvent->stateFormat, stateEvent->state, (int)stateEvent->stateSizeInBytes);
         }
 
-        private void CreateRealDevice(string layout)
+        private void CreateRealDevice(SantrollerHIDProtocol protocol, SantrollerDeviceType subType,
+            SantrollerCapabilities capabilities, string details)
         {
+            var realDescription = SantrollerLayoutFinder.GetHIDDescription(description, protocol, subType, capabilities);
+            string layout = InputSystem.TryFindMatchingLayout(realDescription);
+            if (string.IsNullOrEmpty(layout))
+            {
+                Logging.Warning($"[SantrollerHIDAdapter] No {protocol} Santroller layout available for subtype {subType} ({details}).");
+                return;
+            }
+
             if (m_RealDevice != null)
             {
                 Logging.Verbose($"[SantrollerHIDAdapter] Previous real device was not cleaned up!");
                 m_RealDevice.Dispose();
             }
 
-            m_RealDevice = VariantRealDevice.Create(this, layout);
-        }
-
-        // TODO: Use device descriptions/matchers instead of hard-coding layouts?
-
-        private static string GetLegacyLayout(SantrollerDeviceType subType)
-        {
-            switch (subType)
-            {
-                case SantrollerDeviceType.GuitarHeroGuitar: return nameof(SantrollerHIDGuitarHeroGuitar);
-                case SantrollerDeviceType.RockBandGuitar:   return nameof(SantrollerHIDRockBandGuitar);
-                case SantrollerDeviceType.GuitarHeroDrums:  return nameof(SantrollerHIDFiveLaneDrumkit);
-                case SantrollerDeviceType.RockBandDrums:    return nameof(SantrollerHIDFourLaneDrumkit);
-                case SantrollerDeviceType.LiveGuitar:       return nameof(SantrollerHIDSixFretGuitar);
-                case SantrollerDeviceType.DjHeroTurntable:  return nameof(SantrollerHIDTurntable);
-                case SantrollerDeviceType.StageKit:         return nameof(SantrollerHIDStageKit);
-                default:                                    return null;
-            }
-        }
-
-        private static string GetV2Layout(SantrollerDeviceType subType)
-        {
-            switch (subType)
-            {
-                case SantrollerDeviceType.GuitarHeroGuitar: return nameof(SantrollerV2HIDGuitarHeroGuitar);
-                case SantrollerDeviceType.RockBandGuitar:   return nameof(SantrollerV2HIDRockBandGuitar);
-                case SantrollerDeviceType.GuitarHeroDrums:  return nameof(SantrollerV2HIDFiveLaneDrumkit);
-                case SantrollerDeviceType.RockBandDrums:    return nameof(SantrollerV2HIDFourLaneDrumkit);
-                case SantrollerDeviceType.LiveGuitar:       return nameof(SantrollerV2HIDSixFretGuitar);
-                case SantrollerDeviceType.DjHeroTurntable:  return nameof(SantrollerV2HIDTurntable);
-                case SantrollerDeviceType.StageKit:         return nameof(SantrollerV2HIDStageKit);
-                default:                                    return null;
-            }
+            Logging.Verbose($"[SantrollerHIDAdapter] Creating {protocol} Santroller device {layout} for subtype {subType} ({details}).");
+            m_RealDevice = VariantRealDevice.Create(this, realDescription);
         }
     }
 }

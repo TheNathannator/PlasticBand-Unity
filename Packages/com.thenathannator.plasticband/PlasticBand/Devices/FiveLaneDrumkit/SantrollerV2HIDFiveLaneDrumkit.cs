@@ -152,7 +152,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerV2HIDFiveLaneDrumkit>();
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerV2HIDFiveLaneDrumkit>(SantrollerHIDProtocol.V2, SantrollerDeviceType.GuitarHeroDrums);
         }
 
         protected override void FinishSetup()

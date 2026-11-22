@@ -312,6 +312,7 @@ namespace PlasticBand.Tests.Devices
 
         protected override void CheckExpectedDescriptions()
         {
+            AssertSantrollerHidMatch(SantrollerHIDProtocol.V1, SantrollerDeviceType.RockBandDrums);
         }
     }
 
@@ -327,6 +328,7 @@ namespace PlasticBand.Tests.Devices
 
         protected override void CheckExpectedDescriptions()
         {
+            AssertSantrollerHidMatch(SantrollerHIDProtocol.V2, SantrollerDeviceType.RockBandDrums);
         }
     }
 }

@@ -192,7 +192,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerHIDTurntable>();
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerHIDTurntable>(SantrollerHIDProtocol.V1, SantrollerDeviceType.DjHeroTurntable);
         }
 
         protected override void FinishSetup()

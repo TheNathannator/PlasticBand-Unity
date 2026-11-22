@@ -156,14 +156,14 @@ namespace PlasticBand.Devices
 
         public sbyte crossfader
         {
-            get => (sbyte)(rightStickX >> 8);
-            set => rightStickX = (short)(value << 8);
+            get => (sbyte)(rightStickY >> 8);
+            set => rightStickY = (short)(value << 8);
         }
 
         public ushort effectsDial
         {
-            get => (ushort)rightStickY;
-            set => rightStickY = (short)value;
+            get => (ushort)rightStickX;
+            set => rightStickX = (short)value;
         }
     }
 
@@ -173,7 +173,7 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            InputSystem.RegisterLayout<SantrollerV2HIDTurntable>();
+            SantrollerLayoutFinder.RegisterHIDLayout<SantrollerV2HIDTurntable>(SantrollerHIDProtocol.V2, SantrollerDeviceType.DjHeroTurntable);
         }
 
         protected override void FinishSetup()

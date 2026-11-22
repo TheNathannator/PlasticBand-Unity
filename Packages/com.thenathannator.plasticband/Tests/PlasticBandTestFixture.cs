@@ -195,6 +195,13 @@ namespace PlasticBand.Tests
             });
         }
 
+        internal void AssertSantrollerHidMatch(SantrollerHIDProtocol protocol, SantrollerDeviceType deviceType,
+            SantrollerCapabilities capabilities = SantrollerCapabilities.None)
+        {
+            AssertDescriptionMatches(SantrollerLayoutFinder.GetHIDDescription(new InputDeviceDescription(),
+                protocol, deviceType, capabilities));
+        }
+
         public void AssertGameInputMatch(ushort vendorId, ushort productId)
         {
             AssertDescriptionMatches(new InputDeviceDescription()
