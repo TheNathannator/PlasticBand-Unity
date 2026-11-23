@@ -127,24 +127,25 @@ namespace PlasticBand.Devices
     /// </summary>
     // This is done to simplify state handling in the layouts of guitars, as it makes it easier to correlate
     // the fret flags together without having to use custom control types as hacks to accomplish the same thing.
-    internal abstract class TranslatingRockBandGuitar_Flags<TState> : RockBandGuitar, IInputStateCallbackReceiver
+    internal abstract class TranslatingRockBandGuitar_Flags<TState> : RockBandGuitar,
+        IStateTranslator<TState, TranslatedRockBandGuitarState>
         where TState : unmanaged, IRockBandGuitarState_Flags, IInputStateTypeInfo
     {
-        private static readonly TranslateStateHandler<TState, TranslatedRockBandGuitarState> s_Translator = TranslateState;
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator.VerifyDevice<TState, TranslatedRockBandGuitarState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        internal static TranslatedRockBandGuitarState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedRockBandGuitarState TranslateState(ref TState state)
         {
             var frets = TranslatingRockBandGuitar.TranslateFrets_Flags(ref state);
             bool solo = state.solo;
@@ -171,28 +172,28 @@ namespace PlasticBand.Devices
     /// </summary>
     // This is done to simplify state handling in the layouts of guitars, as it makes it easier to correlate
     // the fret flags together without having to use custom control types as hacks to accomplish the same thing.
-    internal abstract class TranslatingRockBandGuitar_Flags_NullState<TState> : RockBandGuitar, IInputStateCallbackReceiver
+    internal abstract class TranslatingRockBandGuitar_Flags_NullState<TState> : RockBandGuitar,
+        IStateTranslator<TState, TranslatedRockBandGuitarState>
         where TState : unmanaged, IRockBandGuitarState_Flags, IInputStateTypeInfo
     {
-        private TranslateStateHandler<TState, TranslatedRockBandGuitarState> m_Translator;
-
         private byte m_LastWhammy;
         private int m_LastPickupSwitch;
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Translator = TranslateState;
-            StateTranslator.VerifyDevice<TState, TranslatedRockBandGuitarState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, m_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        private TranslatedRockBandGuitarState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedRockBandGuitarState TranslateState(ref TState state)
         {
             if (state.whammy == RockBandGuitarState.kNullValue)
                 state.whammy = m_LastWhammy;
@@ -203,7 +204,21 @@ namespace PlasticBand.Devices
             m_LastWhammy = state.whammy;
             m_LastPickupSwitch = state.pickupSwitch;
 
-            return TranslatingRockBandGuitar_Flags<TState>.TranslateState(ref state);
+            var frets = TranslatingRockBandGuitar.TranslateFrets_Flags(ref state);
+            bool solo = state.solo;
+
+            return new TranslatedRockBandGuitarState()
+            {
+                buttons = (ushort)TranslatingRockBandGuitar.TranslateButtons(ref state),
+
+                // Only allow one set of frets at a time, don't mirror frets
+                frets = (byte)(!solo ? frets : FiveFret.None),
+                soloFrets = (byte)(solo ? frets : FiveFret.None),
+
+                whammy = state.whammy,
+                tilt = state.tilt,
+                pickupSwitch = (byte)state.pickupSwitch,
+            };
         }
     }
 
@@ -212,24 +227,26 @@ namespace PlasticBand.Devices
     /// <see cref="TranslatedRockBandGuitarState"/> format.
     /// This variant is for guitars which directly distinguish the regular and solo frets.
     /// </summary>
-    internal abstract class TranslatingRockBandGuitar_Distinct<TState> : RockBandGuitar, IInputStateCallbackReceiver
+    internal abstract class TranslatingRockBandGuitar_Distinct<TState> : RockBandGuitar, 
+        IStateTranslator<TState, TranslatedRockBandGuitarState>
         where TState : unmanaged, IRockBandGuitarState_Distinct, IInputStateTypeInfo
     {
-        protected static readonly TranslateStateHandler<TState, TranslatedRockBandGuitarState> s_Translator = TranslateState;
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator.VerifyDevice<TState, TranslatedRockBandGuitarState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        internal static TranslatedRockBandGuitarState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedRockBandGuitarState TranslateState(ref TState state)
         {
             return new TranslatedRockBandGuitarState()
             {

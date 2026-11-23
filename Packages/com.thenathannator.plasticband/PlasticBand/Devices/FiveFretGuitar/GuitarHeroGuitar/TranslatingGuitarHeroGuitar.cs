@@ -208,24 +208,25 @@ namespace PlasticBand.Devices
     /// <see cref="TranslatedGuitarHeroGuitarState"/> format.
     /// This variant is for guitars that use limited ranges for adjacent positions on the touch bar.
     /// </summary>
-    internal abstract class TranslatingGuitarHeroGuitar_Ranges<TState> : GuitarHeroGuitar, IInputStateCallbackReceiver
+    internal abstract class TranslatingGuitarHeroGuitar_Ranges<TState> : GuitarHeroGuitar,
+        IStateTranslator<TState, TranslatedGuitarHeroGuitarState>
         where TState : unmanaged, IGuitarHeroGuitarState, IInputStateTypeInfo
     {
-        private static readonly TranslateStateHandler<TState, TranslatedGuitarHeroGuitarState> s_Translator = TranslateState;
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator.VerifyDevice<TState, TranslatedGuitarHeroGuitarState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        internal static TranslatedGuitarHeroGuitarState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedGuitarHeroGuitarState TranslateState(ref TState state)
         {
             return new TranslatedGuitarHeroGuitarState()
             {
@@ -245,24 +246,25 @@ namespace PlasticBand.Devices
     /// <see cref="TranslatedGuitarHeroGuitarState"/> format.
     /// This variant is for guitars that use discrete values for every combination on the touch bar.
     /// </summary>
-    internal abstract class TranslatingGuitarHeroGuitar_Discrete<TState> : GuitarHeroGuitar, IInputStateCallbackReceiver
+    internal abstract class TranslatingGuitarHeroGuitar_Discrete<TState> : GuitarHeroGuitar,
+        IStateTranslator<TState, TranslatedGuitarHeroGuitarState>
         where TState : unmanaged, IGuitarHeroGuitarState, IInputStateTypeInfo
     {
-        protected static readonly TranslateStateHandler<TState, TranslatedGuitarHeroGuitarState> s_Translator = TranslateState;
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator.VerifyDevice<TState, TranslatedGuitarHeroGuitarState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        internal static TranslatedGuitarHeroGuitarState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedGuitarHeroGuitarState TranslateState(ref TState state)
         {
             return new TranslatedGuitarHeroGuitarState()
             {

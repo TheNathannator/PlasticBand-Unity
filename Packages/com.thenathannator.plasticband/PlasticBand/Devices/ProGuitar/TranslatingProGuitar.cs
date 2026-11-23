@@ -154,11 +154,10 @@ namespace PlasticBand.Devices
     /// A <see cref="ProGuitar"/> which translates its state data into a common
     /// <see cref="TranslatedProGuitarState"/> format.
     /// </summary>
-    internal abstract class TranslatingProGuitar<TState> : ProGuitar, IInputStateCallbackReceiver
+    internal abstract class TranslatingProGuitar<TState> : ProGuitar,
+        IStateTranslator<TState, TranslatedProGuitarState>
         where TState : unmanaged, IProGuitarState, IInputStateTypeInfo
     {
-        private TranslateStateHandler<TState, TranslatedProGuitarState> m_Translator;
-
         private byte m_PreviousVelocity1;
         private byte m_PreviousVelocity2;
         private byte m_PreviousVelocity3;
@@ -169,8 +168,7 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Translator = TranslateState;
-            StateTranslator.VerifyDevice<TState, TranslatedProGuitarState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         unsafe void IInputStateCallbackReceiver.OnNextUpdate()
@@ -187,11 +185,13 @@ namespace PlasticBand.Devices
         }
 
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, m_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        private TranslatedProGuitarState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedProGuitarState TranslateState(ref TState state)
         {
             var translated = new TranslatedProGuitarState()
             {

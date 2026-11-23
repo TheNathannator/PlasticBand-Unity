@@ -6,7 +6,7 @@ namespace PlasticBand.LowLevel
 {
     internal static class GameInputStateTranslator
     {
-        public static void VerifyDevice<TFromState, TToState>(InputDevice device)
+        public static void VerifyDevice<TFromState, TToState>(IStateTranslator<TFromState, TToState> translator)
             where TFromState : unmanaged, IReportIdStateTypeInfo
             where TToState : unmanaged, IInputStateTypeInfo
         {
@@ -15,11 +15,11 @@ namespace PlasticBand.LowLevel
                 throw new NotSupportedException($"Input state format must be {GameInputDefinitions.InputFormat} ({typeof(TFromState).Name}).");
             }
 
-            StateTranslator.VerifyDevice<TFromState, TToState>(device);
+            StateTranslator.VerifyDevice(translator);
         }
 
         private static unsafe bool IsValidEvent<TFromState, TToState>(
-            InputDevice device,
+            IStateTranslator<TFromState, TToState> translator,
             InputEventPtr eventPtr
         )
             where TFromState : unmanaged, IReportIdStateTypeInfo
@@ -27,7 +27,7 @@ namespace PlasticBand.LowLevel
         {
             if (eventPtr.type != StateEvent.Type)
             {
-                Logging.EditorError($"Non-state event {eventPtr.type} received on translating device {device}!");
+                Logging.EditorError($"Non-state event {eventPtr.type} received on translating device {translator.ToDevice()}!");
                 return false;
             }
 
@@ -47,32 +47,30 @@ namespace PlasticBand.LowLevel
         }
 
         public static void OnStateEvent<TFromState, TToState>(
-            InputDevice device,
-            InputEventPtr eventPtr,
-            TranslateStateHandler<TFromState, TToState> translator
+            IStateTranslator<TFromState, TToState> translator,
+            InputEventPtr eventPtr
         )
             where TFromState : unmanaged, IReportIdStateTypeInfo
             where TToState : unmanaged, IInputStateTypeInfo
         {
-            if (IsValidEvent<TFromState, TToState>(device, eventPtr))
+            if (IsValidEvent(translator, eventPtr))
             {
-                StateTranslator.OnStateEvent(device, eventPtr, translator);
+                StateTranslator.OnStateEvent(translator, eventPtr);
             }
         }
 
         public static bool GetStateOffsetForEvent<TFromState, TToState>(
-            InputDevice device,
+            IStateTranslator<TFromState, TToState> translator,
             InputControl control,
             InputEventPtr eventPtr,
-            ref uint offset,
-            TranslateStateHandler<TFromState, TToState> translator
+            ref uint offset
         )
             where TFromState : unmanaged, IReportIdStateTypeInfo
             where TToState : unmanaged, IInputStateTypeInfo
         {
-            if (IsValidEvent<TFromState, TToState>(device, eventPtr))
+            if (IsValidEvent(translator, eventPtr))
             {
-                return StateTranslator.GetStateOffsetForEvent(device, control, eventPtr, ref offset, translator);
+                return StateTranslator.GetStateOffsetForEvent(translator, control, eventPtr, ref offset);
             }
 
             return false;

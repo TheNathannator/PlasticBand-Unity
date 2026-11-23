@@ -77,24 +77,25 @@ namespace PlasticBand.Devices
     /// A <see cref="SixFretGuitar"/> which translates its state data into a common
     /// <see cref="TranslatedSixFretState"/> format.
     /// </summary>
-    internal abstract class TranslatingSixFretGuitar<TState> : SixFretGuitar, IInputStateCallbackReceiver
+    internal abstract class TranslatingSixFretGuitar<TState> : SixFretGuitar,
+        IStateTranslator<TState, TranslatedSixFretState>
         where TState : unmanaged, ISixFretGuitarState, IInputStateTypeInfo
     {
-        protected static readonly TranslateStateHandler<TState, TranslatedSixFretState> s_Translator = TranslateState;
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator.VerifyDevice<TState, TranslatedSixFretState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        private static TranslatedSixFretState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedSixFretState TranslateState(ref TState state)
         {
             var translated = new TranslatedSixFretState()
             {

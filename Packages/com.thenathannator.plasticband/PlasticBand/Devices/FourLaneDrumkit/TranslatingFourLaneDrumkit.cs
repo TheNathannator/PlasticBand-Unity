@@ -257,26 +257,27 @@ namespace PlasticBand.Devices
     // using custom control types to handle various complexities, including working out which pads/cymbals
     // have been hit and pairing together hits and velocities, the state data is translated to a simpler format
     // ahead of time which the controls then read from.
-    internal abstract class TranslatingFourLaneDrumkit_Flags<TState> : FourLaneDrumkit, IInputStateCallbackReceiver
-        where TState : unmanaged, IFourLaneDrumkitState_FlagButtons, IFourLaneDrumkitState_SharedVelocities, IInputStateTypeInfo
+    internal abstract class TranslatingFourLaneDrumkit_Flags<TState> : FourLaneDrumkit,
+        IStateTranslator<TState, TranslatedFourLaneState>
+        where TState : unmanaged, IFourLaneDrumkitState_FlagButtons, IFourLaneDrumkitState_SharedVelocities
     {
-        private TranslateStateHandler<TState, TranslatedFourLaneState> m_Translator;
         private bool m_HasFlags;
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Translator = TranslateState;
-            StateTranslator.VerifyDevice<TState, TranslatedFourLaneState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, m_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        private TranslatedFourLaneState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedFourLaneState TranslateState(ref TState state)
             => TranslateState(ref state, ref m_HasFlags);
 
         private static void FixCymbalVelocity(FourLanePad pads, FourLanePad colorPads, ref byte redVelocity, ref byte cymbalVelocity)
@@ -328,26 +329,27 @@ namespace PlasticBand.Devices
     /// This variant is for drumkits that use various flags to indicate pad/cymbal hits,
     /// but also separate velocity information into individual values.
     /// </summary>
-    internal abstract class TranslatingFourLaneDrumkit_Hybrid<TState> : FourLaneDrumkit, IInputStateCallbackReceiver
+    internal abstract class TranslatingFourLaneDrumkit_Hybrid<TState> : FourLaneDrumkit,
+        IStateTranslator<TState, TranslatedFourLaneState>
         where TState : unmanaged, IFourLaneDrumkitState_FlagButtons, IFourLaneDrumkitState_DistinctVelocities, IInputStateTypeInfo
     {
-        private TranslateStateHandler<TState, TranslatedFourLaneState> m_Translator;
         private bool m_HasFlags;
 
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Translator = TranslateState;
-            StateTranslator.VerifyDevice<TState, TranslatedFourLaneState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, m_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        private TranslatedFourLaneState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedFourLaneState TranslateState(ref TState state)
             => TranslateState(ref state, ref m_HasFlags);
 
         internal static TranslatedFourLaneState TranslateState(ref TState state, ref bool hasFlags)
@@ -376,24 +378,25 @@ namespace PlasticBand.Devices
     /// <see cref="TranslatedFourLaneState"/> format.
     /// This variant is for drumkits which directly distinguish between pads and cymbals.
     /// </summary>
-    internal abstract class TranslatingFourLaneDrumkit_Distinct<TState> : FourLaneDrumkit, IInputStateCallbackReceiver
+    internal abstract class TranslatingFourLaneDrumkit_Distinct<TState> : FourLaneDrumkit,
+        IStateTranslator<TState, TranslatedFourLaneState>
         where TState : unmanaged, IFourLaneDrumkitState_DistinctVelocities, IInputStateTypeInfo
     {
-        protected static readonly TranslateStateHandler<TState, TranslatedFourLaneState> s_Translator = TranslateState;
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator.VerifyDevice<TState, TranslatedFourLaneState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        internal static TranslatedFourLaneState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedFourLaneState TranslateState(ref TState state)
         {
             var pads = TranslatingFourLaneDrumkit.TranslatePads(ref state);
             var buttons = TranslatingFourLaneDrumkit.TranslateButtons(ref state, pads);

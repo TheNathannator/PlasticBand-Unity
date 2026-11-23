@@ -75,19 +75,19 @@ namespace PlasticBand.Devices
             baseCommand = new InputDeviceCommand(GameInputDefinitions.OutputFormat, PS3OutputCommand.kSize),
         };
 
+        private SixFretPoker<PS3OutputCommand> m_Poker;
+
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            GameInputStateTranslator.VerifyDevice<XboxOneSixFretGuitarState, TranslatedSixFretState>(this);
+            GameInputStateTranslator.VerifyDevice(this);
             m_Poker = new SixFretPoker<PS3OutputCommand>(this, s_PokeCommand);
         }
 
-        private SixFretPoker<PS3OutputCommand> m_Poker;
-
         void IInputStateCallbackReceiver.OnNextUpdate() => m_Poker.OnUpdate();
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => GameInputStateTranslator.OnStateEvent(this, eventPtr, s_Translator);
+            => GameInputStateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => GameInputStateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => GameInputStateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
     }
 }

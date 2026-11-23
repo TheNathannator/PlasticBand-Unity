@@ -98,24 +98,25 @@ namespace PlasticBand.Devices
     // This is done to greatly simplify velocity support and distinguishing between pads and face buttons.
     // Doing these via only custom control types would be very duplicative and hacky, and I'd rather ensure things are
     // done properly than wrestle with using mechanisms designed for simple, trivial state on more complex state.
-    internal abstract class TranslatingFiveLaneDrumkit<TState> : FiveLaneDrumkit, IInputStateCallbackReceiver
+    internal abstract class TranslatingFiveLaneDrumkit<TState> : FiveLaneDrumkit,
+        IStateTranslator<TState, TranslatedFiveLaneState>
         where TState : unmanaged, IFiveLaneDrumkitState, IInputStateTypeInfo
     {
-        private static readonly TranslateStateHandler<TState, TranslatedFiveLaneState> s_Translator = TranslateState;
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator.VerifyDevice<TState, TranslatedFiveLaneState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        private static TranslatedFiveLaneState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedFiveLaneState TranslateState(ref TState state)
         {
             var translated = new TranslatedFiveLaneState()
             {

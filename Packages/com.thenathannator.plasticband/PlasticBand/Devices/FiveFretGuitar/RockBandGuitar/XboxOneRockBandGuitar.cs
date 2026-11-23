@@ -181,13 +181,13 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            GameInputStateTranslator.VerifyDevice<XboxOneRockBandGuitarState, TranslatedRockBandGuitarState>(this);
+            GameInputStateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => GameInputStateTranslator.OnStateEvent(this, eventPtr, s_Translator);
+            => GameInputStateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => GameInputStateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => GameInputStateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
     }
 }

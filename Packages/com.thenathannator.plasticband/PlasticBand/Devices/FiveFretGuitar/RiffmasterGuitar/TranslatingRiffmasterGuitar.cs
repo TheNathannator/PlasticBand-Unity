@@ -117,24 +117,25 @@ namespace PlasticBand.Devices
     /// <see cref="TranslatedRiffmasterGuitarState"/> format.
     /// </summary>
     // This is done to properly handle the joystick click, as it conflicts with the solo fret flag.
-    internal abstract class TranslatingRiffmasterGuitar<TState> : RiffmasterGuitar, IInputStateCallbackReceiver
+    internal abstract class TranslatingRiffmasterGuitar<TState> : RiffmasterGuitar,
+        IStateTranslator<TState, TranslatedRiffmasterGuitarState>
         where TState : unmanaged, IRiffmasterGuitarState, IInputStateTypeInfo
     {
-        protected static readonly TranslateStateHandler<TState, TranslatedRiffmasterGuitarState> s_Translator = TranslateState;
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator.VerifyDevice<TState, TranslatedRiffmasterGuitarState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        internal static TranslatedRiffmasterGuitarState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedRiffmasterGuitarState TranslateState(ref TState state)
         {
             var buttons = TranslatedRiffmasterGuitarButtonMask.None;
 

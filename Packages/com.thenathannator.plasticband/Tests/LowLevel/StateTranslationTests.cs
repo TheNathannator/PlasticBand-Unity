@@ -15,7 +15,7 @@ namespace PlasticBand.Tests.LowLevel
     using StateButton = StateTranslationDevice.IncomingState.Button;
 
     [InputControlLayout(stateType = typeof(TranslatedState), hideInUI = true)]
-    internal class StateTranslationDevice : InputDevice, IInputStateCallbackReceiver
+    internal class StateTranslationDevice : InputDevice, IStateTranslator<IncomingState, TranslatedState>
     {
         public struct IncomingState : IInputStateTypeInfo
         {
@@ -52,8 +52,6 @@ namespace PlasticBand.Tests.LowLevel
             public byte axis2;
         }
 
-        private TranslateStateHandler<IncomingState, TranslatedState> m_Translator;
-
         public ButtonControl button1 { get; private set; }
         public ButtonControl button2 { get; private set; }
         public ButtonControl button3 { get; private set; }
@@ -72,17 +70,18 @@ namespace PlasticBand.Tests.LowLevel
             axis1 = GetChildControl<AxisControl>(nameof(axis1));
             axis2 = GetChildControl<AxisControl>(nameof(axis2));
 
-            m_Translator = TranslateState;
-            StateTranslator.VerifyDevice<IncomingState, TranslatedState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, m_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        private TranslatedState TranslateState(ref IncomingState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedState TranslateState(ref IncomingState state)
         {
             return new TranslatedState()
             {

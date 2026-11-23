@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
 using PlasticBand.LowLevel;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
@@ -98,26 +97,25 @@ namespace PlasticBand.Devices
     /// A <see cref="Turntable"/> which translates its state data into a common
     /// <see cref="TranslatedTurntableState"/> format.
     /// </summary>
-    internal abstract class TranslatingTurntable<TState> : Turntable, IInputStateCallbackReceiver
+    internal abstract class TranslatingTurntable<TState> : Turntable,
+        IStateTranslator<TState, TranslatedTurntableState>
         where TState : unmanaged, ITurntableState, IInputStateTypeInfo
     {
-        private TranslateStateHandler<TState, TranslatedTurntableState> m_Translator;
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            m_Translator = TranslateState;
-            StateTranslator.VerifyDevice<TState, TranslatedTurntableState>(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
-
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator.OnStateEvent(this, eventPtr, m_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        private TranslatedTurntableState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedTurntableState TranslateState(ref TState state)
         {
             var translated = new TranslatedTurntableState()
             {
