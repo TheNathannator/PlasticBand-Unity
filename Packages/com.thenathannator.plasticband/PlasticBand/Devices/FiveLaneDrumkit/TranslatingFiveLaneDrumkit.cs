@@ -106,14 +106,14 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator<TState, TranslatedFiveLaneState>.VerifyDevice(this);
+            StateTranslator.VerifyDevice<TState, TranslatedFiveLaneState>(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedFiveLaneState>.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<TState, TranslatedFiveLaneState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
 
         private static TranslatedFiveLaneState TranslateState(ref TState state)
         {

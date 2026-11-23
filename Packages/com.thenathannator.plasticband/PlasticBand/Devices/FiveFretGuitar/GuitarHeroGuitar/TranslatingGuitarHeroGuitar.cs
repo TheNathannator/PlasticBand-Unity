@@ -216,14 +216,14 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator<TState, TranslatedGuitarHeroGuitarState>.VerifyDevice(this);
+            StateTranslator.VerifyDevice<TState, TranslatedGuitarHeroGuitarState>(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedGuitarHeroGuitarState>.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<TState, TranslatedGuitarHeroGuitarState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
 
         internal static TranslatedGuitarHeroGuitarState TranslateState(ref TState state)
         {
@@ -253,14 +253,14 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator<TState, TranslatedGuitarHeroGuitarState>.VerifyDevice(this);
+            StateTranslator.VerifyDevice<TState, TranslatedGuitarHeroGuitarState>(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedGuitarHeroGuitarState>.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<TState, TranslatedGuitarHeroGuitarState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
 
         internal static TranslatedGuitarHeroGuitarState TranslateState(ref TState state)
         {

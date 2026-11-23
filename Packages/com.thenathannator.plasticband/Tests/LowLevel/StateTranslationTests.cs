@@ -73,14 +73,14 @@ namespace PlasticBand.Tests.LowLevel
             axis2 = GetChildControl<AxisControl>(nameof(axis2));
 
             m_Translator = TranslateState;
-            StateTranslator<IncomingState, TranslatedState>.VerifyDevice(this);
+            StateTranslator.VerifyDevice<IncomingState, TranslatedState>(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<IncomingState, TranslatedState>.OnStateEvent(this, eventPtr, m_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr, m_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<IncomingState, TranslatedState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
 
         private TranslatedState TranslateState(ref IncomingState state)
         {

@@ -267,14 +267,14 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
             m_Translator = TranslateState;
-            StateTranslator<TState, TranslatedFourLaneState>.VerifyDevice(this);
+            StateTranslator.VerifyDevice<TState, TranslatedFourLaneState>(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedFourLaneState>.OnStateEvent(this, eventPtr, m_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr, m_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<TState, TranslatedFourLaneState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
 
         private TranslatedFourLaneState TranslateState(ref TState state)
             => TranslateState(ref state, ref m_HasFlags);
@@ -338,14 +338,14 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
             m_Translator = TranslateState;
-            StateTranslator<TState, TranslatedFourLaneState>.VerifyDevice(this);
+            StateTranslator.VerifyDevice<TState, TranslatedFourLaneState>(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedFourLaneState>.OnStateEvent(this, eventPtr, m_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr, m_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<TState, TranslatedFourLaneState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
 
         private TranslatedFourLaneState TranslateState(ref TState state)
             => TranslateState(ref state, ref m_HasFlags);
@@ -384,14 +384,14 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator<TState, TranslatedFourLaneState>.VerifyDevice(this);
+            StateTranslator.VerifyDevice<TState, TranslatedFourLaneState>(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedFourLaneState>.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr, s_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<TState, TranslatedFourLaneState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
 
         internal static TranslatedFourLaneState TranslateState(ref TState state)
         {

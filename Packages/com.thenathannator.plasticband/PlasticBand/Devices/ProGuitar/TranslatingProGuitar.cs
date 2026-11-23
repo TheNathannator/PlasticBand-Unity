@@ -170,7 +170,7 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
             m_Translator = TranslateState;
-            StateTranslator<TState, TranslatedProGuitarState>.VerifyDevice(this);
+            StateTranslator.VerifyDevice<TState, TranslatedProGuitarState>(this);
         }
 
         unsafe void IInputStateCallbackReceiver.OnNextUpdate()
@@ -187,9 +187,9 @@ namespace PlasticBand.Devices
         }
 
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedProGuitarState>.OnStateEvent(this, eventPtr, m_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr, m_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<TState, TranslatedProGuitarState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
 
         private TranslatedProGuitarState TranslateState(ref TState state)
         {

@@ -107,15 +107,15 @@ namespace PlasticBand.Devices
         {
             base.FinishSetup();
             m_Translator = TranslateState;
-            StateTranslator<TState, TranslatedTurntableState>.VerifyDevice(this);
+            StateTranslator.VerifyDevice<TState, TranslatedTurntableState>(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
 
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedTurntableState>.OnStateEvent(this, eventPtr, m_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr, m_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<TState, TranslatedTurntableState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, m_Translator);
 
         private TranslatedTurntableState TranslateState(ref TState state)
         {

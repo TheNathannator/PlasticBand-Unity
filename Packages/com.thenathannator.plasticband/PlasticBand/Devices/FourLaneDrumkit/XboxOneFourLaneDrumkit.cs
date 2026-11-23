@@ -190,13 +190,13 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            GameInputStateTranslator<XboxOneFourLaneDrumkitState, TranslatedFourLaneState>.VerifyDevice(this);
+            GameInputStateTranslator.VerifyDevice<XboxOneFourLaneDrumkitState, TranslatedFourLaneState>(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => GameInputStateTranslator<XboxOneFourLaneDrumkitState, TranslatedFourLaneState>.OnStateEvent(this, eventPtr, s_Translator);
+            => GameInputStateTranslator.OnStateEvent(this, eventPtr, s_Translator);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => GameInputStateTranslator<XboxOneFourLaneDrumkitState, TranslatedFourLaneState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => GameInputStateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
     }
 }
