@@ -166,8 +166,7 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(XboxOneRockBandGuitarLayout), displayName = "Xbox One Rock Band Guitar")]
-    internal class XboxOneRockBandGuitar : TranslatingRockBandGuitar_Distinct<XboxOneRockBandGuitarState>,
-        IInputStateCallbackReceiver
+    internal class XboxOneRockBandGuitar : TranslatingRockBandGuitar_Distinct<XboxOneRockBandGuitarState>
     {
         internal new static void Initialize()
         {
@@ -177,17 +176,5 @@ namespace PlasticBand.Devices
             // PDP Rock Band 4 Fender Jaguar Guitar for Xbox One
             GameInputLayoutFinder.RegisterLayout<XboxOneRockBandGuitar>(0x0E6F, 0x0170);
         }
-
-        protected override void FinishSetup()
-        {
-            base.FinishSetup();
-            GameInputStateTranslator.VerifyDevice(this);
-        }
-
-        void IInputStateCallbackReceiver.OnNextUpdate() {}
-        void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => GameInputStateTranslator.OnStateEvent(this, eventPtr);
-        bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => GameInputStateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
     }
 }

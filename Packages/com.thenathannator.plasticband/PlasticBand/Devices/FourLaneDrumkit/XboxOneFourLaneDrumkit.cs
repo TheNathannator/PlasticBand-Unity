@@ -175,8 +175,7 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(XboxOneFourLaneDrumkitLayout), displayName = "Xbox One Rock Band Drumkit")]
-    internal class XboxOneFourLaneDrumkit : TranslatingFourLaneDrumkit_Distinct<XboxOneFourLaneDrumkitState>,
-        IInputStateCallbackReceiver
+    internal class XboxOneFourLaneDrumkit : TranslatingFourLaneDrumkit_Distinct<XboxOneFourLaneDrumkitState>
     {
         internal new static void Initialize()
         {
@@ -186,17 +185,5 @@ namespace PlasticBand.Devices
             // PDP Rock Band 4 Drumkit for Xbox One
             GameInputLayoutFinder.RegisterLayout<XboxOneFourLaneDrumkit>(0x0E6F, 0x0171);
         }
-
-        protected override void FinishSetup()
-        {
-            base.FinishSetup();
-            GameInputStateTranslator.VerifyDevice(this);
-        }
-
-        void IInputStateCallbackReceiver.OnNextUpdate() {}
-        void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => GameInputStateTranslator.OnStateEvent(this, eventPtr);
-        bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => GameInputStateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
     }
 }

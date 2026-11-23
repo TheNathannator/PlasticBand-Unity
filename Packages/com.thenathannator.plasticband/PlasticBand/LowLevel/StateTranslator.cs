@@ -148,6 +148,7 @@ namespace PlasticBand.LowLevel
                 return false;
             }
 
+            byte? sourceReportId = StateCache<TFromState>.ReportID;
             var sourceFormat = StateCache<TFromState>.StateFormat;
             var destFormat = StateCache<TToState>.StateFormat;
 
@@ -159,7 +160,21 @@ namespace PlasticBand.LowLevel
             }
 
             if (stateEvent->stateFormat != sourceFormat ||
-                stateEvent->stateSizeInBytes < sizeof(TFromState) ||
+                (sourceReportId != null && *(byte*)stateEvent->state != sourceReportId))
+            {
+                if (sourceReportId != null)
+                {
+                    Logging.EditorError($"{stateEvent->stateFormat} 0x{sourceReportId:X2} is not compatible with {translator.ToDevice()}!");
+                }
+                else
+                {
+                    Logging.EditorError($"{stateEvent->stateFormat} is not compatible with {translator.ToDevice()}!");
+                }
+
+                return false;
+            }
+
+            if (stateEvent->stateSizeInBytes < sizeof(TFromState) ||
                 stateEvent->stateSizeInBytes < sizeof(TToState))
             {
                 Logging.EditorError($"State for {translator.ToDevice()} cannot hold translated format {destFormat}!");

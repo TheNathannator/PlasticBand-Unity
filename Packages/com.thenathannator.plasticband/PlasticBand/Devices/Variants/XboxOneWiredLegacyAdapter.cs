@@ -106,7 +106,7 @@ namespace PlasticBand.Devices
                 return;
 
             var stateEvent = StateEvent.From(eventPtr);
-            if (StateReader.ReadReportIdState(stateEvent, out XboxOneWiredLegacyState* state))
+            if (StateReader.ReadState(stateEvent, out XboxOneWiredLegacyState* state))
             {
                 if (m_RealDevice == null)
                 {
@@ -116,7 +116,7 @@ namespace PlasticBand.Devices
 
                 m_RealDevice.OnStateEvent(ref state->state);
             }
-            else if (StateReader.ReadReportIdState(stateEvent, out XboxOneWiredLegacyDeviceInfo* info))
+            else if (StateReader.ReadState(stateEvent, out XboxOneWiredLegacyDeviceInfo* info))
             {
                 m_RealDevice?.Dispose();
 
@@ -137,7 +137,7 @@ namespace PlasticBand.Devices
                 };
                 m_RealDevice = VariantRealDevice.Create(this, description);
             }
-            else if (StateReader.ReadReportIdState(stateEvent, out XboxOneWiredLegacyDeviceDisconnect* disconnect))
+            else if (StateReader.ReadState(stateEvent, out XboxOneWiredLegacyDeviceDisconnect* disconnect))
             {
                 m_RealDevice?.Dispose();
                 m_RealDevice = null;

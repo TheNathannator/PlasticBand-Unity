@@ -57,7 +57,7 @@ namespace PlasticBand.Devices
 
     [InputControlLayout(stateType = typeof(XboxOneSixFretGuitarLayout), displayName = "Xbox One SixFret Guitar")]
     internal class XboxOneSixFretGuitar : TranslatingSixFretGuitar<XboxOneSixFretGuitarState>,
-        IInputStateCallbackReceiver
+        IInputUpdateCallbackReceiver
     {
         internal new static void Initialize()
         {
@@ -80,14 +80,9 @@ namespace PlasticBand.Devices
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            GameInputStateTranslator.VerifyDevice(this);
             m_Poker = new SixFretPoker<PS3OutputCommand>(this, s_PokeCommand);
         }
 
-        void IInputStateCallbackReceiver.OnNextUpdate() => m_Poker.OnUpdate();
-        void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => GameInputStateTranslator.OnStateEvent(this, eventPtr);
-        bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => GameInputStateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
+        void IInputUpdateCallbackReceiver.OnUpdate() => m_Poker.OnUpdate();
     }
 }

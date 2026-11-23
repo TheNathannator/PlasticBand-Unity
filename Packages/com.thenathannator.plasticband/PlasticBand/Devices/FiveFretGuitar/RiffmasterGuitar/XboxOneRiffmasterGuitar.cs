@@ -106,25 +106,12 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(XboxOneRiffmasterGuitarLayout), displayName = "Xbox One Riffmaster Guitar")]
-    internal class XboxOneRiffmasterGuitar : TranslatingRiffmasterGuitar<XboxOneRiffmasterGuitarState>,
-        IInputStateCallbackReceiver
+    internal class XboxOneRiffmasterGuitar : TranslatingRiffmasterGuitar<XboxOneRiffmasterGuitarState>
     {
         internal new static void Initialize()
         {
             // PDP Riffmaster Guitar for Xbox
             GameInputLayoutFinder.RegisterLayout<XboxOneRiffmasterGuitar>(0x0E6F, 0x0248);
         }
-
-        protected override void FinishSetup()
-        {
-            base.FinishSetup();
-            GameInputStateTranslator.VerifyDevice(this);
-        }
-
-        void IInputStateCallbackReceiver.OnNextUpdate() {}
-        void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => GameInputStateTranslator.OnStateEvent(this, eventPtr);
-        bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => GameInputStateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
     }
 }

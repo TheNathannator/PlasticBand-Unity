@@ -148,7 +148,7 @@ namespace PlasticBand.Devices
             var stateEvent = StateEvent.From(eventPtr);
 
             // V2 Features response report (ID 0x10)
-            if (m_IsV2 && StateReader.ReadReportIdState(stateEvent, out SantrollerFeaturesResponse* features))
+            if (m_IsV2 && StateReader.ReadState(stateEvent, out SantrollerFeaturesResponse* features))
             {
                 m_Capabilities = features->capabilities;
 
