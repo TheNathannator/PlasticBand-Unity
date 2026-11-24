@@ -50,6 +50,9 @@ namespace PlasticBand
             SantrollerHIDGuitarHeroGuitar.Initialize();
             SantrollerV2HIDGuitarHeroGuitar.Initialize();
             SantrollerXInputGuitarHeroGuitar.Initialize();
+#if HIDROGEN_0_6_0_OR_LATER
+            EvdevGuitarHeroGuitar.Initialize();
+#endif
 
             // Rock Band guitars
             RockBandGuitar.Initialize();

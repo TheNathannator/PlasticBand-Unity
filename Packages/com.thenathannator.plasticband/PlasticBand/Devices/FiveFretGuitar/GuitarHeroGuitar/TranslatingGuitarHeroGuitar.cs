@@ -61,21 +61,21 @@ namespace PlasticBand.Devices
         [InputControl(name = "start", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.Start)]
         [InputControl(name = "select", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.Select)]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.System, displayName = "System")]
-        public ushort buttons;
+        public TranslatedGuitarHeroGuitarButtonMask buttons;
 
         [InputControl(name = "greenFret", layout = "Button", bit = 0)]
         [InputControl(name = "redFret", layout = "Button", bit = 1)]
         [InputControl(name = "yellowFret", layout = "Button", bit = 2)]
         [InputControl(name = "blueFret", layout = "Button", bit = 3)]
         [InputControl(name = "orangeFret", layout = "Button", bit = 4)]
-        public byte frets;
+        public FiveFret frets;
 
         [InputControl(name = "touchGreen", layout = "Button", bit = 0)]
         [InputControl(name = "touchRed", layout = "Button", bit = 1)]
         [InputControl(name = "touchYellow", layout = "Button", bit = 2)]
         [InputControl(name = "touchBlue", layout = "Button", bit = 3)]
         [InputControl(name = "touchOrange", layout = "Button", bit = 4)]
-        public byte touchFrets;
+        public FiveFret touchFrets;
 
         [InputControl(name = "whammy", layout = "IntAxis", parameters = "minValue=0x00,maxValue=0xFF,zeroPoint=0x00")]
         public byte whammy;
@@ -230,10 +230,10 @@ namespace PlasticBand.Devices
         {
             return new TranslatedGuitarHeroGuitarState()
             {
-                buttons = (ushort)TranslatingGuitarHeroGuitar.TranslateButtons(ref state),
+                buttons = TranslatingGuitarHeroGuitar.TranslateButtons(ref state),
 
-                frets = (byte) TranslatingGuitarHeroGuitar.TranslateFrets(ref state),
-                touchFrets = (byte) TranslatingGuitarHeroGuitar.s_WtTouchFrets[(state.rawTouchBar & 0xF0) >> 4],
+                frets = TranslatingGuitarHeroGuitar.TranslateFrets(ref state),
+                touchFrets = TranslatingGuitarHeroGuitar.s_WtTouchFrets[(state.rawTouchBar & 0xF0) >> 4],
 
                 whammy = state.whammy,
                 tilt = state.tilt,
@@ -268,10 +268,10 @@ namespace PlasticBand.Devices
         {
             return new TranslatedGuitarHeroGuitarState()
             {
-                buttons = (ushort)TranslatingGuitarHeroGuitar.TranslateButtons(ref state),
+                buttons = TranslatingGuitarHeroGuitar.TranslateButtons(ref state),
 
-                frets = (byte) TranslatingGuitarHeroGuitar.TranslateFrets(ref state),
-                touchFrets = (byte) TranslatingGuitarHeroGuitar.s_Gh5TouchFrets[state.rawTouchBar],
+                frets = TranslatingGuitarHeroGuitar.TranslateFrets(ref state),
+                touchFrets = TranslatingGuitarHeroGuitar.s_Gh5TouchFrets[state.rawTouchBar],
 
                 whammy = state.whammy,
                 tilt = state.tilt,
