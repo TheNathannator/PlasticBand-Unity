@@ -118,8 +118,6 @@ namespace PlasticBand.Devices
             }
             else if (StateReader.ReadReportIdState(stateEvent, out XboxOneWiredLegacyDeviceInfo* info))
             {
-                m_RealDevice?.Dispose();
-
                 // Report the device as an XInput one, since that's pretty much what it is lol
                 var description = new InputDeviceDescription()
                 {
@@ -135,6 +133,13 @@ namespace PlasticBand.Devices
                         }
                     })
                 };
+                if (m_RealDevice != null)
+                {
+                    // Keep the device if it has not changed
+                    if (m_RealDevice.device.description == description)
+                        return;
+                    m_RealDevice.Dispose();
+                }
                 m_RealDevice = VariantRealDevice.Create(this, description);
             }
             else if (StateReader.ReadReportIdState(stateEvent, out XboxOneWiredLegacyDeviceDisconnect* disconnect))
@@ -150,10 +155,30 @@ namespace PlasticBand.Devices
             this.LoggedExecuteCommand(ref requestInfo);
         }
 
+        private void OnFocusChanged(bool focused)
+        {
+            if (focused)
+                RequestDeviceInfo();
+        }
+
         protected override void OnAdded()
         {
             base.OnAdded();
+            Application.focusChanged += OnFocusChanged;
             RequestDeviceInfo();
+        }
+
+        protected override void OnRemoved()
+        {
+            Application.focusChanged -= OnFocusChanged;
+            base.OnRemoved();
+        }
+
+        protected override void OnDomainReload()
+        {
+            base.OnDomainReload();
+            Application.focusChanged -= OnFocusChanged;
+            Application.focusChanged += OnFocusChanged;
         }
     }
 }
