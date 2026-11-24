@@ -37,7 +37,6 @@ namespace PlasticBand
             AndroidGamepad.Initialize();
             SantrollerHIDGamepad.Initialize();
             SantrollerV2HIDGamepad.Initialize();
-            EvdevGamepad.Initialize();
 
             // 5-fret guitars
             FiveFretGuitar.Initialize();
