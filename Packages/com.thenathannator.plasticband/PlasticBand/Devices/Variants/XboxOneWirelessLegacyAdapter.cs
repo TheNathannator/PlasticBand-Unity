@@ -147,8 +147,6 @@ namespace PlasticBand.Devices
                     return;
                 }
 
-                m_RealDevices[info->userIndex]?.Dispose();
-
                 // The report data following the wireless legacy header matches that of the instruments,
                 // so we create the corresponding layouts for those instruments
                 string layout;
@@ -159,6 +157,14 @@ namespace PlasticBand.Devices
                     default:
                         Logging.Error($"Unexpected wireless legacy adapter device type {info->deviceType}!");
                         return;
+                }
+
+                if (m_RealDevices[info->userIndex] != null)
+                {
+                    // Keep the device if it has not changed
+                    if (m_RealDevices[info->userIndex].device.layout == layout)
+                        return;
+                    m_RealDevices[info->userIndex].Dispose();
                 }
 
                 m_RealDevices[info->userIndex] = VariantRealDevice.Create(this, layout);
@@ -182,6 +188,12 @@ namespace PlasticBand.Devices
             this.LoggedExecuteCommand(ref requestInfo);
         }
 
+        private void OnFocusChanged(bool focused)
+        {
+            if (focused)
+                RequestDeviceInfo();
+        }
+
         protected override void OnAdded()
         {
             base.OnAdded();
@@ -190,7 +202,14 @@ namespace PlasticBand.Devices
                 m_RealDevices.Add(null);
             m_RealDevices.TrimExcess();
 
+            Application.focusChanged += OnFocusChanged;
             RequestDeviceInfo();
+        }
+
+        protected override void OnRemoved()
+        {
+            Application.focusChanged -= OnFocusChanged;
+            base.OnRemoved();
         }
     }
 }
