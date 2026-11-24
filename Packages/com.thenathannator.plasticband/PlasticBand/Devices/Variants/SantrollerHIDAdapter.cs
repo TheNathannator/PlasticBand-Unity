@@ -66,19 +66,8 @@ namespace PlasticBand.Devices
             TryRequestFeatures();
         }
 
-        protected override void OnDomainReload()
-        {
-            base.OnDomainReload();
-            m_FeaturesRequested = false;
-            m_RequestAttempts = 0;
-            m_NextRequestTime = 0;
-        }
-
         private bool IsV2Descriptor(HIDDeviceDescriptor descriptor)
         {
-            int elementCount = descriptor.elements != null ? descriptor.elements.Length : 0;
-            int collectionCount = descriptor.collections != null ? descriptor.collections.Length : 0;
-
             // Santroller V2 report descriptors include a vendor-defined usage of FF00:2882 and/or a report ID of 0x10
 
             if (descriptor.elements != null)

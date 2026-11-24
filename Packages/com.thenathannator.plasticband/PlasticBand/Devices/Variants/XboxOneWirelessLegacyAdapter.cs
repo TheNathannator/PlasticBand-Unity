@@ -211,13 +211,5 @@ namespace PlasticBand.Devices
             Application.focusChanged -= OnFocusChanged;
             base.OnRemoved();
         }
-
-        protected override void OnDomainReload()
-        {
-            base.OnDomainReload();
-            // Static event subscriptions don't survive a domain reload
-            Application.focusChanged -= OnFocusChanged;
-            Application.focusChanged += OnFocusChanged;
-        }
     }
 }
