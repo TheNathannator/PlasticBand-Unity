@@ -7,9 +7,6 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    // NOTE: This layout is never directly matched; instead a derived layout is
-    // always built on-demand via EvdevLayoutFinder.
-    // assume y axis is following the HID convention since we can't read that capability from evdev
     [InputControlLayout(displayName = "Santroller V2 Evdev Gamepad", hideInUI = true)]
     internal class SantrollerV2EvdevGamepad : Gamepad
     {
@@ -29,6 +26,7 @@ namespace PlasticBand.Devices
                 .WithKey(input_key_code.BTN_THUMB_R, "rightStickPress")
                 .WithAbsButton(input_abs_code.ABS_Z, "leftTrigger")
                 .WithAbsButton(input_abs_code.ABS_RZ, "rightTrigger")
+                // assume y axis is following the HID convention since we can't read that capability from evdev
                 .WithStick(input_abs_code.ABS_X, "leftStick")
                 .WithStick(input_abs_code.ABS_RX, "rightStick");
             EvdevLayoutFinder.RegisterLayout<SantrollerV2EvdevGamepad>(mapping,

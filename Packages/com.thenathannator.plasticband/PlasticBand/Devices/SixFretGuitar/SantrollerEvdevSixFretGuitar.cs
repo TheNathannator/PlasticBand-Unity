@@ -7,10 +7,6 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    // Santroller V1 Guitar Hero Live guitars in HID mode, via hid-generic/hid-santroller.
-    // The report's axes are X (whammy) and Y (tilt), both 8-bit; tilt is positive-up as the report sends it.
-    // Strum is reported on the d-pad, as in SantrollerHIDSixFretGuitarState.
-    // Not supported: the haptics the HID layout provides, as evdev provides no way to send them.
     [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "Santroller Evdev Guitar Hero Live Guitar", hideInUI = true)]
     internal class SantrollerEvdevSixFretGuitar : EvdevSixFretGuitar<SantrollerEvdevSixFretGuitar>
     {
@@ -28,7 +24,6 @@ namespace PlasticBand.Devices
             m_Whammy = input_abs_code.ABS_X;
             m_Tilt = input_abs_code.ABS_Y;
 
-            // These mappings are only required for device validation, but may as well fill them out properly
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")

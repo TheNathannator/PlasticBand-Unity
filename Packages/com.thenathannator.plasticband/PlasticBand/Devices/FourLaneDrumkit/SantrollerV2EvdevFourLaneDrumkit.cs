@@ -21,7 +21,6 @@ namespace PlasticBand.Devices
             m_PadFlag = input_key_code.BTN_THUMB_R;
             m_CymbalFlag = input_key_code.BTN_TR;
 
-            // These mappings are only required for device validation, but may as well fill them out properly.
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")

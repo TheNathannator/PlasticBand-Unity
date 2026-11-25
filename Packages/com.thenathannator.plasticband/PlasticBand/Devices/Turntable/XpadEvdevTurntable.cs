@@ -23,7 +23,6 @@ namespace PlasticBand.Devices
             m_Crossfader = input_abs_code.ABS_RY;
             m_EffectsDial = input_abs_code.ABS_RX;
 
-            // These mappings are only required for device validation, but may as well fill them out properly
             var xpadMappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")

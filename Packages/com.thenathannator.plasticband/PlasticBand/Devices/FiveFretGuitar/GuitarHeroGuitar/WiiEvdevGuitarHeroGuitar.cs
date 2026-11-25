@@ -23,7 +23,6 @@ namespace PlasticBand.Devices
 
             m_Whammy = input_abs_code.ABS_HAT1X;
 
-            // All Wii Remote extensions share the Wii Remote's IDs, so they're told apart by hid-wiimote's device name
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
@@ -36,6 +35,8 @@ namespace PlasticBand.Devices
                 .WithKey(input_key_code.BTN_5, "orangeFret")
                 .WithAbs(input_abs_code.ABS_HAT0X, "touchBar")
                 .WithAbs(input_abs_code.ABS_HAT1X, "whammy");
+
+            // All Wii Remote extensions share the Wii Remote's IDs, so they're told apart by hid-wiimote's device name
 
             // Nintendo Wii Remote
             EvdevLayoutFinder.RegisterStaticLayout<WiiEvdevGuitarHeroGuitar>(
@@ -54,19 +55,19 @@ namespace PlasticBand.Devices
             );
         }
 
-        // wiimote driver sends raw value, so we have to scale it up
         protected override unsafe byte ReadWhammy(StateEvent* stateEvent)
         {
             int whammy = m_StateHandler.ReadAbs(stateEvent, m_Whammy);
+            // wiimote driver sends raw value, so we have to scale it up
             return (byte)(Math.Min(Math.Max(whammy, 0), 0x0F) * byte.MaxValue / 0x0F);
         }
 
         protected override unsafe sbyte ReadTilt(StateEvent* stateEvent) => 0;
 
-        // wiimote driver sends raw value, so we have to map
         protected override unsafe FiveFret ReadTouchFrets(StateEvent* stateEvent)
         {
             int touchBar = m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_HAT0X);
+            // wiimote driver sends raw value, so we have to map
             byte rawTouchBar = (byte)((touchBar & 0x1F) << 3);
             return TranslatingGuitarHeroGuitar.s_WtTouchFrets[(rawTouchBar & 0xF0) >> 4];
         }

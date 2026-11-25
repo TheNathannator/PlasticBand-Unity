@@ -6,8 +6,6 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    // hid-sony doesn't expose msot of the vendor bytes, so we don't get seperate frets and solo frets or the pickup
-    // solo is done PS3-style for now until we fix that
     [InputControlLayout(stateType = typeof(TranslatedRockBandGuitarState), displayName = "PS4/PS5 Evdev Rock Band Guitar", hideInUI = true)]
     internal class PS4EvdevRockBandGuitar : EvdevRockBandGuitar<PS4EvdevRockBandGuitar>
     {
@@ -23,7 +21,6 @@ namespace PlasticBand.Devices
             m_Whammy = input_abs_code.ABS_Z;
             m_Tilt = input_abs_code.ABS_RZ;
 
-            // These mappings are only required for device validation, but may as well fill them out properly
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
@@ -81,6 +78,9 @@ namespace PlasticBand.Devices
                 new EvdevDeviceMatcher().WithHardwareIds(0x3651, 0x5600)
             );
         }
+
+        // hid-sony doesn't expose most of the vendor bytes, so we don't get seperate regular/solo
+        // frets or the pickup. solo is done flag-style for now until the driver exposes those inputs
 
         protected override unsafe byte ReadWhammy(StateEvent* stateEvent)
             => (byte)m_StateHandler.ReadAbs(stateEvent, m_Whammy);

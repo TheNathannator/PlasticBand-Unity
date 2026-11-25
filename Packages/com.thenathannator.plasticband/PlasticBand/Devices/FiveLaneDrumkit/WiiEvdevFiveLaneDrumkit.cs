@@ -21,8 +21,6 @@ namespace PlasticBand.Devices
 
         internal new static void Initialize()
         {
-            // All Wii Remote extensions share the Wii Remote's IDs, so they're told apart by hid-wiimote's device name
-            // The d-pad is deliberately not required: the drums' hat axes are pads, not a d-pad.
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
@@ -32,6 +30,8 @@ namespace PlasticBand.Devices
                 .WithAbs(kOrange, "orangeCymbal")
                 .WithAbs(kGreen, "greenPad")
                 .WithAbs(kKick, "kick");
+
+            // All Wii Remote extensions share the Wii Remote's IDs, so they're told apart by hid-wiimote's device name
 
             // Nintendo Wii Remote
             EvdevLayoutFinder.RegisterStaticLayout<WiiEvdevFiveLaneDrumkit>(

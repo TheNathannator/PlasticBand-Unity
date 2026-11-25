@@ -28,7 +28,6 @@ namespace PlasticBand.Devices
             m_Crossfader = input_abs_code.ABS_HAT2X;
             m_EffectsDial = input_abs_code.ABS_HAT3X;
 
-            // All Wii Remote extensions share the Wii Remote's IDs, so they're told apart by hid-wiimote's device name
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
@@ -43,6 +42,8 @@ namespace PlasticBand.Devices
                 .WithAbs(input_abs_code.ABS_HAT1X, "leftTableVelocity")
                 .WithAbs(input_abs_code.ABS_HAT2X, "crossfader")
                 .WithAbs(input_abs_code.ABS_HAT3X, "effectsDial");
+
+            // All Wii Remote extensions share the Wii Remote's IDs, so they're told apart by hid-wiimote's device name
 
             // Nintendo Wii Remote
             EvdevLayoutFinder.RegisterStaticLayout<WiiEvdevTurntable>(

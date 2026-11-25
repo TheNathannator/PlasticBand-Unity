@@ -22,7 +22,6 @@ namespace PlasticBand.Devices
             m_Tilt = input_abs_code.ABS_RX;
             m_PickupSwitch = input_abs_code.ABS_Y;
 
-            // These mappings are only required for device validation, but may as well fill them out properly
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")

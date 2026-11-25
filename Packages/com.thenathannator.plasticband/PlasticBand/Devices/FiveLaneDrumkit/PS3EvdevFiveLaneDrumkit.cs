@@ -5,7 +5,6 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    // hid-sony doesn't report velocity data, so velocities will always be max
     [InputControlLayout(stateType = typeof(TranslatedFiveLaneState), displayName = "PS3 Evdev Guitar Hero Drumkit", hideInUI = true)]
     internal class PS3EvdevFiveLaneDrumkit : EvdevFiveLaneDrumkit<PS3EvdevFiveLaneDrumkit>
     {
@@ -18,7 +17,6 @@ namespace PlasticBand.Devices
             m_OrangeCymbal = input_key_code.BTN_TR;
             m_Kick = input_key_code.BTN_TL;
 
-            // These mappings are only required for device validation, but may as well fill them out properly
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
@@ -36,6 +34,8 @@ namespace PlasticBand.Devices
                 new EvdevDeviceMatcher().WithHardwareIds(0x12BA, 0x0120)
             );
         }
+
+        // hid-sony doesn't report velocity data, so velocities will always be max
     }
 }
 #endif

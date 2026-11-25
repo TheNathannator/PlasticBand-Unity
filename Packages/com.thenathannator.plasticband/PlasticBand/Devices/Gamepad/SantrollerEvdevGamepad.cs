@@ -7,8 +7,6 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    // NOTE: This layout is never directly matched; instead a derived layout is
-    // always built on-demand via EvdevLayoutFinder.
     [InputControlLayout(displayName = "Santroller Evdev Gamepad", hideInUI = true)]
     internal class SantrollerEvdevGamepad : Gamepad
     {

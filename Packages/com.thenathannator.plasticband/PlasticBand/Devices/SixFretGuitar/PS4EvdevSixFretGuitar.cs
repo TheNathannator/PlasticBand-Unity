@@ -23,7 +23,6 @@ namespace PlasticBand.Devices
             m_Whammy = input_abs_code.ABS_Z;
             m_Tilt = input_abs_code.ABS_RZ;
 
-            // These mappings are only required for device validation, but may as well fill them out properly
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_THUMB_R, "select") // Hero Power

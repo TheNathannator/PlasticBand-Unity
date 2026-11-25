@@ -24,7 +24,6 @@ namespace PlasticBand.Devices
 
         protected EvdevStateHandler m_StateHandler;
 
-        // Whether pad/cymbal flags have been seen; Rock Band 1 kits never send them
         private bool m_HasFlags;
 
         protected override void FinishSetup()

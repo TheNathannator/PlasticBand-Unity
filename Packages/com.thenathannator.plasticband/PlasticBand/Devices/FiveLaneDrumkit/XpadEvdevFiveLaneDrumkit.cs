@@ -8,10 +8,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
-    // Guitar Hero drumkits for Xbox 360, via xpad (including Santroller V1 devices in XInput mode).
-    // The velocities are packed two to a stick axis, as in XInputFiveLaneDrumkitState: green/red
-    // in the left stick Y (low/high byte), yellow/blue in the right stick X and orange/kick in the right stick Y.
-    // xpad bit-inverts the Y axes (~value), so those are inverted back before unpacking.
     [InputControlLayout(stateType = typeof(TranslatedFiveLaneState), hideInUI = true)]
     internal class XpadEvdevFiveLaneDrumkit : EvdevFiveLaneDrumkit<XpadEvdevFiveLaneDrumkit>
     {
@@ -24,7 +20,6 @@ namespace PlasticBand.Devices
             m_OrangeCymbal = input_key_code.BTN_TR;
             m_Kick = input_key_code.BTN_TL;
 
-            // These mappings are only required for device validation, but may as well fill them out properly
             var xpadMappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
@@ -58,7 +53,7 @@ namespace PlasticBand.Devices
         protected override unsafe void ReadVelocities(StateEvent* stateEvent, out byte green, out byte red,
             out byte yellow, out byte blue, out byte orange, out byte kick)
         {
-            // Undo xpad flip
+            // Velocities are packed two at a time into the stick axes
             int leftStickY = ~m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_Y);
             int rightStickX = m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_RX);
             int rightStickY = ~m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_RY);
