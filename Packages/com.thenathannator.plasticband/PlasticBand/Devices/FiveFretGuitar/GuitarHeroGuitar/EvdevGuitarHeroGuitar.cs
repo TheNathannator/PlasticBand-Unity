@@ -5,7 +5,6 @@ using PlasticBand.Controls;
 using PlasticBand.LowLevel;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
@@ -14,7 +13,12 @@ namespace PlasticBand.Devices
     {
         internal static void Initialize()
         {
-            XpadGuitarHeroGuitar.Initialize();
+            XpadEvdevGuitarHeroGuitar.Initialize();
+            SantrollerEvdevGuitarHeroGuitar.Initialize();
+            SantrollerV2EvdevGuitarHeroGuitar.Initialize();
+            PS3EvdevGuitarHeroGuitar.Initialize();
+            PCEvdevGuitarHeroGuitar.Initialize();
+            WiiEvdevGuitarHeroGuitar.Initialize();
         }
     }
 
@@ -31,12 +35,11 @@ namespace PlasticBand.Devices
 
         protected static input_abs_code m_Whammy;
         protected static input_abs_code m_Tilt;
-        // protected static input_abs_code m_TouchBar; // TODO
 
         protected static EvdevAxisOption m_WhammyOptions;
         protected static EvdevAxisOption m_TiltOptions;
 
-        private EvdevStateHandler m_StateHandler;
+        protected EvdevStateHandler m_StateHandler;
 
         private input_absinfo m_WhammyAbs;
         private input_absinfo m_TiltAbs;
@@ -99,65 +102,31 @@ namespace PlasticBand.Devices
             if (m_StateHandler.ReadKey(stateEvent, m_BlueFret)) frets |= FiveFret.Blue;
             if (m_StateHandler.ReadKey(stateEvent, m_OrangeFret)) frets |= FiveFret.Orange;
 
-            float normWhammy = m_StateHandler.ReadAbsNormalized(stateEvent, m_Whammy, m_WhammyAbs, m_WhammyOptions);
-            byte whammy = (byte)IntegerAxisControl.Denormalize(normWhammy, byte.MinValue, byte.MaxValue, byte.MinValue);
-
-            float normTilt = m_StateHandler.ReadAbsNormalized(stateEvent, m_Tilt, m_TiltAbs, m_TiltOptions);
-            sbyte tilt = (sbyte)IntegerAxisControl.Denormalize(normTilt, sbyte.MinValue, sbyte.MaxValue, 0);
-
             return new TranslatedGuitarHeroGuitarState()
             {
                 buttons = buttons,
 
                 frets = frets,
-                // touchFrets = TranslatingGuitarHeroGuitar.s_WtTouchFrets[(state.rawTouchBar & 0xF0) >> 4],
+                touchFrets = ReadTouchFrets(stateEvent),
 
-                whammy = whammy,
-                tilt = tilt,
+                whammy = ReadWhammy(stateEvent),
+                tilt = ReadTilt(stateEvent),
             };
         }
-    }
 
-    [InputControlLayout(stateType = typeof(TranslatedGuitarHeroGuitarState), hideInUI = true)]
-    internal class XpadGuitarHeroGuitar : EvdevGuitarHeroGuitar<XpadGuitarHeroGuitar>
-    {
-        internal new static void Initialize()
+        protected virtual unsafe byte ReadWhammy(StateEvent* stateEvent)
         {
-            m_GreenFret = input_key_code.BTN_A;
-            m_RedFret = input_key_code.BTN_B;
-            m_YellowFret = input_key_code.BTN_Y;
-            m_BlueFret = input_key_code.BTN_X;
-            m_OrangeFret = input_key_code.BTN_TL;
-            m_SpPedal = input_key_code.BTN_TR;
-
-            m_Whammy = input_abs_code.ABS_RX;
-            m_Tilt = input_abs_code.ABS_RY;
-            // m_TouchBar = ; // TODO
-
-            m_WhammyOptions = EvdevAxisOption.Unsigned;
-            m_TiltOptions = EvdevAxisOption.None;
-
-            // These mappings are only required for device validation, but may as well fill them out properly
-            var xpadMappings = new EvdevDeviceMapping()
-                .WithKey(input_key_code.BTN_START, "start")
-                .WithKey(input_key_code.BTN_SELECT, "select")
-                .WithKey(input_key_code.BTN_A, "greenFret")
-                .WithKey(input_key_code.BTN_B, "redFret")
-                .WithKey(input_key_code.BTN_Y, "yellowFret")
-                .WithKey(input_key_code.BTN_X, "blueFret")
-                .WithKey(input_key_code.BTN_TL, "orangeFret")
-                .WithHat(0, "dpad")
-                .WithAbs(input_abs_code.ABS_RX, "whammy", EvdevAxisOption.Unsigned)
-                .WithAbs(input_abs_code.ABS_RY, "tilt")
-                .WithKey(input_key_code.BTN_TR, "spPedal");
-
-            EvdevLayoutFinder.RegisterStaticLayout<XpadGuitarHeroGuitar>(
-                xpadMappings,
-                new EvdevDeviceMatcher()
-                    .WithDriver("xpad") // TODO: driver constants
-                    .WithXusbSubtype((byte)XInputDeviceSubType.GuitarAlternate)
-            );
+            float normWhammy = m_StateHandler.ReadAbsNormalized(stateEvent, m_Whammy, m_WhammyAbs, m_WhammyOptions);
+            return (byte)IntegerAxisControl.Denormalize(normWhammy, byte.MinValue, byte.MaxValue, byte.MinValue);
         }
+
+        protected virtual unsafe sbyte ReadTilt(StateEvent* stateEvent)
+        {
+            float normTilt = m_StateHandler.ReadAbsNormalized(stateEvent, m_Tilt, m_TiltAbs, m_TiltOptions);
+            return (sbyte)IntegerAxisControl.Denormalize(normTilt, sbyte.MinValue, sbyte.MaxValue, 0);
+        }
+
+        protected virtual unsafe FiveFret ReadTouchFrets(StateEvent* stateEvent) => FiveFret.None;
     }
 }
 #endif

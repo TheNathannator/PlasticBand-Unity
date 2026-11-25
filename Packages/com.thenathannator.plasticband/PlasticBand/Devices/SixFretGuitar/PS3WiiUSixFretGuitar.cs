@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.Haptics;
@@ -137,11 +138,11 @@ namespace PlasticBand.Devices
             set => m_Whammy = (byte)((value / 2) + 0x80);
         }
 
-        // Tilt is a 10-bit number centered at 0x200
+        // Tilt sits in the 10-bit accelerometer field, but is an 8-bit value centered at 0x80
         public sbyte tilt
         {
-            get => (sbyte)(((m_Tilt & 0x3FF) >> 2) - 0x80);
-            set => m_Tilt = (short)((value + 0x80) << 2);
+            get => (sbyte)(Math.Min(m_Tilt & 0x3FF, 0xFF) - 0x80);
+            set => m_Tilt = (short)(value + 0x80);
         }
     }
 

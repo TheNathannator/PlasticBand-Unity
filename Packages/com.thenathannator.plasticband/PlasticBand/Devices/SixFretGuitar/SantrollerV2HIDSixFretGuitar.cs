@@ -125,6 +125,7 @@ namespace PlasticBand.Devices
             set => dpadDown = value;
         }
 
+        // Same placement as XInput GHL guitars: tilt on right stick X, whammy on right stick Y
         public byte whammy
         {
             get => XInputDefinitions.GetAxisUnsignedY(rightStickY);

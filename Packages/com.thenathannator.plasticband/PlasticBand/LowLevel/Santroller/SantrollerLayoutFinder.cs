@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+#if HIDROGEN_0_6_0_OR_LATER
+using HIDrogen.Devices.LowLevel;
+#endif
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
@@ -218,5 +221,39 @@ namespace PlasticBand.LowLevel
             });
             return description;
         }
+
+#if HIDROGEN_0_6_0_OR_LATER
+        internal static EvdevDeviceMatcher GetEvdevMatcher(SantrollerDeviceType type)
+        {
+            return new EvdevDeviceMatcher()
+                .WithHardwareIds(VendorID, ProductIDV2)
+                .WithSantrollerSubtype((byte)type);
+        }
+
+        internal static EvdevDeviceMatcher GetEvdevV1HidMatcher(SantrollerDeviceType type)
+        {
+            return new EvdevDeviceMatcher()
+                .WithHardwareIds(VendorID, ProductID)
+                .WithRevision((ushort)GetRevisionValue(type))
+                .WithXusbSubtype(0);
+        }
+
+        internal static EvdevDeviceMatcher GetEvdevXpadMatcher(XInputDeviceSubType subType, SantrollerDeviceType type)
+        {
+            return new EvdevDeviceMatcher()
+                .WithDriver("xpad") // TODO: driver constants
+                .WithHardwareIds(VendorID, ProductID)
+                .WithRevision((ushort)GetRevisionValue(type))
+                .WithXusbSubtype((byte)subType);
+        }
+
+        internal static EvdevDeviceMatcher GetEvdevV2XpadMatcher(XInputDeviceSubType subType)
+        {
+            return new EvdevDeviceMatcher()
+                .WithDriver("xpad") // TODO: driver constants
+                .WithHardwareIds(VendorID, ProductIDV2)
+                .WithXusbSubtype((byte)subType);
+        }
+#endif
     }
 }

@@ -111,10 +111,11 @@ namespace PlasticBand.Devices
             set => m_Whammy = (byte)((value / 2) + 0x80);
         }
 
+        // The accelerometer reads below 0x200 when the guitar is pointed up, so the range is reversed
         public sbyte tilt
         {
-            get => (sbyte) IntegerAxisControl.Convert(m_Tilt, 0x180, 0x280, 0x200, sbyte.MinValue, sbyte.MaxValue, 0);
-            set => m_Tilt = (short) IntegerAxisControl.Convert(value, sbyte.MinValue, sbyte.MaxValue, 0, 0x180, 0x280, 0x200);
+            get => (sbyte) IntegerAxisControl.Convert(m_Tilt, 0x280, 0x180, 0x200, sbyte.MinValue, sbyte.MaxValue, 0);
+            set => m_Tilt = (short) IntegerAxisControl.Convert(value, sbyte.MinValue, sbyte.MaxValue, 0, 0x280, 0x180, 0x200);
         }
 
         public bool spPedal

@@ -8,6 +8,16 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
+    /// <summary>
+    /// Report for Santroller V2 devices emulating a gamepad in HID mode.
+    /// Mirrors the XInput report, except the low nibble of the buttons is a hat.
+    /// </summary>
+    /// <remarks>
+    /// Stick Y axes follow HID convention (down at the maximum, the bitwise inverse of XInput's), unless the
+    /// profile's "invert Y axis" HID option is set, in which case they follow XInput's convention and the
+    /// device reports <see cref="SantrollerCapabilities.YAxisInverted"/>; <see cref="SantrollerV2HIDGamepad"/>
+    /// registers a separate layout for that.
+    /// </remarks>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct SantrollerV2HIDGamepadState : IGamepadState
     {
