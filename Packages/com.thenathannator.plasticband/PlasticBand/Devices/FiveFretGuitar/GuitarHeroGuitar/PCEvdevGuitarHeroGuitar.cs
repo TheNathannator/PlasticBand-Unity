@@ -18,10 +18,11 @@ namespace PlasticBand.Devices
                 .WithKey(input_key_code.BTN_Y, "yellowFret")
                 .WithKey(input_key_code.BTN_X, "blueFret")
                 .WithKey(input_key_code.BTN_TL, "orangeFret")
+                .WithKey(input_key_code.BTN_TR, "spPedal")
                 .WithHat(0, "dpad")
                 .WithAbs(input_abs_code.ABS_Z, "whammy")
                 .WithAbs(input_abs_code.ABS_RY, "tilt")
-                .WithKey(input_key_code.BTN_TR, "spPedal");
+                .WithAbs(input_abs_code.ABS_RZ, "touchFrets");
 
             // RedOctane Guitar Hero World Tour Guitar for PC
             EvdevLayoutFinder.RegisterStaticLayout<PCEvdevGuitarHeroGuitar>(

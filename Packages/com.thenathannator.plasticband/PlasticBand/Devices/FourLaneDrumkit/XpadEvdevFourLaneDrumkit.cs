@@ -32,7 +32,11 @@ namespace PlasticBand.Devices
                 .WithKey(input_key_code.BTN_TL, "kick1")
                 .WithKey(input_key_code.BTN_THUMB_L, "kick2")
                 .WithKey(input_key_code.BTN_THUMB_R, "padFlag")
-                .WithKey(input_key_code.BTN_TR, "cymbalFlag");
+                .WithKey(input_key_code.BTN_TR, "cymbalFlag")
+                .WithAbs(input_abs_code.ABS_X, "redVelocity")
+                .WithAbs(input_abs_code.ABS_Y, "yellowVelocity")
+                .WithAbs(input_abs_code.ABS_RX, "blueVelocity")
+                .WithAbs(input_abs_code.ABS_RY, "greenVelocity");
 
             // MadCatz Rock Band Drumkit for Xbox 360 (all models)
             // MadCatz Rock Band 3 MIDI Pro Adapter for Xbox 360 (Drums mode)

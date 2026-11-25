@@ -30,10 +30,11 @@ namespace PlasticBand.Devices
                 .WithKey(input_key_code.BTN_Y, "yellowFret")
                 .WithKey(input_key_code.BTN_X, "blueFret")
                 .WithKey(input_key_code.BTN_TL, "orangeFret")
+                .WithKey(input_key_code.BTN_TR, "spPedal")
                 .WithHat(0, "dpad")
                 .WithAbs(input_abs_code.ABS_X, "whammy", EvdevAxisOption.Unsigned)
                 .WithAbs(input_abs_code.ABS_RX, "tilt")
-                .WithKey(input_key_code.BTN_TR, "spPedal");
+                .WithAbs(input_abs_code.ABS_Y, "touchFrets");
 
             EvdevLayoutFinder.RegisterStaticLayout<SantrollerEvdevGuitarHeroGuitar>(
                 mappings,

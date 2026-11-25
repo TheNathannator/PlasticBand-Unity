@@ -25,13 +25,12 @@ namespace PlasticBand.Devices
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
-                .WithKey(input_key_code.BTN_DPAD_UP, "dpad/up")
-                .WithKey(input_key_code.BTN_DPAD_DOWN, "dpad/down")
                 .WithKey(input_key_code.BTN_1, "greenFret")
                 .WithKey(input_key_code.BTN_2, "redFret")
                 .WithKey(input_key_code.BTN_3, "yellowFret")
                 .WithKey(input_key_code.BTN_4, "blueFret")
                 .WithKey(input_key_code.BTN_5, "orangeFret")
+                .WithHat(0, "dpad")
                 .WithAbs(input_abs_code.ABS_HAT0X, "touchBar")
                 .WithAbs(input_abs_code.ABS_HAT1X, "whammy");
 
