@@ -49,18 +49,12 @@ namespace PlasticBand.Devices
             bool yellow = m_StateHandler.ReadKey(stateEvent, m_Yellow);
             bool blue = m_StateHandler.ReadKey(stateEvent, m_Blue);
             bool green = m_StateHandler.ReadKey(stateEvent, m_Green);
-            bool pad = m_StateHandler.ReadKey(stateEvent, m_PadFlag);
-            bool cymbal = m_StateHandler.ReadKey(stateEvent, m_CymbalFlag);
 
             var hat = m_StateHandler.ReadHat(stateEvent, 0);
             bool dpadUp = (hat & EvdevHatValue.Up) != 0;
             bool dpadDown = (hat & EvdevHatValue.Down) != 0;
 
-            var pads = TranslatingFourLaneDrumkit.TranslatePadFlags(
-                red, yellow, blue, green,
-                pad, cymbal, dpadUp, dpadDown,
-                ref m_HasFlags
-            );
+            var pads = ReadPads(stateEvent, red, yellow, blue, green, dpadUp, dpadDown);
 
             var buttons = TranslatedFourLaneButtonMask.None;
 
@@ -99,6 +93,19 @@ namespace PlasticBand.Devices
             };
             ReadVelocities(stateEvent, pads, ref translated);
             return translated;
+        }
+
+        protected virtual unsafe FourLanePad ReadPads(StateEvent* stateEvent,
+            bool red, bool yellow, bool blue, bool green, bool dpadUp, bool dpadDown)
+        {
+            bool pad = m_StateHandler.ReadKey(stateEvent, m_PadFlag);
+            bool cymbal = m_StateHandler.ReadKey(stateEvent, m_CymbalFlag);
+
+            return TranslatingFourLaneDrumkit.TranslatePadFlags(
+                red, yellow, blue, green,
+                pad, cymbal, dpadUp, dpadDown,
+                ref m_HasFlags
+            );
         }
 
         protected virtual unsafe void ReadVelocities(StateEvent* stateEvent, FourLanePad pads, ref TranslatedFourLaneState translated)

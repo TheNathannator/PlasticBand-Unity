@@ -12,7 +12,23 @@ namespace PlasticBand.Devices
     {
         internal static void Initialize()
         {
-            var mappings = new EvdevDeviceMapping()
+            // Note that bluetooth gamepads don't expose the capabilities, so they will always assume the default layout
+            EvdevLayoutFinder.RegisterLayout<SantrollerV2EvdevGamepad>(
+                GetMappings(EvdevStickOption.None),
+                SantrollerLayoutFinder.GetEvdevMatcher(SantrollerDeviceType.Gamepad)
+            );
+
+            // Follow the invert-y flag if it its available
+            EvdevLayoutFinder.RegisterLayout<SantrollerV2EvdevGamepad_XInputYAxis>(
+                GetMappings(EvdevStickOption.InvertY),
+                SantrollerLayoutFinder.GetEvdevMatcher(SantrollerDeviceType.Gamepad)
+                    .WithPredicate((caps) => ((SantrollerCapabilities)caps.santrollerCapabilities & SantrollerCapabilities.YAxisInverted) != 0 ? 1 : -1)
+            );
+        }
+
+        private static EvdevDeviceMapping GetMappings(EvdevStickOption stickOptions)
+        {
+            return new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
                 .WithHat(0, "dpad")
@@ -26,15 +42,14 @@ namespace PlasticBand.Devices
                 .WithKey(input_key_code.BTN_THUMB_R, "rightStickPress")
                 .WithAbsButton(input_abs_code.ABS_Z, "leftTrigger")
                 .WithAbsButton(input_abs_code.ABS_RZ, "rightTrigger")
-                // assume y axis is following the HID convention since we can't read that capability from evdev
-                .WithStick(input_abs_code.ABS_X, "leftStick")
-                .WithStick(input_abs_code.ABS_RX, "rightStick");
-
-            EvdevLayoutFinder.RegisterLayout<SantrollerV2EvdevGamepad>(
-                mappings,
-                SantrollerLayoutFinder.GetEvdevMatcher(SantrollerDeviceType.Gamepad)
-            );
+                .WithStick(input_abs_code.ABS_X, "leftStick", stickOptions)
+                .WithStick(input_abs_code.ABS_RX, "rightStick", stickOptions);
         }
+    }
+
+    [InputControlLayout(displayName = "Santroller V2 Gamepad", hideInUI = true)]
+    internal class SantrollerV2EvdevGamepad_XInputYAxis : SantrollerV2EvdevGamepad
+    {
     }
 }
 #endif

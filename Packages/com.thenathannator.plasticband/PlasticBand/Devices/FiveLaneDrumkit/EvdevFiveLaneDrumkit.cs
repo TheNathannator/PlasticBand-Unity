@@ -41,7 +41,7 @@ namespace PlasticBand.Devices
         public unsafe TranslatedFiveLaneState TranslateStateEvent(StateEvent* stateEvent)
         {
             var hits = ReadHits(stateEvent);
-            ReadVelocities(stateEvent, out byte green, out byte red, out byte yellow, out byte blue, out byte orange, out byte kick);
+            ReadVelocities(stateEvent, out byte red, out byte yellow, out byte blue, out byte orange, out byte green, out byte kick);
 
             var translated = new TranslatedFiveLaneState()
             {

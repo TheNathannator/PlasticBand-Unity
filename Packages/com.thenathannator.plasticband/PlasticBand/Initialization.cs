@@ -75,6 +75,7 @@ namespace PlasticBand
             SantrollerXInputRockBandGuitar.Initialize();
 #if HIDROGEN_0_6_0_OR_LATER
             XpadEvdevRockBandGuitar.Initialize();
+            XoneEvdevRockBandGuitar.Initialize();
             SantrollerEvdevRockBandGuitar.Initialize();
             SantrollerV2EvdevRockBandGuitar.Initialize();
             PS3EvdevRockBandGuitar.Initialize();
@@ -131,6 +132,7 @@ namespace PlasticBand
             SantrollerXInputFourLaneDrumkit.Initialize();
 #if HIDROGEN_0_6_0_OR_LATER
             XpadEvdevFourLaneDrumkit.Initialize();
+            XoneEvdevFourLaneDrumkit.Initialize();
             SantrollerEvdevFourLaneDrumkit.Initialize();
             SantrollerV2EvdevFourLaneDrumkit.Initialize();
             PS3EvdevFourLaneDrumkit.Initialize();

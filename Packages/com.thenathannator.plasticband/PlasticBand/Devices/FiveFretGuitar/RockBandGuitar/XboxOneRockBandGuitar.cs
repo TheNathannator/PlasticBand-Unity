@@ -24,7 +24,7 @@ namespace PlasticBand.Devices
 
         private byte m_Tilt;
         public byte whammy;
-        public byte pickupSwitch;
+        private byte m_PickupSwitch;
 
         public byte frets;
         public byte soloFrets;
@@ -149,10 +149,11 @@ namespace PlasticBand.Devices
             }
         }
 
-        int IRockBandGuitarState_Base.pickupSwitch
+        // The notch is in the top nibble: 0x00, 0x10, 0x20, 0x30, or 0x40
+        public int pickupSwitch
         {
-            get => pickupSwitch;
-            set => pickupSwitch = (byte)value;
+            get => m_PickupSwitch >> 4;
+            set => m_PickupSwitch = (byte)(value << 4);
         }
     }
 

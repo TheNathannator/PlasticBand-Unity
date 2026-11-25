@@ -31,6 +31,7 @@ Dates are relative to UTC.
 
 ### Fixed
 
+- Xbox One Rock Band guitars and Riffmasters now report their pickup switch as notches 0-4, instead of the raw 0x00-0x40 values.
 - PS3 GH5 guitars are no longer incorrectly identified.
 - PC World Tour guitars with a report ID are no longer treated as not having one.
 - Santroller 1 drumkits are no longer misidentified or outright not identified at all.
