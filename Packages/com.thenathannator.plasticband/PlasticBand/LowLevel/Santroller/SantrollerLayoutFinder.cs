@@ -227,7 +227,7 @@ namespace PlasticBand.LowLevel
         {
             return new EvdevDeviceMatcher()
                 .WithHardwareIds(VendorID, ProductIDV2)
-                .WithSantrollerSubtype((byte)type);
+                .WithSantrollerSubtype(type);
         }
 
         internal static EvdevDeviceMatcher GetEvdevV1HidMatcher(SantrollerDeviceType type)
@@ -241,18 +241,18 @@ namespace PlasticBand.LowLevel
         internal static EvdevDeviceMatcher GetEvdevXpadMatcher(XInputDeviceSubType subType, SantrollerDeviceType type)
         {
             return new EvdevDeviceMatcher()
-                .WithDriver("xpad") // TODO: driver constants
+                .WithDriver(EvdevDefinitions.DriverXpad)
                 .WithHardwareIds(VendorID, ProductID)
                 .WithRevision((ushort)GetRevisionValue(type))
-                .WithXusbSubtype((byte)subType);
+                .WithXusbSubtype(subType);
         }
 
         internal static EvdevDeviceMatcher GetEvdevV2XpadMatcher(XInputDeviceSubType subType)
         {
             return new EvdevDeviceMatcher()
-                .WithDriver("xpad") // TODO: driver constants
+                .WithDriver(EvdevDefinitions.DriverXpad)
                 .WithHardwareIds(VendorID, ProductIDV2)
-                .WithXusbSubtype((byte)subType);
+                .WithXusbSubtype(subType);
         }
 #endif
     }

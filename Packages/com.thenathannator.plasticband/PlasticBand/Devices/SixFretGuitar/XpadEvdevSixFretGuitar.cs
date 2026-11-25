@@ -44,8 +44,8 @@ namespace PlasticBand.Devices
             EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevSixFretGuitar>(
                 xpadMappings,
                 new EvdevDeviceMatcher()
-                    .WithDriver("xpad") // TODO: driver constants
-                    .WithXusbSubtype((byte)XInputDeviceSubType.GuitarAlternate)
+                    .WithDriver(EvdevDefinitions.DriverXpad)
+                    .WithXusbSubtype(XInputDeviceSubType.GuitarAlternate)
                     .WithHardwareIds(0x1430, 0x070B)
             );
 

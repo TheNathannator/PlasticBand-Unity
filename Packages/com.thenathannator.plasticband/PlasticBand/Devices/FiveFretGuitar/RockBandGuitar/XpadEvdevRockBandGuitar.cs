@@ -45,14 +45,14 @@ namespace PlasticBand.Devices
             EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevRockBandGuitar>(
                 xpadMappings,
                 new EvdevDeviceMatcher()
-                    .WithDriver("xpad") // TODO: driver constants
-                    .WithXusbSubtype((byte)XInputDeviceSubType.Guitar)
+                    .WithDriver(EvdevDefinitions.DriverXpad)
+                    .WithXusbSubtype(XInputDeviceSubType.Guitar)
             );
             EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevRockBandGuitar>(
                 xpadMappings,
                 new EvdevDeviceMatcher()
-                    .WithDriver("xpad") // TODO: driver constants
-                    .WithXusbSubtype((byte)XInputDeviceSubType.GuitarBass)
+                    .WithDriver(EvdevDefinitions.DriverXpad)
+                    .WithXusbSubtype(XInputDeviceSubType.GuitarBass)
             );
 
             // Santroller V1 devices in XInput mode

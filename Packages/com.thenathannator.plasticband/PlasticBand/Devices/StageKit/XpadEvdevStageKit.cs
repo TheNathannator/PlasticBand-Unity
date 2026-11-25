@@ -31,8 +31,8 @@ namespace PlasticBand.Devices
             EvdevLayoutFinder.RegisterLayout<XpadEvdevStageKit>(
                 mapping,
                 new EvdevDeviceMatcher()
-                    .WithDriver("xpad") // TODO: driver constants
-                    .WithXusbSubtype((byte)XInputDeviceSubType.StageKit)
+                    .WithDriver(EvdevDefinitions.DriverXpad)
+                    .WithXusbSubtype(XInputDeviceSubType.StageKit)
             );
             EvdevLayoutFinder.RegisterLayout<XpadEvdevStageKit>(mapping,
                 SantrollerLayoutFinder.GetEvdevXpadMatcher(XInputDeviceSubType.StageKit, SantrollerDeviceType.StageKit));

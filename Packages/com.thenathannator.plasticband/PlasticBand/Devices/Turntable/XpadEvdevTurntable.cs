@@ -43,8 +43,8 @@ namespace PlasticBand.Devices
             EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevTurntable>(
                 xpadMappings,
                 new EvdevDeviceMatcher()
-                    .WithDriver("xpad") // TODO: driver constants
-                    .WithXusbSubtype((byte)XInputDeviceSubType.Turntable)
+                    .WithDriver(EvdevDefinitions.DriverXpad)
+                    .WithXusbSubtype(XInputDeviceSubType.Turntable)
             );
 
             // Santroller V1 devices in XInput mode

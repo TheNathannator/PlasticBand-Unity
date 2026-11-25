@@ -43,8 +43,8 @@ namespace PlasticBand.Devices
             EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevFiveLaneDrumkit>(
                 xpadMappings,
                 new EvdevDeviceMatcher()
-                    .WithDriver("xpad") // TODO: driver constants
-                    .WithXusbSubtype((byte)XInputDeviceSubType.DrumKit)
+                    .WithDriver(EvdevDefinitions.DriverXpad)
+                    .WithXusbSubtype(XInputDeviceSubType.DrumKit)
                     .WithHardwareIds(0x1430, 0x0805)
             );
 

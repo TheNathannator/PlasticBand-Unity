@@ -41,8 +41,8 @@ namespace PlasticBand.Devices
             EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevFourLaneDrumkit>(
                 xpadMappings,
                 new EvdevDeviceMatcher()
-                    .WithDriver("xpad") // TODO: driver constants
-                    .WithXusbSubtype((byte)XInputDeviceSubType.DrumKit)
+                    .WithDriver(EvdevDefinitions.DriverXpad)
+                    .WithXusbSubtype(XInputDeviceSubType.DrumKit)
             );
 
             // Santroller devices in XInput mode
