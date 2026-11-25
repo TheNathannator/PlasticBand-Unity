@@ -237,7 +237,7 @@ namespace PlasticBand.Devices
         }
     }
 
-    [InputControlLayout(stateType = typeof(SantrollerV2HIDGamepadState), displayName = "Santroller V2 HID Gamepad", hideInUI = true)]
+    [InputControlLayout(displayName = "Santroller V2 HID Gamepad", hideInUI = true)]
     internal class SantrollerV2HIDGamepad_XInputYAxis : SantrollerV2HIDGamepad
     {
         [InputControl(name = "leftStick/y", parameters = "minValue=-32768,maxValue=32767,zeroPoint=0")]
