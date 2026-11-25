@@ -9,18 +9,6 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    internal static class EvdevTurntable
-    {
-        internal static void Initialize()
-        {
-            XpadEvdevTurntable.Initialize();
-            SantrollerEvdevTurntable.Initialize();
-            SantrollerV2EvdevTurntable.Initialize();
-            PS3EvdevTurntable.Initialize();
-            WiiEvdevTurntable.Initialize();
-        }
-    }
-
     internal abstract class EvdevTurntable<TSelf> : Turntable,
         IStateTranslator<TranslatedTurntableState>
         where TSelf : EvdevTurntable<TSelf>

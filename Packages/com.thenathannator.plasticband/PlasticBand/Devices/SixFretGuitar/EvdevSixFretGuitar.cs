@@ -9,18 +9,6 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    internal static class EvdevSixFretGuitar
-    {
-        internal static void Initialize()
-        {
-            XpadEvdevSixFretGuitar.Initialize();
-            SantrollerEvdevSixFretGuitar.Initialize();
-            SantrollerV2EvdevSixFretGuitar.Initialize();
-            PS3EvdevSixFretGuitar.Initialize();
-            PS4EvdevSixFretGuitar.Initialize();
-        }
-    }
-
     internal abstract class EvdevSixFretGuitar<TSelf> : SixFretGuitar,
         IStateTranslator<TranslatedSixFretState>
         where TSelf : EvdevSixFretGuitar<TSelf>

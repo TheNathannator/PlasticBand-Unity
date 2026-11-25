@@ -9,17 +9,6 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    internal static class EvdevFourLaneDrumkit
-    {
-        internal static void Initialize()
-        {
-            XpadEvdevFourLaneDrumkit.Initialize();
-            SantrollerEvdevFourLaneDrumkit.Initialize();
-            SantrollerV2EvdevFourLaneDrumkit.Initialize();
-            PS3EvdevFourLaneDrumkit.Initialize();
-        }
-    }
-
     internal abstract class EvdevFourLaneDrumkit<TSelf> : FourLaneDrumkit,
         IStateTranslator<TranslatedFourLaneState>
         where TSelf : EvdevFourLaneDrumkit<TSelf>
