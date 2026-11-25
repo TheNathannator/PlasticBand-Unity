@@ -23,7 +23,7 @@ namespace PlasticBand.Devices
     }
 
     [Flags]
-    internal enum TranslatedGuitarHeroGuitarButtonMask : ushort
+    internal enum TranslatedGuitarHeroGuitarButtonMask : byte
     {
         None = 0,
 
