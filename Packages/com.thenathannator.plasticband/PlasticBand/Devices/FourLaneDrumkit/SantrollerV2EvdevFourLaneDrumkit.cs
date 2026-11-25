@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedFourLaneState), displayName = "Santroller V2 Evdev Rock Band Drumkit", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedFourLaneState), displayName = "Santroller V2 Rock Band Drumkit", hideInUI = true)]
     internal class SantrollerV2EvdevFourLaneDrumkit : EvdevFourLaneDrumkit<SantrollerV2EvdevFourLaneDrumkit>
     {
         internal new static void Initialize()

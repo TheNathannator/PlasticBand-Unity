@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedRockBandGuitarState), displayName = "PS3/Wii Evdev Rock Band Guitar", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedRockBandGuitarState), displayName = "Rock Band Guitar for PS3", hideInUI = true)]
     internal class PS3EvdevRockBandGuitar : EvdevRockBandGuitar<PS3EvdevRockBandGuitar>
     {
         private byte m_LastWhammy;
@@ -42,16 +42,6 @@ namespace PlasticBand.Devices
             EvdevLayoutFinder.RegisterStaticLayout<PS3EvdevRockBandGuitar>(
                 mappings,
                 new EvdevDeviceMatcher().WithHardwareIds(0x12BA, 0x0200)
-            );
-
-            // Harmonix Rock Band 1/2 guitars for Wii
-            EvdevLayoutFinder.RegisterStaticLayout<PS3EvdevRockBandGuitar>(
-                mappings,
-                new EvdevDeviceMatcher().WithHardwareIds(0x1BAD, 0x0004)
-            );
-            EvdevLayoutFinder.RegisterStaticLayout<PS3EvdevRockBandGuitar>(
-                mappings,
-                new EvdevDeviceMatcher().WithHardwareIds(0x1BAD, 0x3010)
             );
         }
 

@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedFiveLaneState), hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedFiveLaneState), displayName = "Guitar Hero Drumkit for Xbox 360", hideInUI = true)]
     internal class XpadEvdevFiveLaneDrumkit : EvdevFiveLaneDrumkit<XpadEvdevFiveLaneDrumkit>
     {
         internal new static void Initialize()

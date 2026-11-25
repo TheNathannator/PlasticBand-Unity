@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 namespace PlasticBand.Devices
 {
     // This requires a fixed hid-sony release that hasn't been mainlined yet, just putting it here for reference
-    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "PS3 Evdev DJ Hero Turntable", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "DJ Hero Turntable for PS3", hideInUI = true)]
     internal class PS3EvdevTurntable : EvdevTurntable<PS3EvdevTurntable>
     {
         internal new static void Initialize()

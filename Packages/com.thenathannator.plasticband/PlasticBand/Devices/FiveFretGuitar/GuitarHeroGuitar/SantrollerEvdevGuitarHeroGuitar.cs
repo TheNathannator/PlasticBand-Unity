@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedGuitarHeroGuitarState), displayName = "Santroller Evdev Guitar Hero Guitar", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedGuitarHeroGuitarState), displayName = "Santroller Guitar Hero Guitar", hideInUI = true)]
     internal class SantrollerEvdevGuitarHeroGuitar : EvdevGuitarHeroGuitar<SantrollerEvdevGuitarHeroGuitar>
     {
         internal new static void Initialize()

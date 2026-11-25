@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "Xpad Evdev DJ Hero Turntable", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "DJ Hero Turntable for Xbox 360", hideInUI = true)]
     internal class XpadEvdevTurntable : EvdevTurntable<XpadEvdevTurntable>
     {
         internal new static void Initialize()

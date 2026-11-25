@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedGuitarHeroGuitarState), displayName = "PC Evdev Guitar Hero Guitar", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedGuitarHeroGuitarState), displayName = "Guitar Hero Guitar for PC", hideInUI = true)]
     internal class PCEvdevGuitarHeroGuitar : PS3EvdevGuitarHeroGuitar
     {
         internal new static void Initialize()

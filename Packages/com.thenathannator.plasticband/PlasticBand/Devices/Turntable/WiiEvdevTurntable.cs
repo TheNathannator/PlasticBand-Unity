@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "Wii Evdev DJ Hero Turntable", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedTurntableState), displayName = "DJ Hero Turntable for Wii", hideInUI = true)]
     internal class WiiEvdevTurntable : EvdevTurntable<WiiEvdevTurntable>
     {
         internal new static void Initialize()

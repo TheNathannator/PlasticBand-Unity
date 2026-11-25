@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedFiveLaneState), displayName = "PS3 Evdev Guitar Hero Drumkit", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedFiveLaneState), displayName = "Guitar Hero Drumkit for PS3", hideInUI = true)]
     internal class PS3EvdevFiveLaneDrumkit : EvdevFiveLaneDrumkit<PS3EvdevFiveLaneDrumkit>
     {
         internal new static void Initialize()

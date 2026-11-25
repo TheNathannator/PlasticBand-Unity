@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(displayName = "Xpad Evdev Rock Band Stage Kit", hideInUI = true)]
+    [InputControlLayout(displayName = "Rock Band Stage Kit for Xbox 360", hideInUI = true)]
     internal class XpadEvdevStageKit : StageKit
     {
         internal new static void Initialize()

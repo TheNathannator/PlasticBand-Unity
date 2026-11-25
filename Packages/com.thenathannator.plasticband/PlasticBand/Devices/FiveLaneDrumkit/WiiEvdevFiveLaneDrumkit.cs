@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedFiveLaneState), displayName = "Wii Evdev Guitar Hero Drumkit", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedFiveLaneState), displayName = "Guitar Hero Drumkit for Wii", hideInUI = true)]
     internal class WiiEvdevFiveLaneDrumkit : EvdevFiveLaneDrumkit<WiiEvdevFiveLaneDrumkit>
     {
         private const int kMaxHitStrength = 7;

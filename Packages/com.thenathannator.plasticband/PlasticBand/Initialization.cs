@@ -79,6 +79,8 @@ namespace PlasticBand
             SantrollerV2EvdevRockBandGuitar.Initialize();
             PS3EvdevRockBandGuitar.Initialize();
             PS4EvdevRockBandGuitar.Initialize();
+            PS5EvdevRockBandGuitar.Initialize();
+            WiiEvdevRockBandGuitar.Initialize();
 #endif
 
             // Riffmaster guitars
@@ -132,6 +134,7 @@ namespace PlasticBand
             SantrollerEvdevFourLaneDrumkit.Initialize();
             SantrollerV2EvdevFourLaneDrumkit.Initialize();
             PS3EvdevFourLaneDrumkit.Initialize();
+            WiiEvdevFourLaneDrumkit.Initialize();
 #endif
 
             // CRKD drumkits

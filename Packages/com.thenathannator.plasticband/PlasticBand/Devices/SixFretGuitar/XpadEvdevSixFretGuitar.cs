@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "Xpad Evdev Guitar Hero Live Guitar", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "Guitar Hero Live Guitar for Xbox 360", hideInUI = true)]
     internal class XpadEvdevSixFretGuitar : EvdevSixFretGuitar<XpadEvdevSixFretGuitar>
     {
         internal new static void Initialize()

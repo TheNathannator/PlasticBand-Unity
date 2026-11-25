@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "PS3/Wii U Evdev Guitar Hero Live Guitar", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedSixFretState), displayName = "Guitar Hero Live Guitar for PS3/Wii U", hideInUI = true)]
     internal class PS3EvdevSixFretGuitar : EvdevSixFretGuitar<PS3EvdevSixFretGuitar>
     {
         internal new static void Initialize()

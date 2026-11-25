@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(displayName = "Santroller V2 Evdev Gamepad", hideInUI = true)]
+    [InputControlLayout(displayName = "Santroller V2 Gamepad", hideInUI = true)]
     internal class SantrollerV2EvdevGamepad : Gamepad
     {
         internal static void Initialize()

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedFourLaneState), displayName = "PS3/Wii Evdev Rock Band Drumkit", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedFourLaneState), displayName = "Rock Band Drumkit for PS3", hideInUI = true)]
     internal class PS3EvdevFourLaneDrumkit : EvdevFourLaneDrumkit<PS3EvdevFourLaneDrumkit>
     {
         internal new static void Initialize()
@@ -43,22 +43,6 @@ namespace PlasticBand.Devices
             EvdevLayoutFinder.RegisterStaticLayout<PS3EvdevFourLaneDrumkit>(
                 mappings,
                 new EvdevDeviceMatcher().WithHardwareIds(0x12BA, 0x0218)
-            );
-
-            // Harmonix Rock Band 1/2 drumkits for Wii
-            EvdevLayoutFinder.RegisterStaticLayout<PS3EvdevFourLaneDrumkit>(
-                mappings,
-                new EvdevDeviceMatcher().WithHardwareIds(0x1BAD, 0x0005)
-            );
-            EvdevLayoutFinder.RegisterStaticLayout<PS3EvdevFourLaneDrumkit>(
-                mappings,
-                new EvdevDeviceMatcher().WithHardwareIds(0x1BAD, 0x3110)
-            );
-
-            // MadCatz Rock Band 3 MIDI Pro Adapter for Wii (drums mode)
-            EvdevLayoutFinder.RegisterStaticLayout<PS3EvdevFourLaneDrumkit>(
-                mappings,
-                new EvdevDeviceMatcher().WithHardwareIds(0x1BAD, 0x3138)
             );
         }
     }

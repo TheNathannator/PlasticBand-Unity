@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace PlasticBand.Devices
 {
-    [InputControlLayout(stateType = typeof(TranslatedRockBandGuitarState), displayName = "PS4/PS5 Evdev Rock Band Guitar", hideInUI = true)]
+    [InputControlLayout(stateType = typeof(TranslatedRockBandGuitarState), displayName = "Rock Band Guitar for PS4", hideInUI = true)]
     internal class PS4EvdevRockBandGuitar : EvdevRockBandGuitar<PS4EvdevRockBandGuitar>
     {
         internal new static void Initialize()
@@ -60,22 +60,6 @@ namespace PlasticBand.Devices
             EvdevLayoutFinder.RegisterStaticLayout<PS4EvdevRockBandGuitar>(
                 mappings,
                 new EvdevDeviceMatcher().WithHardwareIds(0x3651, 0x5500)
-            );
-
-            // PDP Riffmaster for PS5
-            EvdevLayoutFinder.RegisterStaticLayout<PS4EvdevRockBandGuitar>(
-                mappings,
-                new EvdevDeviceMatcher().WithHardwareIds(0x0E6F, 0x0249)
-            );
-
-            // CRKD Gibson SG for PS5 (wired and dongle)
-            EvdevLayoutFinder.RegisterStaticLayout<PS4EvdevRockBandGuitar>(
-                mappings,
-                new EvdevDeviceMatcher().WithHardwareIds(0x3651, 0x1600)
-            );
-            EvdevLayoutFinder.RegisterStaticLayout<PS4EvdevRockBandGuitar>(
-                mappings,
-                new EvdevDeviceMatcher().WithHardwareIds(0x3651, 0x5600)
             );
         }
 
