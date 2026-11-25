@@ -8,6 +8,9 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
+    /// <summary>
+    /// Report for Santroller V1 devices emulating a gamepad in HID mode (PCGamepad_Data_t in the firmware).
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct SantrollerHIDGamepadState : IGamepadState
     {
@@ -93,6 +96,7 @@ namespace PlasticBand.Devices
         [InputControl(name = "rightTrigger", layout = "IntButton", format = "BYTE", parameters = "minValue=0x00,maxValue=0xFF")]
         public byte rightTrigger;
 
+        // Pressure values for the d-pad, shoulders and face buttons; not exposed
         public unsafe fixed byte pressures[10];
 
         public bool start
@@ -240,6 +244,9 @@ namespace PlasticBand.Devices
         }
     }
 
+    /// <summary>
+    /// A Santroller V1 device emulating a gamepad in HID mode.
+    /// </summary>
     [InputControlLayout(stateType = typeof(SantrollerHIDGamepadState), displayName = "Santroller HID Gamepad")]
     internal class SantrollerHIDGamepad : Gamepad
     {

@@ -1,98 +1,190 @@
 using System;
 using Unity.Collections.LowLevel.Unsafe;
-using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.LowLevel
 {
-    internal delegate TToState TranslateStateHandler<TFromState, TToState>(ref TFromState fromState)
-        where TFromState : unmanaged, IInputStateTypeInfo
-        where TToState : unmanaged, IInputStateTypeInfo;
+    internal interface IStateTranslator : IInputStateCallbackReceiver // for convenience
+    {
+        InputDevice ToDevice();
+    }
 
-    /// <summary>
-    /// Translates a device's state from its original format (<typeparamref name="TFromState"/>)
-    /// to another (<typeparamref name="TToState"/>).
-    /// </summary>
-    internal static unsafe class StateTranslator<TFromState, TToState>
+    internal interface IStateTranslator<TToState> : IStateTranslator
+        where TToState : unmanaged, IInputStateTypeInfo
+    {
+        unsafe TToState TranslateStateEvent(StateEvent* stateEvent);
+    }
+
+    internal interface IStateTranslator<TFromState, TToState> : IStateTranslator
         where TFromState : unmanaged, IInputStateTypeInfo
         where TToState : unmanaged, IInputStateTypeInfo
     {
-        public static readonly FourCC FromStateFormat = StateCache<TFromState>.StateFormat;
-        public static readonly FourCC ToStateFormat = StateCache<TToState>.StateFormat;
+        TToState TranslateState(ref TFromState fromState);
+    }
 
-        public static void VerifyDevice(InputDevice device)
+    /// <summary>
+    /// Translates a device's state events to another format.
+    /// </summary>
+    internal static unsafe class StateTranslator
+    {
+        public static void VerifyDevice<TToState>(IStateTranslator<TToState> translator)
+            where TToState : unmanaged, IInputStateTypeInfo
         {
-            if (device.stateBlock.format != ToStateFormat)
-                throw new NotSupportedException($"Device state format must be {ToStateFormat} ({typeof(TToState).Name})!");
+            var device = translator.ToDevice();
+            var destFormat = StateCache<TToState>.StateFormat;
+
+            if (device.stateBlock.format != destFormat)
+            {
+                throw new NotSupportedException($"Device state format must be {destFormat} ({typeof(TToState).Name}).");
+            }
 
             if (device.stateBlock.sizeInBits / 8 < sizeof(TToState))
-                throw new NotSupportedException($"State block is too small to accomodate reports translated into {ToStateFormat} ({typeof(TToState).Name})!");
+            {
+                throw new NotSupportedException($"State block is too small to accomodate reports translated into {destFormat} ({typeof(TToState).Name}).");
+            }
+        }
+
+        public static void VerifyDevice<TFromState, TToState>(IStateTranslator<TFromState, TToState> translator)
+            where TFromState : unmanaged, IInputStateTypeInfo
+            where TToState : unmanaged, IInputStateTypeInfo
+        {
+            var device = translator.ToDevice();
+            var destFormat = StateCache<TToState>.StateFormat;
+
+            if (device.stateBlock.format != destFormat)
+            {
+                throw new NotSupportedException($"Device state format must be {destFormat} ({typeof(TToState).Name}).");
+            }
+
+            if (device.stateBlock.sizeInBits / 8 < sizeof(TToState))
+            {
+                throw new NotSupportedException($"State block is too small to accomodate reports translated into {destFormat} ({typeof(TToState).Name}).");
+            }
 
             if (sizeof(TFromState) < sizeof(TToState))
-                throw new NotSupportedException($"Input state size is too small to accomodate reports translated into {ToStateFormat} ({typeof(TToState).Name})!");
+            {
+                throw new NotSupportedException($"Input state size is too small to accomodate reports translated into {destFormat} ({typeof(TToState).Name}).");
+            }
         }
 
-        public static void OnStateEvent(InputDevice device, InputEventPtr eventPtr,
-            TranslateStateHandler<TFromState, TToState> translator)
+        public static void OnStateEvent<TToState>(
+            IStateTranslator<TToState> translator,
+            InputEventPtr eventPtr
+        )
+            where TToState : unmanaged, IInputStateTypeInfo
         {
-            // Skip if event has already been handled
-            if (eventPtr.handled || !TranslateState(device, eventPtr, translator))
-                return;
-
-            // Update underlying state buffers
-            // We don't need to worry about the final state event buffer being greater than
-            // the state block size, as any extra state data is simply ignored
-            //
-            // This is also not done in TranslateState, otherwise it screws with the event-based
-            // input control extensions since the device's current state buffer will have been
-            // overwritten by the data in the event before it can actually be checked against
-            InputState.Change(device, eventPtr);
-            eventPtr.handled = true;
+            if (!eventPtr.handled && TranslateState(translator, eventPtr))
+            {
+                // Update underlying state buffers
+                // We don't need to worry about the final state event buffer being greater than
+                // the state block size, as any extra state data is simply ignored
+                //
+                // This is also not done in TranslateState, otherwise it screws with the event-based
+                // input control extensions since the device's current state buffer will have been
+                // overwritten by the data in the event before it can actually be checked against
+                InputState.Change(translator.ToDevice(), eventPtr);
+                eventPtr.handled = true;
+            }
         }
 
-        private static bool TranslateState(InputDevice device, InputEventPtr eventPtr,
-            TranslateStateHandler<TFromState, TToState> translator)
+        public static void OnStateEvent<TFromState, TToState>(
+            IStateTranslator<TFromState, TToState> translator,
+            InputEventPtr eventPtr
+        )
+            where TFromState : unmanaged, IInputStateTypeInfo
+            where TToState : unmanaged, IInputStateTypeInfo
+        {
+            if (!eventPtr.handled && TranslateState(translator, eventPtr))
+            {
+                InputState.Change(translator.ToDevice(), eventPtr);
+                eventPtr.handled = true;
+            }
+        }
+
+        private static bool TranslateState<TToState>(
+            IStateTranslator<TToState> translator,
+            InputEventPtr eventPtr
+        )
+            where TToState : unmanaged, IInputStateTypeInfo
         {
             if (eventPtr.type != StateEvent.Type)
             {
-#if UNITY_EDITOR || PLASTICBAND_VERBOSE_LOGGING
-                Logging.Error($"Non-state event {eventPtr.type} received on translating device {device}!");
-#endif
+                Logging.EditorError($"Non-state event {eventPtr.type} received on translating device {translator.ToDevice()}!");
                 return false;
             }
+
+            var destFormat = StateCache<TToState>.StateFormat;
 
             var stateEvent = StateEvent.From(eventPtr);
-            // Skip if this event has already been translated
-            if (stateEvent->stateFormat == ToStateFormat)
+            if (stateEvent->stateFormat == destFormat)
+            {
+                // Already translated
                 return true;
+            }
 
-            // Ensure that the state format matches
-            if (stateEvent->stateFormat != FromStateFormat)
+            if (stateEvent->stateSizeInBytes < sizeof(TToState))
             {
-#if UNITY_EDITOR || PLASTICBAND_VERBOSE_LOGGING
-                Logging.Error($"Wrong state format {stateEvent->stateFormat} for translating device {device}! Expected {FromStateFormat}");
-#endif
+                Logging.EditorError($"State for {translator.ToDevice()} cannot hold translated format {destFormat}!");
                 return false;
             }
 
-            // ...and that the buffer is big enough for each state type
-            if (stateEvent->stateSizeInBytes < sizeof(TFromState) || stateEvent->stateSizeInBytes < sizeof(TToState))
-            {
-#if UNITY_EDITOR || PLASTICBAND_VERBOSE_LOGGING
-                Logging.Error($"State size {stateEvent->stateSizeInBytes} for translating device {device} is too small for input size {sizeof(TFromState)} and output size {sizeof(TToState)}!");
-#endif
-                return false;
-            }
-
-            // Read and translate state data
-            ref TFromState fromState = ref *(TFromState*)stateEvent->state;
-            var translated = translator(ref fromState);
-
-            // Write translated state to input event
+            var translated = translator.TranslateStateEvent(stateEvent);
             UnsafeUtility.CopyStructureToPtr(ref translated, stateEvent->state);
-            stateEvent->stateFormat = ToStateFormat;
+            stateEvent->stateFormat = destFormat;
+            return true;
+        }
+
+        private static bool TranslateState<TFromState, TToState>(
+            IStateTranslator<TFromState, TToState> translator,
+            InputEventPtr eventPtr
+        )
+            where TFromState : unmanaged, IInputStateTypeInfo
+            where TToState : unmanaged, IInputStateTypeInfo
+        {
+            if (eventPtr.type != StateEvent.Type)
+            {
+                Logging.EditorError($"Non-state event {eventPtr.type} received on translating device {translator.ToDevice()}!");
+                return false;
+            }
+
+            byte? sourceReportId = StateCache<TFromState>.ReportID;
+            var sourceFormat = StateCache<TFromState>.StateFormat;
+            var destFormat = StateCache<TToState>.StateFormat;
+
+            var stateEvent = StateEvent.From(eventPtr);
+            if (stateEvent->stateFormat == destFormat)
+            {
+                // Already translated
+                return true;
+            }
+
+            if (stateEvent->stateFormat != sourceFormat ||
+                (sourceReportId != null && *(byte*)stateEvent->state != sourceReportId))
+            {
+                if (sourceReportId != null)
+                {
+                    Logging.EditorError($"{stateEvent->stateFormat} 0x{sourceReportId:X2} is not compatible with {translator.ToDevice()}!");
+                }
+                else
+                {
+                    Logging.EditorError($"{stateEvent->stateFormat} is not compatible with {translator.ToDevice()}!");
+                }
+
+                return false;
+            }
+
+            if (stateEvent->stateSizeInBytes < sizeof(TFromState) ||
+                stateEvent->stateSizeInBytes < sizeof(TToState))
+            {
+                Logging.EditorError($"State for {translator.ToDevice()} cannot hold translated format {destFormat}!");
+                return false;
+            }
+
+            ref TFromState fromState = ref *(TFromState*)stateEvent->state;
+            var translated = translator.TranslateState(ref fromState);
+            UnsafeUtility.CopyStructureToPtr(ref translated, stateEvent->state);
+            stateEvent->stateFormat = destFormat;
             return true;
         }
 
@@ -100,16 +192,41 @@ namespace PlasticBand.LowLevel
         // our state transformations aren't applied.
         // Using 'InputState.onChange' for global device state update notifications is recommended instead,
         // as it doesn't circumvent the normal handling of input events, including IInputStateCallbackReceiver.OnStateEvent.
-        public static bool GetStateOffsetForEvent(InputDevice device, InputControl control, InputEventPtr eventPtr,
-            ref uint offset, TranslateStateHandler<TFromState, TToState> translator)
+        public static bool GetStateOffsetForEvent<TToState>(
+            IStateTranslator<TToState> translator,
+            InputControl _control,
+            InputEventPtr eventPtr,
+            ref uint offset
+        )
+            where TToState : unmanaged, IInputStateTypeInfo
         {
-            if ((control != null && control.device != device) || !TranslateState(device, eventPtr, translator))
-                return false;
+            if (TranslateState(translator, eventPtr))
+            {
+                // No offset is required, all of our controls will be reading
+                // relative to the start of the device's state block
+                offset = 0;
+                return true;
+            }
 
-            // No offset is required, all of our controls will be reading
-            // relative to the start of the device's state block
-            offset = 0;
-            return true;
+            return false;
+        }
+
+        public static bool GetStateOffsetForEvent<TFromState, TToState>(
+            IStateTranslator<TFromState, TToState> translator,
+            InputControl _control,
+            InputEventPtr eventPtr,
+            ref uint offset
+        )
+            where TFromState : unmanaged, IInputStateTypeInfo
+            where TToState : unmanaged, IInputStateTypeInfo
+        {
+            if (TranslateState(translator, eventPtr))
+            {
+                offset = 0;
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace PlasticBand.Devices
     /// Bitmask of possible fret values on a 5-fret guitar.
     /// </summary>
     [Flags]
-    public enum FiveFret
+    public enum FiveFret : byte
     {
         None = 0,
         Green = 0x01,

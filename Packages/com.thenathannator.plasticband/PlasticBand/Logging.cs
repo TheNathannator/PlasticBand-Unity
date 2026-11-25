@@ -25,5 +25,10 @@ namespace PlasticBand
         [Conditional("PLASTICBAND_VERBOSE_LOGGING")]
         public static void Verbose(string message)
             => Message(message);
+
+        [Conditional("UNITY_EDITOR")]
+        [Conditional("PLASTICBAND_VERBOSE_LOGGING")]
+        public static void EditorError(string message)
+            => Message(message);
     }
 }

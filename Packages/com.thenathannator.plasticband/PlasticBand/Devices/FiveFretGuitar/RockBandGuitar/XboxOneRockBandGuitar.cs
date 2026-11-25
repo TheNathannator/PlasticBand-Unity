@@ -24,7 +24,7 @@ namespace PlasticBand.Devices
 
         private byte m_Tilt;
         public byte whammy;
-        public byte pickupSwitch;
+        private byte m_PickupSwitch;
 
         public byte frets;
         public byte soloFrets;
@@ -149,10 +149,11 @@ namespace PlasticBand.Devices
             }
         }
 
-        int IRockBandGuitarState_Base.pickupSwitch
+        // The notch is in the top nibble: 0x00, 0x10, 0x20, 0x30, or 0x40
+        public int pickupSwitch
         {
-            get => pickupSwitch;
-            set => pickupSwitch = (byte)value;
+            get => m_PickupSwitch >> 4;
+            set => m_PickupSwitch = (byte)(value << 4);
         }
     }
 
@@ -166,8 +167,7 @@ namespace PlasticBand.Devices
     }
 
     [InputControlLayout(stateType = typeof(XboxOneRockBandGuitarLayout), displayName = "Xbox One Rock Band Guitar")]
-    internal class XboxOneRockBandGuitar : TranslatingRockBandGuitar_Distinct<XboxOneRockBandGuitarState>,
-        IInputStateCallbackReceiver
+    internal class XboxOneRockBandGuitar : TranslatingRockBandGuitar_Distinct<XboxOneRockBandGuitarState>
     {
         internal new static void Initialize()
         {
@@ -177,17 +177,5 @@ namespace PlasticBand.Devices
             // PDP Rock Band 4 Fender Jaguar Guitar for Xbox One
             GameInputLayoutFinder.RegisterLayout<XboxOneRockBandGuitar>(0x0E6F, 0x0170);
         }
-
-        protected override void FinishSetup()
-        {
-            base.FinishSetup();
-            GameInputStateTranslator<XboxOneRockBandGuitarState, TranslatedRockBandGuitarState>.VerifyDevice(this);
-        }
-
-        void IInputStateCallbackReceiver.OnNextUpdate() {}
-        void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => GameInputStateTranslator<XboxOneRockBandGuitarState, TranslatedRockBandGuitarState>.OnStateEvent(this, eventPtr, s_Translator);
-        bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => GameInputStateTranslator<XboxOneRockBandGuitarState, TranslatedRockBandGuitarState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
     }
 }

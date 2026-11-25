@@ -23,7 +23,7 @@ namespace PlasticBand.Devices
     }
 
     [Flags]
-    internal enum TranslatedGuitarHeroGuitarButtonMask : ushort
+    internal enum TranslatedGuitarHeroGuitarButtonMask : byte
     {
         None = 0,
 
@@ -61,21 +61,21 @@ namespace PlasticBand.Devices
         [InputControl(name = "start", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.Start)]
         [InputControl(name = "select", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.Select)]
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedGuitarHeroGuitarButton.System, displayName = "System")]
-        public ushort buttons;
+        public TranslatedGuitarHeroGuitarButtonMask buttons;
 
         [InputControl(name = "greenFret", layout = "Button", bit = 0)]
         [InputControl(name = "redFret", layout = "Button", bit = 1)]
         [InputControl(name = "yellowFret", layout = "Button", bit = 2)]
         [InputControl(name = "blueFret", layout = "Button", bit = 3)]
         [InputControl(name = "orangeFret", layout = "Button", bit = 4)]
-        public byte frets;
+        public FiveFret frets;
 
         [InputControl(name = "touchGreen", layout = "Button", bit = 0)]
         [InputControl(name = "touchRed", layout = "Button", bit = 1)]
         [InputControl(name = "touchYellow", layout = "Button", bit = 2)]
         [InputControl(name = "touchBlue", layout = "Button", bit = 3)]
         [InputControl(name = "touchOrange", layout = "Button", bit = 4)]
-        public byte touchFrets;
+        public FiveFret touchFrets;
 
         [InputControl(name = "whammy", layout = "IntAxis", parameters = "minValue=0x00,maxValue=0xFF,zeroPoint=0x00")]
         public byte whammy;
@@ -208,31 +208,32 @@ namespace PlasticBand.Devices
     /// <see cref="TranslatedGuitarHeroGuitarState"/> format.
     /// This variant is for guitars that use limited ranges for adjacent positions on the touch bar.
     /// </summary>
-    internal abstract class TranslatingGuitarHeroGuitar_Ranges<TState> : GuitarHeroGuitar, IInputStateCallbackReceiver
+    internal abstract class TranslatingGuitarHeroGuitar_Ranges<TState> : GuitarHeroGuitar,
+        IStateTranslator<TState, TranslatedGuitarHeroGuitarState>
         where TState : unmanaged, IGuitarHeroGuitarState, IInputStateTypeInfo
     {
-        private static readonly TranslateStateHandler<TState, TranslatedGuitarHeroGuitarState> s_Translator = TranslateState;
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator<TState, TranslatedGuitarHeroGuitarState>.VerifyDevice(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedGuitarHeroGuitarState>.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<TState, TranslatedGuitarHeroGuitarState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        internal static TranslatedGuitarHeroGuitarState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedGuitarHeroGuitarState TranslateState(ref TState state)
         {
             return new TranslatedGuitarHeroGuitarState()
             {
-                buttons = (ushort)TranslatingGuitarHeroGuitar.TranslateButtons(ref state),
+                buttons = TranslatingGuitarHeroGuitar.TranslateButtons(ref state),
 
-                frets = (byte) TranslatingGuitarHeroGuitar.TranslateFrets(ref state),
-                touchFrets = (byte) TranslatingGuitarHeroGuitar.s_WtTouchFrets[(state.rawTouchBar & 0xF0) >> 4],
+                frets = TranslatingGuitarHeroGuitar.TranslateFrets(ref state),
+                touchFrets = TranslatingGuitarHeroGuitar.s_WtTouchFrets[(state.rawTouchBar & 0xF0) >> 4],
 
                 whammy = state.whammy,
                 tilt = state.tilt,
@@ -245,31 +246,32 @@ namespace PlasticBand.Devices
     /// <see cref="TranslatedGuitarHeroGuitarState"/> format.
     /// This variant is for guitars that use discrete values for every combination on the touch bar.
     /// </summary>
-    internal abstract class TranslatingGuitarHeroGuitar_Discrete<TState> : GuitarHeroGuitar, IInputStateCallbackReceiver
+    internal abstract class TranslatingGuitarHeroGuitar_Discrete<TState> : GuitarHeroGuitar,
+        IStateTranslator<TState, TranslatedGuitarHeroGuitarState>
         where TState : unmanaged, IGuitarHeroGuitarState, IInputStateTypeInfo
     {
-        protected static readonly TranslateStateHandler<TState, TranslatedGuitarHeroGuitarState> s_Translator = TranslateState;
-
         protected override void FinishSetup()
         {
             base.FinishSetup();
-            StateTranslator<TState, TranslatedGuitarHeroGuitarState>.VerifyDevice(this);
+            StateTranslator.VerifyDevice(this);
         }
 
         void IInputStateCallbackReceiver.OnNextUpdate() {}
         void IInputStateCallbackReceiver.OnStateEvent(InputEventPtr eventPtr)
-            => StateTranslator<TState, TranslatedGuitarHeroGuitarState>.OnStateEvent(this, eventPtr, s_Translator);
+            => StateTranslator.OnStateEvent(this, eventPtr);
         bool IInputStateCallbackReceiver.GetStateOffsetForEvent(InputControl control, InputEventPtr eventPtr, ref uint offset)
-            => StateTranslator<TState, TranslatedGuitarHeroGuitarState>.GetStateOffsetForEvent(this, control, eventPtr, ref offset, s_Translator);
+            => StateTranslator.GetStateOffsetForEvent(this, control, eventPtr, ref offset);
 
-        internal static TranslatedGuitarHeroGuitarState TranslateState(ref TState state)
+        InputDevice IStateTranslator.ToDevice() => this;
+
+        public TranslatedGuitarHeroGuitarState TranslateState(ref TState state)
         {
             return new TranslatedGuitarHeroGuitarState()
             {
-                buttons = (ushort)TranslatingGuitarHeroGuitar.TranslateButtons(ref state),
+                buttons = TranslatingGuitarHeroGuitar.TranslateButtons(ref state),
 
-                frets = (byte) TranslatingGuitarHeroGuitar.TranslateFrets(ref state),
-                touchFrets = (byte) TranslatingGuitarHeroGuitar.s_Gh5TouchFrets[state.rawTouchBar],
+                frets = TranslatingGuitarHeroGuitar.TranslateFrets(ref state),
+                touchFrets = TranslatingGuitarHeroGuitar.s_Gh5TouchFrets[state.rawTouchBar],
 
                 whammy = state.whammy,
                 tilt = state.tilt,
