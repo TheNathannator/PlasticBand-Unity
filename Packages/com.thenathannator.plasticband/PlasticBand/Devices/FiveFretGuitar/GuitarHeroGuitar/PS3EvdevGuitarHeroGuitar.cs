@@ -3,7 +3,6 @@ using System;
 using HIDrogen.Devices.LowLevel;
 using HIDrogen.Imports.Linux;
 using PlasticBand.Controls;
-using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 

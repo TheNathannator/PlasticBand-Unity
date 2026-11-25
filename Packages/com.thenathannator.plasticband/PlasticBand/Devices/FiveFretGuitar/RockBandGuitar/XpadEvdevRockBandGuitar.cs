@@ -3,7 +3,6 @@ using HIDrogen.Devices.LowLevel;
 using HIDrogen.Imports.Linux;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Layouts;
-using UnityEngine.InputSystem.Utilities;
 
 namespace PlasticBand.Devices
 {
