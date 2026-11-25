@@ -109,20 +109,13 @@ namespace PlasticBand.Devices
     {
         // PlasticBand reference doc:
         // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/General%20Notes.md#deciphering-pads-and-cymbals
-        internal static FourLanePad TranslatePads<TState>(ref TState state, ref bool hasFlags)
-            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
+        internal static FourLanePad TranslatePadFlags(
+            bool red, bool yellow, bool blue, bool green,
+            bool pad, bool cymbal, bool dpadUp, bool dpadDown,
+            ref bool hasFlags
+        )
         {
             var pads = FourLanePad.None;
-
-            // Retrieve flag values
-            bool red = state.red_east;
-            bool yellow = state.yellow_north;
-            bool blue = state.blue_west;
-            bool green = state.green_south;
-            bool pad = state.pad;
-            bool cymbal = state.cymbal;
-            bool dpadUp = state.dpadUp;
-            bool dpadDown = state.dpadDown;
 
             // Store whether or not pad/cymbal flags are present
             hasFlags |= pad | cymbal;
@@ -191,6 +184,22 @@ namespace PlasticBand.Devices
             }
 
             return pads;
+        }
+
+        internal static FourLanePad TranslatePads<TState>(ref TState state, ref bool hasFlags)
+            where TState : unmanaged, IFourLaneDrumkitState_FlagButtons
+        {
+            return TranslatePadFlags(
+                state.red_east,
+                state.yellow_north,
+                state.blue_west,
+                state.green_south,
+                state.pad,
+                state.cymbal,
+                state.dpadUp,
+                state.dpadDown,
+                ref hasFlags
+            );
         }
 
         internal static FourLanePad TranslatePads<TState>(ref TState state)

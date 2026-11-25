@@ -13,10 +13,10 @@ namespace PlasticBand.Devices
         IStateTranslator<TranslatedFourLaneState>
         where TSelf : EvdevFourLaneDrumkit<TSelf>
     {
-        protected static input_key_code m_Green;
         protected static input_key_code m_Red;
         protected static input_key_code m_Yellow;
         protected static input_key_code m_Blue;
+        protected static input_key_code m_Green;
         protected static input_key_code m_Kick1;
         protected static input_key_code m_Kick2;
         protected static input_key_code m_PadFlag;
@@ -46,10 +46,10 @@ namespace PlasticBand.Devices
 
         public unsafe TranslatedFourLaneState TranslateStateEvent(StateEvent* stateEvent)
         {
-            bool green = m_StateHandler.ReadKey(stateEvent, m_Green);
             bool red = m_StateHandler.ReadKey(stateEvent, m_Red);
             bool yellow = m_StateHandler.ReadKey(stateEvent, m_Yellow);
             bool blue = m_StateHandler.ReadKey(stateEvent, m_Blue);
+            bool green = m_StateHandler.ReadKey(stateEvent, m_Green);
             bool pad = m_StateHandler.ReadKey(stateEvent, m_PadFlag);
             bool cymbal = m_StateHandler.ReadKey(stateEvent, m_CymbalFlag);
 
@@ -57,7 +57,11 @@ namespace PlasticBand.Devices
             bool dpadUp = (hat & EvdevHatValue.Up) != 0;
             bool dpadDown = (hat & EvdevHatValue.Down) != 0;
 
-            var pads = TranslatePads(green, red, yellow, blue, pad, cymbal, dpadUp, dpadDown);
+            var pads = TranslatingFourLaneDrumkit.TranslatePadFlags(
+                red, yellow, blue, green,
+                pad, cymbal, dpadUp, dpadDown,
+                ref m_HasFlags
+            );
 
             var buttons = TranslatedFourLaneButtonMask.None;
 
@@ -98,74 +102,6 @@ namespace PlasticBand.Devices
             return translated;
         }
 
-        // PlasticBand reference doc:
-        // https://github.com/TheNathannator/PlasticBand/blob/main/Docs/Instruments/4-Lane%20Drums/General%20Notes.md#deciphering-pads-and-cymbals
-        private FourLanePad TranslatePads(bool green, bool red, bool yellow, bool blue,
-            bool pad, bool cymbal, bool dpadUp, bool dpadDown)
-        {
-            var pads = FourLanePad.None;
-
-            // Store whether or not pad/cymbal flags are present
-            m_HasFlags |= pad | cymbal;
-
-            // Pad + cymbal hits can be ambiguous, we need to resolve this
-            if (pad && cymbal)
-            {
-                // There's only ambiguity between pad + cymbal hits of different colors,
-                // same-color pad + cymbal can be used directly
-                int colorCount = 0;
-                if (red) colorCount++;
-                if (yellow || dpadUp) colorCount++;
-                if (blue || dpadDown) colorCount++;
-                if (green || !(dpadUp || dpadDown)) colorCount++;
-
-                if (colorCount > 1)
-                {
-                    // The d-pad inputs let us resolve the ambiguity of a pad + cymbal hit
-                    if (dpadUp)
-                    {
-                        pads |= FourLanePad.YellowCymbal;
-                        yellow = false;
-                        cymbal = false;
-                    }
-
-                    if (dpadDown)
-                    {
-                        pads |= FourLanePad.BlueCymbal;
-                        blue = false;
-                        cymbal = false;
-                    }
-
-                    if (!(dpadUp || dpadDown))
-                    {
-                        pads |= FourLanePad.GreenCymbal;
-                        green = false;
-                        cymbal = false;
-                    }
-                }
-            }
-
-            // Rock Band 1 kits don't send the pad or cymbal flags, so a hit without
-            // either flag is a pad hit if no flags have been seen yet
-            if (pad || (!cymbal && !m_HasFlags))
-            {
-                if (red) pads |= FourLanePad.RedPad;
-                if (yellow) pads |= FourLanePad.YellowPad;
-                if (blue) pads |= FourLanePad.BluePad;
-                if (green) pads |= FourLanePad.GreenPad;
-            }
-
-            if (cymbal)
-            {
-                if (yellow) pads |= FourLanePad.YellowCymbal;
-                if (blue) pads |= FourLanePad.BlueCymbal;
-                if (green) pads |= FourLanePad.GreenCymbal;
-            }
-
-            return pads;
-        }
-
-        // Kits with one velocity per colour, shared between its pad and cymbal
         protected virtual unsafe void ReadVelocities(StateEvent* stateEvent, FourLanePad pads, ref TranslatedFourLaneState translated)
         {
             byte redPad = ReadRedVelocity(stateEvent);
