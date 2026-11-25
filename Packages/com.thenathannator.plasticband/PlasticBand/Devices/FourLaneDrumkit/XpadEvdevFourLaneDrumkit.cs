@@ -12,27 +12,27 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            m_Green = input_key_code.BTN_A;
             m_Red = input_key_code.BTN_B;
             m_Yellow = input_key_code.BTN_Y;
             m_Blue = input_key_code.BTN_X;
-            m_Kick1 = input_key_code.BTN_TL;
-            m_Kick2 = input_key_code.BTN_THUMB_L;
+            m_Green = input_key_code.BTN_A;
             m_PadFlag = input_key_code.BTN_THUMB_R;
             m_CymbalFlag = input_key_code.BTN_TR;
+            m_Kick1 = input_key_code.BTN_TL;
+            m_Kick2 = input_key_code.BTN_THUMB_L;
 
-            var xpadMappings = new EvdevDeviceMapping()
+            var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
                 .WithHat(0, "dpad")
                 .WithKey(input_key_code.BTN_A, "buttonSouth")
                 .WithKey(input_key_code.BTN_B, "buttonEast")
-                .WithKey(input_key_code.BTN_Y, "buttonNorth")
                 .WithKey(input_key_code.BTN_X, "buttonWest")
-                .WithKey(input_key_code.BTN_TL, "kick1")
-                .WithKey(input_key_code.BTN_THUMB_L, "kick2")
+                .WithKey(input_key_code.BTN_Y, "buttonNorth")
                 .WithKey(input_key_code.BTN_THUMB_R, "padFlag")
                 .WithKey(input_key_code.BTN_TR, "cymbalFlag")
+                .WithKey(input_key_code.BTN_TL, "kick1")
+                .WithKey(input_key_code.BTN_THUMB_L, "kick2")
                 .WithAbs(input_abs_code.ABS_X, "redVelocity")
                 .WithAbs(input_abs_code.ABS_Y, "yellowVelocity")
                 .WithAbs(input_abs_code.ABS_RX, "blueVelocity")
@@ -41,7 +41,7 @@ namespace PlasticBand.Devices
             // MadCatz Rock Band Drumkit for Xbox 360 (all models)
             // MadCatz Rock Band 3 MIDI Pro Adapter for Xbox 360 (Drums mode)
             EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevFourLaneDrumkit>(
-                xpadMappings,
+                mappings,
                 new EvdevDeviceMatcher()
                     .WithDriver(EvdevDefinitions.DriverXpad)
                     .WithXusbSubtype(XInputDeviceSubType.DrumKit)
@@ -49,7 +49,7 @@ namespace PlasticBand.Devices
 
             // Santroller devices in XInput mode
             EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevFourLaneDrumkit>(
-                xpadMappings,
+                mappings,
                 SantrollerLayoutFinder.GetEvdevXpadMatcher(XInputDeviceSubType.DrumKit, SantrollerDeviceType.RockBandDrums)
             );
         }

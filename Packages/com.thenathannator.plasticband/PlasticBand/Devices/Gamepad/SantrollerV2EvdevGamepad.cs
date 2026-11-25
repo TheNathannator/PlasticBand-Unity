@@ -12,7 +12,7 @@ namespace PlasticBand.Devices
     {
         internal static void Initialize()
         {
-            var mapping = new EvdevDeviceMapping()
+            var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
                 .WithHat(0, "dpad")
@@ -29,8 +29,11 @@ namespace PlasticBand.Devices
                 // assume y axis is following the HID convention since we can't read that capability from evdev
                 .WithStick(input_abs_code.ABS_X, "leftStick")
                 .WithStick(input_abs_code.ABS_RX, "rightStick");
-            EvdevLayoutFinder.RegisterLayout<SantrollerV2EvdevGamepad>(mapping,
-                SantrollerLayoutFinder.GetEvdevMatcher(SantrollerDeviceType.Gamepad));
+
+            EvdevLayoutFinder.RegisterLayout<SantrollerV2EvdevGamepad>(
+                mappings,
+                SantrollerLayoutFinder.GetEvdevMatcher(SantrollerDeviceType.Gamepad)
+            );
         }
     }
 }

@@ -10,7 +10,7 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(TranslatedFiveLaneState), displayName = "Wii Evdev Guitar Hero Drumkit", hideInUI = true)]
     internal class WiiEvdevFiveLaneDrumkit : EvdevFiveLaneDrumkit<WiiEvdevFiveLaneDrumkit>
     {
-        private const int kHidWiimoteMaxHitStrength = 7;
+        private const int kMaxHitStrength = 7;
 
         private const input_abs_code kRed = input_abs_code.ABS_HAT0X;
         private const input_abs_code kYellow = input_abs_code.ABS_HAT2X;
@@ -66,8 +66,11 @@ namespace PlasticBand.Devices
             return hits;
         }
 
-        protected override unsafe void ReadVelocities(StateEvent* stateEvent, out byte green, out byte red,
-            out byte yellow, out byte blue, out byte orange, out byte kick)
+        protected override unsafe void ReadVelocities(
+            StateEvent* stateEvent,
+            out byte red, out byte yellow, out byte blue,
+            out byte orange, out byte green, out byte kick
+        )
         {
             red = ToVelocity(m_StateHandler.ReadAbs(stateEvent, kRed));
             yellow = ToVelocity(m_StateHandler.ReadAbs(stateEvent, kYellow));
@@ -80,7 +83,7 @@ namespace PlasticBand.Devices
         private static bool IsHit(int strength) => strength > 0;
 
         private static byte ToVelocity(int strength)
-            => (byte)(Math.Min(Math.Max(strength, 0), kHidWiimoteMaxHitStrength) * byte.MaxValue / kHidWiimoteMaxHitStrength);
+            => (byte)(Math.Min(Math.Max(strength, 0), kMaxHitStrength) * byte.MaxValue / kMaxHitStrength);
     }
 }
 #endif

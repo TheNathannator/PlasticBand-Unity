@@ -27,8 +27,11 @@ namespace PlasticBand.Devices
                 .WithAbsButton(input_abs_code.ABS_RZ, "rightTrigger")
                 .WithStick(input_abs_code.ABS_X, "leftStick")
                 .WithStick(input_abs_code.ABS_RX, "rightStick");
-            EvdevLayoutFinder.RegisterLayout<SantrollerV2EvdevStageKit>(mapping,
-                SantrollerLayoutFinder.GetEvdevMatcher(SantrollerDeviceType.StageKit));
+
+            EvdevLayoutFinder.RegisterLayout<SantrollerV2EvdevStageKit>(
+                mapping,
+                SantrollerLayoutFinder.GetEvdevMatcher(SantrollerDeviceType.StageKit)
+            );
         }
     }
 }

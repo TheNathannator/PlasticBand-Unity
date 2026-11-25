@@ -34,8 +34,8 @@ namespace PlasticBand.Devices
                 .WithAbs(input_abs_code.ABS_Y, "rightTableVelocity")
                 .WithAbs(input_abs_code.ABS_RX, "effectsDial")
                 .WithAbs(input_abs_code.ABS_RY, "crossfader")
-                .WithAbs(input_abs_code.ABS_Z, "leftTableGreen")
-                .WithAbs(input_abs_code.ABS_RZ, "rightTableGreen");
+                .WithAbs(input_abs_code.ABS_Z, "leftTableButtons")
+                .WithAbs(input_abs_code.ABS_RZ, "rightTableButtons");
 
             // Activision DJ Hero turntable for Xbox 360
             EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevTurntable>(

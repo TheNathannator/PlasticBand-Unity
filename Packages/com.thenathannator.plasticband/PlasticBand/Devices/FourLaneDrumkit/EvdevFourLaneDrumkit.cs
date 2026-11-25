@@ -17,10 +17,10 @@ namespace PlasticBand.Devices
         protected static input_key_code m_Yellow;
         protected static input_key_code m_Blue;
         protected static input_key_code m_Green;
-        protected static input_key_code m_Kick1;
-        protected static input_key_code m_Kick2;
         protected static input_key_code m_PadFlag;
         protected static input_key_code m_CymbalFlag;
+        protected static input_key_code m_Kick1;
+        protected static input_key_code m_Kick2;
 
         protected EvdevStateHandler m_StateHandler;
 

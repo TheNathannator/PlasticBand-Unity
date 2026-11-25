@@ -28,14 +28,19 @@ namespace PlasticBand.Devices
                 .WithStick(input_abs_code.ABS_X, "leftStick")
                 .WithStick(input_abs_code.ABS_RX, "rightStick");
 
+            // PDP Rock Band Stage Kit for Xbox 360
             EvdevLayoutFinder.RegisterLayout<XpadEvdevStageKit>(
                 mapping,
                 new EvdevDeviceMatcher()
                     .WithDriver(EvdevDefinitions.DriverXpad)
                     .WithXusbSubtype(XInputDeviceSubType.StageKit)
             );
-            EvdevLayoutFinder.RegisterLayout<XpadEvdevStageKit>(mapping,
-                SantrollerLayoutFinder.GetEvdevXpadMatcher(XInputDeviceSubType.StageKit, SantrollerDeviceType.StageKit));
+            
+            // Santroller V1 devices in XInput mode
+            EvdevLayoutFinder.RegisterLayout<XpadEvdevStageKit>(
+                mapping,
+                SantrollerLayoutFinder.GetEvdevXpadMatcher(XInputDeviceSubType.StageKit, SantrollerDeviceType.StageKit)
+            );
         }
     }
 }

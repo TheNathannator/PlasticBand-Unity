@@ -12,7 +12,7 @@ namespace PlasticBand.Devices
     {
         internal static void Initialize()
         {
-            var mapping = new EvdevDeviceMapping()
+            var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
                 .WithHat(0, "dpad")
@@ -28,8 +28,11 @@ namespace PlasticBand.Devices
                 .WithAbsButton(input_abs_code.ABS_RZ, "rightTrigger")
                 .WithStick(input_abs_code.ABS_X, "leftStick")
                 .WithStick(input_abs_code.ABS_RX, "rightStick");
-            EvdevLayoutFinder.RegisterLayout<SantrollerEvdevGamepad>(mapping,
-                SantrollerLayoutFinder.GetEvdevV1HidMatcher(SantrollerDeviceType.Gamepad));
+
+            EvdevLayoutFinder.RegisterLayout<SantrollerEvdevGamepad>(
+                mappings,
+                SantrollerLayoutFinder.GetEvdevV1HidMatcher(SantrollerDeviceType.Gamepad)
+            );
         }
     }
 }

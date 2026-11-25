@@ -12,11 +12,11 @@ namespace PlasticBand.Devices
         IStateTranslator<TranslatedFiveLaneState>
         where TSelf : EvdevFiveLaneDrumkit<TSelf>
     {
-        protected static input_key_code m_GreenPad;
         protected static input_key_code m_RedPad;
         protected static input_key_code m_YellowCymbal;
         protected static input_key_code m_BluePad;
         protected static input_key_code m_OrangeCymbal;
+        protected static input_key_code m_GreenPad;
         protected static input_key_code m_Kick;
 
         protected EvdevStateHandler m_StateHandler;
@@ -83,20 +83,23 @@ namespace PlasticBand.Devices
         protected virtual unsafe FiveLanePad ReadHits(StateEvent* stateEvent)
         {
             var hits = FiveLanePad.None;
-            if (m_StateHandler.ReadKey(stateEvent, m_GreenPad)) hits |= FiveLanePad.Green;
             if (m_StateHandler.ReadKey(stateEvent, m_RedPad)) hits |= FiveLanePad.Red;
             if (m_StateHandler.ReadKey(stateEvent, m_YellowCymbal)) hits |= FiveLanePad.Yellow;
             if (m_StateHandler.ReadKey(stateEvent, m_BluePad)) hits |= FiveLanePad.Blue;
             if (m_StateHandler.ReadKey(stateEvent, m_OrangeCymbal)) hits |= FiveLanePad.Orange;
+            if (m_StateHandler.ReadKey(stateEvent, m_GreenPad)) hits |= FiveLanePad.Green;
             if (m_StateHandler.ReadKey(stateEvent, m_Kick)) hits |= FiveLanePad.Kick;
             return hits;
         }
 
         // Kits whose velocities can't be read report every hit at full strength
-        protected virtual unsafe void ReadVelocities(StateEvent* stateEvent, out byte green, out byte red,
-            out byte yellow, out byte blue, out byte orange, out byte kick)
+        protected virtual unsafe void ReadVelocities(
+            StateEvent* stateEvent,
+            out byte red, out byte yellow, out byte blue,
+            out byte orange, out byte green, out byte kick
+        )
         {
-            green = red = yellow = blue = orange = kick = byte.MaxValue;
+            red = yellow = blue = orange = green = kick = byte.MaxValue;
         }
 
         protected static byte GetLow(int axis) => (byte)axis;

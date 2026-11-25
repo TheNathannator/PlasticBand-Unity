@@ -25,7 +25,7 @@ namespace PlasticBand.Devices
             m_WhammyOptions = EvdevAxisOption.Unsigned;
             m_TiltOptions = EvdevAxisOption.None;
 
-            var xpadMappings = new EvdevDeviceMapping()
+            var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
                 .WithKey(input_key_code.BTN_A, "greenFret")
@@ -41,30 +41,30 @@ namespace PlasticBand.Devices
 
             // RedOctane Guitar Hero Guitar for Xbox 360 (all models)
             EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevGuitarHeroGuitar>(
-                xpadMappings,
+                mappings,
                 new EvdevDeviceMatcher()
                     .WithDriver(EvdevDefinitions.DriverXpad)
                     .WithXusbSubtype(XInputDeviceSubType.GuitarAlternate)
-            );
-
-            // Santroller devices in XInput mode
-            EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevGuitarHeroGuitar_GH5>(
-                xpadMappings,
-                SantrollerLayoutFinder.GetEvdevXpadMatcher(XInputDeviceSubType.GuitarAlternate, SantrollerDeviceType.GuitarHeroGuitar)
-            );
-            EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevGuitarHeroGuitar_GH5>(
-                xpadMappings,
-                SantrollerLayoutFinder.GetEvdevV2XpadMatcher(XInputDeviceSubType.GuitarAlternate)
             );
 
             // RedOctane Guitar Hero 5 and Band Hero Guitar for Xbox 360
             // Needs special handling for its slider bar
             EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevGuitarHeroGuitar_GH5>(
-                xpadMappings,
+                mappings,
                 new EvdevDeviceMatcher()
                     .WithDriver(EvdevDefinitions.DriverXpad)
                     .WithXusbSubtype(XInputDeviceSubType.GuitarAlternate)
                     .WithHardwareIds(0x1430, 0x0705)
+            );
+
+            // Santroller devices in XInput mode
+            EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevGuitarHeroGuitar_GH5>(
+                mappings,
+                SantrollerLayoutFinder.GetEvdevXpadMatcher(XInputDeviceSubType.GuitarAlternate, SantrollerDeviceType.GuitarHeroGuitar)
+            );
+            EvdevLayoutFinder.RegisterStaticLayout<XpadEvdevGuitarHeroGuitar_GH5>(
+                mappings,
+                SantrollerLayoutFinder.GetEvdevV2XpadMatcher(XInputDeviceSubType.GuitarAlternate)
             );
         }
 

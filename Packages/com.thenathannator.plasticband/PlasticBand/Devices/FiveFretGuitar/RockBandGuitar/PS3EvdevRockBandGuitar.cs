@@ -9,8 +9,6 @@ namespace PlasticBand.Devices
     [InputControlLayout(stateType = typeof(TranslatedRockBandGuitarState), displayName = "PS3/Wii Evdev Rock Band Guitar", hideInUI = true)]
     internal class PS3EvdevRockBandGuitar : EvdevRockBandGuitar<PS3EvdevRockBandGuitar>
     {
-        private const input_key_code kTilt = input_key_code.BTN_TR;
-
         private byte m_LastWhammy;
         private int m_LastPickupSwitch;
 
@@ -34,7 +32,7 @@ namespace PlasticBand.Devices
                 .WithKey(input_key_code.BTN_X, "yellowFret")
                 .WithKey(input_key_code.BTN_Y, "blueFret")
                 .WithKey(input_key_code.BTN_TL, "orangeFret")
-                .WithKey(kTilt, "tilt")
+                .WithKey(input_key_code.BTN_TR, "tilt")
                 .WithKey(input_key_code.BTN_TL_2, "solo")
                 .WithHat(0, "dpad")
                 .WithAbs(input_abs_code.ABS_Z, "whammy", EvdevAxisOption.Unsigned)
@@ -67,7 +65,7 @@ namespace PlasticBand.Devices
         }
 
         protected override unsafe sbyte ReadTilt(StateEvent* stateEvent)
-            => m_StateHandler.ReadKey(stateEvent, kTilt) ? sbyte.MaxValue : (sbyte)0;
+            => m_StateHandler.ReadKey(stateEvent, input_key_code.BTN_TR) ? sbyte.MaxValue : (sbyte)0;
 
         protected override unsafe int ReadPickupSwitch(StateEvent* stateEvent)
         {
