@@ -21,8 +21,8 @@ namespace PlasticBand.Devices
             // Follow the invert-y flag if it its available
             EvdevLayoutFinder.RegisterLayout<SantrollerV2EvdevGamepad_XInputYAxis>(
                 GetMappings(EvdevStickOption.InvertY),
-                SantrollerLayoutFinder.GetEvdevMatcher(SantrollerDeviceType.Gamepad)
-                    .WithPredicate((caps) => ((SantrollerCapabilities)caps.santrollerCapabilities & SantrollerCapabilities.YAxisInverted) != 0 ? 1 : -1)
+                SantrollerLayoutFinder.GetEvdevMatcher(SantrollerDeviceType.Gamepad),
+                (caps) => (caps.santrollerCapabilities & (byte)SantrollerCapabilities.YAxisInverted) != 0 ? 1 : -1
             );
         }
 
