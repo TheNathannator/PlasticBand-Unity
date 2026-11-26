@@ -11,6 +11,7 @@ Dates are relative to UTC.
 ### Added
 
 - The unit tests that existed as part of the development project are now included in the package folder. This makes it easier for anyone modifying the package to verify changes to existing layouts and add tests for new layouts.
+- Support for HIDrogen v0.6's new evdev backend has been implemented, with most instruments being directly supported.
 - Santroller V2 is now supported.
 - PlayStation CRKD drums in PS4/5 mode are now supported.
 - Most third-party Switch Pro controllers are now supported.
@@ -38,7 +39,7 @@ Dates are relative to UTC.
 - PS4 Rock Band drumkits no longer have their yellow and blue pads swapped.
 - PS3 and PC Guitar Hero guitars no longer have their tilt inverted.
 - PS3/Wii U Guitar Hero Live guitars now report their full tilt range, instead of only ever reading as tilted down.
-- Various other minor issues with axis normalization have been addressed.
+- Various minor issues with axis normalization have been addressed.
 
 ## [0.10.0] - 2026/09/07
 
