@@ -191,7 +191,9 @@ namespace PlasticBand.Devices
         private void OnFocusChanged(bool focused)
         {
             if (focused)
+            {
                 RequestDeviceInfo();
+            }
         }
 
         protected override void OnAdded()

@@ -133,14 +133,13 @@ namespace PlasticBand.Devices
                         }
                     })
                 };
-                if (m_RealDevice != null)
+
+                // Keep the device if it has not changed
+                if (m_RealDevice == null || m_RealDevice.device.description != description)
                 {
-                    // Keep the device if it has not changed
-                    if (m_RealDevice.device.description == description)
-                        return;
-                    m_RealDevice.Dispose();
+                    m_RealDevice?.Dispose();
+                    m_RealDevice = VariantRealDevice.Create(this, description);
                 }
-                m_RealDevice = VariantRealDevice.Create(this, description);
             }
             else if (StateReader.ReadState(stateEvent, out XboxOneWiredLegacyDeviceDisconnect* disconnect))
             {
@@ -158,7 +157,9 @@ namespace PlasticBand.Devices
         private void OnFocusChanged(bool focused)
         {
             if (focused)
+            {
                 RequestDeviceInfo();
+            }
         }
 
         protected override void OnAdded()
