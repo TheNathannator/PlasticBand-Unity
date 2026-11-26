@@ -130,40 +130,41 @@ namespace PlasticBand.Devices
             set => dpad.SetLeft(value);
         }
 
-        byte IFiveLaneDrumkitState.redVelocity
+        // Santroller 1 reports velocity as full 0-255
+        UInt7 IFiveLaneDrumkitState.redVelocity
         {
-            get => redVelocity;
-            set => redVelocity = value;
+            get => UInt7.Clamped(redVelocity >> 1);
+            set => redVelocity = (byte)(value << 1);
         }
 
-        byte IFiveLaneDrumkitState.yellowVelocity
+        UInt7 IFiveLaneDrumkitState.yellowVelocity
         {
-            get => yellowVelocity;
-            set => yellowVelocity = value;
+            get => UInt7.Clamped(yellowVelocity >> 1);
+            set => yellowVelocity = (byte)(value << 1);
         }
 
-        byte IFiveLaneDrumkitState.blueVelocity
+        UInt7 IFiveLaneDrumkitState.blueVelocity
         {
-            get => blueVelocity;
-            set => blueVelocity = value;
+            get => UInt7.Clamped(blueVelocity >> 1);
+            set => blueVelocity = (byte)(value << 1);
         }
 
-        byte IFiveLaneDrumkitState.orangeVelocity
+        UInt7 IFiveLaneDrumkitState.orangeVelocity
         {
-            get => orangeVelocity;
-            set => orangeVelocity = value;
+            get => UInt7.Clamped(orangeVelocity >> 1);
+            set => orangeVelocity = (byte)(value << 1);
         }
 
-        byte IFiveLaneDrumkitState.greenVelocity
+        UInt7 IFiveLaneDrumkitState.greenVelocity
         {
-            get => greenVelocity;
-            set => greenVelocity = value;
+            get => UInt7.Clamped(greenVelocity >> 1);
+            set => greenVelocity = (byte)(value << 1);
         }
 
-        byte IFiveLaneDrumkitState.kickVelocity
+        UInt7 IFiveLaneDrumkitState.kickVelocity
         {
-            get => kickVelocity;
-            set => kickVelocity = value;
+            get => UInt7.Clamped(kickVelocity >> 1);
+            set => kickVelocity = (byte)(value << 1);
         }
     }
 

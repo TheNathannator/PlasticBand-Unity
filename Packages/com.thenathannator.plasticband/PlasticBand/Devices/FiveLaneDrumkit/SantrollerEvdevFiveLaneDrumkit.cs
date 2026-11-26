@@ -44,16 +44,16 @@ namespace PlasticBand.Devices
 
         protected override unsafe void ReadVelocities(
             StateEvent* stateEvent,
-            out byte red, out byte yellow, out byte blue,
-            out byte orange, out byte green, out byte kick
+            out UInt7 red, out UInt7 yellow, out UInt7 blue,
+            out UInt7 orange, out UInt7 green, out UInt7 kick
         )
         {
-            red = (byte)m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_Y);
-            yellow = (byte)m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_RX);
-            blue = (byte)m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_RY);
-            orange = (byte)m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_Z);
-            green = (byte)m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_X);
-            kick = (byte)m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_RZ);
+            red = UInt7.Clamped(m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_Y));
+            yellow = UInt7.Clamped(m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_RX));
+            blue = UInt7.Clamped(m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_RY));
+            orange = UInt7.Clamped(m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_Z));
+            green = UInt7.Clamped(m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_X));
+            kick = UInt7.Clamped(m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_RZ));
         }
     }
 }

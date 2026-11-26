@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using PlasticBand.Controls;
 using PlasticBand.Devices;
+using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Controls;
 
 namespace PlasticBand.Tests.Devices
@@ -121,7 +123,9 @@ namespace PlasticBand.Tests.Devices
         protected void SetPad(ref TState state, FiveLanePad pad, float velocity)
         {
             bool hit = velocity > 0f;
-            byte rawVelocity = DeviceHandling.DenormalizeByteUnsigned(velocity);
+            UInt7 rawVelocity = UInt7.Clamped(IntegerAxisControl.Denormalize(
+                velocity, UInt7.MinValue.Value, UInt7.MaxValue.Value, UInt7.MinValue.Value
+            ));
             switch (pad)
             {
                 case FiveLanePad.Kick:

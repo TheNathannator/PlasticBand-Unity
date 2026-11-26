@@ -41,16 +41,20 @@ namespace PlasticBand.Devices
         public unsafe TranslatedFiveLaneState TranslateStateEvent(StateEvent* stateEvent)
         {
             var hits = ReadHits(stateEvent);
-            ReadVelocities(stateEvent, out byte red, out byte yellow, out byte blue, out byte orange, out byte green, out byte kick);
+            ReadVelocities(
+                stateEvent,
+                out UInt7 red, out UInt7 yellow, out UInt7 blue,
+                out UInt7 orange, out UInt7 green, out UInt7 kick
+            );
 
             var translated = new TranslatedFiveLaneState()
             {
-                redPad = (hits & FiveLanePad.Red) != 0 ? red : (byte)0,
-                yellowCymbal = (hits & FiveLanePad.Yellow) != 0 ? yellow : (byte)0,
-                bluePad = (hits & FiveLanePad.Blue) != 0 ? blue : (byte)0,
-                orangeCymbal = (hits & FiveLanePad.Orange) != 0 ? orange : (byte)0,
-                greenPad = (hits & FiveLanePad.Green) != 0 ? green : (byte)0,
-                kick = (hits & FiveLanePad.Kick) != 0 ? kick : (byte)0,
+                redPad = (hits & FiveLanePad.Red) != 0 ? red : UInt7.MinValue,
+                yellowCymbal = (hits & FiveLanePad.Yellow) != 0 ? yellow : UInt7.MinValue,
+                bluePad = (hits & FiveLanePad.Blue) != 0 ? blue : UInt7.MinValue,
+                orangeCymbal = (hits & FiveLanePad.Orange) != 0 ? orange : UInt7.MinValue,
+                greenPad = (hits & FiveLanePad.Green) != 0 ? green : UInt7.MinValue,
+                kick = (hits & FiveLanePad.Kick) != 0 ? kick : UInt7.MinValue,
             };
 
             var buttons = TranslatedFiveLaneButtonMask.None;
@@ -95,15 +99,12 @@ namespace PlasticBand.Devices
         // Kits whose velocities can't be read report every hit at full strength
         protected virtual unsafe void ReadVelocities(
             StateEvent* stateEvent,
-            out byte red, out byte yellow, out byte blue,
-            out byte orange, out byte green, out byte kick
+            out UInt7 red, out UInt7 yellow, out UInt7 blue,
+            out UInt7 orange, out UInt7 green, out UInt7 kick
         )
         {
-            red = yellow = blue = orange = green = kick = byte.MaxValue;
+            red = yellow = blue = orange = green = kick = UInt7.MaxValue;
         }
-
-        protected static byte GetLow(int axis) => (byte)axis;
-        protected static byte GetHigh(int axis) => (byte)(axis >> 8);
     }
 }
 #endif

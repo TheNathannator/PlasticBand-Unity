@@ -107,40 +107,40 @@ namespace PlasticBand.Devices
             set => buttons.SetBit(XInputButton.DpadRight, value);
         }
 
-        byte IFiveLaneDrumkitState.redVelocity
+        UInt7 IFiveLaneDrumkitState.redVelocity
         {
-            get => redVelocity;
-            set => redVelocity = value;
+            get => UInt7.Clamped(redVelocity);
+            set => redVelocity = (byte)value;
         }
 
-        byte IFiveLaneDrumkitState.yellowVelocity
+        UInt7 IFiveLaneDrumkitState.yellowVelocity
         {
-            get => yellowVelocity;
-            set => yellowVelocity = value;
+            get => UInt7.Clamped(yellowVelocity);
+            set => yellowVelocity = (byte)value;
         }
 
-        byte IFiveLaneDrumkitState.blueVelocity
+        UInt7 IFiveLaneDrumkitState.blueVelocity
         {
-            get => blueVelocity;
-            set => blueVelocity = value;
+            get => UInt7.Clamped(blueVelocity);
+            set => blueVelocity = (byte)value;
         }
 
-        byte IFiveLaneDrumkitState.orangeVelocity
+        UInt7 IFiveLaneDrumkitState.orangeVelocity
         {
-            get => orangeVelocity;
-            set => orangeVelocity = value;
+            get => UInt7.Clamped(orangeVelocity);
+            set => orangeVelocity = (byte)value;
         }
 
-        byte IFiveLaneDrumkitState.greenVelocity
+        UInt7 IFiveLaneDrumkitState.greenVelocity
         {
-            get => greenVelocity;
-            set => greenVelocity = value;
+            get => UInt7.Clamped(greenVelocity);
+            set => greenVelocity = (byte)value;
         }
 
-        byte IFiveLaneDrumkitState.kickVelocity
+        UInt7 IFiveLaneDrumkitState.kickVelocity
         {
-            get => kickVelocity;
-            set => kickVelocity = value;
+            get => UInt7.Clamped(kickVelocity);
+            set => kickVelocity = (byte)value;
         }
     }
 

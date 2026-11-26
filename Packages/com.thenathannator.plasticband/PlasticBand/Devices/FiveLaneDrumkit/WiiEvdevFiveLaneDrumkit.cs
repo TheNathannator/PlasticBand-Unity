@@ -2,6 +2,7 @@
 using System;
 using HIDrogen.Devices.LowLevel;
 using HIDrogen.Imports.Linux;
+using PlasticBand.LowLevel;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.InputSystem.LowLevel;
 
@@ -68,8 +69,8 @@ namespace PlasticBand.Devices
 
         protected override unsafe void ReadVelocities(
             StateEvent* stateEvent,
-            out byte red, out byte yellow, out byte blue,
-            out byte orange, out byte green, out byte kick
+            out UInt7 red, out UInt7 yellow, out UInt7 blue,
+            out UInt7 orange, out UInt7 green, out UInt7 kick
         )
         {
             red = ToVelocity(m_StateHandler.ReadAbs(stateEvent, kRed));
@@ -82,8 +83,12 @@ namespace PlasticBand.Devices
 
         private static bool IsHit(int strength) => strength > 0;
 
-        private static byte ToVelocity(int strength)
-            => (byte)(Math.Min(Math.Max(strength, 0), kMaxHitStrength) * byte.MaxValue / kMaxHitStrength);
+        private static UInt7 ToVelocity(int strength)
+        {
+            int clamped = Utilities.Clamp(strength, 0, kMaxHitStrength);
+            int scaled = (clamped * UInt7.MaxValue) / kMaxHitStrength;
+            return UInt7.Clamped(scaled);
+        }
     }
 }
 #endif

@@ -109,40 +109,40 @@ namespace PlasticBand.Devices
             set => dpad.SetLeft(value);
         }
 
-        public byte redVelocity
+        public UInt7 redVelocity
         {
-            get => m_RedVelocity;
-            set => m_RedVelocity = value;
+            get => UInt7.Clamped(m_RedVelocity);
+            set => m_RedVelocity = (byte)value;
         }
 
-        public byte yellowVelocity
+        public UInt7 yellowVelocity
         {
-            get => m_YellowVelocity;
-            set => m_YellowVelocity = value;
+            get => UInt7.Clamped(m_YellowVelocity);
+            set => m_YellowVelocity = (byte)value;
         }
 
-        public byte blueVelocity
+        public UInt7 blueVelocity
         {
-            get => m_BlueVelocity;
-            set => m_BlueVelocity = value;
+            get => UInt7.Clamped(m_BlueVelocity);
+            set => m_BlueVelocity = (byte)value;
         }
 
-        public byte orangeVelocity
+        public UInt7 orangeVelocity
         {
-            get => m_OrangeVelocity;
-            set => m_OrangeVelocity = value;
+            get => UInt7.Clamped(m_OrangeVelocity);
+            set => m_OrangeVelocity = (byte)value;
         }
 
-        public byte greenVelocity
+        public UInt7 greenVelocity
         {
-            get => m_GreenVelocity;
-            set => m_GreenVelocity = value;
+            get => UInt7.Clamped(m_GreenVelocity);
+            set => m_GreenVelocity = (byte)value;
         }
 
-        public byte kickVelocity
+        public UInt7 kickVelocity
         {
-            get => m_KickVelocity;
-            set => m_KickVelocity = value;
+            get => UInt7.Clamped(m_KickVelocity);
+            set => m_KickVelocity = (byte)value;
         }
     }
 
@@ -170,12 +170,12 @@ namespace PlasticBand.Devices
         public bool dpadLeft { get => state.dpadLeft; set => state.dpadLeft = value; }
         public bool dpadRight { get => state.dpadRight; set => state.dpadRight = value; }
 
-        public byte redVelocity { get => state.redVelocity; set => state.redVelocity = value; }
-        public byte yellowVelocity { get => state.yellowVelocity; set => state.yellowVelocity = value; }
-        public byte blueVelocity { get => state.blueVelocity; set => state.blueVelocity = value; }
-        public byte orangeVelocity { get => state.orangeVelocity; set => state.orangeVelocity = value; }
-        public byte greenVelocity { get => state.greenVelocity; set => state.greenVelocity = value; }
-        public byte kickVelocity { get => state.kickVelocity; set => state.kickVelocity = value; }
+        public UInt7 redVelocity { get => state.redVelocity; set => state.redVelocity = value; }
+        public UInt7 yellowVelocity { get => state.yellowVelocity; set => state.yellowVelocity = value; }
+        public UInt7 blueVelocity { get => state.blueVelocity; set => state.blueVelocity = value; }
+        public UInt7 orangeVelocity { get => state.orangeVelocity; set => state.orangeVelocity = value; }
+        public UInt7 greenVelocity { get => state.greenVelocity; set => state.greenVelocity = value; }
+        public UInt7 kickVelocity { get => state.kickVelocity; set => state.kickVelocity = value; }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

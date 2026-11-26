@@ -70,25 +70,25 @@ namespace PlasticBand.Devices
         [InputControl(name = "systemButton", layout = "Button", bit = (int)TranslatedFiveLaneButton.System)]
         public ushort buttons;
 
-        private const string kPadParameters = "minValue=0,maxValue=255,intPressPoint=1";
+        private const string kPadParameters = "minValue=0,maxValue=127,intPressPoint=1";
 
         [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
-        public byte redPad;
+        public UInt7 redPad;
 
         [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
-        public byte yellowCymbal;
+        public UInt7 yellowCymbal;
 
         [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
-        public byte bluePad;
+        public UInt7 bluePad;
 
         [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
-        public byte orangeCymbal;
+        public UInt7 orangeCymbal;
 
         [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
-        public byte greenPad;
+        public UInt7 greenPad;
 
         [InputControl(layout = "IntButton", format = "BYTE", parameters = kPadParameters)]
-        public byte kick;
+        public UInt7 kick;
     }
 
     /// <summary>
@@ -120,21 +120,12 @@ namespace PlasticBand.Devices
         {
             var translated = new TranslatedFiveLaneState()
             {
-                redPad       = state.red_east ? state.redVelocity : (byte)0,
-                yellowCymbal = state.yellow_north ? state.yellowVelocity : (byte)0,
-                bluePad      = state.blue_west ? state.blueVelocity : (byte)0,
-                orangeCymbal = state.orange ? state.orangeVelocity : (byte)0,
-                greenPad     = state.green_south ? state.greenVelocity : (byte)0,
-                kick         = state.kick ? state.kickVelocity : (byte)0,
-
-                // TODO: Determine if these kits need the same velocity limit as RB kits do
-                // If they do, we can't reliably detect face button presses and will have to remove them from the layout
-                // redPad       = state.red_east ? Math.Max(state.redVelocity, (byte)1) : (byte)0,
-                // yellowCymbal = state.yellow_north ? Math.Max(state.yellowVelocity, (byte)1) : (byte)0,
-                // bluePad      = state.blue_west ? Math.Max(state.blueVelocity, (byte)1) : (byte)0,
-                // orangeCymbal = state.orange ? Math.Max(state.orangeVelocity, (byte)1) : (byte)0,
-                // greenPad     = state.green_south ? Math.Max(state.greenVelocity, (byte)1) : (byte)0,
-                // kick         = state.kick ? Math.Max(state.kickVelocity, (byte)1) : (byte)0,
+                redPad       = state.red_east ? state.redVelocity : UInt7.MinValue,
+                yellowCymbal = state.yellow_north ? state.yellowVelocity : UInt7.MinValue,
+                bluePad      = state.blue_west ? state.blueVelocity : UInt7.MinValue,
+                orangeCymbal = state.orange ? state.orangeVelocity : UInt7.MinValue,
+                greenPad     = state.green_south ? state.greenVelocity : UInt7.MinValue,
+                kick         = state.kick ? state.kickVelocity : UInt7.MinValue,
             };
 
             // Face buttons; these are ignored if the corresponding pad/cymbal is also active

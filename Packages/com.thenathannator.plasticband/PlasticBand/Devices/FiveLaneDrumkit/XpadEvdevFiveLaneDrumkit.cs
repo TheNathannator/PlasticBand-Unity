@@ -51,8 +51,8 @@ namespace PlasticBand.Devices
 
         protected override unsafe void ReadVelocities(
             StateEvent* stateEvent,
-            out byte red, out byte yellow, out byte blue,
-            out byte orange, out byte green, out byte kick
+            out UInt7 red, out UInt7 yellow, out UInt7 blue,
+            out UInt7 orange, out UInt7 green, out UInt7 kick
         )
         {
             // Velocities are packed two at a time into the stick axes
@@ -60,12 +60,12 @@ namespace PlasticBand.Devices
             int rightStickX = m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_RX);
             int rightStickY = ~m_StateHandler.ReadAbs(stateEvent, input_abs_code.ABS_RY);
 
-            red = GetHigh(leftStickY);
-            yellow = GetLow(rightStickX);
-            blue = GetHigh(rightStickX);
-            orange = GetLow(rightStickY);
-            green = GetLow(leftStickY);
-            kick = GetHigh(rightStickY);
+            red = UInt7.Clamped((leftStickY >> 8) & 0xFF);
+            yellow = UInt7.Clamped(rightStickX & 0xFF);
+            blue = UInt7.Clamped((rightStickX >> 8) & 0xFF);
+            orange = UInt7.Clamped(rightStickY & 0xFF);
+            green = UInt7.Clamped(leftStickY & 0xFF);
+            kick = UInt7.Clamped((rightStickY >> 8) & 0xFF);
         }
     }
 }

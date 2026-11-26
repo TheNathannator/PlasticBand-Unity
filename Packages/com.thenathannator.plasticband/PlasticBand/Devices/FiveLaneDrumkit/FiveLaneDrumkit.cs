@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -40,12 +41,12 @@ namespace PlasticBand.Devices
         bool select { get; set; }
         bool system { get; set; }
 
-        byte redVelocity { get; set; }
-        byte yellowVelocity { get; set; }
-        byte blueVelocity { get; set; }
-        byte orangeVelocity { get; set; }
-        byte greenVelocity { get; set; }
-        byte kickVelocity { get; set; }
+        UInt7 redVelocity { get; set; }
+        UInt7 yellowVelocity { get; set; }
+        UInt7 blueVelocity { get; set; }
+        UInt7 orangeVelocity { get; set; }
+        UInt7 greenVelocity { get; set; }
+        UInt7 kickVelocity { get; set; }
     }
 
     /// <summary>
