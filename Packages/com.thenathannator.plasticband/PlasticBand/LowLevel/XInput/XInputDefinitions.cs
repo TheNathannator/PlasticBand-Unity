@@ -366,6 +366,24 @@ namespace PlasticBand.LowLevel
         {
             return SetAxisUnsignedX(value);
         }
+
+        public static sbyte GetInvertedAxisY(short value)
+        {
+            return (sbyte)IntegerAxisControl.Convert(
+                value,
+                short.MaxValue, short.MinValue, 0,
+                sbyte.MinValue, sbyte.MaxValue, 0
+            );
+        }
+
+        public static short SetInvertedAxisY(sbyte value)
+        {
+            return (short)IntegerAxisControl.Convert(
+                value,
+                sbyte.MinValue, sbyte.MaxValue, 0,
+                short.MaxValue, short.MinValue, 0
+            );
+        }
     }
 
     internal static class XInputExtensions

@@ -204,8 +204,8 @@ namespace PlasticBand.Devices
 
         sbyte IGamepadState.leftStickY
         {
-            get => XInputDefinitions.GetAxisY((short)~leftStickY);
-            set => leftStickY = (short)~XInputDefinitions.SetAxisY(value);
+            get => XInputDefinitions.GetInvertedAxisY(leftStickY);
+            set => leftStickY = XInputDefinitions.SetInvertedAxisY(value);
         }
 
         sbyte IGamepadState.rightStickX
@@ -216,8 +216,8 @@ namespace PlasticBand.Devices
 
         sbyte IGamepadState.rightStickY
         {
-            get => XInputDefinitions.GetAxisY((short)~rightStickY);
-            set => rightStickY = (short)~XInputDefinitions.SetAxisY(value);
+            get => XInputDefinitions.GetInvertedAxisY(rightStickY);
+            set => rightStickY = XInputDefinitions.SetInvertedAxisY(value);
         }
     }
 
