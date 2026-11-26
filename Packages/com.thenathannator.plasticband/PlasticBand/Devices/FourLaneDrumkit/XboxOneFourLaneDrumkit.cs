@@ -1,4 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
+using PlasticBand.Controls;
 using PlasticBand.Devices.LowLevel;
 using PlasticBand.LowLevel;
 using UnityEngine.InputSystem;
@@ -14,6 +16,10 @@ namespace PlasticBand.Devices
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct XboxOneFourLaneDrumkitState : IFourLaneDrumkitState_DistinctVelocities, IReportIdStateTypeInfo
     {
+        // While the velocity axes are aligned to 4 bits,
+        // it seems that they only go up to 7 and never use the full range
+        internal const byte kMaxVelocity = 7;
+
         public FourCC format => GameInputDefinitions.InputFormat;
         byte IReportIdStateTypeInfo.reportId => 0x20;
 
@@ -152,17 +158,45 @@ namespace PlasticBand.Devices
             set => SetVelocityHigh(ref cymbals2, value);
         }
 
-        private static byte GetVelocityLow(byte rawValue)
-            => (byte)((rawValue << 4) | (rawValue & 0x0F));
+        private static byte GetVelocityLow(byte velocityField)
+        {
+            int rawValue = velocityField & 0x0F;
+            return (byte)IntegerAxisControl.Convert(
+                rawValue,
+                0, kMaxVelocity, 0,
+                byte.MinValue, byte.MaxValue, 0
+            );
+        }
 
-        private static byte GetVelocityHigh(byte rawValue)
-            => (byte)((rawValue & 0xF0) | (rawValue >> 4));
+        private static byte GetVelocityHigh(byte velocityField)
+        {
+            int rawValue = (velocityField & 0xF0) >> 4;
+            return (byte)IntegerAxisControl.Convert(
+                rawValue,
+                0, kMaxVelocity, 0,
+                byte.MinValue, byte.MaxValue, 0
+            );
+        }
 
-        private static void SetVelocityLow(ref byte rawValue, byte value)
-            => rawValue = (byte)((rawValue & 0xF0) | (value >> 4));
+        private static void SetVelocityLow(ref byte velocityField, byte value)
+        {
+            byte scaled = (byte)IntegerAxisControl.Convert(
+                value,
+                byte.MinValue, byte.MaxValue, 0,
+                0, kMaxVelocity, 0
+            );
+            velocityField.SetMask(scaled, 0x0F, 0);
+        }
 
-        private static void SetVelocityHigh(ref byte rawValue, byte value)
-            => rawValue = (byte)((rawValue & 0x0F) | (value & 0xF0));
+        private static void SetVelocityHigh(ref byte velocityField, byte value)
+        {
+            byte scaled = (byte)IntegerAxisControl.Convert(
+                value,
+                byte.MinValue, byte.MaxValue, 0,
+                0, kMaxVelocity, 0
+            );
+            velocityField.SetMask(scaled, 0x0F, 4);
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
