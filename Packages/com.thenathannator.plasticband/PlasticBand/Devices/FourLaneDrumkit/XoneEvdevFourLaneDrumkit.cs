@@ -13,10 +13,10 @@ namespace PlasticBand.Devices
         internal new static void Initialize()
         {
             // xone swaps X and Y compared to the gamepad
-            m_Red = input_key_code.BTN_B;
-            m_Yellow = input_key_code.BTN_X;
-            m_Blue = input_key_code.BTN_Y;
-            m_Green = input_key_code.BTN_A;
+            m_Red = input_key_code_alt.BTN_B;
+            m_Yellow = input_key_code_alt.BTN_X;
+            m_Blue = input_key_code_alt.BTN_Y;
+            m_Green = input_key_code_alt.BTN_A;
             m_Kick1 = input_key_code.BTN_TRIGGER_HAPPY_1;
             m_Kick2 = input_key_code.BTN_TRIGGER_HAPPY_2;
 
@@ -24,10 +24,10 @@ namespace PlasticBand.Devices
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
                 .WithHat(0, "dpad")
-                .WithKey(input_key_code.BTN_A, "buttonSouth")
-                .WithKey(input_key_code.BTN_B, "buttonEast")
-                .WithKey(input_key_code.BTN_X, "buttonNorth")
-                .WithKey(input_key_code.BTN_Y, "buttonWest")
+                .WithKey(input_key_code_alt.BTN_A, "buttonSouth")
+                .WithKey(input_key_code_alt.BTN_B, "buttonEast")
+                .WithKey(input_key_code_alt.BTN_X, "buttonNorth")
+                .WithKey(input_key_code_alt.BTN_Y, "buttonWest")
                 .WithKey(input_key_code.BTN_TRIGGER_HAPPY_1, "kick1")
                 .WithKey(input_key_code.BTN_TRIGGER_HAPPY_2, "kick2")
                 .WithKey(input_key_code.BTN_TRIGGER_HAPPY_3, "redPad")

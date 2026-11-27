@@ -12,10 +12,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            m_Black1 = input_key_code.BTN_A;
-            m_Black2 = input_key_code.BTN_B;
-            m_Black3 = input_key_code.BTN_X;
-            m_White1 = input_key_code.BTN_Y;
+            m_Black1 = input_key_code_alt.BTN_A;
+            m_Black2 = input_key_code_alt.BTN_B;
+            m_Black3 = input_key_code_alt.BTN_X;
+            m_White1 = input_key_code_alt.BTN_Y;
             m_White2 = input_key_code.BTN_TL;
             m_White3 = input_key_code.BTN_TR;
             m_Ghtv = input_key_code.BTN_THUMB_L;
@@ -27,10 +27,10 @@ namespace PlasticBand.Devices
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
-                .WithKey(input_key_code.BTN_A, "black1")
-                .WithKey(input_key_code.BTN_B, "black2")
-                .WithKey(input_key_code.BTN_X, "black3")
-                .WithKey(input_key_code.BTN_Y, "white1")
+                .WithKey(input_key_code_alt.BTN_A, "black1")
+                .WithKey(input_key_code_alt.BTN_B, "black2")
+                .WithKey(input_key_code_alt.BTN_X, "black3")
+                .WithKey(input_key_code_alt.BTN_Y, "white1")
                 .WithKey(input_key_code.BTN_TL, "white2")
                 .WithKey(input_key_code.BTN_TR, "white3")
                 .WithKey(input_key_code.BTN_THUMB_L, "ghtvButton")

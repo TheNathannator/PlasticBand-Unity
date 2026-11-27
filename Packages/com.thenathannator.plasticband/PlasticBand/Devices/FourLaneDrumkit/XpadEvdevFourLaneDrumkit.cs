@@ -12,10 +12,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            m_Red = input_key_code.BTN_B;
-            m_Yellow = input_key_code.BTN_Y;
-            m_Blue = input_key_code.BTN_X;
-            m_Green = input_key_code.BTN_A;
+            m_Red = input_key_code_alt.BTN_B;
+            m_Yellow = input_key_code_alt.BTN_Y;
+            m_Blue = input_key_code_alt.BTN_X;
+            m_Green = input_key_code_alt.BTN_A;
             m_PadFlag = input_key_code.BTN_THUMB_R;
             m_CymbalFlag = input_key_code.BTN_TR;
             m_Kick1 = input_key_code.BTN_TL;
@@ -25,10 +25,10 @@ namespace PlasticBand.Devices
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
                 .WithHat(0, "dpad")
-                .WithKey(input_key_code.BTN_A, "buttonSouth")
-                .WithKey(input_key_code.BTN_B, "buttonEast")
-                .WithKey(input_key_code.BTN_X, "buttonWest")
-                .WithKey(input_key_code.BTN_Y, "buttonNorth")
+                .WithKey(input_key_code_alt.BTN_A, "buttonSouth")
+                .WithKey(input_key_code_alt.BTN_B, "buttonEast")
+                .WithKey(input_key_code_alt.BTN_X, "buttonWest")
+                .WithKey(input_key_code_alt.BTN_Y, "buttonNorth")
                 .WithKey(input_key_code.BTN_THUMB_R, "padFlag")
                 .WithKey(input_key_code.BTN_TR, "cymbalFlag")
                 .WithKey(input_key_code.BTN_TL, "kick1")

@@ -11,10 +11,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            m_GreenFret = input_key_code.BTN_A;
-            m_RedFret = input_key_code.BTN_B;
-            m_YellowFret = input_key_code.BTN_X;
-            m_BlueFret = input_key_code.BTN_Y;
+            m_GreenFret = input_key_code_alt.BTN_A;
+            m_RedFret = input_key_code_alt.BTN_B;
+            m_YellowFret = input_key_code_alt.BTN_X;
+            m_BlueFret = input_key_code_alt.BTN_Y;
             m_OrangeFret = input_key_code.BTN_TL;
             m_Solo = input_key_code.BTN_THUMB_L;
 
@@ -24,10 +24,10 @@ namespace PlasticBand.Devices
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
-                .WithKey(input_key_code.BTN_A, "greenFret")
-                .WithKey(input_key_code.BTN_B, "redFret")
-                .WithKey(input_key_code.BTN_X, "yellowFret")
-                .WithKey(input_key_code.BTN_Y, "blueFret")
+                .WithKey(input_key_code_alt.BTN_A, "greenFret")
+                .WithKey(input_key_code_alt.BTN_B, "redFret")
+                .WithKey(input_key_code_alt.BTN_X, "yellowFret")
+                .WithKey(input_key_code_alt.BTN_Y, "blueFret")
                 .WithKey(input_key_code.BTN_TL, "orangeFret")
                 .WithKey(input_key_code.BTN_THUMB_L, "solo")
                 .WithHat(0, "dpad")

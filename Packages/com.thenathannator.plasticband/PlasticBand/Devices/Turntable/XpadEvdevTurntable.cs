@@ -12,10 +12,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            m_SouthButton = input_key_code.BTN_A;
-            m_EastButton = input_key_code.BTN_B;
-            m_WestButton = input_key_code.BTN_X;
-            m_NorthButton = input_key_code.BTN_Y;
+            m_SouthButton = input_key_code_alt.BTN_A;
+            m_EastButton = input_key_code_alt.BTN_B;
+            m_WestButton = input_key_code_alt.BTN_X;
+            m_NorthButton = input_key_code_alt.BTN_Y;
 
             m_LeftVelocity = input_abs_code.ABS_X;
             m_RightVelocity = input_abs_code.ABS_Y;
@@ -25,10 +25,10 @@ namespace PlasticBand.Devices
             var xpadMappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
-                .WithKey(input_key_code.BTN_A, "buttonSouth")
-                .WithKey(input_key_code.BTN_B, "buttonEast")
-                .WithKey(input_key_code.BTN_X, "buttonWest")
-                .WithKey(input_key_code.BTN_Y, "buttonNorth")
+                .WithKey(input_key_code_alt.BTN_A, "buttonSouth")
+                .WithKey(input_key_code_alt.BTN_B, "buttonEast")
+                .WithKey(input_key_code_alt.BTN_X, "buttonWest")
+                .WithKey(input_key_code_alt.BTN_Y, "buttonNorth")
                 .WithHat(0, "dpad")
                 .WithAbs(input_abs_code.ABS_X, "leftTableVelocity")
                 .WithAbs(input_abs_code.ABS_Y, "rightTableVelocity")

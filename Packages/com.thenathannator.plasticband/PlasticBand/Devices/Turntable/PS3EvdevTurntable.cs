@@ -12,10 +12,10 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            m_SouthButton = input_key_code.BTN_A;
-            m_EastButton = input_key_code.BTN_B;
-            m_WestButton = input_key_code.BTN_Y;
-            m_NorthButton = input_key_code.BTN_X;
+            m_SouthButton = input_key_code_alt.BTN_A;
+            m_EastButton = input_key_code_alt.BTN_B;
+            m_WestButton = input_key_code_alt.BTN_Y;
+            m_NorthButton = input_key_code_alt.BTN_X;
 
             m_LeftGreen = input_key_code.BTN_TRIGGER_HAPPY_1;
             m_LeftRed = input_key_code.BTN_TRIGGER_HAPPY_2;
@@ -32,10 +32,10 @@ namespace PlasticBand.Devices
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
-                .WithKey(input_key_code.BTN_A, "buttonSouth")
-                .WithKey(input_key_code.BTN_B, "buttonEast")
-                .WithKey(input_key_code.BTN_Y, "buttonWest")
-                .WithKey(input_key_code.BTN_X, "buttonNorth")
+                .WithKey(input_key_code_alt.BTN_A, "buttonSouth")
+                .WithKey(input_key_code_alt.BTN_B, "buttonEast")
+                .WithKey(input_key_code_alt.BTN_Y, "buttonWest")
+                .WithKey(input_key_code_alt.BTN_X, "buttonNorth")
                 .WithHat(0, "dpad")
                 .WithKey(input_key_code.BTN_TRIGGER_HAPPY_1, "leftTableGreen")
                 .WithKey(input_key_code.BTN_TRIGGER_HAPPY_2, "leftTableRed")

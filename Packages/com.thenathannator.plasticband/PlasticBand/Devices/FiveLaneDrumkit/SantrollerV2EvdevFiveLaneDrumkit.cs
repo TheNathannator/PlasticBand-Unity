@@ -12,21 +12,21 @@ namespace PlasticBand.Devices
     {
         internal new static void Initialize()
         {
-            m_RedPad = input_key_code.BTN_B;
-            m_YellowCymbal = input_key_code.BTN_Y;
-            m_BluePad = input_key_code.BTN_X;
+            m_RedPad = input_key_code_alt.BTN_B;
+            m_YellowCymbal = input_key_code_alt.BTN_Y;
+            m_BluePad = input_key_code_alt.BTN_X;
             m_OrangeCymbal = input_key_code.BTN_TR;
-            m_GreenPad = input_key_code.BTN_A;
+            m_GreenPad = input_key_code_alt.BTN_A;
             m_Kick = input_key_code.BTN_TL;
 
             var mappings = new EvdevDeviceMapping()
                 .WithKey(input_key_code.BTN_START, "start")
                 .WithKey(input_key_code.BTN_SELECT, "select")
-                .WithKey(input_key_code.BTN_B, "redPad")
-                .WithKey(input_key_code.BTN_Y, "yellowCymbal")
-                .WithKey(input_key_code.BTN_X, "bluePad")
+                .WithKey(input_key_code_alt.BTN_B, "redPad")
+                .WithKey(input_key_code_alt.BTN_Y, "yellowCymbal")
+                .WithKey(input_key_code_alt.BTN_X, "bluePad")
                 .WithKey(input_key_code.BTN_TR, "orangeCymbal")
-                .WithKey(input_key_code.BTN_A, "greenPad")
+                .WithKey(input_key_code_alt.BTN_A, "greenPad")
                 .WithKey(input_key_code.BTN_TL, "kick")
                 .WithHat(0, "dpad")
                 .WithAbs(input_abs_code.ABS_Y, "velocity1")
